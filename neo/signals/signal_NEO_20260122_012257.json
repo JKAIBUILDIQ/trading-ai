@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T01:22:57.880749",
+  "signal_id": "NEO_20260122_012257",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 2000.0,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 75.0,
+    "reasoning": "RSI(2) extreme oversold (<10) with price above 200 SMA. Historical win rate 88% for this setup.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

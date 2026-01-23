@@ -1,0 +1,54 @@
+{
+  "report_date": "2026-01-22T01:09:09.866038",
+  "models_consulted": [
+    "analysis_sample.json"
+  ],
+  "model_count": 1,
+  "consensus_recommendations": [],
+  "average_grades": {
+    "v007": {
+      "coherence": 7.0,
+      "risk": 5.0,
+      "edge": 6.0
+    },
+    "v008": {
+      "coherence": 6.0,
+      "risk": 5.0,
+      "edge": 4.0
+    },
+    "v010": {
+      "coherence": 8.0,
+      "risk": 5.0,
+      "edge": 7.0
+    },
+    "v015": {
+      "coherence": 7.0,
+      "risk": 6.0,
+      "edge": 6.0
+    },
+    "v020": {
+      "coherence": 8.0,
+      "risk": 7.0,
+      "edge": 7.0
+    },
+    "fleet": {
+      "coordination": 7.0
+    }
+  },
+  "risk_warnings": [
+    "Aggressive position sizing could lead to large drawdowns",
+    "v008 RSI(14) has no proven edge",
+    "Position sizing 5-10% is aggressive vs 1-2% proven optimal",
+    "RSI(14) in v008 may be net negative",
+    "No volatility regime filter - vulnerable in high VIX",
+    "Correlation between bots not fully managed"
+  ],
+  "overall_grades_by_model": {
+    "analysis_sample.json": {
+      "grade": "B-",
+      "profit_probability": "60%"
+    }
+  },
+  "status": "AGGREGATED",
+  "consensus_overall_grade": "B-"
+}

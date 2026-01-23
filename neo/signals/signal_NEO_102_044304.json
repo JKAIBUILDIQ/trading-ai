@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T04:43:04.486737",
+  "signal_id": "NEO_102_044304",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 3300,
+    "stop_loss_pips": 25,
+    "take_profit_pips": 50,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 75,
+    "reasoning": "The market is identified as ranging with low ADX. RSI(2) Connors strategy aligns well here, expecting a mean reversion. Retail traders might be wrong at current levels, and MMs could be testing stops. Strategy expects high win rate with proper risk management.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

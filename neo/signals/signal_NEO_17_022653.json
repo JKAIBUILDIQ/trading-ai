@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T02:26:53.109463",
+  "signal_id": "NEO_17_022653",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 4400.0,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 85,
+    "reasoning": "EURUSD is in a ranging market with ADX low. RSI(2) < 10 and price above 200 SMA indicates mean reversion potential. Retail likely selling after drop, but MMs may buy the dip.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

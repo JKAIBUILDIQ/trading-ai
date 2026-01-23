@@ -1,0 +1,36 @@
+{
+  "bot": "Crellastein_v007",
+  "nickname": "The Ultimate",
+  "strategy_type": "trend_following + price_action",
+  "parameters": {
+    "RSI_Fast": 7,
+    "RSI_Ultra": 2,
+    "EMA_Fast": 8,
+    "EMA_Mid": 21,
+    "EMA_Slow": 50,
+    "BB_Period": 14,
+    "BB_Deviation": 2.5,
+    "MinConfirmations": 2,
+    "MinEdgeScore": 30,
+    "TP_Ratio": 2.5,
+    "MinSL_ATR": 1.0,
+    "MaxSL_ATR": 3.0,
+    "MinPositionValue": 4000,
+    "MaxPositionValue": 8000,
+    "MaxTotalExposure": 25000,
+    "MaxPositions": 6
+  },
+  "features": [
+    "Aggressive multi-signal entry",
+    "News mode hedging",
+    "Price action patterns (pin bar, inside bar, fakey)",
+    "Slope cluster confirmation",
+    "Raid receiver (Ghost Commander integration)"
+  ],
+  "metadata": {
+    "source": "User-provided Crellastein configuration",
+    "account_size": 88000,
+    "risk_per_position_pct": "4.5-9%",
+    "total_exposure_pct": "28%"
+  }
+}

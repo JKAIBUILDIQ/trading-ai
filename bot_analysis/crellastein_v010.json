@@ -1,0 +1,25 @@
+{
+  "bot": "Crellastein_v010",
+  "nickname": "The Second Mover",
+  "strategy_type": "liquidity_sweep + institutional_flow",
+  "parameters": {
+    "SweepLookback": 20,
+    "SweepThreshold_ATR": 1.5,
+    "ReversalConfirmBars": 2,
+    "MinPositionValue": 4000,
+    "MaxPositionValue": 8000,
+    "MaxTotalExposure": 25000,
+    "MaxPositions": 6
+  },
+  "features": [
+    "Liquidity sweep detection",
+    "Second-mover entry after stop hunts",
+    "Wait-react strategy",
+    "Deceptive timing randomization"
+  ],
+  "metadata": {
+    "source": "User-provided Crellastein configuration",
+    "account_size": 88000,
+    "strategy_basis": "Anti-market-maker, institutional flow hunting"
+  }
+}

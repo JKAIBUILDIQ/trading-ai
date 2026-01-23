@@ -1,0 +1,171 @@
+{
+  "metadata": {
+    "name": "WWCD - What Would Citadel Do",
+    "description": "Understand market maker behavior to trade with them, not against them",
+    "philosophy": "Don't fight the market makers - draft behind them"
+  },
+  
+  "core_principle": {
+    "statement": "Market makers are PREDICTABLE at key levels",
+    "why": "They MUST provide liquidity - this creates patterns",
+    "our_edge": "Wait for them to act, then follow their move"
+  },
+  
+  "mm_objectives": {
+    "primary": [
+      "Collect spread (we pay it)",
+      "Manage inventory risk",
+      "Exploit information asymmetry"
+    ],
+    "profitable_activities": [
+      "Hunt stop losses (trigger retail stops, then reverse)",
+      "Fade retail (take opposite side of retail sentiment)",
+      "Front-run large orders (see order flow, position ahead)"
+    ]
+  },
+  
+  "tactics": {
+    "stop_hunt_awareness": {
+      "description": "MMs hunt stops at obvious levels to create liquidity",
+      "levels_to_watch": [
+        "Round numbers (1.1000, 1.2000, 1.0500)",
+        "Swing highs/lows visible on any chart",
+        "Previous day high/low",
+        "Previous week high/low", 
+        "Asian session high/low",
+        "50 and 100 pip levels"
+      ],
+      "pattern": [
+        "1. Price approaches obvious level",
+        "2. Sudden acceleration toward level",
+        "3. Spike through level (triggers stops)",
+        "4. Quick reversal back",
+        "5. Continuation in reversal direction"
+      ],
+      "our_response": {
+        "wait": "Don't have stops at obvious levels",
+        "watch": "Wait for the spike and reversal",
+        "enter": "Enter with MMs after stops are cleared",
+        "target": "Ride the reversal move"
+      }
+    },
+    
+    "retail_sentiment_fade": {
+      "description": "When retail is heavily positioned one way, MMs take the other side",
+      "signals_retail_is_wrong": [
+        "High social media mentions (bullish tweets = sell)",
+        "News hype and FOMO",
+        "Extreme positioning data",
+        "Everyone agrees on direction"
+      ],
+      "our_response": {
+        "contrarian": "Fade retail after MMs trigger their stops",
+        "timing": "Wait for the stop hunt, then enter",
+        "confirmation": "Reversal pattern after flush"
+      }
+    },
+    
+    "order_flow_defense": {
+      "description": "MMs see order flow before execution - defend yourself",
+      "what_they_see": [
+        "Pending stop losses",
+        "Pending limit orders",
+        "Order flow direction"
+      ],
+      "our_defense": {
+        "mental_stops": "Use mental stops, not visible ones",
+        "randomized_timing": "Don't enter at round times",
+        "multiple_entries": "Scale in with small orders",
+        "iceberg_approach": "Multiple small positions, not one large",
+        "exit_before_target": "Take profit slightly early"
+      }
+    },
+    
+    "second_mover_advantage": {
+      "description": "Let MMs show their hand, then follow",
+      "principle": "The second mover in poker often wins",
+      "execution": {
+        "wait": "See where they push price",
+        "observe": "Watch for reversal signals",
+        "enter": "Follow the smart money reversal",
+        "ride": "Stay with the move until next key level"
+      }
+    }
+  },
+  
+  "timing": {
+    "best_times_to_trade": [
+      {
+        "time": "London open (02:00-04:00 CST)",
+        "reason": "After Asian session stop hunt, fresh move begins"
+      },
+      {
+        "time": "NY open (07:30-09:30 CST)",
+        "reason": "After London stop hunt, US institutions enter"
+      },
+      {
+        "time": "5-15 min after news",
+        "reason": "After initial spike/retail panic, real move begins"
+      },
+      {
+        "time": "15 min before hour",
+        "reason": "Institutions often enter on the hour, set up early"
+      }
+    ],
+    "worst_times_to_trade": [
+      {
+        "time": "Before major news",
+        "reason": "Spreads wide, random spikes"
+      },
+      {
+        "time": "Lunch hour (11 AM - 1 PM CST)",
+        "reason": "Low liquidity, erratic moves"
+      },
+      {
+        "time": "Friday afternoon",
+        "reason": "Position squaring, unpredictable"
+      },
+      {
+        "time": "First 5 min of session",
+        "reason": "Stop hunts in progress"
+      }
+    ]
+  },
+  
+  "signals_to_watch": {
+    "stop_hunt_in_progress": [
+      "Sudden spike on no news",
+      "Move accelerates into key level",
+      "Volume spike then dries up",
+      "Long wicks on candles"
+    ],
+    "stop_hunt_complete": [
+      "Price back inside range",
+      "Reversal candle forms",
+      "Volume normalizes",
+      "Counter-trend move begins"
+    ],
+    "mm_accumulation": [
+      "Quiet range with low volume",
+      "Higher lows (or lower highs)",
+      "Volume building on test of level"
+    ]
+  },
+  
+  "our_advantages_vs_citadel": {
+    "small_size": "We can get fills they can't",
+    "no_reporting": "No quarterly reports to hit",
+    "patience": "Can wait for perfect setup",
+    "unpredictability": "They can't model individual retail",
+    "multi_bot": "Appear as multiple random traders"
+  },
+  
+  "rules_for_neo": [
+    "NEVER have stops at obvious levels",
+    "ALWAYS wait for the stop hunt to complete",
+    "NEVER chase a move - let it come to you",
+    "ALWAYS know where retail stops are clustered",
+    "NEVER fight a strong trend - MMs can extend it",
+    "ALWAYS have a smaller size than you think you need"
+  ]
+}

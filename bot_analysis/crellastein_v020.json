@@ -1,0 +1,35 @@
+{
+  "bot": "Crellastein_v020",
+  "nickname": "Ghost Commander",
+  "strategy_type": "orchestration + risk_management",
+  "parameters": {
+    "MaxPortfolioDrawdown": 20,
+    "MaxDailyLoss": 7000,
+    "MaxCorrelation": 0.8,
+    "EmergencyStopLoss": 10000,
+    "MaxRaidsPerDay": 3,
+    "RaidMaxHoldMinutes": 180,
+    "RaidTPDollars": 500,
+    "RaidSLDollars": 250,
+    "ScaleOutHour": 14,
+    "RaidCooldownMinutes": 60
+  },
+  "features": [
+    "Fleet monitoring",
+    "Regime detection",
+    "Correlation checking",
+    "Raid coordination",
+    "Emergency close all",
+    "Daily scale-out scheduling"
+  ],
+  "metadata": {
+    "source": "User-provided Crellastein configuration",
+    "account_size": 88000,
+    "role": "Master controller for all other bots",
+    "risk_metrics": {
+      "max_daily_loss_pct": "8%",
+      "max_drawdown_pct": "20%",
+      "emergency_stop_pct": "11.4%"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T05:05:21.257762",
+  "signal_id": "NEO_115_050521",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 2200,
+    "stop_loss_pips": 40,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 75,
+    "reasoning": "Ranging market with RSI(2) indicating oversold conditions. Retail likely buying support, which could be wrong.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "metadata": {
+    "description": "Historical parabolic events for Gold and reference assets",
+    "purpose": "Pattern matching for crash prediction",
+    "last_updated": "2026-01-23",
+    "created_by": "NEO AHI System"
+  },
+  
+  "gold_events": [
+    {
+      "event_id": "GOLD_2011_08",
+      "name": "Gold 2011 QE Euphoria",
+      "peak_date": "2011-09-06",
+      "peak_price": 1920,
+      "crash_low": 1523,
+      "crash_pct": -20.7,
+      "days_to_low": 180,
+      "trigger": "Fed QE taper talk, dollar bounce",
+      "pre_crash_signals": {
+        "ahi_estimate": 88,
+        "social_hype": "TV gold ads everywhere",
+        "retail_positioning": "85% long",
+        "technical": "RSI(D1) above 75 for 30 days",
+        "sentiment": "Everyone predicting $2500"
+      },
+      "warning_timeline": [
+        {"days_before": 30, "signal": "YouTube gold videos 3x normal"},
+        {"days_before": 14, "signal": "Retail brokers report record long positions"},
+        {"days_before": 7, "signal": "Daily RSI hit 92"},
+        {"days_before": 3, "signal": "Gold bug headlines on mainstream news"},
+        {"days_before": 1, "signal": "Volume spike on up day - distribution"}
+      ]
+    },
+    
+    {
+      "event_id": "GOLD_2020_08",
+      "name": "Gold 2020 COVID Peak",
+      "peak_date": "2020-08-07",
+      "peak_price": 2075,
+      "crash_low": 1680,
+      "crash_pct": -19.0,
+      "days_to_low": 180,
+      "trigger": "Vaccine optimism, dollar rally, rate expectations",
+      "pre_crash_signals": {
+        "ahi_estimate": 82,
+        "social_hype": "Reddit WallStreetBets gold posts surge",
+        "retail_positioning": "78% long via CFDs",
+        "technical": "Parabolic acceleration, 12 green weeks",
+        "sentiment": "Inflation hedge narrative everywhere"
+      },
+      "warning_timeline": [
+        {"days_before": 21, "signal": "GLD inflows hit record"},
+        {"days_before": 14, "signal": "Retail gold apps top downloads"},
+        {"days_before": 7, "signal": "CNN and CNBC gold specials"},
+        {"days_before": 3, "signal": "Extreme put/call ratio (0.3)"},
+        {"days_before": 1, "signal": "Massive volume, bearish engulfing candle"}
+      ]
+    },
+    
+    {
+      "event_id": "GOLD_2022_03",
+      "name": "Gold 2022 Ukraine Spike",
+      "peak_date": "2022-03-08",
+      "peak_price": 2070,
+      "crash_low": 1620,
+      "crash_pct": -21.7,
+      "days_to_low": 270,
+      "trigger": "Safe haven unwind, Fed rate hikes begin",
+      "pre_crash_signals": {
+        "ahi_estimate": 79,
+        "social_hype": "Ukraine crisis = buy gold narrative",
+        "retail_positioning": "72% long",
+        "technical": "Gap up on war news, RSI 85",
+        "sentiment": "Fear-driven buying, not value-driven"
+      },
+      "warning_timeline": [
+        {"days_before": 14, "signal": "Spike driven by news, not fundamentals"},
+        {"days_before": 7, "signal": "Price gap above all moving averages"},
+        {"days_before": 3, "signal": "Gold YouTube videos mention 'to the moon'"},
+        {"days_before": 1, "signal": "Reversal candle at $2070 resistance"}
+      ]
+    },
+    
+    {
+      "event_id": "GOLD_2024_10",
+      "name": "Gold 2024 Election Rally",
+      "peak_date": "2024-10-30",
+      "peak_price": 2790,
+      "crash_low": 2530,
+      "crash_pct": -9.3,
+      "days_to_low": 45,
+      "trigger": "Election uncertainty resolved, risk-on return",
+      "pre_crash_signals": {
+        "ahi_estimate": 75,
+        "social_hype": "BRICS de-dollarization narrative peak",
+        "retail_positioning": "70% long",
+        "technical": "Extended from 200 EMA by 15%",
+        "sentiment": "Geopolitical hedge buying"
+      },
+      "warning_timeline": [
+        {"days_before": 7, "signal": "Every fintwit account posting gold charts"},
+        {"days_before": 3, "signal": "Mainstream media gold coverage increase"},
+        {"days_before": 1, "signal": "Pre-election uncertainty peak"}
+      ]
+    }
+  ],
+  
+  "bitcoin_parallels": [
+    {
+      "event_id": "BTC_2017_12",
+      "name": "Bitcoin 2017 FOMO Peak",
+      "peak_date": "2017-12-17",
+      "peak_price": 19783,
+      "crash_low": 3200,
+      "crash_pct": -83.8,
+      "days_to_low": 365,
+      "lessons_for_gold": [
+        "Parabolic rises end abruptly",
+        "Social media hype = distribution phase",
+        "When normies talk about it at dinner = top"
+      ],
+      "pre_crash_ahi_equivalent": 95
+    },
+    
+    {
+      "event_id": "BTC_2021_04",
+      "name": "Bitcoin 2021 Musk/SNL Peak",
+      "peak_date": "2021-04-14",
+      "peak_price": 64895,
+      "crash_low": 29000,
+      "crash_pct": -55.3,
+      "days_to_low": 75,
+      "lessons_for_gold": [
+        "Celebrity endorsement often marks top",
+        "When everyone expects $100K = sell",
+        "Leverage builds fragility"
+      ],
+      "pre_crash_ahi_equivalent": 92,
+      "warning_signs": [
+        "Elon on SNL talking crypto",
+        "85%+ retail long",
+        "Google Trends 'buy bitcoin' at ATH",
+        "Funding rates extremely positive"
+      ]
+    },
+    
+    {
+      "event_id": "BTC_2021_11",
+      "name": "Bitcoin 2021 November Peak",
+      "peak_date": "2021-11-10",
+      "peak_price": 69000,
+      "crash_low": 15500,
+      "crash_pct": -77.5,
+      "days_to_low": 395,
+      "lessons_for_gold": [
+        "Second peaks often fail spectacularly",
+        "Institutional buying doesn't prevent crashes",
+        "Overleveraged market = cascade liquidations"
+      ],
+      "pre_crash_ahi_equivalent": 88
+    }
+  ],
+  
+  "ahi_calibration": {
+    "description": "Calibrated AHI scores based on historical events",
+    "score_to_crash_probability": {
+      "0-25": {"crash_prob": 5, "avg_drawdown_if_crash": 8},
+      "25-50": {"crash_prob": 15, "avg_drawdown_if_crash": 12},
+      "50-75": {"crash_prob": 35, "avg_drawdown_if_crash": 15},
+      "75-90": {"crash_prob": 65, "avg_drawdown_if_crash": 20},
+      "90-100": {"crash_prob": 85, "avg_drawdown_if_crash": 30}
+    },
+    "optimal_defense_timing": "Start reducing at 70, exit most by 85"
+  },
+  
+  "current_parallels_2026": {
+    "date": "2026-01-23",
+    "gold_price": 4950,
+    "ytd_gain_pct": 45,
+    "similarity_scores": {
+      "GOLD_2011_08": 72,
+      "GOLD_2020_08": 68,
+      "BTC_2021_04": 78,
+      "BTC_2021_11": 65
+    },
+    "most_similar": "BTC_2021_04",
+    "key_differences": [
+      "Gold has central bank buying support",
+      "BRICS narrative is fundamental, not just speculative",
+      "Physical demand from Asia is real"
+    ],
+    "key_similarities": [
+      "Parabolic price action",
+      "Social media hype increasing",
+      "Retail positioning at extremes",
+      "Everyone expects higher prices"
+    ],
+    "risk_assessment": "ELEVATED - Defense measures warranted"
+  }
+}

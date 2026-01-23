@@ -1,0 +1,154 @@
+You are a quantitative trading analyst reviewing a suite of forex trading bots.
+
+CONTEXT:
+- Account size: $88,000
+- Platform: MetaTrader 5
+- Markets: Major forex pairs (EURUSD, GBPUSD, USDJPY, etc.)
+- Goal: Beat market makers using second-mover and anti-manipulation strategies
+
+PROVEN ACADEMIC PARAMETERS (for comparison):
+These parameters are from documented, backtested systems with verifiable sources.
+
+=== TURTLE TRADING (Curtis Faith, 1983-2020 backtested) ===
+- Entry lookback: 20 days (short), 55 days (long)
+- Exit lookback: 10 days (short), 20 days (long)
+- ATR period: 20
+- Risk per trade: 1%
+- Stop distance: 2 ATR
+- Max units per market: 4
+- Max correlated: 6
+- Max total: 12
+
+=== RSI(2) MEAN REVERSION (Larry Connors, 1995-2020 backtested) ===
+- RSI period: 2 (NOT 14!)
+- Oversold: <10 (extreme: <5)
+- Overbought exit: >70
+- Trend filter: 200 SMA
+- Exit: 5 SMA
+- Win rate: 88%+ in original research
+- Holding period: 3-5 days
+
+=== SESSION BREAKOUTS (Kathy Lien research) ===
+- Asian range: 00:00-08:00 UTC
+- London breakout timing: 07:00-08:00 UTC
+- Buffer: 5-15 pips
+- Win rate: 48-55%
+- Profit factor: 1.3-1.5
+
+=== NEWS FADE (Andersen et al. 2003, AER) ===
+- Optimal delay: 5-15 minutes post-news
+- Typical reversal: 30-50% of spike
+- Success rate: 60-65%
+
+CURRENT BOT PARAMETERS:
+[The full bot configurations will be appended below]
+
+ANALYSIS REQUESTED:
+
+1. PARAMETER COMPARISON
+- Compare each bot's parameters to proven academic settings
+- Identify where we deviate from optimal
+- Rate alignment: Poor / Fair / Good / Excellent
+
+2. STRATEGY COHERENCE
+- Does each bot have a clear, focused strategy?
+- Are there conflicting signals within a bot?
+- Grade: 1-10
+
+3. RISK MANAGEMENT REVIEW
+- Is position sizing appropriate for $88K account?
+- Is drawdown limit reasonable?
+- Are there gaps in risk controls?
+- Grade: 1-10
+
+4. EDGE ASSESSMENT
+- What is the theoretical edge of each strategy?
+- Is it based on proven market inefficiency?
+- Expected win rate and profit factor?
+- Grade: 1-10
+
+5. COORDINATION ANALYSIS
+- How well do the bots work together?
+- Is there risk of correlation/herding?
+- Does Ghost Commander adequately manage fleet?
+- Grade: 1-10
+
+6. IMPROVEMENT RECOMMENDATIONS
+- Top 3 parameter changes per bot
+- Missing features that would add edge
+- Strategies to add or remove
+
+7. OVERALL GRADE
+- Letter grade A-F for the entire system
+- Probability of profitability over 1 year
+- Key risks to watch
+
+OUTPUT FORMAT:
+{
+  "analysis_date": "YYYY-MM-DD",
+  "model_name": "YOUR_MODEL_NAME",
+  "v007_analysis": {
+    "alignment_rating": "Poor/Fair/Good/Excellent",
+    "coherence_grade": 1-10,
+    "risk_grade": 1-10,
+    "edge_grade": 1-10,
+    "top_3_changes": ["change1", "change2", "change3"],
+    "notes": "..."
+  },
+  "v008_analysis": {
+    "alignment_rating": "...",
+    "coherence_grade": 1-10,
+    "risk_grade": 1-10,
+    "edge_grade": 1-10,
+    "top_3_changes": ["...", "...", "..."],
+    "critical_finding": "RSI(14) vs RSI(2) - major deviation from proven",
+    "notes": "..."
+  },
+  "v010_analysis": {
+    "alignment_rating": "...",
+    "coherence_grade": 1-10,
+    "risk_grade": 1-10,
+    "edge_grade": 1-10,
+    "top_3_changes": ["...", "...", "..."],
+    "notes": "..."
+  },
+  "v015_analysis": {
+    "alignment_rating": "...",
+    "coherence_grade": 1-10,
+    "risk_grade": 1-10,
+    "edge_grade": 1-10,
+    "top_3_changes": ["...", "...", "..."],
+    "notes": "..."
+  },
+  "v020_analysis": {
+    "alignment_rating": "...",
+    "coherence_grade": 1-10,
+    "risk_grade": 1-10,
+    "edge_grade": 1-10,
+    "top_3_changes": ["...", "...", "..."],
+    "notes": "..."
+  },
+  "fleet_analysis": {
+    "coordination_grade": 1-10,
+    "herding_risk": "Low/Medium/High",
+    "coverage_gaps": ["..."],
+    "redundancies": ["..."]
+  },
+  "recommendations": [
+    {
+      "priority": 1,
+      "bot": "v008",
+      "change": "Change RSI period from 14 to 2",
+      "source": "Connors RSI(2) research - 88% win rate vs ~50% with RSI(14)",
+      "impact": "High"
+    },
+    "..."
+  ],
+  "risk_warnings": [
+    "Position sizing 5-10% is aggressive vs 1-2% proven optimal",
+    "..."
+  ],
+  "overall_grade": "B+",
+  "profit_probability_1yr": "65%",
+  "key_risks": ["...", "...", "..."]
+}

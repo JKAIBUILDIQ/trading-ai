@@ -1,0 +1,181 @@
+{
+  "metadata": {
+    "name": "Crellastein Fleet",
+    "description": "NEO's army of trading bots on MT5",
+    "account_size": 88000,
+    "broker": "MetaTrader 5"
+  },
+  
+  "bots": {
+    "v007": {
+      "nickname": "The Ultimate",
+      "strategy": "Trend following + price action",
+      "strengths": [
+        "Clear breakouts",
+        "Trending markets",
+        "Price action patterns (pin bar, inside bar)"
+      ],
+      "weaknesses": [
+        "Choppy/ranging markets",
+        "Multiple conflicting signals"
+      ],
+      "magic": 888007,
+      "sizing": "aggressive (5-10%)",
+      "indicators": ["RSI(7)", "RSI(2)", "EMA(8,21,50)", "BB(14,2.5)"],
+      "best_used_when": "ADX > 25, clear trend established",
+      "analysis_grade": "Fair"
+    },
+    
+    "v008": {
+      "nickname": "The Contrarian",
+      "strategy": "RSI(2) mean reversion (UPGRADED)",
+      "strengths": [
+        "Oversold bounces",
+        "High win rate (88% academic)",
+        "Quick trades (3-5 days avg)"
+      ],
+      "weaknesses": [
+        "Strong downtrends",
+        "High volatility crashes"
+      ],
+      "magic": 888008,
+      "sizing": "aggressive (5-10%)",
+      "parameters_corrected": {
+        "old_rsi": 14,
+        "new_rsi": 2,
+        "old_oversold": 30,
+        "new_oversold": 10,
+        "note": "Upgraded to match Connors research - 88% win rate"
+      },
+      "best_used_when": "RSI(2) < 10 AND price > 200 SMA",
+      "analysis_grade": "Good (after upgrade)"
+    },
+    
+    "v010": {
+      "nickname": "The Second Mover",
+      "strategy": "Liquidity sweep / stop hunt fade",
+      "strengths": [
+        "Post-stop-hunt entries",
+        "Counter MM tactics",
+        "Session open plays"
+      ],
+      "weaknesses": [
+        "Requires patience",
+        "False reversals"
+      ],
+      "magic": 888010,
+      "sizing": "aggressive (5-10%)",
+      "parameters": {
+        "sweep_lookback": 20,
+        "sweep_threshold_atr": 1.5,
+        "reversal_confirm_bars": 2
+      },
+      "best_used_when": "Stop hunt detected, reversal confirmed",
+      "analysis_grade": "Good"
+    },
+    
+    "v015": {
+      "nickname": "The Big Brother",
+      "strategy": "GTO + multi-strategy randomization",
+      "strengths": [
+        "Unpredictable to MMs",
+        "Multiple strategy selection",
+        "Stealth mode"
+      ],
+      "weaknesses": [
+        "GTO unproven in forex",
+        "Complexity"
+      ],
+      "magic": 888015,
+      "sizing": "aggressive (5-10%)",
+      "features": [
+        "GTO randomizer (fold/stay/raise)",
+        "Stealth mode (no visible SL/TP)",
+        "Multiple entry strategies"
+      ],
+      "best_used_when": "When you want unpredictability",
+      "analysis_grade": "Fair"
+    },
+    
+    "v020": {
+      "nickname": "Ghost Commander",
+      "role": "Fleet coordination and risk management",
+      "strategy": "Orchestration",
+      "capabilities": [
+        "Emergency close all",
+        "Raid coordination",
+        "Regime detection", 
+        "Correlation monitoring",
+        "Daily scale-out scheduling"
+      ],
+      "magic": 888020,
+      "limits": {
+        "max_portfolio_drawdown": "20% (should be 12%)",
+        "max_daily_loss": "$7,000",
+        "max_correlation": 0.8,
+        "emergency_stop": "$10,000"
+      },
+      "integration_with_neo": {
+        "reads_from": "/tmp/neo_signal.json",
+        "executes": "Raid signals to all bots",
+        "reports": "Results for NEO learning"
+      },
+      "analysis_grade": "Good"
+    }
+  },
+  
+  "coordination": {
+    "raid_system": {
+      "description": "NEO can command all bots to enter simultaneously",
+      "signal_file": "/tmp/neo_signal.json",
+      "ghost_directive_file": "~/.wine/drive_c/users/Public/Documents/MetaQuotes/Terminal/Common/Files/ghost_directives.json",
+      "format": {
+        "raid_active": true,
+        "source": "NEO",
+        "symbol": "EURUSD",
+        "direction": 1,
+        "target_bots": [888007, 888008, 888010, 888015],
+        "size_pct": 3.0,
+        "tp_dollars": 500,
+        "sl_dollars": 250,
+        "max_hold_minutes": 180,
+        "confidence": 85,
+        "reasoning": "string"
+      }
+    },
+    
+    "bot_selection_rules": {
+      "trending_market": {
+        "use": ["v007", "v010"],
+        "reason": "Trend following + sweep hunting"
+      },
+      "ranging_market": {
+        "use": ["v008"],
+        "reason": "Mean reversion excels in ranges"
+      },
+      "uncertain_market": {
+        "use": ["v015"],
+        "reason": "GTO randomization when unsure"
+      },
+      "high_confidence": {
+        "use": ["v007", "v008", "v010", "v015"],
+        "reason": "Full fleet for best setups"
+      }
+    }
+  },
+  
+  "fleet_rules": [
+    "Never have all bots in same direction on correlated pairs",
+    "Ghost Commander monitors total exposure",
+    "Stagger entries by 1-5 minutes for unpredictability",
+    "Emergency close all if daily loss > $2,640 (3%)",
+    "NEO overrides individual bot decisions when confidence > 80"
+  ],
+  
+  "performance_expectations": {
+    "combined_win_rate": "55-65%",
+    "target_profit_factor": 1.5,
+    "max_acceptable_drawdown": "15%",
+    "target_monthly_return": "3-5%"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "timestamp": "2026-01-23T10:52:15.388711",
+  "symbol": "XAUUSD",
+  "current_price": 4929.5,
+  "overnight": {
+    "high": 4969.0,
+    "low": 4901.2001953125,
+    "range_pts": 67.7998046875,
+    "volatility": "HIGH",
+    "bias": "BEARISH",
+    "volume_ratio": 0.6707126403662004
+  },
+  "liquidity_pools": [
+    {
+      "level": 4900,
+      "type": "LONG_STOPS",
+      "distance": 29.5,
+      "strength": 80,
+      "hunt_probability": 70,
+      "reasons": [
+        "Round psychological number",
+        "Common stop placement"
+      ]
+    },
+    {
+      "level": 4898.2001953125,
+      "type": "LONG_STOPS",
+      "distance": 31.2998046875,
+      "strength": 75,
+      "hunt_probability": 70,
+      "reasons": [
+        "Yesterday's low",
+        "Day trader stops"
+      ]
+    },
+    {
+      "level": 4816.7001953125,
+      "type": "LONG_STOPS",
+      "distance": 112.7998046875,
+      "strength": 90,
+      "hunt_probability": 60,
+      "reasons": [
+        "Recent swing low",
+        "Obvious stop level",
+        "Breakout trader stops"
+      ]
+    },
+    {
+      "level": 4950,
+      "type": "SHORT_STOPS",
+      "distance": 20.5,
+      "strength": 55,
+      "hunt_probability": 60,
+      "reasons": [
+        "Round psychological number",
+        "Short squeeze target"
+      ]
+    },
+    {
+      "level": 4975.0,
+      "type": "SHORT_STOPS",
+      "distance": 45.5,
+      "strength": 85,
+      "hunt_probability": 50,
+      "reasons": [
+        "Recent swing high",
+        "Obvious resistance",
+        "Short stop level"
+      ]
+    },
+    {
+      "level": 4800,
+      "type": "LONG_STOPS",
+      "distance": 129.5,
+      "strength": 60,
+      "hunt_probability": 30,
+      "reasons": [
+        "Round psychological number",
+        "Common stop placement"
+      ]
+    }
+  ],
+  "predictions": [
+    {
+      "scenario": "A",
+      "probability": 80,
+      "description": "Push down to $4900 to hunt long stops, then reverse up",
+      "expected_hunt": "LONGS",
+      "hunt_level": 4900,
+      "reversal_target": 4973.75,
+      "action": "WAIT for hunt at $4900, then BUY on reversal",
+      "timing": "London Open (08:00 UTC)"
+    },
+    {
+      "scenario": "B",
+      "probability": 50,
+      "description": "Break above $4950 to squeeze shorts, then reverse down",
+      "expected_hunt": "SHORTS",
+      "hunt_level": 4950,
+      "reversal_target": 4904.9,
+      "action": "WAIT for squeeze above $4950, SELL on failure",
+      "timing": "Late London/NY overlap"
+    }
+  ],
+  "correlations": {
+    "USDJPY": {
+      "price": 158.15199279785156,
+      "change_pct": -0.27681937225667774,
+      "gold_signal": "BULLISH (BOJ intervention zone)"
+    },
+    "DXY": {
+      "price": 98.37699890136719,
+      "change_pct": -0.32018673011186166,
+      "gold_signal": "BULLISH (Dollar weak)"
+    },
+    "overall": "ALIGNED BULLISH \u2705"
+  },
+  "trading_plan": {
+    "primary": {
+      "type": "BUY_THE_DIP",
+      "wait_for": "Push to $4900",
+      "entry": "After reversal candle at $4900-$4910",
+      "stop_loss": "$4880",
+      "take_profit_1": "$4969 (Asian high)",
+      "take_profit_2": "$4960",
+      "risk_reward": "1:2 minimum"
+    },
+    "alternative": {
+      "trigger": "Break above $4950 to squeeze shorts, then reverse down",
+      "action": "WAIT for squeeze above $4950, SELL on failure"
+    },
+    "best_times": [
+      "08:00-09:00 UTC (London open - watch for initial move)",
+      "13:00-14:00 UTC (NY open - watch for reversal)"
+    ],
+    "avoid_times": [
+      "12:00-13:00 UTC (London lunch, choppy)",
+      "16:00+ UTC (Weekend profit taking)"
+    ],
+    "risk_level": "HIGH - Reduce position size"
+  }
+}

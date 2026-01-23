@@ -1,0 +1,85 @@
+{
+  "timestamp": "2026-01-23T15:03:42.135585",
+  "source": "MQL5 Top Signals",
+  "consensus_signals": [],
+  "top_traders_positions": [],
+  "top_signals": [
+    {
+      "name": "Gold Reaper Goldtrade Pro Daytrade Pro",
+      "growth_pct": 794.77,
+      "drawdown": 32.6,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2204998"
+    },
+    {
+      "name": "Aghost",
+      "growth_pct": 710.03,
+      "drawdown": 19.1,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2333819"
+    },
+    {
+      "name": "MSC Gold Invest Pro",
+      "growth_pct": 589.58,
+      "drawdown": 26.2,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/1988269"
+    },
+    {
+      "name": "GCEA XAU 1",
+      "growth_pct": 409.02,
+      "drawdown": 22.0,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2332085"
+    },
+    {
+      "name": "Falqonea pro _Robofxea Pro",
+      "growth_pct": 392.86,
+      "drawdown": 18.7,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2329641"
+    },
+    {
+      "name": "GoldWave signal",
+      "growth_pct": 376.9,
+      "drawdown": 15.0,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2339082"
+    },
+    {
+      "name": "THPX AI 3C",
+      "growth_pct": 366.88,
+      "drawdown": 13.4,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2336814"
+    },
+    {
+      "name": "HiGold",
+      "growth_pct": 324.84,
+      "drawdown": 31.0,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2337459"
+    },
+    {
+      "name": "Gold Minion",
+      "growth_pct": 317.36,
+      "drawdown": 26.9,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2351061"
+    },
+    {
+      "name": "Xauron customers 1 with some manual loss",
+      "growth_pct": 304.24,
+      "drawdown": 28.6,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2350934"
+    }
+  ],
+  "summary": {
+    "total_signals_tracked": 16,
+    "total_positions_found": 0,
+    "consensus_count": 0,
+    "confidence_boost": 0,
+    "top_growth": 794.77
+  }
+}

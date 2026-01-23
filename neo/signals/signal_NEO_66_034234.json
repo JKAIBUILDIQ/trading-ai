@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T03:42:34.368147",
+  "signal_id": "NEO_66_034234",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 3500,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 75,
+    "reasoning": "The market appears to be ranging with potential mean reversion. RSI(2) strategy suggests a buy signal. Retail traders may be wrong, indicating a possible trap. Waiting for stop hunt completion aligns with MMs' likely action.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

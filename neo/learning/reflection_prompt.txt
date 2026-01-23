@@ -1,0 +1,120 @@
+═══════════════════════════════════════════════════════════════
+NEO POST-TRADE REFLECTION
+═══════════════════════════════════════════════════════════════
+
+You just completed a trade. Here are the details:
+
+TRADE DATA:
+- Symbol: {symbol}
+- Direction: {direction}
+- Entry Price: {entry_price}
+- Exit Price: {exit_price}
+- P&L: ${pnl}
+- Duration: {duration_minutes} minutes
+- Strategy Used: {strategy}
+- Your Confidence at Entry: {entry_confidence}%
+- Your Reasoning at Entry: {entry_reasoning}
+
+MARKET CONTEXT AT ENTRY:
+{market_context}
+
+MARKET CONTEXT AT EXIT:
+{exit_context}
+
+═══════════════════════════════════════════════════════════════
+REFLECT ON THIS TRADE
+═══════════════════════════════════════════════════════════════
+
+1. OUTCOME ANALYSIS
+   - Was your reasoning CORRECT? Did the market do what you expected?
+   - If wrong, what ACTUALLY happened?
+   - Was this a good process but bad luck, or bad process?
+
+2. STRATEGY ADHERENCE
+   - Did you follow the strategy rules EXACTLY?
+   - Entry criteria met? (cite specific rules)
+   - Exit criteria followed? (or did you deviate?)
+   - Position size appropriate?
+   - Stop placement correct?
+
+3. WWCD (What Would Citadel Do) REVIEW
+   - Did you account for stop hunt risk?
+   - Were you on the same side as MMs?
+   - Did retail sentiment help or hurt?
+
+4. TIMING ANALYSIS
+   - Entry timing: Too early? Too late? Just right?
+   - Exit timing: Too early? Too late? Just right?
+   - Would different timing have changed outcome?
+
+5. CONFIDENCE CALIBRATION
+   - You said {entry_confidence}% confidence
+   - Given the outcome, was that appropriate?
+   - Overconfident? Underconfident? Accurate?
+
+6. PATTERN RECOGNITION
+   - Have you seen this pattern/outcome before?
+   - Check your memory for similar trades
+   - Is there a recurring mistake or success pattern?
+
+7. KEY LEARNING
+   - What is ONE specific thing to remember from this trade?
+   - This should be actionable for future decisions
+
+═══════════════════════════════════════════════════════════════
+OUTPUT FORMAT (STRICT JSON)
+═══════════════════════════════════════════════════════════════
+
+{
+  "trade_id": "{trade_id}",
+  "outcome_assessment": {
+    "result": "WIN | LOSS | BREAKEVEN",
+    "was_reasoning_correct": true | false,
+    "what_actually_happened": "Description if reasoning was wrong"
+  },
+  "process_assessment": {
+    "was_good_process": true | false,
+    "strategy_followed": true | false,
+    "deviation_description": "What was done differently" | null,
+    "risk_management_grade": "A | B | C | D | F"
+  },
+  "timing_assessment": {
+    "entry_timing": "early | late | good",
+    "exit_timing": "early | late | good",
+    "timing_impact": "Would have been better with different timing" | "Timing was fine"
+  },
+  "confidence_calibration": {
+    "stated_confidence": {entry_confidence},
+    "appropriate_confidence": 0-100,
+    "calibration_error": "overconfident | underconfident | accurate"
+  },
+  "pattern_match": {
+    "similar_to_past_trades": true | false,
+    "pattern_description": "Description of recurring pattern" | null,
+    "is_recurring_mistake": true | false
+  },
+  "key_learning": {
+    "category": "PATTERN | MISTAKE | SUCCESS | RULE | TIMING | WWCD",
+    "content": "One specific, actionable learning",
+    "confidence": 0-100,
+    "add_to_memory": true | false
+  },
+  "future_adjustment": {
+    "change_needed": true | false,
+    "description": "What to do differently next time" | null
+  }
+}
+
+═══════════════════════════════════════════════════════════════
+RULES FOR REFLECTION
+═══════════════════════════════════════════════════════════════
+
+1. A LOSING trade can still be a GOOD trade (good process, bad luck)
+2. A WINNING trade can still be a BAD trade (bad process, good luck)
+3. Judge PROCESS, not just OUTCOME
+4. Be honest - don't rationalize mistakes
+5. Extract ONE clear, actionable learning
+6. Update your memory with high-confidence learnings
+
+REMEMBER: The goal is to IMPROVE over time.
+Every trade is data for becoming better.

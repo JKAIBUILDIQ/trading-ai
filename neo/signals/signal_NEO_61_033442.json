@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T03:34:42.303423",
+  "signal_id": "NEO_61_033442",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 4000,
+    "stop_loss_pips": 25,
+    "take_profit_pips": 50,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 90,
+    "reasoning": "The market is in a ranging regime with low ADX, making the RSI(2) Connors strategy ideal. RSI(2) is below 10 and price is above the 200 SMA, indicating a high-probability mean reversion opportunity. Retail traders are likely wrong as they may be selling into oversold conditions, which MMs will fade.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

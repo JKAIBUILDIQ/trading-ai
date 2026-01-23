@@ -1,0 +1,492 @@
+{
+  "day_of_week": {
+    "Monday": {
+      "sample_size": 47,
+      "avg_range": 52.127675157912236,
+      "avg_body": 16.953182139295212,
+      "bullish_pct": 65.95744680851064,
+      "avg_high_from_open": 35.257448886303195,
+      "avg_low_from_open": 16.87022627160904,
+      "gap_fill_rate": 51.35135135135135,
+      "trend_continuation_rate": 47.82608695652174,
+      "best_entry_hour": 1,
+      "patterns": []
+    },
+    "Tuesday": {
+      "sample_size": 52,
+      "avg_range": 48.58461350661058,
+      "avg_body": 2.082697941706731,
+      "bullish_pct": 55.769230769230774,
+      "avg_high_from_open": 24.99615009014423,
+      "avg_low_from_open": 23.588463416466347,
+      "gap_fill_rate": 46.34146341463415,
+      "trend_continuation_rate": 45.09803921568628,
+      "best_entry_hour": 1,
+      "patterns": []
+    },
+    "Wednesday": {
+      "sample_size": 52,
+      "avg_range": 43.27881798377404,
+      "avg_body": 6.399986853966346,
+      "bullish_pct": 53.84615384615385,
+      "avg_high_from_open": 24.82689490685096,
+      "avg_low_from_open": 18.451923076923077,
+      "gap_fill_rate": 37.83783783783784,
+      "trend_continuation_rate": 49.01960784313725,
+      "best_entry_hour": 5,
+      "patterns": []
+    },
+    "Thursday": {
+      "sample_size": 48,
+      "avg_range": 50.133331298828125,
+      "avg_body": 5.6895802815755205,
+      "bullish_pct": 56.25,
+      "avg_high_from_open": 27.243738810221355,
+      "avg_low_from_open": 22.88959248860677,
+      "gap_fill_rate": 60.0,
+      "trend_continuation_rate": 44.680851063829785,
+      "best_entry_hour": 18,
+      "patterns": []
+    },
+    "Friday": {
+      "sample_size": 51,
+      "avg_range": 47.70586799172794,
+      "avg_body": -5.2020000382965685,
+      "bullish_pct": 54.90196078431373,
+      "avg_high_from_open": 21.68233953737745,
+      "avg_low_from_open": 26.02352845435049,
+      "gap_fill_rate": 40.476190476190474,
+      "trend_continuation_rate": 36.0,
+      "best_entry_hour": 16,
+      "patterns": []
+    }
+  },
+  "sessions": {
+    "ASIAN": {
+      "sample_size": 2711,
+      "avg_range": 13.536179731447113,
+      "avg_body": 0.3150514541451494,
+      "bullish_pct": 51.86278126152711,
+      "avg_volume_ratio": 0.7804933271372579,
+      "trend_continuation_rate": 49.335793357933575,
+      "reversal_rate": 50.84870848708487,
+      "breakout_rate": 71.42857142857143,
+      "best_strategy": "TREND_FOLLOW",
+      "patterns": []
+    },
+    "LONDON": {
+      "sample_size": 1251,
+      "avg_range": 19.680729439885592,
+      "avg_body": 0.48105812225219824,
+      "bullish_pct": 54.99600319744204,
+      "avg_volume_ratio": 2.21635391088775,
+      "trend_continuation_rate": 49.44,
+      "reversal_rate": 50.56,
+      "breakout_rate": 91.49797570850203,
+      "best_strategy": "TREND_FOLLOW",
+      "patterns": [
+        {
+          "id": "london_sets_trend",
+          "description": "London session sets the day's direction",
+          "win_rate": 73.38709677419355,
+          "sample_size": 248,
+          "action": "FOLLOW_LONDON_DIRECTION"
+        }
+      ]
+    },
+    "OVERLAP": {
+      "sample_size": 739,
+      "avg_range": 12.277670812542286,
+      "avg_body": 0.24005531651725304,
+      "bullish_pct": 51.96211096075778,
+      "avg_volume_ratio": 0.8922832062061022,
+      "trend_continuation_rate": 52.1680216802168,
+      "reversal_rate": 47.425474254742554,
+      "breakout_rate": 31.25845737483085,
+      "best_strategy": "TREND_FOLLOW",
+      "patterns": []
+    },
+    "NY": {
+      "sample_size": 976,
+      "avg_range": 13.379605903000128,
+      "avg_body": 0.6619898061283299,
+      "bullish_pct": 52.66393442622951,
+      "avg_volume_ratio": 0.4174012150654775,
+      "trend_continuation_rate": 50.97435897435898,
+      "reversal_rate": 48.82051282051282,
+      "breakout_rate": 39.328537170263786,
+      "best_strategy": "TREND_FOLLOW",
+      "patterns": []
+    }
+  },
+  "indicators": {
+    "rsi_overbought": {
+      "condition": "RSI(14) > 70",
+      "sample_size": 1112,
+      "next_4h_avg": 7.900902703350631,
+      "next_1d_avg": 46.59577178955078,
+      "fade_win_rate": 25.089928057553955,
+      "action": "WAIT"
+    },
+    "rsi_oversold": {
+      "condition": "RSI(14) < 30",
+      "sample_size": 551,
+      "next_4h_avg": 13.483181522794789,
+      "next_1d_avg": 70.97893997568785,
+      "buy_win_rate": 40.10889292196007,
+      "action": "WAIT"
+    },
+    "rsi2_extreme_high": {
+      "condition": "RSI(2) > 95",
+      "sample_size": 1697,
+      "next_4h_avg": 5.176255110657856,
+      "fade_win_rate": 34.2368886269888
+    },
+    "rsi2_extreme_low": {
+      "condition": "RSI(2) < 5",
+      "sample_size": 1354,
+      "next_4h_avg": 6.315036711516203,
+      "buy_win_rate": 47.56277695716396
+    },
+    "macd_cross_up": {
+      "condition": "MACD crosses above signal",
+      "sample_size": 221,
+      "next_4h_avg": 36.00138608870968,
+      "next_1d_avg": 197.90813000674174,
+      "follow_win_rate": 63.80090497737556
+    },
+    "macd_cross_down": {
+      "condition": "MACD crosses below signal",
+      "sample_size": 221,
+      "next_4h_avg": 36.716127457157256,
+      "next_1d_avg": 199.01878271732232,
+      "follow_win_rate": 34.38914027149321
+    },
+    "bb_upper_touch": {
+      "condition": "Price touches upper Bollinger Band",
+      "sample_size": 766,
+      "next_4h_avg": 11.33543287862943,
+      "fade_win_rate": 26.240208877284594
+    },
+    "bb_lower_touch": {
+      "condition": "Price touches lower Bollinger Band",
+      "sample_size": 783,
+      "next_4h_avg": 10.325545696606225,
+      "buy_win_rate": 44.572158365261814
+    },
+    "volume_spike": {
+      "condition": "Volume > 2x average",
+      "sample_size": 741,
+      "bullish_continuation": 61.229946524064175,
+      "bearish_continuation": 42.77929155313351
+    }
+  },
+  "price_levels": {
+    "round_numbers": [
+      {
+        "level": 2800,
+        "approaches": 25,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 2900,
+        "approaches": 195,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3000,
+        "approaches": 121,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3100,
+        "approaches": 72,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3200,
+        "approaches": 77,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3300,
+        "approaches": 309,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3400,
+        "approaches": 506,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3500,
+        "approaches": 35,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3600,
+        "approaches": 59,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3700,
+        "approaches": 111,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3800,
+        "approaches": 60,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 3900,
+        "approaches": 68,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 4000,
+        "approaches": 201,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 4100,
+        "approaches": 140,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 4200,
+        "approaches": 154,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 4300,
+        "approaches": 60,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 4400,
+        "approaches": 55,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 4500,
+        "approaches": 72,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 4600,
+        "approaches": 89,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      },
+      {
+        "level": 4800,
+        "approaches": 14,
+        "rejection_rate": 100.0,
+        "breakout_rate": 0.0,
+        "false_breakout_rate": 0.0
+      }
+    ],
+    "daily_levels": {
+      "high_break_rate": 57.028112449799195,
+      "high_break_continuation": 58.45070422535211,
+      "sample_size": 249
+    },
+    "weekly_levels": {
+      "high_break_rate": 70.58823529411765,
+      "low_break_rate": 25.49019607843137,
+      "sample_size": 51
+    }
+  },
+  "volatility": {
+    "LOW": {
+      "sample_size": 1501,
+      "avg_range": 10.09992963675258,
+      "avg_body": 4.623246936937875,
+      "trend_persistence": 1.9659239842726082,
+      "best_strategy": "MIXED",
+      "optimal_tp": 9.6,
+      "optimal_sl": 7.6,
+      "mean_revert_win_rate": 51.52542372881356,
+      "trend_follow_win_rate": 49.465240641711226
+    },
+    "NORMAL": {
+      "sample_size": 2475,
+      "avg_range": 13.839747770675505,
+      "avg_body": 6.34581330886995,
+      "trend_persistence": 1.9533596837944665,
+      "best_strategy": "MIXED",
+      "optimal_tp": 13.0,
+      "optimal_sl": 10.4,
+      "mean_revert_win_rate": 51.21951219512195,
+      "trend_follow_win_rate": 50.48582995951417
+    },
+    "HIGH": {
+      "sample_size": 1437,
+      "avg_range": 21.179609857504783,
+      "avg_body": 8.780376224610734,
+      "trend_persistence": 1.9470827679782903,
+      "best_strategy": "MIXED",
+      "optimal_tp": 16.9,
+      "optimal_sl": 15.9,
+      "mean_revert_win_rate": 50.0,
+      "trend_follow_win_rate": 50.5586592178771
+    }
+  },
+  "summary": {
+    "data_period": "12 months",
+    "h1_candles": 5677,
+    "d1_candles": 250,
+    "patterns_found": 3,
+    "top_patterns": [
+      {
+        "id": "monday_bullish_bias",
+        "category": "day_of_week",
+        "description": "Monday has bullish bias",
+        "conditions": [
+          "day == Monday"
+        ],
+        "action": "BUY",
+        "win_rate": 65.95744680851064,
+        "avg_profit_pts": 16.953182139295212,
+        "avg_loss_pts": 35.17449301861703,
+        "sample_size": 47,
+        "confidence": 0.94,
+        "best_entry_hour": 1,
+        "best_exit_hours": null,
+        "optimal_tp": null,
+        "optimal_sl": null
+      },
+      {
+        "id": "tuesday_bullish_bias",
+        "category": "day_of_week",
+        "description": "Tuesday has bullish bias",
+        "conditions": [
+          "day == Tuesday"
+        ],
+        "action": "BUY",
+        "win_rate": 55.769230769230774,
+        "avg_profit_pts": 2.082697941706731,
+        "avg_loss_pts": 46.50191556490385,
+        "sample_size": 52,
+        "confidence": 0.95,
+        "best_entry_hour": 1,
+        "best_exit_hours": null,
+        "optimal_tp": null,
+        "optimal_sl": null
+      },
+      {
+        "id": "thursday_bullish_bias",
+        "category": "day_of_week",
+        "description": "Thursday has bullish bias",
+        "conditions": [
+          "day == Thursday"
+        ],
+        "action": "BUY",
+        "win_rate": 56.25,
+        "avg_profit_pts": 5.6895802815755205,
+        "avg_loss_pts": 44.4437510172526,
+        "sample_size": 48,
+        "confidence": 0.95,
+        "best_entry_hour": 18,
+        "best_exit_hours": null,
+        "optimal_tp": null,
+        "optimal_sl": null
+      }
+    ],
+    "generated_at": "2026-01-23T09:47:16.623337"
+  },
+  "all_patterns": [
+    {
+      "id": "monday_bullish_bias",
+      "category": "day_of_week",
+      "description": "Monday has bullish bias",
+      "conditions": [
+        "day == Monday"
+      ],
+      "action": "BUY",
+      "win_rate": 65.95744680851064,
+      "avg_profit_pts": 16.953182139295212,
+      "avg_loss_pts": 35.17449301861703,
+      "sample_size": 47,
+      "confidence": 0.94,
+      "best_entry_hour": 1,
+      "best_exit_hours": null,
+      "optimal_tp": null,
+      "optimal_sl": null
+    },
+    {
+      "id": "tuesday_bullish_bias",
+      "category": "day_of_week",
+      "description": "Tuesday has bullish bias",
+      "conditions": [
+        "day == Tuesday"
+      ],
+      "action": "BUY",
+      "win_rate": 55.769230769230774,
+      "avg_profit_pts": 2.082697941706731,
+      "avg_loss_pts": 46.50191556490385,
+      "sample_size": 52,
+      "confidence": 0.95,
+      "best_entry_hour": 1,
+      "best_exit_hours": null,
+      "optimal_tp": null,
+      "optimal_sl": null
+    },
+    {
+      "id": "thursday_bullish_bias",
+      "category": "day_of_week",
+      "description": "Thursday has bullish bias",
+      "conditions": [
+        "day == Thursday"
+      ],
+      "action": "BUY",
+      "win_rate": 56.25,
+      "avg_profit_pts": 5.6895802815755205,
+      "avg_loss_pts": 44.4437510172526,
+      "sample_size": 48,
+      "confidence": 0.95,
+      "best_entry_hour": 18,
+      "best_exit_hours": null,
+      "optimal_tp": null,
+      "optimal_sl": null
+    }
+  ]
+}

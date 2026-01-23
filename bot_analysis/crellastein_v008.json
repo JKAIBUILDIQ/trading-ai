@@ -1,0 +1,26 @@
+{
+  "bot": "Crellastein_v008",
+  "nickname": "The Contrarian",
+  "strategy_type": "mean_reversion + divergence",
+  "parameters": {
+    "RSI_Period": 14,
+    "RSI_Oversold": 30,
+    "RSI_Overbought": 70,
+    "DivergenceLookback": 20,
+    "MinPositionValue": 4000,
+    "MaxPositionValue": 8000,
+    "MaxTotalExposure": 25000,
+    "MaxPositions": 6
+  },
+  "features": [
+    "RSI divergence detection",
+    "Mean reversion entries",
+    "Deceptive action randomizer",
+    "Martingale on favorable positions"
+  ],
+  "metadata": {
+    "source": "User-provided Crellastein configuration",
+    "account_size": 88000,
+    "comparison_note": "RSI(14) vs proven RSI(2) from Connors research"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "entry_lookback_short": 20,
+  "entry_lookback_long": 55,
+  "exit_lookback_short": 10,
+  "exit_lookback_long": 20,
+  "atr_period": 20,
+  "risk_per_trade": 0.01,
+  "stop_distance_atr": 2.0,
+  "max_units_per_market": 4,
+  "max_correlated_units": 6,
+  "max_total_units": 12
+}

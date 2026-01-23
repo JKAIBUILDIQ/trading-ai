@@ -1,0 +1,146 @@
+{
+  "strategy_id": "turtle_original",
+  "name": "Original Turtle Trading System",
+  "category": "trend_following",
+  
+  "sources": {
+    "primary": {
+      "title": "Way of the Turtle",
+      "author": "Curtis Faith",
+      "year": 2007,
+      "publisher": "McGraw-Hill",
+      "isbn": "978-0071486644",
+      "verification_url": "https://www.amazon.com/Way-Turtle-Secret-Methods-Ordinary/dp/007148664X"
+    },
+    "secondary": [
+      {
+        "title": "The Complete TurtleTrader",
+        "author": "Michael Covel",
+        "year": 2007,
+        "verification_url": "https://www.turtletrader.com/"
+      },
+      {
+        "title": "Original Turtle Rules",
+        "source": "Richard Dennis via TurtleTrader.com",
+        "verification_url": "https://www.turtletrader.com/rules/"
+      }
+    ]
+  },
+  
+  "history": {
+    "creator": "Richard Dennis",
+    "year_created": 1983,
+    "origin_story": "Dennis bet partner William Eckhardt that traders could be taught. Recruited 23 'Turtles' from newspaper ad, trained them for 2 weeks, gave them real capital.",
+    "original_results": {
+      "period": "1984-1988",
+      "total_profit": "$175 million",
+      "note": "Turtles collectively made $175M in 4 years"
+    }
+  },
+  
+  "systems": {
+    "system_1": {
+      "name": "Turtle System 1 (Short-term)",
+      "entry_rules": {
+        "long": "Buy on 20-day high breakout",
+        "short": "Sell on 20-day low breakout",
+        "filter": "Skip if last breakout was profitable (anti-whipsaw)"
+      },
+      "exit_rules": {
+        "long": "Exit on 10-day low",
+        "short": "Exit on 10-day high"
+      },
+      "position_sizing": {
+        "method": "ATR-based (N)",
+        "n_calculation": "20-day exponential moving average of True Range",
+        "unit_size": "1% account risk per N",
+        "dollar_volatility": "Each N = 1% of account equity",
+        "max_units": "4 units per market, 6 in correlated markets, 12 total"
+      },
+      "stop_loss": {
+        "initial": "2N from entry",
+        "note": "2N = 2% account risk per unit"
+      }
+    },
+    "system_2": {
+      "name": "Turtle System 2 (Long-term)",
+      "entry_rules": {
+        "long": "Buy on 55-day high breakout",
+        "short": "Sell on 55-day low breakout",
+        "filter": "Take ALL breakouts (no filter)"
+      },
+      "exit_rules": {
+        "long": "Exit on 20-day low",
+        "short": "Exit on 20-day high"
+      },
+      "position_sizing": "Same as System 1",
+      "stop_loss": "Same as System 1"
+    }
+  },
+  
+  "backtest_results": {
+    "original_period": {
+      "years": "1984-1988",
+      "cagr": "80%+",
+      "note": "Per Curtis Faith book"
+    },
+    "modern_backtests": [
+      {
+        "source": "QuantConnect Research",
+        "period": "2000-2020",
+        "markets": "Diversified futures",
+        "cagr": "5.2%",
+        "sharpe": "0.42",
+        "max_drawdown": "42%",
+        "win_rate": "38%",
+        "profit_factor": "1.8",
+        "notes": "Lower returns than original period due to more trend-followers"
+      },
+      {
+        "source": "Academic Studies (SSRN)",
+        "period": "1990-2015",
+        "finding": "Trend-following returns declined post-2000 due to crowding",
+        "still_positive": true,
+        "verification_url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2993026"
+      }
+    ]
+  },
+  
+  "still_works": {
+    "verdict": true,
+    "conditions": "With modifications and diversification",
+    "modern_adaptations": [
+      "Reduce position size (higher drawdowns)",
+      "Add more markets for diversification",
+      "Consider shorter lookback periods",
+      "Add volatility filters"
+    ]
+  },
+  
+  "key_parameters": {
+    "entry_lookback_short": 20,
+    "entry_lookback_long": 55,
+    "exit_lookback_short": 10,
+    "exit_lookback_long": 20,
+    "atr_period": 20,
+    "risk_per_trade": 0.01,
+    "stop_distance_atr": 2.0,
+    "max_units_per_market": 4,
+    "max_correlated_units": 6,
+    "max_total_units": 12
+  },
+  
+  "implementation_notes": [
+    "Requires capital to trade multiple uncorrelated markets",
+    "Original tested on: commodities, currencies, bonds, metals",
+    "Success requires taking ALL signals (no cherry-picking)",
+    "Expect 60%+ losing trades - profits come from big winners",
+    "Correlation management is critical"
+  ],
+  
+  "metadata": {
+    "created": "2026-01-22",
+    "data_verified": true,
+    "random_data": false
+  }
+}

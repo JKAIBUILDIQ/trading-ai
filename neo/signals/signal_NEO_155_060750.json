@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T06:07:50.010003",
+  "signal_id": "NEO_155_060750",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 3500,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 85,
+    "reasoning": "EURUSD is in a range with support at 1.1700. RSI(2) < 10 indicates oversold, suggesting a bounce. Retail likely buying the dip wrong; MMs may test stops first.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

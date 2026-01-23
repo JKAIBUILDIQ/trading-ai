@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T11:30:29.121934",
+  "signal_id": "NEO_362_113029",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 3300,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 85,
+    "reasoning": "EURUSD appears to be in a ranging market. RSI(2) is likely below 10, and price is above the 200 SMA, aligning with the RSI(2) Connors strategy. Stop loss set below recent low to avoid obvious levels.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

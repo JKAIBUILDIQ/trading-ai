@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-01-23T14:17:39.234822",
+  "data": {
+    "vix_level": 16.079999923706055,
+    "vix_change": 0.4399995803833008,
+    "vix_regime": "NEUTRAL",
+    "vix_vs_avg": 4.317363362017224,
+    "dxy_level": 98.35800170898438,
+    "dxy_daily_change": -0.0020322299255637333,
+    "dxy_20d_momentum": 0.3857913238416222,
+    "dxy_trend": "FLAT",
+    "oil_level": 61.029998779296875,
+    "oil_daily_change": 2.8133392044711103,
+    "oil_20d_momentum": 4.5929740792785,
+    "us10y_yield": 4.250999927520752,
+    "us10y_daily_change": 0.0019998550415039062,
+    "us10y_20d_change": 0.11499977111816406,
+    "spx_level": 6913.35009765625,
+    "spx_daily_change": 0.5487502192628835,
+    "spx_20d_momentum": 0.05152195035773577,
+    "risk_mode": "RISK_ON",
+    "btc_price": 89346.1875,
+    "btc_daily_change": -0.12996024694018615,
+    "btc_7d_momentum": -6.050198845129174,
+    "silver_price": 99.73500061035156,
+    "gold_silver_ratio": 49.553317943225096,
+    "silver_daily_change": 3.9166070338669368,
+    "eurusd_level": 1.1741223335266113,
+    "eurusd_daily_change": 0.5847121889436924,
+    "gold_price": 4942.2001953125,
+    "gold_daily_change": 0.6804186757240593
+  }
+}

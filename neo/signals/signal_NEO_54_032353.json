@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T03:23:53.535771",
+  "signal_id": "NEO_54_032353",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 3500,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 85,
+    "reasoning": "The market is ranging with ADX around 25, RSI(2) below 10, and price above SMA200, fitting the RSI(2) Connors strategy. High confidence due to strong setup alignment.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

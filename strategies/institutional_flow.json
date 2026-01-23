@@ -1,0 +1,215 @@
+{
+  "strategy_id": "institutional_flow",
+  "name": "Institutional Flow Patterns",
+  "category": "calendar_effects",
+  
+  "sources": {
+    "academic": [
+      {
+        "title": "The Turn-of-the-Month Effect in the S&P 500",
+        "authors": "Lakonishok & Smidt",
+        "year": 1988,
+        "journal": "Journal of Finance",
+        "finding": "Significant positive returns around month-end"
+      },
+      {
+        "title": "Calendar Anomalies in Stock Returns",
+        "source": "SSRN",
+        "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=169268"
+      },
+      {
+        "title": "The Halloween Effect in International Stock Markets",
+        "authors": "Bouman & Jacobsen",
+        "year": 2002,
+        "journal": "American Economic Review"
+      }
+    ],
+    "practitioner": [
+      {
+        "title": "Stock Trader's Almanac",
+        "author": "Jeffrey Hirsch",
+        "note": "Annual publication tracking calendar effects",
+        "url": "https://www.stocktradersalmanac.com/"
+      }
+    ]
+  },
+  
+  "patterns": {
+    "month_end_rebalancing": {
+      "name": "Month-End Effect",
+      "description": "Pension funds and institutions rebalance monthly",
+      "timing": {
+        "window": "Last 3 trading days of month through first 3 days of new month",
+        "peak_effect": "Last trading day and first trading day"
+      },
+      "historical_stats": {
+        "source": "Lakonishok & Smidt (1988), updated studies",
+        "sp500_1897_2020": {
+          "monthly_return_concentration": "Most returns occur in turn-of-month window",
+          "turn_of_month_avg_return": "+0.4% to +0.6%",
+          "rest_of_month_avg_return": "~0%"
+        },
+        "modern_data_2000_2020": {
+          "effect_still_present": true,
+          "magnitude": "Smaller than historical",
+          "note": "More traders aware = reduced edge"
+        }
+      },
+      "why_it_happens": [
+        "401(k) contributions processed",
+        "Pension fund rebalancing",
+        "Mutual fund window dressing",
+        "Payroll investment flows"
+      ]
+    },
+    
+    "quarter_end_rebalancing": {
+      "name": "Quarter-End Effect",
+      "description": "Larger rebalancing at quarter-end",
+      "timing": {
+        "window": "Last week of quarter through first week of new quarter",
+        "peak_days": "Last 2-3 trading days"
+      },
+      "historical_stats": {
+        "effect_magnitude": "Stronger than monthly",
+        "avg_return_last_5_days_of_q": "+0.5% to +0.8%",
+        "source": "Stock Trader's Almanac data"
+      },
+      "special_quarters": {
+        "q4_end": "Year-end + quarter-end = strongest effect",
+        "q2_end": "Mid-year reviews, summer slowdown following"
+      },
+      "why_it_happens": [
+        "Quarterly performance reporting",
+        "Large pension rebalancing",
+        "Window dressing by fund managers",
+        "Corporate treasury flows"
+      ]
+    },
+    
+    "year_end_patterns": {
+      "name": "Year-End Effects",
+      "patterns": {
+        "tax_loss_selling": {
+          "timing": "October-November",
+          "effect": "Pressure on year's losers",
+          "reversal": "January effect - losers rebound"
+        },
+        "january_effect": {
+          "description": "Small caps outperform in January",
+          "historical_magnitude": "2-5% small cap premium",
+          "modern_status": "Diminished but still present",
+          "timing": "First 2 weeks of January especially"
+        },
+        "santa_claus_rally": {
+          "timing": "Last 5 trading days + first 2 of new year",
+          "historical_win_rate": "75%+ positive periods",
+          "avg_gain": "+1.3% (Stock Trader's Almanac)",
+          "note": "Absence may signal weak year ahead"
+        },
+        "december_strength": {
+          "description": "December historically strong month",
+          "source": "Stock Trader's Almanac",
+          "avg_return": "+1.5% S&P 500 (1950-2020)"
+        }
+      }
+    },
+    
+    "options_expiration": {
+      "name": "OpEx Effects",
+      "monthly_opex": {
+        "timing": "Third Friday of each month",
+        "effect": "Increased volatility, pinning to strikes"
+      },
+      "quarterly_opex": {
+        "timing": "March, June, September, December",
+        "name": "Quad Witching",
+        "description": "Stock options, index options, index futures, single stock futures expire",
+        "volume": "Massive volume increase",
+        "effect": "High volatility, unusual price action"
+      },
+      "trading_implications": [
+        "Avoid new positions day of OpEx",
+        "Gamma exposure can cause rapid moves",
+        "Week before OpEx often directional"
+      ]
+    },
+    
+    "fed_meeting_drift": {
+      "name": "Pre-FOMC Announcement Drift",
+      "source": "NY Fed Research",
+      "finding": "S&P 500 drifts higher in 24 hours before FOMC",
+      "historical_stats": {
+        "period": "1994-2016",
+        "avg_return_24hr_pre_fomc": "+0.49%",
+        "note": "Accounts for large portion of equity returns",
+        "url": "https://www.newyorkfed.org/research/staff_reports/sr512"
+      }
+    }
+  },
+  
+  "forex_specific": {
+    "month_end_flows": {
+      "description": "Corporate hedging and rebalancing",
+      "timing": "Last 2-3 days of month",
+      "pairs_affected": "All majors, especially USD pairs",
+      "pattern": "Can see unusual moves unrelated to news"
+    },
+    "fix_manipulation": {
+      "timing": "4pm London WMR Fix",
+      "description": "Large orders executed at fix",
+      "note": "Less manipulation post-2015 reforms"
+    },
+    "sovereign_wealth_flows": {
+      "description": "Oil nations rebalance based on oil prices",
+      "timing": "Often month-end",
+      "pairs_affected": "NOK, CAD, AUD vs USD"
+    }
+  },
+  
+  "trading_strategies": {
+    "turn_of_month": {
+      "entry": "Buy last trading day of month",
+      "exit": "Sell close of 4th trading day of new month",
+      "instruments": "SPY, QQQ, or S&P 500 futures",
+      "historical_edge": "Positive expectancy but not guaranteed"
+    },
+    "january_effect": {
+      "entry": "Buy small cap index late December",
+      "exit": "Sell mid-January",
+      "instruments": "IWM, small cap ETFs",
+      "note": "Effect diminished in recent decades"
+    },
+    "pre_fomc": {
+      "entry": "Buy 24-48 hours before FOMC",
+      "exit": "Sell at or before announcement",
+      "instruments": "SPY, ES futures",
+      "risk": "Position sizing important"
+    }
+  },
+  
+  "still_works": {
+    "verdict": "Partially",
+    "conditions": [
+      "Effects have diminished as more traders know them",
+      "Still useful for timing existing positions",
+      "Better as confirmation than sole signal"
+    ],
+    "best_use": "Combine with other analysis, not standalone"
+  },
+  
+  "implementation_notes": [
+    "Calendar effects are statistical tendencies, not guarantees",
+    "Use as timing tool for existing edge",
+    "Position size conservatively",
+    "Effects may be absent in bear markets",
+    "Monitor for structural changes (post-COVID patterns different)",
+    "Check if specific year has unusual circumstances"
+  ],
+  
+  "metadata": {
+    "created": "2026-01-22",
+    "data_verified": true,
+    "random_data": false
+  }
+}

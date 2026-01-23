@@ -1,0 +1,138 @@
+{
+  "version": "1.0",
+  "created": "2026-01-22",
+  "last_updated": "2026-01-22",
+  
+  "account_info": {
+    "size": 88000,
+    "currency": "USD",
+    "platform": "MetaTrader 5",
+    "broker": "To be specified"
+  },
+  
+  "sources": {
+    "academic": {
+      "turtle_trading": {
+        "source": "Curtis Faith - Way of the Turtle (2007)",
+        "isbn": "978-0071486644"
+      },
+      "rsi_mean_reversion": {
+        "source": "Larry Connors - Short Term Trading Strategies (2008)",
+        "isbn": "978-0981923901"
+      },
+      "session_breakouts": {
+        "source": "Kathy Lien - Day Trading the Currency Market (2015)",
+        "isbn": "978-1119108412"
+      },
+      "news_effects": {
+        "source": "Andersen et al. (2003) American Economic Review"
+      },
+      "calendar_effects": {
+        "source": "Lakonishok & Smidt (1988) Journal of Finance"
+      }
+    },
+    "llm_analysis": [],
+    "live_performance": {
+      "data_source": "mt5-trades-api",
+      "endpoint": "http://localhost:8085/trades"
+    }
+  },
+  
+  "bots": {
+    "v007": {
+      "name": "The Ultimate",
+      "strategy": "trend_following + price_action",
+      "status": "active",
+      "analysis_grade": null,
+      "last_review": null,
+      "notes": "Waiting for LLM analysis"
+    },
+    "v008": {
+      "name": "The Contrarian",
+      "strategy": "mean_reversion + divergence",
+      "status": "active",
+      "analysis_grade": null,
+      "last_review": null,
+      "known_issues": ["RSI(14) vs proven RSI(2)"],
+      "notes": "Suspected parameter misalignment"
+    },
+    "v010": {
+      "name": "The Second Mover",
+      "strategy": "liquidity_sweep + institutional_flow",
+      "status": "active",
+      "analysis_grade": null,
+      "last_review": null,
+      "notes": "Novel anti-MM strategy"
+    },
+    "v015": {
+      "name": "The Big Brother",
+      "strategy": "multi_strategy + gto",
+      "status": "active",
+      "analysis_grade": null,
+      "last_review": null,
+      "notes": "GTO randomization approach"
+    },
+    "v020": {
+      "name": "Ghost Commander",
+      "strategy": "orchestration + risk_management",
+      "status": "active",
+      "analysis_grade": null,
+      "last_review": null,
+      "notes": "Fleet controller"
+    }
+  },
+  
+  "proven_parameters": {
+    "position_sizing": {
+      "proven_optimal": "1-2% per trade",
+      "current_setting": "4.5-9% per trade",
+      "deviation": "HIGH - 3-5x more aggressive",
+      "source": "Turtle Trading, Van Tharp research"
+    },
+    "rsi_period": {
+      "proven_optimal": 2,
+      "v008_setting": 14,
+      "deviation": "HIGH - completely different indicator behavior",
+      "source": "Connors RSI(2) research"
+    },
+    "max_drawdown": {
+      "proven_optimal": "25-35%",
+      "current_setting": "20%",
+      "deviation": "REASONABLE",
+      "source": "Turtle Trading historical"
+    }
+  },
+  
+  "consensus_improvements": [],
+  
+  "parameter_recommendations": {},
+  
+  "risk_warnings": [
+    "Position sizing 5-10% is aggressive vs 1-2% proven optimal",
+    "RSI(14) in v008 deviates significantly from proven RSI(2)",
+    "No volatility regime filter detected"
+  ],
+  
+  "theoretical_edge": {
+    "v007": "Price action patterns have documented edge in trending markets",
+    "v008": "Mean reversion edge exists but RSI parameters may negate it",
+    "v010": "Liquidity sweep hunting - edge based on MM behavior patterns",
+    "v015": "GTO randomization - prevents exploitation but unproven in forex",
+    "v020": "Risk management - edge preservation, not edge generation"
+  },
+  
+  "performance_tracking": {
+    "start_date": null,
+    "total_trades": null,
+    "total_pnl": null,
+    "win_rate": null,
+    "profit_factor": null,
+    "max_drawdown_actual": null,
+    "sharpe_ratio": null
+  },
+  
+  "metadata": {
+    "random_data": false,
+    "data_verification": "All parameters from user-provided bot configs or academic sources"
+  }
+}

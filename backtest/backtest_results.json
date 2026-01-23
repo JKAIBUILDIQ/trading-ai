@@ -1,0 +1,55 @@
+{
+  "period": "2025-07-01 to 2026-01-22",
+  "starting_balance": 100000,
+  "results": {
+    "XAUUSD": {
+      "total_trades": 83,
+      "win_rate": 37.34939759036144,
+      "total_pnl": -25277.83007812602,
+      "max_drawdown": 83105.95898437544,
+      "max_drawdown_pct": 83.10595898437543,
+      "profit_factor": 0.8762073674367482,
+      "wins_per_week": 1.0637254901960784,
+      "jackal_triggers": 35,
+      "jackal_pnl": -9959.8388671885,
+      "avg_time_to_target_hours": 42.58064516129032
+    },
+    "EURUSD": {
+      "total_trades": 80,
+      "win_rate": 62.5,
+      "total_pnl": 62568.030548095936,
+      "max_drawdown": 7989.779710769624,
+      "max_drawdown_pct": 7.989779710769625,
+      "profit_factor": 1.9210835750564683,
+      "wins_per_week": 1.715686274509804,
+      "jackal_triggers": 28,
+      "jackal_pnl": 59832.17024803201,
+      "avg_time_to_target_hours": 66.24
+    },
+    "GBPUSD": {
+      "total_trades": 62,
+      "win_rate": 46.774193548387096,
+      "total_pnl": -32101.61567688237,
+      "max_drawdown": 49919.97085571439,
+      "max_drawdown_pct": 49.91997085571439,
+      "profit_factor": 0.5938355186690047,
+      "wins_per_week": 0.9950980392156863,
+      "jackal_triggers": 20,
+      "jackal_pnl": -21067.002296449646,
+      "avg_time_to_target_hours": 63.724137931034484
+    },
+    "USDJPY": {
+      "total_trades": 66,
+      "win_rate": 56.060606060606055,
+      "total_pnl": 7747.583200075416,
+      "max_drawdown": 20700.517408751926,
+      "max_drawdown_pct": 20.700517408751924,
+      "profit_factor": 1.0992614736725903,
+      "wins_per_week": 1.2696078431372548,
+      "jackal_triggers": 23,
+      "jackal_pnl": 9063.255355836718,
+      "avg_time_to_target_hours": 48.648648648648646
+    }
+  },
+  "generated_at": "2026-01-22T15:44:43.998468"
+}

@@ -1,0 +1,111 @@
+{
+  "analysis_date": "2026-01-22",
+  "model_name": "sample_model",
+  "v007_analysis": {
+    "alignment_rating": "Fair",
+    "coherence_grade": 7,
+    "risk_grade": 5,
+    "edge_grade": 6,
+    "top_3_changes": [
+      "Reduce position size to 2% max",
+      "Add volatility filter",
+      "Tighten stop to 2 ATR"
+    ],
+    "notes": "Good price action but aggressive sizing"
+  },
+  "v008_analysis": {
+    "alignment_rating": "Poor",
+    "coherence_grade": 6,
+    "risk_grade": 5,
+    "edge_grade": 4,
+    "top_3_changes": [
+      "CRITICAL: Change RSI from 14 to 2",
+      "Lower oversold threshold to 10",
+      "Add 200 SMA trend filter"
+    ],
+    "critical_finding": "RSI(14) has ~50% win rate vs RSI(2) with 88%",
+    "notes": "Major deviation from proven parameters"
+  },
+  "v010_analysis": {
+    "alignment_rating": "Good",
+    "coherence_grade": 8,
+    "risk_grade": 5,
+    "edge_grade": 7,
+    "top_3_changes": [
+      "Reduce position size",
+      "Add session filter (London/NY only)",
+      "Increase confirmation bars to 3"
+    ],
+    "notes": "Novel strategy with theoretical edge"
+  },
+  "v015_analysis": {
+    "alignment_rating": "Fair",
+    "coherence_grade": 7,
+    "risk_grade": 6,
+    "edge_grade": 6,
+    "top_3_changes": [
+      "Reduce GTO randomization",
+      "Add time-of-day filter",
+      "Implement trailing stop"
+    ],
+    "notes": "GTO approach is innovative but unproven"
+  },
+  "v020_analysis": {
+    "alignment_rating": "Good",
+    "coherence_grade": 8,
+    "risk_grade": 7,
+    "edge_grade": 7,
+    "top_3_changes": [
+      "Reduce max daily loss to 5%",
+      "Add inter-bot correlation check",
+      "Implement gradual position scaling"
+    ],
+    "notes": "Good risk management framework"
+  },
+  "fleet_analysis": {
+    "coordination_grade": 7,
+    "herding_risk": "Medium",
+    "coverage_gaps": [
+      "No volatility regime detection",
+      "No news filter"
+    ],
+    "redundancies": [
+      "v007 and v010 may conflict"
+    ]
+  },
+  "recommendations": [
+    {
+      "priority": 1,
+      "bot": "v008",
+      "change": "Change RSI period from 14 to 2",
+      "source": "Connors RSI(2) research - proven 88% win rate",
+      "impact": "High"
+    },
+    {
+      "priority": 2,
+      "bot": "ALL",
+      "change": "Reduce position sizing from 5-10% to 1-2%",
+      "source": "Turtle Trading rules - proven over 40 years",
+      "impact": "High"
+    },
+    {
+      "priority": 3,
+      "bot": "v020",
+      "change": "Add volatility filter (pause during VIX > 25)",
+      "source": "Academic research on vol regimes",
+      "impact": "Medium"
+    }
+  ],
+  "risk_warnings": [
+    "Position sizing 5-10% is aggressive vs 1-2% proven optimal",
+    "No volatility regime filter - vulnerable in high VIX",
+    "v008 RSI(14) has no proven edge"
+  ],
+  "overall_grade": "B-",
+  "profit_probability_1yr": "60%",
+  "key_risks": [
+    "Aggressive position sizing could lead to large drawdowns",
+    "RSI(14) in v008 may be net negative",
+    "Correlation between bots not fully managed"
+  ]
+}

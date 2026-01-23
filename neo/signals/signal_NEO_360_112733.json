@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T11:27:33.294586",
+  "signal_id": "NEO_360_112733",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "SELL",
+    "position_value_usd": 3300,
+    "stop_loss_pips": 25,
+    "take_profit_pips": 50,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 85,
+    "reasoning": "High ADX indicates trend, but ECB news suggests a fade opportunity. Retail likely wrong after spike; MMs will reverse.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

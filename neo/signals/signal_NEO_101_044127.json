@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T04:41:27.987699",
+  "signal_id": "NEO_101_044127",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 3300,
+    "stop_loss_pips": 25,
+    "take_profit_pips": 50,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 85,
+    "reasoning": "The market is ranging with ADX < 20. RSI(2) dropped below 10 and price is above the 200 SMA, which aligns with the RSI(2) Connors strategy. Retail traders are likely selling after the recent drop, suggesting a potential trap. Multiple strategies agree, leading to high confidence.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

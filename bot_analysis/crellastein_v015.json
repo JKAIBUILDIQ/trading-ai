@@ -1,0 +1,29 @@
+{
+  "bot": "Crellastein_v015",
+  "nickname": "The Big Brother",
+  "strategy_type": "multi_strategy + gto",
+  "parameters": {
+    "EntryProbability": 70,
+    "TP_JitterPct": 10,
+    "SL_JitterPct": 5,
+    "GTOCheckMinutes": 57,
+    "ProfitMilestone": 1000,
+    "LossMilestone": 500,
+    "MinPositionValue": 4000,
+    "MaxPositionValue": 8000,
+    "MaxTotalExposure": 25000,
+    "MaxPositions": 6
+  },
+  "features": [
+    "GTO randomizer (fold/stay/raise)",
+    "Profit/loss milestone decisions",
+    "Hourly position sweep",
+    "Stealth mode (no visible SL/TP)",
+    "Multiple entry strategies"
+  ],
+  "metadata": {
+    "source": "User-provided Crellastein configuration",
+    "account_size": 88000,
+    "gto_note": "Game Theory Optimal randomization inspired by poker"
+  }
+}

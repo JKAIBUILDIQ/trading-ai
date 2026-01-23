@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T02:25:30.735109",
+  "signal_id": "NEO_16_022530",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 4000,
+    "stop_loss_pips": 25,
+    "take_profit_pips": 50,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 90,
+    "reasoning": "The market is ranging with low ADX, RSI(2) indicates oversold conditions, and price is above the 200 SMA. Retail traders are likely selling into this dip, which is a wrong move. Multiple strategies align for a mean reversion trade.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.log
+logs/
+data/*.csv
+data/*.json
+*.db
+.DS_Store
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+external/drl-gold-bot/
+external/finrl/

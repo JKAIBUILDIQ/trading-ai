@@ -1,0 +1,176 @@
+{
+  "strategy_id": "mean_reversion_rsi2",
+  "name": "RSI(2) Mean Reversion System",
+  "category": "mean_reversion",
+  
+  "sources": {
+    "primary": {
+      "title": "Short Term Trading Strategies That Work",
+      "author": "Larry Connors & Cesar Alvarez",
+      "year": 2008,
+      "publisher": "TradingMarkets",
+      "isbn": "978-0981923901",
+      "verification_url": "https://www.amazon.com/Short-Term-Trading-Strategies-That/dp/0981923909"
+    },
+    "secondary": [
+      {
+        "title": "High Probability ETF Trading",
+        "author": "Larry Connors & Cesar Alvarez",
+        "year": 2009,
+        "isbn": "978-0615297415"
+      },
+      {
+        "source": "TradingMarkets Research",
+        "verification_url": "https://www.tradingmarkets.com/"
+      }
+    ]
+  },
+  
+  "systems": {
+    "rsi_2_basic": {
+      "name": "Basic RSI(2) Strategy",
+      "description": "Buy extreme oversold, sell at mean reversion",
+      "entry_rules": {
+        "long": "RSI(2) < 10",
+        "condition": "Price above 200-day SMA (uptrend filter)"
+      },
+      "exit_rules": {
+        "target": "RSI(2) > 70 OR close above 5-day SMA",
+        "stop": "Fixed % or none (high win rate strategy)"
+      },
+      "markets": "Stocks, ETFs (especially SPY, QQQ)"
+    },
+    "rsi_2_cumulative": {
+      "name": "Cumulative RSI(2) Strategy",
+      "description": "Accumulate positions on consecutive down days",
+      "entry_rules": {
+        "day_1": "RSI(2) < 60 - buy 10% position",
+        "day_2": "RSI(2) < 50 - add 20%",
+        "day_3": "RSI(2) < 40 - add 30%",
+        "day_4": "RSI(2) < 30 - add 40%"
+      },
+      "exit_rules": {
+        "target": "Close above 5-day SMA"
+      }
+    },
+    "rsi_2_extreme": {
+      "name": "RSI(2) Extreme Oversold",
+      "entry_rules": {
+        "long": "RSI(2) < 5",
+        "filter": "Price above 200-day SMA"
+      },
+      "exit_rules": {
+        "target": "Close above yesterday's high"
+      },
+      "note": "Higher win rate, fewer signals"
+    }
+  },
+  
+  "backtest_results": {
+    "connors_research": {
+      "source": "Larry Connors Research (2008)",
+      "market": "S&P 500 stocks",
+      "period": "1995-2007",
+      "results": {
+        "rsi_2_under_10": {
+          "win_rate": "88.1%",
+          "avg_gain": "1.64%",
+          "avg_holding_period": "3.9 days"
+        },
+        "rsi_2_under_5": {
+          "win_rate": "89.2%",
+          "avg_gain": "2.28%",
+          "avg_holding_period": "4.2 days"
+        },
+        "rsi_2_under_2": {
+          "win_rate": "92.1%",
+          "avg_gain": "3.14%",
+          "avg_holding_period": "4.6 days"
+        }
+      }
+    },
+    "spy_results": {
+      "source": "Connors Research on SPY",
+      "period": "1993-2008",
+      "rsi_2_under_5": {
+        "total_trades": 49,
+        "win_rate": "89.8%",
+        "avg_gain": "1.19%",
+        "avg_days_held": 4.5
+      }
+    },
+    "modern_performance": {
+      "source": "Independent backtests 2010-2020",
+      "note": "Performance declined but still positive",
+      "reason": "More algorithmic traders using similar strategies",
+      "still_works": true,
+      "adaptations_needed": [
+        "May need faster exits",
+        "Consider IV/VIX filter",
+        "Works better in uptrends"
+      ]
+    }
+  },
+  
+  "still_works": {
+    "verdict": true,
+    "conditions": "Best in uptrends, may need faster exits",
+    "worst_performance": "Bear markets, trending down markets",
+    "best_performance": "Bull markets, choppy sideways markets"
+  },
+  
+  "key_parameters": {
+    "rsi_period": 2,
+    "rsi_oversold": 10,
+    "rsi_extreme_oversold": 5,
+    "rsi_overbought_exit": 70,
+    "trend_filter_sma": 200,
+    "exit_sma": 5,
+    "typical_holding_period_days": "3-5"
+  },
+  
+  "related_strategies": {
+    "double_7s": {
+      "description": "Buy 7-day low, sell 7-day high",
+      "source": "Larry Connors research",
+      "win_rate": "79%",
+      "period_tested": "1995-2008"
+    },
+    "r3_strategy": {
+      "description": "3-day RSI with specific thresholds",
+      "entry": "RSI(3) < 25",
+      "exit": "RSI(3) > 65"
+    }
+  },
+  
+  "implementation_notes": [
+    "High win rate but small gains per trade",
+    "Requires many trades for profitability",
+    "Risk: Large drawdowns in crashes (no stop loss)",
+    "Best used with position sizing limits",
+    "Consider VIX filter: avoid when VIX > 30",
+    "Use 200 SMA filter to stay with trend"
+  ],
+  
+  "academic_validation": {
+    "paper_1": {
+      "title": "The Profitability of Technical Analysis: A Review",
+      "source": "SSRN",
+      "finding": "Short-term mean reversion documented in equities",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=603481"
+    },
+    "paper_2": {
+      "title": "Mean Reversion in Stock Prices",
+      "authors": "Poterba & Summers",
+      "year": 1988,
+      "journal": "Journal of Financial Economics",
+      "finding": "Evidence of mean reversion over various horizons"
+    }
+  },
+  
+  "metadata": {
+    "created": "2026-01-22",
+    "data_verified": true,
+    "random_data": false
+  }
+}

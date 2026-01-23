@@ -1,0 +1,9 @@
+{
+  "rsi_period": 2,
+  "rsi_oversold": 10,
+  "rsi_extreme_oversold": 5,
+  "rsi_overbought_exit": 70,
+  "trend_filter_sma": 200,
+  "exit_sma": 5,
+  "typical_holding_period_days": "3-5"
+}

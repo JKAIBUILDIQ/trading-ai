@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T02:55:44.581724",
+  "signal_id": "NEO_36_025544",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 3500,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 85,
+    "reasoning": "EURUSD is in a ranging market with ADX <20. RSI(2) dropped below 10, and price is above the 200 SMA, indicating a high-probability mean reversion setup. Retail traders are likely wrong as they may be chasing the oversold condition without confirmation.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

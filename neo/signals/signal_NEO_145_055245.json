@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T05:52:45.908385",
+  "signal_id": "NEO_145_055245",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 3500,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 85,
+    "reasoning": "The market is identified as ranging with low ADX. RSI(2) indicates oversold conditions, aligning with the Connors strategy for mean reversion. Retail sentiment is likely wrong, and MMs may fade the move, supporting our entry.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

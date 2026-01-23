@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-01-23T15:09:02.290189",
+  "source": "MT5_API",
+  "account": {
+    "balance": 88558.51,
+    "equity": 88550.62,
+    "margin": 413.0,
+    "free_margin": 88137.34,
+    "margin_level_pct": 21426.3,
+    "profit": 0.0
+  },
+  "exposure_by_symbol": {},
+  "positions_by_bot": {},
+  "risk": {
+    "total_exposure_usd": 0,
+    "total_exposure_pct": 0.0,
+    "max_symbol_concentration_pct": 0,
+    "most_concentrated_symbol": "NONE",
+    "correlation_estimate": 0,
+    "daily_pnl": 0,
+    "position_count": 0,
+    "alerts": []
+  },
+  "all_positions": [],
+  "summary": {
+    "total_positions": 0,
+    "total_exposure_usd": 0,
+    "can_open_new": true,
+    "recommended_max_position": 4427.93
+  }
+}

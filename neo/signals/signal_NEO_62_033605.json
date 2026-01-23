@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-01-22T03:36:05.119784",
+  "signal_id": "NEO_62_033605",
+  "action": "OPEN",
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 3500,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 75,
+    "reasoning": "Given the ranging market conditions and the expectation of mean reversion, RSI(2) Connors strategy is appropriate. Retail sentiment is likely opposite to the trade direction, increasing confidence.",
+    "model_used": "deepseek-r1:70b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}
