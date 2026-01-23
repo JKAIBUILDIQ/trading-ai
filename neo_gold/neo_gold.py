@@ -242,19 +242,46 @@ class NeoGold:
             "dxy": 0
         }
         
-        # Try MT5 API first
+        # PRIMARY: Yahoo Finance (free, reliable, real-time during market hours)
         try:
-            response = requests.get(f"{MT5_API_URL}/prices", timeout=5)
-            if response.status_code == 200:
-                data = response.json()
-                for pair in data.get("prices", []):
-                    if pair.get("symbol") == "XAUUSD":
-                        price_data["price"] = pair.get("bid", 0)
-                        break
+            import yfinance as yf
+            gold = yf.Ticker('GC=F')
+            hist = gold.history(period='2d', interval='1m')
+            if not hist.empty:
+                price_data["price"] = float(hist['Close'].iloc[-1])
+                logger.info(f"   📡 Price from Yahoo Finance: ${price_data['price']:.2f}")
+                
+                # Also get real candles (H1)
+                h1_data = gold.history(period='5d', interval='1h')
+                if not h1_data.empty:
+                    price_data["candles"] = [
+                        {
+                            "hour": row.name.hour if hasattr(row.name, 'hour') else 0,
+                            "open": float(row['Open']),
+                            "high": float(row['High']),
+                            "low": float(row['Low']),
+                            "close": float(row['Close']),
+                            "volume": int(row['Volume'])
+                        }
+                        for _, row in h1_data.tail(50).iterrows()
+                    ]
+                    logger.info(f"   📊 Loaded {len(price_data['candles'])} real H1 candles")
         except Exception as e:
-            logger.warning(f"MT5 API error: {e}")
+            logger.warning(f"Yahoo Finance error: {e}")
         
-        # Fallback 1: Twelve Data API
+        # Fallback 1: MT5 API
+        if price_data["price"] == 0:
+            try:
+                response = requests.get(f"{MT5_API_URL}/prices/XAUUSD", timeout=5)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("bid"):
+                        price_data["price"] = data.get("bid", 0)
+                        logger.info(f"   📡 Price from MT5 API: ${price_data['price']:.2f}")
+            except Exception as e:
+                logger.warning(f"MT5 API error: {e}")
+        
+        # Fallback 2: Twelve Data API
         if price_data["price"] == 0:
             api_key = os.getenv("TWELVE_DATA_API_KEY", "a2542c3955c5417d99226668f7709301")
             if api_key:
@@ -271,15 +298,15 @@ class NeoGold:
                 except Exception as e:
                     logger.warning(f"Twelve Data error: {e}")
         
-        # Fallback 2: Use a reasonable estimate for testing
+        # NO STATIC FALLBACK - If we can't get real data, log error and return 0
         if price_data["price"] == 0:
-            # Gold is typically trading around $2700-2800 in 2026
-            # Use this as fallback for development only
-            price_data["price"] = 2750.00
-            logger.warning(f"   ⚠️ Using fallback price: ${price_data['price']:.2f}")
+            logger.error("   ❌ CRITICAL: Could not fetch real Gold price from ANY source!")
+            logger.error("   ❌ NOT generating signal without real market data!")
         
-        # Generate synthetic candles for testing if no real data
+        # Only generate synthetic candles if we have price but no candle data
+        # (This should rarely happen now that we use Yahoo Finance)
         if price_data["price"] > 0 and not price_data["candles"]:
+            logger.warning("   ⚠️ No candle data - generating synthetic (NOT recommended)")
             price_data["candles"] = self._generate_test_candles(price_data["price"])
         
         return price_data
