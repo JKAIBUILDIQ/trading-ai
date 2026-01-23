@@ -266,6 +266,119 @@ class UnifiedMarketFeed:
                 'block_buys': False
             }
     
+    def get_volume_intelligence(self, ohlcv_data: Dict[str, pd.DataFrame]) -> Dict:
+        """
+        Get volume analysis - Detect whale/institutional activity
+        
+        Analyzes:
+        - Volume ratio (current vs average)
+        - Accumulation/Distribution score
+        - Volume divergences (reversal warnings)
+        - Whale detection patterns
+        """
+        try:
+            from volume_intelligence import VolumeIntelligence, get_volume_analysis
+            
+            # Use D1 data for volume analysis (most reliable)
+            if 'D1' in ohlcv_data and not ohlcv_data['D1'].empty:
+                ohlcv = ohlcv_data['D1']
+            elif 'H4' in ohlcv_data and not ohlcv_data['H4'].empty:
+                ohlcv = ohlcv_data['H4']
+            elif 'H1' in ohlcv_data and not ohlcv_data['H1'].empty:
+                ohlcv = ohlcv_data['H1']
+            else:
+                return {'available': False, 'error': 'No OHLCV data'}
+            
+            analysis = get_volume_analysis(ohlcv)
+            
+            # Add whale detection
+            analyzer = VolumeIntelligence()
+            whale = analyzer.get_whale_detection(ohlcv)
+            
+            return {
+                'available': True,
+                'volume_ratio': analysis['volume_ratio'],
+                'volume_trend': analysis['volume_trend'],
+                'is_spike': analysis['is_spike'],
+                'accumulation_score': analysis['accumulation_score'],
+                'divergence': analysis['divergence'],
+                'signal': analysis['signal'],
+                'confidence_adjustment': analysis['confidence_adjustment'],
+                'size_multiplier': analysis['size_multiplier'],
+                'warnings': analysis['warnings'],
+                'whale_detected': whale['detected'],
+                'whale_probability': whale['probability'],
+                'whale_reasons': whale['reasons'],
+                'summary': analysis['summary']
+            }
+            
+        except Exception as e:
+            logger.error(f"Volume Intelligence error: {e}")
+            return {
+                'available': False,
+                'error': str(e),
+                'volume_ratio': 1.0,
+                'accumulation_score': 50,
+                'signal': 'NEUTRAL'
+            }
+    
+    def get_herd_analysis(self, ohlcv_data: Dict[str, pd.DataFrame]) -> Dict:
+        """
+        Get herd analysis - Predict retail algo behavior
+        
+        Reverse-engineers common retail bot logic:
+        - RSI(14), EMA crosses, Bollinger, MACD, Stochastic
+        - Round numbers, Fibonacci levels
+        - Stop loss clusters
+        - Herd exhaustion detection
+        """
+        try:
+            from herd_detector import HerdDetector, get_herd_analysis
+            
+            # Use D1 data for herd analysis (most popular timeframe)
+            if 'D1' in ohlcv_data and not ohlcv_data['D1'].empty:
+                ohlcv = ohlcv_data['D1']
+            elif 'H4' in ohlcv_data and not ohlcv_data['H4'].empty:
+                ohlcv = ohlcv_data['H4']
+            elif 'H1' in ohlcv_data and not ohlcv_data['H1'].empty:
+                ohlcv = ohlcv_data['H1']
+            else:
+                return {'available': False, 'error': 'No OHLCV data'}
+            
+            analysis = get_herd_analysis(ohlcv, self.symbol)
+            
+            # Add stop hunt probability
+            detector = HerdDetector(self.symbol)
+            stop_hunt = detector.get_stop_hunt_probability(ohlcv)
+            
+            return {
+                'available': True,
+                'net_direction': analysis['net_direction'],
+                'herd_strength': analysis['herd_strength'],
+                'buy_pressure': analysis['buy_pressure'],
+                'sell_pressure': analysis['sell_pressure'],
+                'is_exhausted': analysis['is_exhausted'],
+                'exhaustion_type': analysis['exhaustion_type'],
+                'strategy': analysis['strategy'],
+                'confidence': analysis['confidence'],
+                'reasoning': analysis['reasoning'],
+                'stop_clusters_long': analysis['stop_clusters_long'],
+                'stop_clusters_short': analysis['stop_clusters_short'],
+                'signals': analysis['signals'],
+                'stop_hunt': stop_hunt,
+                'summary': analysis['summary']
+            }
+            
+        except Exception as e:
+            logger.error(f"Herd Analysis error: {e}")
+            return {
+                'available': False,
+                'error': str(e),
+                'net_direction': 'NEUTRAL',
+                'herd_strength': 0,
+                'strategy': 'WAIT'
+            }
+    
     def get_usdjpy_correlation(self) -> Dict:
         """
         Get USDJPY-Gold correlation analysis.
@@ -622,6 +735,40 @@ class UnifiedMarketFeed:
                 for warn in multi_risk['warnings'][:2]:
                     logger.info(f"   {warn}")
         
+        # 11. VOLUME INTELLIGENCE - Whale/Institutional Detection
+        logger.info("\n📊 Analyzing Volume Intelligence...")
+        volume_intel = self.get_volume_intelligence(ohlcv_data)
+        if volume_intel.get('available'):
+            ratio = volume_intel.get('volume_ratio', 1.0)
+            accum = volume_intel.get('accumulation_score', 50)
+            vol_signal = volume_intel.get('signal', 'NEUTRAL')
+            
+            vol_emoji = '🔥' if ratio > 2.0 else '📈' if ratio > 1.5 else '📊'
+            logger.info(f"   {vol_emoji} Volume Ratio: {ratio:.1f}x avg")
+            logger.info(f"   📈 Accumulation Score: {accum}%")
+            logger.info(f"   🎯 Volume Signal: {vol_signal}")
+            if volume_intel.get('warnings'):
+                for warn in volume_intel['warnings'][:2]:
+                    logger.info(f"   {warn}")
+        
+        # 12. HERD DETECTOR - Predict Retail Algo Behavior
+        logger.info("\n🐑 Analyzing Herd Behavior (Retail Algo Prediction)...")
+        herd_analysis = self.get_herd_analysis(ohlcv_data)
+        if herd_analysis.get('available'):
+            herd_dir = herd_analysis.get('net_direction', 'NEUTRAL')
+            herd_str = herd_analysis.get('herd_strength', 0)
+            strategy = herd_analysis.get('strategy', 'WAIT')
+            
+            dir_emoji = '📈' if herd_dir == 'BUY' else '📉' if herd_dir == 'SELL' else '⚖️'
+            logger.info(f"   {dir_emoji} Herd Direction: {herd_dir} ({herd_str:.0f}% strength)")
+            logger.info(f"   🎯 Strategy: {strategy}")
+            if herd_analysis.get('is_exhausted'):
+                logger.info(f"   ⚠️ HERD EXHAUSTION DETECTED - Fade opportunity!")
+            if herd_analysis.get('stop_hunt'):
+                hunt = herd_analysis['stop_hunt']
+                if hunt.get('warning'):
+                    logger.info(f"   {hunt['warning']}")
+        
         # Count features
         tech_count = len(technical.get('latest', {}))
         macro_count = len(macro.get('features', {}))
@@ -639,7 +786,7 @@ class UnifiedMarketFeed:
         # Build combined summary for LLM
         combined_summary = self._build_combined_summary(
             technical, macro, microstructure, mql5, crowd, usdjpy_correlation, algo_hype,
-            smc_analysis, multi_risk
+            smc_analysis, multi_risk, volume_intel, herd_analysis
         )
         
         self.last_update = datetime.now()
@@ -654,8 +801,10 @@ class UnifiedMarketFeed:
             'crowd_psychology': crowd,
             'usdjpy_correlation': usdjpy_correlation,
             'algo_hype_index': algo_hype,
-            'smc_analysis': smc_analysis,       # NEW!
-            'multi_factor_risk': multi_risk,    # NEW!
+            'smc_analysis': smc_analysis,
+            'multi_factor_risk': multi_risk,
+            'volume_intelligence': volume_intel,   # NEW!
+            'herd_analysis': herd_analysis,        # NEW!
             'feature_count': total_features,
             'summary': combined_summary
         }
@@ -663,7 +812,8 @@ class UnifiedMarketFeed:
     def _build_combined_summary(self, technical: Dict, macro: Dict, 
                                 microstructure: Dict, mql5: Dict, crowd: Dict = None,
                                 usdjpy: Dict = None, algo_hype: Dict = None,
-                                smc: Dict = None, multi_risk: Dict = None) -> str:
+                                smc: Dict = None, multi_risk: Dict = None,
+                                volume_intel: Dict = None, herd: Dict = None) -> str:
         """Build combined summary for NEO's LLM prompt"""
         
         lines = []
@@ -855,6 +1005,86 @@ class UnifiedMarketFeed:
                     lines.append(f"   {warn}")
             
             lines.append(f"   💡 {multi_risk.get('recommendation', '')}")
+        
+        # ═══ VOLUME INTELLIGENCE (Whale Detection) ═══
+        if volume_intel and volume_intel.get('available'):
+            lines.append("\n" + "="*60)
+            lines.append("📊 VOLUME INTELLIGENCE (Whale/Institutional Detection)")
+            lines.append("="*60)
+            
+            vol_ratio = volume_intel.get('volume_ratio', 1.0)
+            accum = volume_intel.get('accumulation_score', 50)
+            vol_signal = volume_intel.get('signal', 'NEUTRAL')
+            divergence = volume_intel.get('divergence', 'NONE')
+            
+            # Volume ratio assessment
+            if vol_ratio > 2.0:
+                vol_emoji = "🔥"
+                vol_status = "SPIKE!"
+            elif vol_ratio > 1.5:
+                vol_emoji = "📈"
+                vol_status = "HIGH"
+            elif vol_ratio < 0.5:
+                vol_emoji = "📉"
+                vol_status = "LOW"
+            else:
+                vol_emoji = "📊"
+                vol_status = "NORMAL"
+            
+            lines.append(f"   {vol_emoji} Volume Ratio: {vol_ratio:.1f}x average ({vol_status})")
+            lines.append(f"   📈 Accumulation Score: {accum}%")
+            lines.append(f"   🎯 Volume Signal: {vol_signal}")
+            
+            if divergence != 'NONE':
+                lines.append(f"   ⚠️ DIVERGENCE: {divergence} (reversal warning!)")
+            
+            # Whale detection
+            if volume_intel.get('whale_detected'):
+                lines.append(f"   🐋 WHALE ACTIVITY DETECTED ({volume_intel.get('whale_probability', 0)}% probability)")
+                for reason in volume_intel.get('whale_reasons', [])[:3]:
+                    lines.append(f"      • {reason}")
+            
+            # Warnings
+            for warn in volume_intel.get('warnings', [])[:3]:
+                lines.append(f"   {warn}")
+        
+        # ═══ HERD DETECTOR (Retail Algo Prediction) ═══
+        if herd and herd.get('available'):
+            lines.append("\n" + "="*60)
+            lines.append("🐑 HERD DETECTOR (Retail Algo Prediction)")
+            lines.append("="*60)
+            
+            herd_dir = herd.get('net_direction', 'NEUTRAL')
+            herd_str = herd.get('herd_strength', 0)
+            strategy = herd.get('strategy', 'WAIT')
+            is_exhausted = herd.get('is_exhausted', False)
+            
+            dir_emoji = '📈' if herd_dir == 'BUY' else '📉' if herd_dir == 'SELL' else '⚖️'
+            lines.append(f"   {dir_emoji} Herd Direction: {herd_dir}")
+            lines.append(f"   📊 Herd Strength: {herd_str:.0f}%")
+            lines.append(f"   🎯 Strategy: {strategy}")
+            lines.append(f"   💡 {herd.get('reasoning', '')}")
+            
+            # Active signals
+            signals = herd.get('signals', [])
+            if signals:
+                lines.append("\n   📊 Active Herd Signals:")
+                for sig in signals[:5]:
+                    sig_emoji = "📈" if sig['action'] == "BUY" else "📉" if sig['action'] == "SELL" else "👀"
+                    lines.append(f"      {sig_emoji} {sig['indicator']}: {sig['action']} ({sig['strength']:.0%})")
+            
+            # Exhaustion warning
+            if is_exhausted:
+                lines.append(f"\n   ⚠️ HERD EXHAUSTION DETECTED ({herd.get('exhaustion_type', '')})")
+                lines.append(f"      → FADE OPPORTUNITY! Go opposite to herd.")
+            
+            # Stop hunt probability
+            stop_hunt = herd.get('stop_hunt', {})
+            if stop_hunt.get('warning'):
+                lines.append(f"\n   🎯 STOP HUNT WARNING:")
+                lines.append(f"      Longs' stops at: ${stop_hunt.get('long_stops_at', 0):.2f}")
+                lines.append(f"      Shorts' stops at: ${stop_hunt.get('short_stops_at', 0):.2f}")
+                lines.append(f"      {stop_hunt['warning']}")
         
         # Overall assessment
         lines.append("\n" + "="*60)
