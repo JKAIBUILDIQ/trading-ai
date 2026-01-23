@@ -1,6 +1,6 @@
 """
 ═══════════════════════════════════════════════════════════════════
-NEO UNIFIED MARKET FEED - 150+ Features Combined
+NEO UNIFIED MARKET FEED - 200+ Features Combined
 ═══════════════════════════════════════════════════════════════════
 
 This is NEO's comprehensive market intelligence system combining:
@@ -9,8 +9,11 @@ This is NEO's comprehensive market intelligence system combining:
 - 24 Macro correlation features (VIX, DXY, Oil, etc.)
 - 12 Microstructure features (sessions, time, liquidity)
 - MQL5 consensus signals
+- SMC Analysis (Order Blocks, FVG, Liquidity Pools)  [NEW]
+- Adaptive Stop Loss (Freqtrade patterns)  [NEW]
+- Multi-Factor Risk Scoring (Hunter patterns)  [NEW]
 
-Total: 150+ features for intelligent trading decisions
+Total: 200+ features for intelligent trading decisions
 
 NO RANDOM DATA - All features computed from real market data
 
@@ -312,6 +315,218 @@ class UnifiedMarketFeed:
         
         return {'available': False, 'consensus_signals': [], 'top_signals': []}
     
+    def get_smc_analysis(self, ohlcv_data: Dict[str, pd.DataFrame]) -> Dict:
+        """
+        Get Smart Money Concept (SMC) Analysis
+        
+        Detects:
+        - Order Blocks (institutional entry zones)
+        - Fair Value Gaps (imbalance areas)
+        - Liquidity Pools (stop loss clusters)
+        - Break of Structure / Change of Character
+        """
+        try:
+            from smc_detector import SMCDetector, quick_smc_analysis
+            
+            # Use H1 data for SMC analysis
+            if 'H1' not in ohlcv_data or ohlcv_data['H1'].empty:
+                return {'available': False, 'error': 'No H1 data for SMC analysis'}
+            
+            ohlcv = ohlcv_data['H1']
+            current_price = ohlcv['close'].iloc[-1]
+            
+            # Run SMC analysis
+            detector = SMCDetector()
+            analysis = detector.analyze(ohlcv, current_price, timeframe='H1')
+            
+            return {
+                'available': True,
+                'signal': analysis.signal,
+                'confidence': analysis.confidence,
+                'bias': analysis.bias.value,
+                'order_blocks': len(analysis.order_blocks),
+                'fvg_count': len(analysis.fair_value_gaps),
+                'bos_detected': analysis.bos_detected,
+                'choch_detected': analysis.choch_detected,
+                'nearest_ob': {
+                    'type': analysis.nearest_ob.type.value,
+                    'zone': (analysis.nearest_ob.bottom, analysis.nearest_ob.top),
+                    'strength': analysis.nearest_ob.strength
+                } if analysis.nearest_ob else None,
+                'nearest_fvg': {
+                    'type': analysis.nearest_fvg.type.value,
+                    'zone': (analysis.nearest_fvg.bottom, analysis.nearest_fvg.top),
+                    'filled_pct': analysis.nearest_fvg.filled_pct
+                } if analysis.nearest_fvg else None,
+                'entry_zone': analysis.entry_zone,
+                'stop_zone': analysis.stop_zone,
+                'target_zone': analysis.target_zone,
+                'reasoning': analysis.reasoning,
+                'summary': self._format_smc_summary(analysis)
+            }
+            
+        except Exception as e:
+            logger.error(f"SMC analysis error: {e}")
+            return {'available': False, 'error': str(e)}
+    
+    def _format_smc_summary(self, analysis) -> str:
+        """Format SMC analysis for LLM"""
+        lines = []
+        lines.append("📊 SMART MONEY CONCEPT ANALYSIS")
+        lines.append(f"Signal: {analysis.signal} ({analysis.confidence}% confidence)")
+        lines.append(f"Market Bias: {analysis.bias.value.upper()}")
+        lines.append(f"Order Blocks: {len(analysis.order_blocks)} valid zones")
+        lines.append(f"Fair Value Gaps: {len(analysis.fair_value_gaps)} active")
+        
+        if analysis.bos_detected:
+            lines.append("✅ Break of Structure DETECTED")
+        if analysis.choch_detected:
+            lines.append("🔄 Change of Character DETECTED - Potential reversal!")
+        
+        if analysis.nearest_ob:
+            lines.append(f"Nearest OB: {analysis.nearest_ob.type.value} ${analysis.nearest_ob.bottom:.2f}-${analysis.nearest_ob.top:.2f}")
+        
+        for reason in analysis.reasoning[:3]:
+            lines.append(f"• {reason}")
+        
+        return "\n".join(lines)
+    
+    def get_multi_factor_risk(self, technical: Dict, macro: Dict, 
+                              crowd: Dict = None, mm_data: Dict = None) -> Dict:
+        """
+        Get Multi-Factor Risk Score (Hunter-style)
+        
+        Returns 0-100 risk score with position sizing recommendation
+        """
+        try:
+            from multi_factor_risk import MultiFactorRisk, quick_risk_check
+            
+            risk = MultiFactorRisk()
+            
+            # Extract volatility data
+            volatility_data = {
+                'atr_percentile': 50,  # Default
+                'vix': 20,
+                'regime': 'NORMAL'
+            }
+            
+            if macro and macro.get('features'):
+                vix = macro['features'].get('vix_level', 20)
+                volatility_data['vix'] = vix
+                if vix > 30:
+                    volatility_data['regime'] = 'HIGH'
+                elif vix < 15:
+                    volatility_data['regime'] = 'LOW'
+            
+            # Extract trend data
+            trend_data = {
+                'adx': 25,
+                'trend_aligned': True
+            }
+            
+            if technical and technical.get('latest'):
+                adx = technical['latest'].get('adx_D1', technical['latest'].get('adx', 25))
+                trend_data['adx'] = adx if isinstance(adx, (int, float)) else 25
+            
+            # Extract volume data
+            volume_data = {
+                'volume_ratio': 1.0,
+                'liquidity': 'NORMAL'
+            }
+            
+            # Extract correlation data
+            correlation_data = {
+                'gold_dxy': -0.5,
+                'gold_spy': 0.1
+            }
+            
+            if macro and macro.get('features'):
+                gold_dxy = macro['features'].get('gold_dxy_correlation', -0.5)
+                correlation_data['gold_dxy'] = gold_dxy
+            
+            # Extract sentiment data
+            sentiment_data = {
+                'retail_long_pct': 50,
+                'fear_greed': 50
+            }
+            
+            if crowd and crowd.get('available'):
+                sentiment_data['fear_greed'] = crowd.get('fear_greed', 50)
+            
+            # Extract MM data
+            mm_activity = {
+                'stop_hunt_prob': 0.3,
+                'liquidity_thin': False
+            }
+            
+            if mm_data:
+                mm_activity['stop_hunt_prob'] = mm_data.get('stop_hunt_prob', 0.3)
+            
+            # Run assessment
+            assessment = risk.assess(
+                volatility_data=volatility_data,
+                trend_data=trend_data,
+                volume_data=volume_data,
+                correlation_data=correlation_data,
+                sentiment_data=sentiment_data,
+                mm_data=mm_activity
+            )
+            
+            return {
+                'available': True,
+                'risk_score': assessment.total_score,
+                'risk_level': assessment.risk_level,
+                'position_multiplier': assessment.position_multiplier,
+                'factors': assessment.factors,
+                'warnings': assessment.warnings,
+                'recommendation': assessment.recommendation
+            }
+            
+        except Exception as e:
+            logger.error(f"Multi-factor risk error: {e}")
+            return {'available': False, 'error': str(e), 'risk_score': 50, 'position_multiplier': 1.0}
+    
+    def get_adaptive_stoploss(self, entry_price: float, current_price: float,
+                              current_stop: float = None, direction: str = 'LONG',
+                              atr: float = None) -> Dict:
+        """
+        Get Adaptive Stop Loss recommendation (Freqtrade-style)
+        
+        Returns optimal stop level based on profit, volatility, and time
+        """
+        try:
+            from adaptive_stoploss import AdaptiveStopLoss, TrailMode
+            
+            # Calculate ATR if not provided
+            if atr is None:
+                atr = abs(current_price - entry_price) * 0.5  # Rough estimate
+                atr = max(atr, 15)  # Minimum 15 points for Gold
+            
+            stop_loss = AdaptiveStopLoss()
+            
+            result = stop_loss.calculate(
+                entry_price=entry_price,
+                current_price=current_price,
+                current_stop=current_stop,
+                atr=atr,
+                direction=direction,
+                mode=TrailMode.ADAPTIVE
+            )
+            
+            return {
+                'available': True,
+                'stop_price': result.stop_price,
+                'trail_distance': result.trail_distance,
+                'mode_used': result.mode_used,
+                'should_move': result.should_move,
+                'break_even_locked': result.break_even_locked,
+                'reason': result.reason
+            }
+            
+        except Exception as e:
+            logger.error(f"Adaptive stoploss error: {e}")
+            return {'available': False, 'error': str(e)}
+    
     def get_full_market_context(self) -> Dict:
         """
         Main entry point: Get complete market context for NEO
@@ -382,6 +597,31 @@ class UnifiedMarketFeed:
             if algo_hype['block_buys']:
                 logger.info(f"   ⛔ BUYS BLOCKED due to extreme hype!")
         
+        # 9. SMC ANALYSIS (Smart Money Concepts) - NEW!
+        logger.info("\n🎯 Running SMC Analysis (Order Blocks, FVG)...")
+        smc_analysis = self.get_smc_analysis(ohlcv_data)
+        if smc_analysis.get('available'):
+            logger.info(f"   📊 SMC Signal: {smc_analysis['signal']} ({smc_analysis['confidence']}%)")
+            logger.info(f"   📈 Market Bias: {smc_analysis['bias'].upper()}")
+            logger.info(f"   🔲 Order Blocks: {smc_analysis['order_blocks']} valid zones")
+            logger.info(f"   📐 Fair Value Gaps: {smc_analysis['fvg_count']} active")
+            if smc_analysis['bos_detected']:
+                logger.info(f"   ✅ Break of Structure DETECTED")
+            if smc_analysis['choch_detected']:
+                logger.info(f"   🔄 Change of Character DETECTED")
+        
+        # 10. MULTI-FACTOR RISK SCORE - NEW!
+        logger.info("\n⚖️ Calculating Multi-Factor Risk Score...")
+        multi_risk = self.get_multi_factor_risk(technical, macro, crowd)
+        if multi_risk.get('available'):
+            risk_emoji = {'LOW': '🟢', 'MODERATE': '🟡', 'HIGH': '🟠', 'EXTREME': '🔴'}
+            emoji = risk_emoji.get(multi_risk['risk_level'], '❓')
+            logger.info(f"   {emoji} Risk Score: {multi_risk['risk_score']:.0f}/100 ({multi_risk['risk_level']})")
+            logger.info(f"   📏 Position Multiplier: {multi_risk['position_multiplier']:.0%}")
+            if multi_risk['warnings']:
+                for warn in multi_risk['warnings'][:2]:
+                    logger.info(f"   {warn}")
+        
         # Count features
         tech_count = len(technical.get('latest', {}))
         macro_count = len(macro.get('features', {}))
@@ -398,7 +638,8 @@ class UnifiedMarketFeed:
         
         # Build combined summary for LLM
         combined_summary = self._build_combined_summary(
-            technical, macro, microstructure, mql5, crowd, usdjpy_correlation, algo_hype
+            technical, macro, microstructure, mql5, crowd, usdjpy_correlation, algo_hype,
+            smc_analysis, multi_risk
         )
         
         self.last_update = datetime.now()
@@ -413,13 +654,16 @@ class UnifiedMarketFeed:
             'crowd_psychology': crowd,
             'usdjpy_correlation': usdjpy_correlation,
             'algo_hype_index': algo_hype,
+            'smc_analysis': smc_analysis,       # NEW!
+            'multi_factor_risk': multi_risk,    # NEW!
             'feature_count': total_features,
             'summary': combined_summary
         }
     
     def _build_combined_summary(self, technical: Dict, macro: Dict, 
                                 microstructure: Dict, mql5: Dict, crowd: Dict = None,
-                                usdjpy: Dict = None, algo_hype: Dict = None) -> str:
+                                usdjpy: Dict = None, algo_hype: Dict = None,
+                                smc: Dict = None, multi_risk: Dict = None) -> str:
         """Build combined summary for NEO's LLM prompt"""
         
         lines = []
@@ -546,6 +790,71 @@ class UnifiedMarketFeed:
                 direction = signal.get('direction', 'UNKNOWN')
                 traders = len(signal.get('traders', []))
                 lines.append(f"   {symbol} {direction} - {traders} top traders agree")
+        
+        # ═══ SMC ANALYSIS (Smart Money Concepts) ═══
+        if smc and smc.get('available'):
+            lines.append("\n" + "="*60)
+            lines.append("🎯 SMART MONEY CONCEPT (SMC) ANALYSIS")
+            lines.append("="*60)
+            
+            signal = smc.get('signal', 'NEUTRAL')
+            confidence = smc.get('confidence', 0)
+            bias = smc.get('bias', 'NEUTRAL')
+            
+            signal_emoji = "🟢" if signal == "BUY" else "🔴" if signal == "SELL" else "⚪"
+            lines.append(f"   {signal_emoji} SMC Signal: {signal} ({confidence}% confidence)")
+            lines.append(f"   📈 Market Structure: {bias.upper()}")
+            lines.append(f"   🔲 Order Blocks: {smc.get('order_blocks', 0)} valid zones")
+            lines.append(f"   📐 Fair Value Gaps: {smc.get('fvg_count', 0)} active")
+            
+            if smc.get('bos_detected'):
+                lines.append("   ✅ BREAK OF STRUCTURE detected")
+            if smc.get('choch_detected'):
+                lines.append("   🔄 CHANGE OF CHARACTER detected - Potential reversal!")
+            
+            if smc.get('nearest_ob'):
+                ob = smc['nearest_ob']
+                lines.append(f"   📍 Nearest OB: {ob['type']} ${ob['zone'][0]:.2f}-${ob['zone'][1]:.2f} (strength: {ob['strength']})")
+            
+            if smc.get('entry_zone'):
+                lines.append(f"   🎯 Entry Zone: ${smc['entry_zone'][0]:.2f}-${smc['entry_zone'][1]:.2f}")
+            
+            if smc.get('reasoning'):
+                for reason in smc['reasoning'][:3]:
+                    lines.append(f"   • {reason}")
+        
+        # ═══ MULTI-FACTOR RISK SCORE ═══
+        if multi_risk and multi_risk.get('available'):
+            lines.append("\n" + "="*60)
+            lines.append("⚖️ MULTI-FACTOR RISK ASSESSMENT")
+            lines.append("="*60)
+            
+            risk_score = multi_risk.get('risk_score', 50)
+            risk_level = multi_risk.get('risk_level', 'MODERATE')
+            multiplier = multi_risk.get('position_multiplier', 1.0)
+            
+            risk_emoji = {'LOW': '🟢', 'MODERATE': '🟡', 'HIGH': '🟠', 'EXTREME': '🔴'}
+            emoji = risk_emoji.get(risk_level, '❓')
+            
+            lines.append(f"   {emoji} Risk Score: {risk_score:.0f}/100 ({risk_level})")
+            lines.append(f"   📏 Position Size: {multiplier:.0%} of normal")
+            
+            # Factor breakdown
+            factors = multi_risk.get('factors', {})
+            if factors:
+                lines.append("   Factor Breakdown:")
+                sorted_factors = sorted(factors.items(), key=lambda x: x[1], reverse=True)
+                for factor, score in sorted_factors[:4]:
+                    bar = "█" * int(score / 10) + "░" * (10 - int(score / 10))
+                    lines.append(f"     {factor}: {score:.0f}/100 [{bar}]")
+            
+            # Warnings
+            warnings = multi_risk.get('warnings', [])
+            if warnings:
+                for warn in warnings[:3]:
+                    lines.append(f"   {warn}")
+            
+            lines.append(f"   💡 {multi_risk.get('recommendation', '')}")
         
         # Overall assessment
         lines.append("\n" + "="*60)
