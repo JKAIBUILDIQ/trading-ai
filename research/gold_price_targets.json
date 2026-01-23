@@ -1,0 +1,199 @@
+{
+  "symbol": "XAUUSD",
+  "updated": "2026-01-23",
+  "analysis_methods": ["WYCKOFF", "ELLIOTT_WAVE", "FIBONACCI"],
+  
+  "current_context": {
+    "current_phase_wyckoff": "MARKUP",
+    "current_phase_sub": "LATE",
+    "current_wave_elliott": "Wave 5 of III",
+    "wave_degree": "SUPERCYCLE",
+    "wave_direction": "UP",
+    "estimated_completion": 85
+  },
+  
+  "bullish_targets": [
+    {
+      "price": 5000,
+      "method": "PSYCHOLOGICAL",
+      "probability": 95,
+      "description": "Major psychological resistance - massive round number"
+    },
+    {
+      "price": 5136,
+      "method": "ELLIOTT_WAVE",
+      "calculation": "Wave 5 = 0.618 × Wave 3 ($1,920 × 0.618 = $1,186 + $3,950)",
+      "probability": 75,
+      "description": "Primary Elliott Wave 5 target"
+    },
+    {
+      "price": 5154,
+      "method": "ELLIOTT_WAVE",
+      "calculation": "Wave 5 = 2.618 × Wave 1 ($640 × 2.618 = $1,675 + $3,950)",
+      "probability": 65,
+      "description": "Extended Wave 5 target"
+    },
+    {
+      "price": 5250,
+      "method": "FIBONACCI_CLUSTER",
+      "probability": 60,
+      "description": "Multiple Fibonacci extensions converge here"
+    },
+    {
+      "price": 5500,
+      "method": "WAVE_III_COMPLETE",
+      "probability": 50,
+      "description": "Potential Wave III completion zone"
+    },
+    {
+      "price": 5870,
+      "method": "ELLIOTT_EXTENDED",
+      "calculation": "Wave 5 = Wave 3 ($1,920 + $3,950)",
+      "probability": 35,
+      "description": "Maximum extended target if euphoria continues"
+    },
+    {
+      "price": 6000,
+      "method": "WAVE_V_TARGET",
+      "probability": 30,
+      "description": "After Wave IV correction, final push target"
+    }
+  ],
+  
+  "support_levels": [
+    {
+      "price": 4950,
+      "type": "SHORT_TERM",
+      "strength": "MEDIUM",
+      "description": "Recent pullback support, first defense"
+    },
+    {
+      "price": 4850,
+      "type": "WYCKOFF_LPS",
+      "strength": "STRONG",
+      "description": "Last Point of Support - key Wyckoff level"
+    },
+    {
+      "price": 4700,
+      "type": "STRUCTURE",
+      "strength": "VERY_STRONG",
+      "description": "Major structure support, previous resistance"
+    },
+    {
+      "price": 4500,
+      "type": "PSYCHOLOGICAL",
+      "strength": "MAJOR",
+      "description": "Psychological level + 38.2% retrace of Wave 5"
+    },
+    {
+      "price": 4200,
+      "type": "WAVE_3_TOP",
+      "strength": "CRITICAL",
+      "description": "Wave 3 top - breach here changes wave count"
+    },
+    {
+      "price": 3950,
+      "type": "WAVE_4_LOW",
+      "strength": "INVALIDATION",
+      "description": "Wave 4 low - break below invalidates bullish count"
+    }
+  ],
+  
+  "wave_IV_projections": {
+    "description": "Expected Wave IV correction after Wave III completes",
+    "targets": [
+      {
+        "price": 5000,
+        "retrace_pct": 23.6,
+        "type": "SHALLOW",
+        "description": "Shallow correction, strong bull"
+      },
+      {
+        "price": 4700,
+        "retrace_pct": 38.2,
+        "type": "NORMAL",
+        "description": "Most common Wave IV retrace"
+      },
+      {
+        "price": 4500,
+        "retrace_pct": 50.0,
+        "type": "DEEP",
+        "description": "Deep correction, still valid count"
+      }
+    ]
+  },
+  
+  "distribution_warning_signs": [
+    "Volume exhaustion at highs (volume declining at new price highs)",
+    "RSI divergence on daily (price higher high, RSI lower high)",
+    "Failed breakout above resistance with reversal",
+    "Long upper wicks at highs (selling pressure)",
+    "Algo Hype Index (AHI) > 80 (extreme crowd)",
+    "News saturation: 'Gold to $10,000!' headlines everywhere",
+    "Upthrust After Distribution (UTAD) pattern"
+  ],
+  
+  "trading_rules": {
+    "buy_zones": [
+      {
+        "range": [4950, 4970],
+        "type": "SHALLOW_PULLBACK",
+        "risk_reward": "1:2",
+        "stop_below": 4920
+      },
+      {
+        "range": [4850, 4900],
+        "type": "DEEPER_PULLBACK",
+        "risk_reward": "1:3",
+        "stop_below": 4780
+      },
+      {
+        "range": [4700, 4750],
+        "type": "MAJOR_BUY",
+        "risk_reward": "1:4",
+        "stop_below": 4650
+      }
+    ],
+    "take_profit_zones": [
+      {"price": 5000, "partial_pct": 25},
+      {"price": 5136, "partial_pct": 25},
+      {"price": 5250, "partial_pct": 25},
+      {"price": 5500, "final_pct": 25}
+    ],
+    "stop_loss_rules": {
+      "initial": "Below Wave 4 structure ($4,700)",
+      "trail_after_5000": "Trail 100 points below price",
+      "trail_after_5136": "Trail 80 points below price",
+      "emergency": "Below $3,950 (Wave 4 low)"
+    }
+  },
+  
+  "historical_reference": {
+    "gold_journey": {
+      "wave_I": {
+        "start": 1615,
+        "end": 2075,
+        "size": 460,
+        "date_range": "Sep 2022 - May 2023"
+      },
+      "wave_II": {
+        "start": 2075,
+        "end": 1810,
+        "retrace": 0.618,
+        "size": -265,
+        "date_range": "May 2023 - Oct 2023"
+      },
+      "wave_III": {
+        "start": 1810,
+        "in_progress": true,
+        "sub_waves": {
+          "1": {"start": 1810, "end": 2450, "size": 640},
+          "2": {"start": 2450, "end": 2280, "size": -170, "retrace": 0.382},
+          "3": {"start": 2280, "end": 4200, "size": 1920, "extended": true},
+          "4": {"start": 4200, "end": 3950, "size": -250, "retrace": 0.13},
+          "5": {"start": 3950, "end": null, "current": true}
+        }
+      }
+    }
+  }
+}
