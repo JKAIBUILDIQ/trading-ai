@@ -1,0 +1,297 @@
+{
+  "metadata": {
+    "updated": "2026-01-24",
+    "description": "Reverse-engineered indicator settings from Asian retail trading platforms",
+    "sources": [
+      "Zerodha Streak (India) - 500K+ users",
+      "Kite Connect API bots (India)",
+      "同花顺 Tonghuashun (China) - #1 trading app",
+      "东方财富 East Money (China) - social trading",
+      "YouTube India algo tutorials",
+      "Bilibili China trading tutorials"
+    ],
+    "total_retail_accounts": "300M+ (India 100M + China 200M)"
+  },
+
+  "indian_retail": {
+    "primary_indicators": {
+      "supertrend": {
+        "rank": 1,
+        "popularity_pct": 90,
+        "default_settings": {
+          "atr_period": 10,
+          "multiplier": 3.0
+        },
+        "alternative_settings": [
+          {"atr_period": 7, "multiplier": 2.5},
+          {"atr_period": 14, "multiplier": 3.0}
+        ],
+        "usage": "Entry/Exit signal, Stop loss placement",
+        "source": "Zerodha Streak default, YouTube India",
+        "notes": "MOST USED indicator in India. Supertrend flip = mass entry"
+      },
+      
+      "rsi": {
+        "rank": 2,
+        "popularity_pct": 85,
+        "default_settings": {
+          "period": 14,
+          "oversold": 30,
+          "overbought": 70
+        },
+        "alternative_settings": [
+          {"period": 7, "oversold": 20, "overbought": 80}
+        ],
+        "usage": "Oversold/Overbought detection",
+        "source": "Universal",
+        "notes": "RSI < 30 = mass buy signal in India"
+      },
+      
+      "ema_cross": {
+        "rank": 3,
+        "popularity_pct": 75,
+        "default_settings": {
+          "fast_period": 9,
+          "slow_period": 21,
+          "trend_period": 200
+        },
+        "alternative_settings": [
+          {"fast_period": 5, "slow_period": 13, "trend_period": 50},
+          {"fast_period": 12, "slow_period": 26, "trend_period": 200}
+        ],
+        "usage": "Trend direction, Entry signal",
+        "source": "Zerodha Streak templates",
+        "notes": "9/21 EMA cross very popular for scalping"
+      },
+      
+      "macd": {
+        "rank": 4,
+        "popularity_pct": 60,
+        "default_settings": {
+          "fast": 12,
+          "slow": 26,
+          "signal": 9
+        },
+        "usage": "Momentum, Entry confirmation",
+        "source": "Universal",
+        "notes": "Used more for confirmation than primary signal"
+      },
+      
+      "vwap": {
+        "rank": 5,
+        "popularity_pct": 70,
+        "default_settings": {
+          "type": "standard"
+        },
+        "usage": "Intraday support/resistance",
+        "source": "Zerodha Kite",
+        "notes": "Very popular for intraday trading"
+      },
+      
+      "bollinger_bands": {
+        "rank": 6,
+        "popularity_pct": 55,
+        "default_settings": {
+          "period": 20,
+          "std_dev": 2.0
+        },
+        "usage": "Volatility, Mean reversion",
+        "source": "Universal",
+        "notes": "Band bounce strategies popular"
+      }
+    },
+    
+    "stop_loss_patterns": {
+      "supertrend_based": {
+        "popularity_pct": 70,
+        "method": "Stop below Supertrend line"
+      },
+      "atr_based": {
+        "popularity_pct": 60,
+        "method": "Stop at 1.5x or 2x ATR from entry"
+      },
+      "fixed_points": {
+        "popularity_pct": 50,
+        "common_values": [20, 30, 50, 100]
+      },
+      "swing_based": {
+        "popularity_pct": 40,
+        "method": "Below recent swing low"
+      },
+      "round_numbers": {
+        "popularity_pct": 55,
+        "method": "Below nearest round number (50, 100)"
+      }
+    },
+    
+    "time_patterns": {
+      "market_hours": {
+        "open": "09:15 IST",
+        "close": "15:30 IST",
+        "utc_offset": "+05:30"
+      },
+      "high_activity": ["09:15-10:00", "14:30-15:30"],
+      "low_activity": ["12:00-13:00"],
+      "options_expiry": "Thursday weekly, last Thursday monthly"
+    },
+    
+    "festival_patterns": {
+      "diwali": {
+        "months": [10, 11],
+        "gold_bias": "STRONG_BUY",
+        "reason": "Lakshmi Puja - auspicious for gold"
+      },
+      "akshaya_tritiya": {
+        "months": [4, 5],
+        "gold_bias": "VERY_STRONG_BUY",
+        "reason": "Most auspicious day for gold purchase"
+      },
+      "dhanteras": {
+        "timing": "2 days before Diwali",
+        "gold_bias": "STRONG_BUY",
+        "reason": "Wealth worship day"
+      }
+    }
+  },
+
+  "chinese_retail": {
+    "primary_indicators": {
+      "moving_averages": {
+        "rank": 1,
+        "popularity_pct": 95,
+        "default_settings": {
+          "periods": [5, 10, 20, 60, 120, 250]
+        },
+        "notes": "Chinese traders use MORE MAs than Western. 250 = annual average"
+      },
+      
+      "macd": {
+        "rank": 2,
+        "popularity_pct": 90,
+        "default_settings": {
+          "fast": 12,
+          "slow": 26,
+          "signal": 9
+        },
+        "notes": "Standard settings, very widely used"
+      },
+      
+      "kdj": {
+        "rank": 3,
+        "popularity_pct": 80,
+        "default_settings": {
+          "k_period": 9,
+          "d_period": 3,
+          "j_calculation": "3D - 2K"
+        },
+        "notes": "Chinese-specific indicator. J line unique to China"
+      },
+      
+      "boll": {
+        "rank": 4,
+        "popularity_pct": 70,
+        "default_settings": {
+          "period": 20,
+          "std_dev": 2.0
+        },
+        "notes": "Called BOLL in China, same as Bollinger"
+      },
+      
+      "rsi": {
+        "rank": 5,
+        "popularity_pct": 50,
+        "default_settings": {
+          "period": 6,
+          "oversold": 20,
+          "overbought": 80
+        },
+        "notes": "China uses SHORTER period (6) vs West (14)"
+      }
+    },
+    
+    "round_number_obsession": {
+      "importance": "VERY HIGH",
+      "popularity_pct": 95,
+      "significant_levels": [50, 100, 500, 1000, 5000, 10000],
+      "cultural_reason": "Lucky number culture, clean round prices preferred",
+      "trading_impact": "Heavy stop placement at round numbers"
+    },
+    
+    "time_patterns": {
+      "shanghai_gold_exchange": {
+        "morning_session": "09:00-11:30 CST",
+        "afternoon_session": "13:30-15:00 CST",
+        "night_session": "21:00-02:30+1 CST",
+        "utc_offset": "+08:00"
+      },
+      "high_activity": ["09:00-10:00", "14:00-15:00"],
+      "lunch_break": "11:30-13:30",
+      "government_interventions": "Often at open/close"
+    },
+    
+    "cultural_patterns": {
+      "spring_festival": {
+        "timing": "Chinese New Year (Jan/Feb)",
+        "gold_bias": "STRONG_BUY",
+        "reason": "Gift-giving tradition"
+      },
+      "golden_week": {
+        "timing": "October 1-7",
+        "activity": "LOW",
+        "reason": "National holiday, markets closed"
+      }
+    }
+  },
+
+  "combined_herd_signals": {
+    "strong_buy_signals": [
+      "Supertrend flip to bullish",
+      "RSI < 30 (India style)",
+      "KDJ oversold with J < 0",
+      "MA 5 crosses above MA 10",
+      "Price at round number support"
+    ],
+    "strong_sell_signals": [
+      "Supertrend flip to bearish",
+      "RSI > 70 (India style)",
+      "KDJ overbought with J > 100",
+      "MA 5 crosses below MA 10",
+      "Price rejected at round number resistance"
+    ],
+    "stop_hunt_zones": [
+      "Below Supertrend line",
+      "Below recent swing low",
+      "Below round numbers",
+      "At 1.5x ATR from mass entry"
+    ]
+  },
+
+  "counter_strategies": {
+    "front_run": {
+      "description": "Enter 5-10 minutes before retail signal triggers",
+      "triggers": [
+        "Supertrend about to flip (within 0.5%)",
+        "RSI approaching 30 (at 32-35)",
+        "EMA cross imminent"
+      ]
+    },
+    "fade_exhaustion": {
+      "description": "Go opposite when herd is exhausted",
+      "conditions": [
+        "Herd strength > 80%",
+        "Volume declining at highs",
+        "Many indicators aligned (crowded)",
+        "Price extended from MA"
+      ]
+    },
+    "stop_hunt_reversal": {
+      "description": "Enter after MMs sweep retail stops",
+      "pattern": [
+        "Price approaches stop cluster",
+        "Quick spike through stops",
+        "Immediate reversal",
+        "Enter on reversal confirmation"
+      ]
+    }
+  }
+}
