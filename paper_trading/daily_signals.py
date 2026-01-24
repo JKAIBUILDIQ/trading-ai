@@ -43,7 +43,8 @@ class DailySignalGenerator:
         self.signals_dir = SIGNALS_DIR
     
     def get_real_btc_data(self) -> Dict[str, Any]:
-        """Get REAL BTC data from CoinGecko"""
+        """Get REAL BTC data from CoinGecko, with Yahoo Finance fallback"""
+        # Try CoinGecko first
         try:
             url = 'https://api.coingecko.com/api/v3/coins/bitcoin'
             params = {'localization': 'false', 'sparkline': 'true'}
@@ -67,8 +68,37 @@ class DailySignalGenerator:
                 'is_real': True
             }
         except Exception as e:
-            logger.error(f"Failed to get BTC data: {e}")
-            raise ValueError(f"Cannot get real BTC data: {e}")
+            logger.warning(f"CoinGecko failed ({e}), trying Yahoo Finance fallback...")
+            
+        # Fallback to Yahoo Finance BTC-USD
+        try:
+            btc = yf.Ticker('BTC-USD')
+            hist = btc.history(period='7d')
+            if hist.empty:
+                raise ValueError("No BTC data from Yahoo")
+            
+            current = hist.iloc[-1]
+            prev = hist.iloc[-2] if len(hist) > 1 else current
+            
+            price = float(current['Close'])
+            high_24h = float(current['High'])
+            low_24h = float(current['Low'])
+            change_24h = ((price - float(prev['Close'])) / float(prev['Close'])) * 100
+            sparkline = hist['Close'].tolist()[-24:] if len(hist) > 0 else [price]
+            
+            logger.info(f"Using Yahoo Finance BTC data: ${price:,.0f}")
+            return {
+                'price': price,
+                'high_24h': high_24h,
+                'low_24h': low_24h,
+                'change_24h': change_24h,
+                'sparkline': sparkline,
+                'source': 'yahoo_finance',
+                'is_real': True
+            }
+        except Exception as e2:
+            logger.error(f"Both CoinGecko and Yahoo Finance failed: {e2}")
+            raise ValueError(f"Cannot get real BTC data from any source")
     
     def get_real_stock_data(self, symbol: str) -> Dict[str, Any]:
         """Get REAL stock data from Yahoo Finance"""
@@ -499,16 +529,53 @@ class DailySignalGenerator:
         # Paul wants: current week + next 3 weeks + 2 months out
         expiries = self.get_next_expiries('IREN', count=6)
         
+        # Determine recommended action FIRST (before strike loop needs it)
+        # BUY if: BTC bullish OR RSI oversold OR good setup
+        # HOLD if: uncertain or near resistance
+        if btc_bullish and confidence >= 65:
+            recommended_action = 'BUY'
+        elif rsi_oversold:
+            recommended_action = 'BUY'  # Oversold = buy opportunity
+        elif btc_bullish:
+            recommended_action = 'BUY'
+        else:
+            recommended_action = 'HOLD'  # Wait for better setup
+        
         # Paul's strike options: $60 (ATM), $70 (OTM), $80 (far OTM)
         target_strikes = [60.0, 70.0, 80.0]
         
-        # Generate signals for each strike level
+        # Generate signals for each strike level with DIFFERENT recommendations
         strike_signals = {}
         for strike in target_strikes:
             strike_key = f"${int(strike)}"
+            
+            # Different recommendation logic per strike
+            if strike == 60.0:
+                # ATM: Most responsive, use main signal
+                strike_action = recommended_action
+                strike_note = "Primary position - follows BTC signal"
+            elif strike == 70.0:
+                # OTM: Wait for confirmation or buy small on dips
+                if btc_bullish and confidence >= 70:
+                    strike_action = 'BUY'
+                    strike_note = "Moderate leverage - add on strength confirmation"
+                else:
+                    strike_action = 'HOLD'
+                    strike_note = "Wait for BTC breakout or IREN dip"
+            else:  # $80
+                # Far OTM: Only buy on strong signals or as earnings lottery
+                if btc_bullish and confidence >= 80:
+                    strike_action = 'BUY'
+                    strike_note = "Aggressive - only with high conviction"
+                else:
+                    strike_action = 'HOLD'
+                    strike_note = "Lottery ticket - wait for breakout setup"
+            
             strike_signals[strike_key] = {
                 'strike': strike,
                 'strike_type': 'ATM' if strike == 60.0 else ('OTM' if strike == 70.0 else 'FAR_OTM'),
+                'action': strike_action,
+                'note': strike_note,
                 'expiries': []
             }
             
@@ -534,18 +601,6 @@ class DailySignalGenerator:
         earnings_date = IREN_EARNINGS_DATE.date()
         days_to_earnings = (earnings_date - today).days
         
-        # Determine recommended action: BUY or HOLD
-        # BUY if: BTC bullish OR RSI oversold OR good setup
-        # HOLD if: uncertain or near resistance
-        if btc_bullish and confidence >= 65:
-            recommended_action = 'BUY'
-        elif rsi_oversold:
-            recommended_action = 'BUY'  # Oversold = buy opportunity
-        elif btc_bullish:
-            recommended_action = 'BUY'
-        else:
-            recommended_action = 'HOLD'  # Wait for better setup
-        
         return {
             'symbol': 'IREN',
             'asset_type': 'OPTION',
@@ -553,7 +608,7 @@ class DailySignalGenerator:
             'action': action,
             'recommended_action': recommended_action,  # BUY or HOLD
             'option_type': 'CALL',  # ALWAYS CALL for Paul
-            'strike': target_strike,  # Paul's preferred $60 strike
+            'strike': 60.0,  # Paul's preferred $60 strike
             'expiry': primary_expiry['expiry'] if primary_expiry else 'N/A',
             'current_stock_price': data['price'],
             'option_price': primary_expiry['option_price'] if primary_expiry else 0,
@@ -573,6 +628,29 @@ class DailySignalGenerator:
                 'date': IREN_EARNINGS_DATE.strftime('%Y-%m-%d'),
                 'days_away': days_to_earnings,
                 'warning': '⚠️ AVOID expiries within 7 days of earnings!' if days_to_earnings <= 14 else None
+            },
+            # Earnings Play Strategy
+            'earnings_play': {
+                'enabled': days_to_earnings <= 14 and days_to_earnings > 0,
+                'strategy': 'POST_EARNINGS_BREAKOUT',
+                'description': 'If earnings are favorable, IREN could gap up toward ATH',
+                'recommended_strikes': {
+                    '$70': {
+                        'action': 'SMALL_POSITION',
+                        'expiry': 'Feb 20 or Feb 27 (post-earnings)',
+                        'reason': 'OTM gives 3-4x leverage on breakout, limited downside',
+                        'size': '25-50 contracts (speculative)'
+                    },
+                    '$80': {
+                        'action': 'LOTTERY',
+                        'expiry': 'Feb 20 or Feb 27 (post-earnings)',
+                        'reason': 'Far OTM = cheap lottery ticket, 5-10x if ATH breaks',
+                        'size': '10-25 contracts (small speculative)'
+                    }
+                },
+                'timing': 'Buy 1-2 days BEFORE earnings (Feb 3-4) for IV expansion, or AFTER earnings on confirmation',
+                'risk_warning': 'IV crush after earnings can destroy premium even if stock rises slightly',
+                'favorable_scenario': 'If IREN reports AI datacenter contract wins → could test $65-70 quickly'
             },
             'analysis': {
                 'rsi': round(data['rsi'], 1),
