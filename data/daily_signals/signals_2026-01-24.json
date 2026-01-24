@@ -1,29 +1,29 @@
 {
   "date": "2026-01-24",
-  "generated_at": "2026-01-24T21:24:21.443461Z",
+  "generated_at": "2026-01-24T21:37:02.493920Z",
   "market_date": "2026-01-24",
   "signals": {
     "btc": {
       "symbol": "BTC",
       "asset_type": "CRYPTO",
       "direction": "SHORT",
-      "current_price": 89165,
-      "entry_low": 88719.18,
-      "entry_high": 89610.82,
-      "take_profit": 86935.88,
-      "stop_loss": 90836.84,
+      "current_price": 89180,
+      "entry_low": 88734.1,
+      "entry_high": 89625.9,
+      "take_profit": 86950.5,
+      "stop_loss": 90852.12,
       "size": 0.5,
       "size_unit": "BTC",
       "confidence": 60,
       "analysis": {
-        "change_24h": -0.42,
+        "change_24h": -0.33,
         "high_24h": 89757,
         "low_24h": 89062,
         "trend": "BEARISH",
         "short_ma": 89226.66,
         "long_ma": 89474.03
       },
-      "generated_at": "2026-01-24T21:24:21.577652Z",
+      "generated_at": "2026-01-24T21:37:02.678809Z",
       "valid_for": "Today",
       "source": "coingecko",
       "is_real": true
@@ -33,7 +33,7 @@
       "asset_type": "OPTION",
       "direction": "LONG",
       "action": "WAIT FOR DIP",
-      "recommended_action": "HOLD",
+      "recommended_action": "BUY",
       "option_type": "CALL",
       "strike": 60.0,
       "expiry": "2026-02-13",
@@ -45,7 +45,7 @@
       "stop_loss": 4.11,
       "size": 75,
       "size_unit": "contracts",
-      "confidence": 55,
+      "confidence": 65,
       "all_expiries": [
         {
           "expiry": "2026-02-13",
@@ -154,8 +154,8 @@
         "$60": {
           "strike": 60.0,
           "strike_type": "ATM",
-          "action": "HOLD",
-          "note": "Primary position - follows BTC signal",
+          "action": "BUY",
+          "note": "Primary position - follows IREN fundamentals",
           "expiries": [
             {
               "expiry": "2026-02-13",
@@ -264,8 +264,8 @@
         "$70": {
           "strike": 70.0,
           "strike_type": "OTM",
-          "action": "HOLD",
-          "note": "Wait for BTC breakout or IREN dip",
+          "action": "BUY",
+          "note": "Moderate leverage - accumulate on strength",
           "expiries": [
             {
               "expiry": "2026-02-13",
@@ -374,8 +374,8 @@
         "$80": {
           "strike": 80.0,
           "strike_type": "FAR_OTM",
-          "action": "HOLD",
-          "note": "Lottery ticket - wait for breakout setup",
+          "action": "BUY",
+          "note": "Speculative - earnings lottery if bullish",
           "expiries": [
             {
               "expiry": "2026-02-13",
@@ -511,7 +511,7 @@
       },
       "analysis": {
         "rsi": 63.6,
-        "btc_change": -0.42,
+        "btc_change": -0.33,
         "btc_correlation": 0.75,
         "volume": 56438700,
         "stock_change": 8.46
@@ -522,7 +522,7 @@
         "target_price": 150.0,
         "thesis": "AI datacenter demand + legacy BTC infrastructure = $150 target"
       },
-      "generated_at": "2026-01-24T21:24:22.469879Z",
+      "generated_at": "2026-01-24T21:37:03.580501Z",
       "valid_for": "Today",
       "source": "yahoo_finance",
       "is_real": true
@@ -548,7 +548,7 @@
         "change_pct": 1.37,
         "volume": 21497000
       },
-      "generated_at": "2026-01-24T21:24:22.714416Z",
+      "generated_at": "2026-01-24T21:37:03.838362Z",
       "valid_for": "Today",
       "source": "yahoo_finance",
       "is_real": true
@@ -558,7 +558,7 @@
     "total_signals": 3,
     "bullish": 1,
     "bearish": 2,
-    "avg_confidence": 61.7
+    "avg_confidence": 65.0
   },
   "all_data_real": true
 }

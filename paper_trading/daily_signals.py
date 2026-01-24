@@ -529,17 +529,66 @@ class DailySignalGenerator:
         # Paul wants: current week + next 3 weeks + 2 months out
         expiries = self.get_next_expiries('IREN', count=6)
         
-        # Determine recommended action FIRST (before strike loop needs it)
-        # BUY if: BTC bullish OR RSI oversold OR good setup
-        # HOLD if: uncertain or near resistance
-        if btc_bullish and confidence >= 65:
+        # Determine recommended action based on IREN FUNDAMENTALS (NOT BTC!)
+        # Paul's thesis: IREN is DECOUPLING from BTC - AI datacenter business > BTC mining
+        # Use IREN's own technicals: trend, RSI, MACD, volume
+        
+        # Get IREN-specific indicators
+        iren_rsi = data.get('rsi', 50)
+        iren_trend = data.get('trend', 'NEUTRAL')
+        iren_change = data.get('change_pct', 0)
+        iren_volume = data.get('volume', 0)
+        iren_avg_volume = data.get('avg_volume', iren_volume)
+        
+        # Score IREN fundamentals (0-100)
+        iren_score = 50  # Start neutral
+        
+        # Trend analysis (+/- 20 points)
+        if iren_trend == 'BULLISH':
+            iren_score += 20
+        elif iren_trend == 'BEARISH':
+            iren_score -= 20
+        
+        # RSI analysis (+/- 15 points)
+        if iren_rsi < 40:  # Oversold = BUY opportunity
+            iren_score += 15
+        elif iren_rsi < 50:  # Slightly oversold
+            iren_score += 10
+        elif iren_rsi > 75:  # Overbought = HOLD
+            iren_score -= 10
+        elif iren_rsi > 60:  # Strong but not overbought
+            iren_score += 5
+        
+        # Momentum (+/- 10 points)
+        if iren_change > 3:  # Strong up day
+            iren_score += 10
+        elif iren_change > 0:  # Positive
+            iren_score += 5
+        elif iren_change < -3:  # Strong down day
+            iren_score -= 10
+        
+        # Volume confirmation (+/- 5 points)
+        if iren_volume > iren_avg_volume * 1.5:
+            iren_score += 5  # High volume confirms move
+        
+        # Determine action based on IREN score (NOT BTC!)
+        if iren_score >= 65:
             recommended_action = 'BUY'
-        elif rsi_oversold:
-            recommended_action = 'BUY'  # Oversold = buy opportunity
-        elif btc_bullish:
-            recommended_action = 'BUY'
-        else:
+            confidence = min(95, iren_score)
+        elif iren_score >= 50:
+            recommended_action = 'BUY'  # Lean bullish
+            confidence = iren_score + 10
+        elif iren_score >= 35:
             recommended_action = 'HOLD'  # Wait for better setup
+            confidence = 50
+        else:
+            recommended_action = 'HOLD'  # Caution
+            confidence = 40
+        
+        # BTC is now INFORMATIONAL ONLY (Paul's decoupling thesis)
+        btc_note = 'BTC bearish but IREN DECOUPLED - trading on AI datacenter fundamentals' if not btc_bullish else 'BTC supportive'
+        
+        logger.info(f"  IREN Score: {iren_score} → {recommended_action} ({confidence}% conf) | {btc_note}")
         
         # Paul's strike options: $60 (ATM), $70 (OTM), $80 (far OTM)
         target_strikes = [60.0, 70.0, 80.0]
@@ -549,27 +598,33 @@ class DailySignalGenerator:
         for strike in target_strikes:
             strike_key = f"${int(strike)}"
             
-            # Different recommendation logic per strike
+            # Different recommendation logic per strike - BASED ON IREN FUNDAMENTALS (not BTC!)
             if strike == 60.0:
-                # ATM: Most responsive, use main signal
+                # ATM: Most responsive, use main IREN signal
                 strike_action = recommended_action
-                strike_note = "Primary position - follows BTC signal"
+                strike_note = "Primary position - follows IREN fundamentals"
             elif strike == 70.0:
-                # OTM: Wait for confirmation or buy small on dips
-                if btc_bullish and confidence >= 70:
+                # OTM: Need higher confidence from IREN technicals
+                if iren_score >= 70:  # Strong IREN fundamentals
                     strike_action = 'BUY'
-                    strike_note = "Moderate leverage - add on strength confirmation"
+                    strike_note = "OTM leverage - IREN technicals strong"
+                elif iren_score >= 55:
+                    strike_action = 'BUY'
+                    strike_note = "Moderate leverage - accumulate on strength"
                 else:
                     strike_action = 'HOLD'
-                    strike_note = "Wait for BTC breakout or IREN dip"
+                    strike_note = "Wait for IREN breakout confirmation"
             else:  # $80
-                # Far OTM: Only buy on strong signals or as earnings lottery
-                if btc_bullish and confidence >= 80:
+                # Far OTM: Only on very strong IREN signals or earnings lottery
+                if iren_score >= 80:  # Very strong IREN fundamentals
                     strike_action = 'BUY'
-                    strike_note = "Aggressive - only with high conviction"
+                    strike_note = "Aggressive - IREN technicals very strong"
+                elif iren_score >= 65:
+                    strike_action = 'BUY'
+                    strike_note = "Speculative - earnings lottery if bullish"
                 else:
                     strike_action = 'HOLD'
-                    strike_note = "Lottery ticket - wait for breakout setup"
+                    strike_note = "Far OTM - wait for breakout or earnings catalyst"
             
             strike_signals[strike_key] = {
                 'strike': strike,
