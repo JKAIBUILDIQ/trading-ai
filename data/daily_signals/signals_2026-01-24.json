@@ -1,0 +1,151 @@
+{
+  "date": "2026-01-24",
+  "generated_at": "2026-01-24T18:12:00.226523Z",
+  "market_date": "2026-01-24",
+  "signals": {
+    "btc": {
+      "symbol": "BTC",
+      "asset_type": "CRYPTO",
+      "direction": "SHORT",
+      "current_price": 89243,
+      "entry_low": 88796.79,
+      "entry_high": 89689.21,
+      "take_profit": 87011.93,
+      "stop_loss": 90916.31,
+      "size": 0.5,
+      "size_unit": "BTC",
+      "confidence": 63,
+      "analysis": {
+        "change_24h": -1.71,
+        "high_24h": 90796,
+        "low_24h": 89062,
+        "trend": "BEARISH",
+        "short_ma": 89226.66,
+        "long_ma": 89474.03
+      },
+      "generated_at": "2026-01-24T18:12:00.431690Z",
+      "valid_for": "Today",
+      "source": "coingecko",
+      "is_real": true
+    },
+    "iren": {
+      "symbol": "IREN",
+      "asset_type": "OPTION",
+      "direction": "SHORT",
+      "option_type": "PUT",
+      "strike": 55.0,
+      "expiry": "2026-01-30",
+      "current_stock_price": 56.68000030517578,
+      "option_price": 2.5,
+      "entry_low": 2.49,
+      "entry_high": 2.51,
+      "take_profit": 3.62,
+      "stop_loss": 1.66,
+      "size": 25,
+      "size_unit": "contracts",
+      "confidence": 63,
+      "all_expiries": [
+        {
+          "expiry": "2026-01-30",
+          "days_out": 6,
+          "strike": 55.0,
+          "option_type": "PUT",
+          "option_price": 2.5,
+          "entry_low": 2.49,
+          "entry_high": 2.51,
+          "take_profit": 3.62,
+          "stop_loss": 1.66,
+          "size": 25,
+          "theta_warning": "HIGH THETA DECAY",
+          "volatility_pct": 45
+        },
+        {
+          "expiry": "2026-02-06",
+          "days_out": 13,
+          "strike": 55.0,
+          "option_type": "PUT",
+          "option_price": 4.8,
+          "entry_low": 4.78,
+          "entry_high": 4.82,
+          "take_profit": 6.48,
+          "stop_loss": 3.54,
+          "size": 50,
+          "theta_warning": "MODERATE THETA",
+          "volatility_pct": 35
+        },
+        {
+          "expiry": "2026-02-13",
+          "days_out": 20,
+          "strike": 55.0,
+          "option_type": "PUT",
+          "option_price": 5.55,
+          "entry_low": 5.52,
+          "entry_high": 5.58,
+          "take_profit": 7.21,
+          "stop_loss": 4.3,
+          "size": 75,
+          "theta_warning": "NORMAL THETA",
+          "volatility_pct": 30
+        },
+        {
+          "expiry": "2026-02-20",
+          "days_out": 27,
+          "strike": 45.0,
+          "option_type": "PUT",
+          "option_price": 2.47,
+          "entry_low": 2.46,
+          "entry_high": 2.48,
+          "take_profit": 3.09,
+          "stop_loss": 2.01,
+          "size": 100,
+          "theta_warning": "LOW THETA",
+          "volatility_pct": 25
+        }
+      ],
+      "analysis": {
+        "rsi": 63.6,
+        "btc_change": -1.71,
+        "btc_correlation": 0.75,
+        "volume": 56438700,
+        "stock_change": 8.46
+      },
+      "generated_at": "2026-01-24T18:12:01.085191Z",
+      "valid_for": "Today",
+      "source": "yahoo_finance",
+      "is_real": true
+    },
+    "gld": {
+      "symbol": "GLD",
+      "asset_type": "OPTION",
+      "direction": "SHORT",
+      "option_type": "PUT",
+      "strike": 455.0,
+      "expiry": "2026-01-28",
+      "current_price": 458.0,
+      "option_price": 5.05,
+      "entry_low": 5.02,
+      "entry_high": 5.08,
+      "take_profit": 6.31,
+      "stop_loss": 4.1,
+      "size": 25,
+      "size_unit": "contracts",
+      "confidence": 70,
+      "analysis": {
+        "rsi": 86.4,
+        "change_pct": 1.37,
+        "volume": 21497000
+      },
+      "generated_at": "2026-01-24T18:12:01.322414Z",
+      "valid_for": "Today",
+      "source": "yahoo_finance",
+      "is_real": true
+    }
+  },
+  "summary": {
+    "total_signals": 3,
+    "bullish": 0,
+    "bearish": 3,
+    "avg_confidence": 65.3
+  },
+  "all_data_real": true
+}

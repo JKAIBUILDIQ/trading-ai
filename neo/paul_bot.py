@@ -3,12 +3,11 @@ PaulBot - Real-Time Trading Intelligence for Paul's IREN Options
 
 IN-HOUSE USE ONLY - Not for outside distribution
 
-This is Paul's dedicated trading assistant that combines:
-- NEO's BTC intelligence
-- IREN correlation analysis
-- Options Greeks analysis
-- Liquidity/volume analysis
-- Position sizing recommendations
+Paul's Requirements (Jan 24, 2026):
+1. LONG ONLY - No shorts, no puts. Paul owns 100K shares, wants to ADD on dips
+2. BUY CALLS ONLY - He's bullish IREN for AI datacenter thesis
+3. AVOID NEAR-TERM EXPIRIES - Especially earnings (Feb 5, 2026)
+4. TRACK BTC DECOUPLING - IREN transitioning from BTC miner to AI datacenter
 
 Paul's Scale: 50-200+ contracts, making $50K-130K/week
 At this level, we need INSTITUTIONAL-GRADE tools.
@@ -18,6 +17,7 @@ import re
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
+import yfinance as yf
 
 logger = logging.getLogger(__name__)
 
@@ -27,47 +27,61 @@ try:
     from iren_analyzer import IRENAnalyzer, get_iren_analysis
     from greek_analyzer import GreekAnalyzer, get_greek_analyzer
     from liquidity_analyzer import LiquidityAnalyzer, get_liquidity_analyzer
+    from btc_coupling_analyzer import BTCCouplingAnalyzer, get_coupling_analyzer
+    from core_position_bot import IRENCorePosisionBot, get_core_position_bot
 except ImportError:
     # Relative imports for package usage
     from .btc_analyzer import BTCAnalyzer, get_btc_analyzer
     from .iren_analyzer import IRENAnalyzer, get_iren_analysis
     from .greek_analyzer import GreekAnalyzer, get_greek_analyzer
     from .liquidity_analyzer import LiquidityAnalyzer, get_liquidity_analyzer
+    from .btc_coupling_analyzer import BTCCouplingAnalyzer, get_coupling_analyzer
+    from .core_position_bot import IRENCorePosisionBot, get_core_position_bot
+
+
+# IREN Earnings Date - CRITICAL
+IREN_EARNINGS_DATE = datetime(2026, 2, 5)
 
 
 class PaulBot:
     """
     Real-time trading intelligence for Paul's IREN options.
     
-    Designed for high-volume trading where:
-    - Greeks can destroy profits
-    - Liquidity is critical
-    - BTC correlation drives IREN
-    - Clear, actionable signals needed
+    PAUL'S RULES:
+    1. LONG ONLY - He owns shares, wants to add via calls
+    2. NO SHORTS, NO PUTS - He's bullish IREN
+    3. Prefer 14-35 DTE expirations
+    4. AVOID earnings window (Feb 5, 2026)
+    5. Watch BTC but note decoupling thesis
     """
     
     def __init__(self):
         self.btc = get_btc_analyzer()
         self.greeks = get_greek_analyzer()
         self.liquidity = get_liquidity_analyzer()
+        self.coupling = get_coupling_analyzer()
+        self.core_position = get_core_position_bot()
         
-        # Paul's default preferences
+        # Paul's preferences
         self.default_contracts = 100
-        self.preferred_dte = (14, 21)  # 14-21 days
+        self.preferred_dte_range = (14, 35)  # 2-5 weeks, NOT close to earnings
+        self.min_dte = 14  # Minimum 14 days
         self.max_spread_pct = 5.0
         self.min_volume = 2000
         
+        # Paul's thesis
+        self.thesis = {
+            'target_price': 150.00,
+            'entry_price': 56.68,
+            'core_shares': 100_000,
+            'thesis_summary': "AI datacenter demand + legacy BTC infrastructure = $150 target"
+        }
+    
     def chat(self, query: str) -> Dict:
         """
         Natural language interface for Paul.
         
-        Examples:
-        - "What's the play today?"
-        - "Volume check on $60 calls"
-        - "Greeks on 150 contracts $58 calls"
-        - "Can I exit 200 contracts?"
-        - "Daily strategy"
-        - "Weekly outlook"
+        LONG-ONLY responses - no shorts or puts suggested.
         """
         query_lower = query.lower()
         
@@ -79,7 +93,6 @@ class PaulBot:
             return self.get_weekly_strategy()
         
         elif 'volume' in query_lower or 'liquidity' in query_lower:
-            # Extract strike if mentioned
             strike = self._extract_strike(query)
             contracts = self._extract_contracts(query) or 100
             return self.check_volume(strike or 60, contracts)
@@ -101,17 +114,24 @@ class PaulBot:
         elif 'btc' in query_lower or 'bitcoin' in query_lower:
             return self.get_btc_outlook()
         
+        elif any(word in query_lower for word in ['coupling', 'decouple', 'correlation']):
+            return self.get_coupling_analysis()
+        
+        elif any(word in query_lower for word in ['core', 'shares', '100k', 'position']):
+            return self.get_core_position_status()
+        
+        elif any(word in query_lower for word in ['covered', 'call income', 'cc']):
+            return self.get_covered_call_opportunity()
+        
         else:
             # Default to daily strategy
             return self.get_daily_strategy()
     
     def _extract_strike(self, query: str) -> Optional[float]:
         """Extract strike price from query"""
-        # Look for patterns like $60, 60 calls, strike 60
         patterns = [
             r'\$(\d+\.?\d*)',
             r'(\d+\.?\d*)\s*call',
-            r'(\d+\.?\d*)\s*put',
             r'strike\s*(\d+\.?\d*)',
         ]
         
@@ -135,73 +155,143 @@ class PaulBot:
                 return int(match.group(1))
         return None
     
+    def get_available_expiries(self) -> List[Dict]:
+        """
+        Get available option expiries with filtering.
+        
+        RULES:
+        1. At least 14 DTE
+        2. Avoid 7 days before/after earnings (Feb 5)
+        3. Prefer 21-35 DTE (Paul's sweet spot)
+        """
+        try:
+            iren = yf.Ticker("IREN")
+            expiries = list(iren.options)
+        except:
+            expiries = []
+        
+        today = datetime.now().date()
+        earnings_date = IREN_EARNINGS_DATE.date()
+        
+        filtered_expiries = []
+        for exp in expiries:
+            exp_date = datetime.strptime(exp, '%Y-%m-%d').date()
+            days_out = (exp_date - today).days
+            days_from_earnings = abs((exp_date - earnings_date).days)
+            
+            # Filter rules
+            if days_out < self.min_dte:
+                continue  # Too close
+            
+            # Determine quality
+            if days_from_earnings <= 7:
+                quality = "EARNINGS_RISK"
+                paul_pick = False
+            elif self.preferred_dte_range[0] <= days_out <= self.preferred_dte_range[1]:
+                quality = "PAUL_PREFERRED"
+                paul_pick = True
+            elif days_out > 45:
+                quality = "LONG_TERM"
+                paul_pick = False
+            else:
+                quality = "GOOD"
+                paul_pick = False
+            
+            filtered_expiries.append({
+                'date': exp,
+                'days_out': days_out,
+                'days_from_earnings': days_from_earnings,
+                'quality': quality,
+                'paul_pick': paul_pick
+            })
+        
+        return filtered_expiries
+    
     def get_daily_strategy(self) -> Dict:
         """
-        Morning brief with complete daily strategy.
+        Morning brief with LONG-ONLY daily strategy.
+        
+        NO PUTS, NO SHORTS - Paul is bullish IREN.
         """
         # Get all market intelligence
         btc_data = self.btc.get_btc_signal()
         btc_price = self.btc.get_btc_price()
-        correlation = self.btc.get_btc_iren_correlation()
         iren_data = get_iren_analysis()
+        iren_price = iren_data.get('price', 56.68)
+        
+        # Get coupling/decoupling status
+        coupling_status = self.coupling.get_coupling_status()
+        
+        # Get filtered expiries
+        expiries = self.get_available_expiries()
+        paul_picks = [e for e in expiries if e['paul_pick']]
+        
+        # ALWAYS BULLISH for Paul - he's LONG the stock
+        # Adjust confidence based on BTC signal
+        if btc_data['signal'] == 'BUY' and btc_data['confidence'] >= 60:
+            action = 'BUY CALLS'
+            confidence = min(btc_data['confidence'] + 10, 95)  # Boost for alignment
+            bias = 'STRONGLY BULLISH'
+        elif btc_data['signal'] == 'BUY':
+            action = 'BUY CALLS'
+            confidence = btc_data['confidence']
+            bias = 'BULLISH'
+        elif coupling_status['status'] == 'DECOUPLED':
+            # If decoupled, ignore BTC signal
+            action = 'BUY CALLS'
+            confidence = 70
+            bias = 'BULLISH (AI THESIS)'
+        else:
+            action = 'WAIT FOR DIP'
+            confidence = 50
+            bias = 'NEUTRAL - WAIT'
+        
+        # Get recommended strike (slightly OTM call)
+        recommended_strike = round(iren_price * 1.03 / 2.5) * 2.5
+        
+        # Find best expiry for Paul
+        best_expiry = paul_picks[0]['date'] if paul_picks else (expiries[0]['date'] if expiries else '2026-02-20')
         
         # Find liquid strikes
         liquid_strikes = self.liquidity.find_liquid_strikes(
             symbol='IREN',
-            expiry=self._get_optimal_expiry(),
+            expiry=best_expiry,
             option_type='call',
             min_volume=self.min_volume
         )
         
-        # Determine signal
-        if btc_data['signal'] == 'BUY' and btc_data['confidence'] >= 70:
-            action = 'BUY CALLS'
-            bias = 'BULLISH'
-        elif btc_data['signal'] == 'SELL' and btc_data['confidence'] >= 70:
-            action = 'BUY PUTS'
-            bias = 'BEARISH'
-        else:
-            action = 'HOLD'
-            bias = 'NEUTRAL'
-        
-        # Get recommended strike
-        iren_price = iren_data.get('price', 56.68)
-        
-        if action == 'BUY CALLS':
-            # Slightly OTM call
-            recommended_strike = round(iren_price * 1.03 / 2.5) * 2.5  # Round to 2.5
-        elif action == 'BUY PUTS':
-            recommended_strike = round(iren_price * 0.97 / 2.5) * 2.5
-        else:
-            recommended_strike = round(iren_price / 2.5) * 2.5
-        
-        # Check liquidity on recommended strike
+        # Check liquidity
         strike_liquidity = self.liquidity.check_liquidity(
             symbol='IREN',
             strike=recommended_strike,
-            expiry=self._get_optimal_expiry(),
-            option_type='call' if action != 'BUY PUTS' else 'put',
+            expiry=best_expiry,
+            option_type='call',
             contracts_needed=100
         )
         
-        # Greeks warning
+        # Greeks analysis
         greeks_analysis = self.greeks.analyze_position(
             contracts=100,
             strike=recommended_strike,
-            expiry=self._get_optimal_expiry(),
+            expiry=best_expiry,
             current_price=iren_price,
-            option_type='call' if action != 'BUY PUTS' else 'put'
+            option_type='call'
         )
+        
+        # Get core position status
+        core_status = self.core_position.get_core_position_status()
         
         return {
             'type': 'daily_strategy',
+            'mode': 'LONG_ONLY',  # PAUL'S RULE
             'date': datetime.now().strftime('%Y-%m-%d'),
             'time': datetime.now().strftime('%H:%M:%S'),
             
             'signal': {
                 'action': action,
                 'bias': bias,
-                'confidence': btc_data['confidence']
+                'confidence': confidence,
+                'note': 'LONG ONLY - No shorts for Paul'
             },
             
             'market_context': {
@@ -209,23 +299,33 @@ class PaulBot:
                 'btc_signal': btc_data['signal'],
                 'btc_confidence': btc_data['confidence'],
                 'iren_price': iren_price,
-                'iren_change': iren_data.get('change_pct', 0),
-                'correlation': correlation['correlation_30d'],
-                'beta': correlation['beta']
+                'iren_change': iren_data.get('change_pct', 0)
+            },
+            
+            'coupling_analysis': {
+                'status': coupling_status['status'],
+                'correlation_7d': coupling_status['correlation_7d'],
+                'correlation_30d': coupling_status['correlation_30d'],
+                'trend': coupling_status['trend'],
+                'beta': coupling_status['beta'],
+                'driver': coupling_status['driver'],
+                'recommendation': coupling_status['recommendation']
             },
             
             'recommendation': {
                 'strike': recommended_strike,
-                'expiry': self._get_optimal_expiry(),
-                'option_type': 'call' if action != 'BUY PUTS' else 'put',
+                'expiry': best_expiry,
+                'option_type': 'CALL',  # ALWAYS CALL for Paul
                 'entry_range': f"${greeks_analysis['position']['premium'] * 0.95:.2f} - ${greeks_analysis['position']['premium'] * 1.05:.2f}",
                 'max_contracts': strike_liquidity['max_clean_exit']['contracts']
             },
             
-            'suggested_size': {
-                'conservative': 50,
-                'standard': 100,
-                'aggressive': 150
+            'paul_preferred_expiries': paul_picks[:4],  # Top 4 preferred expiries
+            
+            'earnings_warning': {
+                'date': IREN_EARNINGS_DATE.strftime('%Y-%m-%d'),
+                'days_away': (IREN_EARNINGS_DATE.date() - datetime.now().date()).days,
+                'warning': 'AVOID expiries within 7 days of earnings'
             },
             
             'volume_hot_spots': [
@@ -246,146 +346,219 @@ class PaulBot:
                 'stop': {'pct': -25, 'action': 'Exit all'}
             },
             
-            'btc_reasoning': btc_data['reasoning'],
+            'core_position': {
+                'shares': core_status['core_position']['shares'],
+                'value': core_status['core_position']['position_value'],
+                'unrealized_pnl': core_status['core_position']['unrealized_pnl'],
+                'target_price': core_status['target_analysis']['target_price'],
+                'upside_remaining': core_status['target_analysis']['upside_remaining_pct']
+            },
+            
+            'pauls_thesis': coupling_status['pauls_thesis'],
             
             'warnings': greeks_analysis['recommendations'][:3],
             
             'formatted': self._format_daily_strategy(
                 action=action,
+                bias=bias,
+                confidence=confidence,
                 btc_price=btc_price['price'],
                 btc_signal=btc_data['signal'],
-                btc_confidence=btc_data['confidence'],
                 iren_price=iren_price,
-                correlation=correlation['correlation_30d'],
+                coupling_status=coupling_status,
                 strike=recommended_strike,
-                expiry=self._get_optimal_expiry(),
+                expiry=best_expiry,
                 max_contracts=strike_liquidity['max_clean_exit']['contracts'],
                 liquid_strikes=liquid_strikes[:3],
                 theta=greeks_analysis['theta']['daily_decay'],
-                iv_rank=greeks_analysis['vega']['iv_percentile']
+                iv_rank=greeks_analysis['vega']['iv_percentile'],
+                earnings_days=(IREN_EARNINGS_DATE.date() - datetime.now().date()).days
             )
         }
     
     def get_weekly_strategy(self) -> Dict:
-        """Weekly outlook with position building strategy"""
+        """Weekly outlook - LONG ONLY"""
         btc_signal = self.btc.get_btc_signal()
-        correlation = self.btc.get_btc_iren_correlation()
+        coupling_status = self.coupling.get_coupling_status()
         iren_data = get_iren_analysis()
         
-        # Weekly bias
-        if btc_signal['signal'] == 'BUY' and btc_signal['confidence'] >= 60:
-            weekly_bias = 'BULLISH'
-            strategy = 'Accumulate calls on dips'
-        elif btc_signal['signal'] == 'SELL' and btc_signal['confidence'] >= 60:
-            weekly_bias = 'BEARISH'
-            strategy = 'Accumulate puts on rallies'
-        else:
-            weekly_bias = 'NEUTRAL'
-            strategy = 'Wait for clearer signal or trade both sides'
+        # Always bullish for Paul
+        weekly_bias = 'BULLISH'
+        strategy = 'Accumulate calls on dips - Paul is LONG the stock'
+        
+        # Get preferred expiries
+        expiries = self.get_available_expiries()
+        paul_picks = [e for e in expiries if e['paul_pick']]
         
         return {
             'type': 'weekly_strategy',
+            'mode': 'LONG_ONLY',
             'week_of': datetime.now().strftime('%Y-%m-%d'),
             
             'weekly_bias': weekly_bias,
             'strategy': strategy,
             
-            'btc_trend': {
+            'btc_analysis': {
                 'signal': btc_signal['signal'],
                 'confidence': btc_signal['confidence'],
-                'key_levels': {
-                    'support': btc_signal.get('stop_loss', 85000),
-                    'resistance': btc_signal.get('take_profit', [95000])[0]
-                }
+                'use_for_timing': coupling_status['status'] == 'COUPLED'
             },
             
-            'iren_correlation': {
-                'correlation_30d': correlation['correlation_30d'],
-                'beta': correlation['beta'],
-                'implied_moves': correlation['implied_iren_move']
+            'coupling_status': {
+                'status': coupling_status['status'],
+                'trend': coupling_status['trend'],
+                'recommendation': coupling_status['recommendation']
             },
             
             'position_building': {
+                'approach': 'Accumulate CALLS on any dips',
                 'total_target': 200,
                 'tranches': [
-                    {'day': 'Monday', 'size': 50, 'condition': 'On any pullback'},
-                    {'day': 'Tuesday', 'size': 50, 'condition': 'If still bullish'},
-                    {'day': 'Wednesday', 'size': 50, 'condition': 'Add on strength'},
-                    {'day': 'Thursday', 'size': 50, 'condition': 'Final tranche if trend intact'}
+                    {'day': 'Monday', 'size': 50, 'condition': 'On any red day'},
+                    {'day': 'Wed/Thurs', 'size': 50, 'condition': 'If still below $60'},
+                    {'day': 'Friday', 'size': 50, 'condition': 'If weekend theta acceptable'},
                 ]
             },
             
-            'key_dates': {
-                'earnings': 'Check calendar',
-                'btc_events': 'Monitor',
-                'fed_meeting': 'Check calendar'
+            'preferred_expiries': paul_picks[:4],
+            
+            'earnings_calendar': {
+                'iren_earnings': IREN_EARNINGS_DATE.strftime('%Y-%m-%d'),
+                'days_away': (IREN_EARNINGS_DATE.date() - datetime.now().date()).days,
+                'strategy': 'Avoid expiries within 7 days of Feb 5 earnings'
             },
             
-            'expiry_recommendation': {
-                'preferred': self._get_optimal_expiry(),
-                'reasoning': '14-21 DTE optimal for theta/gamma balance'
-            }
+            'pauls_thesis': coupling_status['pauls_thesis']
         }
     
+    def get_coupling_analysis(self) -> Dict:
+        """
+        Get BTC-IREN coupling/decoupling analysis.
+        
+        Paul's thesis: IREN is transitioning from BTC miner to AI datacenter.
+        """
+        status = self.coupling.get_coupling_status()
+        should_use_btc = self.coupling.should_use_btc_signal()
+        trading_mode = self.coupling.get_trading_mode()
+        
+        return {
+            'type': 'coupling_analysis',
+            'status': status['status'],
+            'trend': status['trend'],
+            
+            'correlations': {
+                '7d': status['correlation_7d'],
+                '14d': status['correlation_14d'],
+                '30d': status['correlation_30d'],
+                '60d': status['correlation_60d']
+            },
+            
+            'beta': status['beta'],
+            
+            'today_analysis': status['analysis'],
+            
+            'trading_mode': trading_mode,
+            'use_btc_signal': should_use_btc['use_btc_signal'],
+            
+            'driver': status['driver'],
+            'recommendation': status['recommendation'],
+            
+            'pauls_thesis': status['pauls_thesis'],
+            
+            'formatted': self._format_coupling_analysis(status, trading_mode)
+        }
+    
+    def get_core_position_status(self) -> Dict:
+        """Get Paul's 100K share core position status"""
+        status = self.core_position.get_core_position_status()
+        cc_opportunity = self.core_position.should_sell_covered_calls()
+        protection = self.core_position.should_buy_protection()
+        
+        return {
+            'type': 'core_position',
+            'position': status['core_position'],
+            'target': status['target_analysis'],
+            'covered_call_capacity': status['covered_call_capacity'],
+            'income_tracking': status['income_tracking'],
+            'active_trades': status['active_trades'],
+            'next_cc_opportunity': cc_opportunity,
+            'protection_status': protection,
+            'rules': [
+                '🚫 NEVER SELL THE CORE SHARES',
+                '📈 Target: $150/share',
+                '💰 Generate income via covered calls',
+                '🛡️ Buy protection only when VIX > 25'
+            ]
+        }
+    
+    def get_covered_call_opportunity(self) -> Dict:
+        """Get covered call income opportunity"""
+        return self.core_position.generate_income_opportunity()
+    
     def check_volume(self, strike: float, contracts: int = 100) -> Dict:
-        """Check volume/liquidity for a specific strike"""
-        expiry = self._get_optimal_expiry()
+        """Check volume/liquidity for a specific strike (CALLS ONLY for Paul)"""
+        expiries = self.get_available_expiries()
+        best_expiry = next((e['date'] for e in expiries if e['paul_pick']), expiries[0]['date'] if expiries else None)
+        
+        if not best_expiry:
+            return {'error': 'No expiries available'}
         
         result = self.liquidity.check_liquidity(
             symbol='IREN',
             strike=strike,
-            expiry=expiry,
-            option_type='call',
+            expiry=best_expiry,
+            option_type='call',  # ALWAYS CALLS for Paul
             contracts_needed=contracts
         )
         
-        # Add formatted output
         result['formatted'] = self._format_volume_check(result, contracts)
-        
         return result
     
     def analyze_greeks(self, contracts: int, strike: float) -> Dict:
-        """Full Greeks analysis for a position"""
+        """Full Greeks analysis for a CALL position"""
         iren_data = get_iren_analysis()
         current_price = iren_data.get('price', 56.68)
+        
+        expiries = self.get_available_expiries()
+        best_expiry = next((e['date'] for e in expiries if e['paul_pick']), expiries[0]['date'] if expiries else '2026-02-20')
         
         result = self.greeks.analyze_position(
             contracts=contracts,
             strike=strike,
-            expiry=self._get_optimal_expiry(),
+            expiry=best_expiry,
             current_price=current_price,
-            option_type='call'
+            option_type='call'  # ALWAYS CALLS for Paul
         )
         
-        # Add formatted output
         result['formatted'] = self._format_greeks(result)
-        
         return result
     
     def get_exit_strategy(self, contracts: int, strike: float) -> Dict:
-        """How to exit a position"""
-        expiry = self._get_optimal_expiry()
+        """How to exit a CALL position"""
+        expiries = self.get_available_expiries()
+        best_expiry = next((e['date'] for e in expiries if e['paul_pick']), expiries[0]['date'] if expiries else '2026-02-20')
         
         result = self.liquidity.optimal_exit_strategy(
             contracts=contracts,
             symbol='IREN',
             strike=strike,
-            expiry=expiry,
+            expiry=best_expiry,
             option_type='call',
             urgency='normal'
         )
         
-        # Add formatted output
         result['formatted'] = self._format_exit_strategy(result, contracts, strike)
-        
         return result
     
     def recommend_size(self, strike: float) -> Dict:
-        """Recommend position size based on liquidity"""
+        """Recommend position size based on liquidity (CALLS ONLY)"""
+        expiries = self.get_available_expiries()
+        best_expiry = next((e['date'] for e in expiries if e['paul_pick']), expiries[0]['date'] if expiries else '2026-02-20')
+        
         liquidity = self.liquidity.check_liquidity(
             symbol='IREN',
             strike=strike,
-            expiry=self._get_optimal_expiry(),
+            expiry=best_expiry,
             option_type='call',
             contracts_needed=200
         )
@@ -394,6 +567,7 @@ class PaulBot:
         
         return {
             'strike': strike,
+            'option_type': 'CALL',  # ALWAYS CALLS for Paul
             'recommended_sizes': {
                 'conservative': min(50, max_clean),
                 'standard': min(100, max_clean),
@@ -406,11 +580,11 @@ class PaulBot:
         }
     
     def get_btc_outlook(self) -> Dict:
-        """BTC-specific outlook"""
+        """BTC-specific outlook with coupling context"""
         price = self.btc.get_btc_price()
         signal = self.btc.get_btc_signal()
         technicals = self.btc.get_btc_technicals()
-        correlation = self.btc.get_btc_iren_correlation()
+        coupling = self.coupling.get_coupling_status()
         
         return {
             'btc_price': price['price'],
@@ -422,48 +596,48 @@ class PaulBot:
                 'macd': technicals['macd']['trend'],
                 'trend': technicals['trend']
             },
-            'iren_correlation': correlation['correlation_30d'],
-            'iren_beta': correlation['beta'],
-            'implied_iren_move': correlation['implied_iren_move'],
-            'reasoning': signal['reasoning']
+            'iren_coupling': {
+                'status': coupling['status'],
+                'correlation': coupling['correlation_7d'],
+                'use_for_trading': coupling['status'] == 'COUPLED'
+            },
+            'reasoning': signal['reasoning'],
+            'pauls_note': "BTC is secondary - IREN's AI datacenter thesis is primary driver"
         }
     
-    def _get_optimal_expiry(self) -> str:
-        """Get optimal expiry date (14-21 DTE)"""
-        today = datetime.now()
-        target_dte = 14  # 2 weeks out
-        
-        expiry = today + timedelta(days=target_dte)
-        
-        # Move to Friday
-        while expiry.weekday() != 4:  # Friday
-            expiry += timedelta(days=1)
-        
-        return expiry.strftime('%Y-%m-%d')
-    
-    def _format_daily_strategy(self, action: str, btc_price: float, btc_signal: str,
-                                btc_confidence: int, iren_price: float, correlation: float,
-                                strike: float, expiry: str, max_contracts: int,
-                                liquid_strikes: List, theta: float, iv_rank: float) -> str:
+    def _format_daily_strategy(self, action: str, bias: str, confidence: int,
+                                btc_price: float, btc_signal: str, iren_price: float,
+                                coupling_status: Dict, strike: float, expiry: str,
+                                max_contracts: int, liquid_strikes: List, theta: float,
+                                iv_rank: float, earnings_days: int) -> str:
         """Format daily strategy as text"""
         lines = [
-            "━" * 40,
-            f"🎯 IREN SIGNAL - {datetime.now().strftime('%b %d, %Y %H:%M')}",
-            "━" * 40,
+            "━" * 50,
+            f"🎯 IREN DAILY SIGNAL - {datetime.now().strftime('%b %d, %Y')}",
+            f"📌 MODE: LONG ONLY (Paul owns 100K shares)",
+            "━" * 50,
             "",
-            f"ACTION: {action}",
+            f"🎯 ACTION: {action}",
+            f"   Bias: {bias} ({confidence}% confidence)",
             "",
-            "📈 RECOMMENDATION:",
+            f"🔗 BTC-IREN COUPLING: {coupling_status['status']}",
+            f"   Correlation (7d): {coupling_status['correlation_7d']:.2f}",
+            f"   Trend: {coupling_status['trend']}",
+            f"   → {coupling_status['recommendation']}",
+            "",
+            f"📈 RECOMMENDED TRADE (CALLS ONLY):",
             f"   Strike: ${strike}",
             f"   Expiry: {expiry}",
-            f"   Size: Up to {max_contracts} contracts (good liquidity)",
+            f"   Size: Up to {max_contracts} contracts",
             "",
-            f"📡 BTC STATUS: ${btc_price:,.0f} ({btc_signal} {btc_confidence}%)",
-            f"   Correlation: {correlation:.2f}",
+            f"📡 MARKET STATUS:",
+            f"   BTC: ${btc_price:,.0f} ({btc_signal})",
+            f"   IREN: ${iren_price:.2f}",
             "",
-            f"💰 IREN: ${iren_price:.2f}",
+            f"⚠️ EARNINGS: {earnings_days} days away (Feb 5)",
+            f"   → Avoid expiries within 7 days of earnings!",
             "",
-            "📊 VOLUME HOT SPOTS:"
+            "💧 VOLUME HOT SPOTS:"
         ]
         
         for s in liquid_strikes[:3]:
@@ -471,17 +645,55 @@ class PaulBot:
         
         lines.extend([
             "",
-            "⚠️ GREEK WARNING:",
-            f"   Theta: ${abs(theta):,.0f}/day per 100 contracts",
-            f"   IV Rank: {iv_rank}% (elevated - crush risk)",
+            "⚠️ GREEK WARNING (per 100 contracts):",
+            f"   Theta: ${abs(theta):,.0f}/day",
+            f"   IV Rank: {iv_rank}%",
             "",
             "🎯 TARGETS:",
             "   TP1: +30% → Exit 50%",
             "   TP2: +50% → Exit 30%",
             "   Stop: -25% → Exit all",
-            "━" * 40
+            "",
+            "💡 PAUL'S THESIS: AI datacenter demand > BTC mining",
+            "   Power infrastructure = 3-5 year competitive moat",
+            "━" * 50
         ])
         
+        return "\n".join(lines)
+    
+    def _format_coupling_analysis(self, status: Dict, trading_mode: str) -> str:
+        """Format coupling analysis as text"""
+        lines = [
+            "━" * 50,
+            "🔗 BTC-IREN COUPLING ANALYSIS",
+            "━" * 50,
+            "",
+            f"STATUS: {status['status']}",
+            f"TREND: {status['trend']}",
+            "",
+            "📊 CORRELATIONS:",
+            f"   7-day:  {status['correlation_7d']:.3f}",
+            f"   14-day: {status['correlation_14d']:.3f}",
+            f"   30-day: {status['correlation_30d']:.3f}",
+            f"   60-day: {status['correlation_60d']:.3f}",
+            "",
+            f"📈 BETA: {status['beta']:.2f}x",
+            "",
+            f"🎯 TRADING MODE: {trading_mode}",
+            "",
+            f"💡 DRIVER: {status['driver']}",
+            "",
+            f"📌 RECOMMENDATION: {status['recommendation']}",
+            "",
+            "━" * 30,
+            "PAUL'S THESIS:",
+            "━" * 30,
+        ]
+        
+        for key, value in status['pauls_thesis'].items():
+            lines.append(f"  • {key}: {value}")
+        
+        lines.append("━" * 50)
         return "\n".join(lines)
     
     def _format_volume_check(self, result: Dict, contracts: int) -> str:
@@ -489,11 +701,12 @@ class PaulBot:
         can_trade = "✅ YES" if result['can_trade_size'] else "❌ NO"
         
         lines = [
-            "━" * 40,
-            f"📊 LIQUIDITY CHECK: IREN ${result['strike']} Call",
-            "━" * 40,
+            "━" * 50,
+            f"📊 LIQUIDITY CHECK: IREN ${result['strike']} CALL",
+            f"📌 FOR PAUL (LONG ONLY)",
+            "━" * 50,
             "",
-            f"{can_trade} - {'GOOD' if result['can_trade_size'] else 'RISKY'} LIQUIDITY FOR {contracts} CONTRACTS",
+            f"{can_trade} - GOOD LIQUIDITY FOR {contracts} CONTRACTS",
             "",
             "📈 Current Stats:",
             f"   Volume: {result['market_data']['volume']:,}",
@@ -501,63 +714,50 @@ class PaulBot:
             f"   Bid: ${result['market_data']['bid']} | Ask: ${result['market_data']['ask']}",
             f"   Spread: ${result['market_data']['spread']} ({result['market_data']['spread_percent']:.1f}%)",
             "",
-            f"💰 {contracts} Contract Analysis:",
-            f"   Slippage Est: ${result['slippage_estimate']['total_cost']:,.0f}",
-            f"   Market Impact: {result['slippage_estimate']['market_impact']}",
-            "",
             f"🚪 Max Clean Exit: {result['max_clean_exit']['contracts']} contracts",
             "",
             "📋 RECOMMENDATIONS:"
         ]
         
         for rec in result['recommendations'][:3]:
-            lines.append(f"   {rec}")
+            lines.append(f"   • {rec}")
         
-        lines.append("━" * 40)
+        lines.append("━" * 50)
         return "\n".join(lines)
     
     def _format_greeks(self, result: Dict) -> str:
         """Format Greeks as text"""
         lines = [
-            "━" * 40,
-            f"📊 GREEKS: {result['position']['contracts']}x IREN ${result['position']['strike']} Call",
-            "━" * 40,
+            "━" * 50,
+            f"📊 GREEKS: {result['position']['contracts']}x IREN ${result['position']['strike']} CALL",
+            f"📌 FOR PAUL (LONG ONLY)",
+            "━" * 50,
             "",
-            "📈 POSITION GREEKS:",
-            "",
-            f"   DELTA: +{result['delta']['total']:.1f} ({result['delta']['equivalent_shares']:,} share equiv)",
-            f"   └── {result['delta']['interpretation']}",
-            "",
-            f"   THETA: ${result['theta']['daily_decay']:,.0f}/day 😰",
-            f"   └── Losing ${abs(result['theta']['daily_decay']):,.0f} daily to time decay",
-            f"   └── Weekend = ${abs(result['theta']['weekend_decay']):,.0f}",
-            "",
+            f"   DELTA: +{result['delta']['total']:.1f} ({result['delta']['equivalent_shares']:,} shares)",
+            f"   THETA: ${result['theta']['daily_decay']:,.0f}/day",
             f"   GAMMA: +{result['gamma']['total']:.2f}",
-            f"   └── {result['gamma']['risk_level']} gamma risk",
-            "",
             f"   VEGA: ${result['vega']['total']:,.0f}",
-            f"   └── IV at {result['vega']['iv_current']}% ({result['vega']['risk_level']} crush risk)",
             "",
-            "⚠️ WARNINGS:"
+            f"⚠️ Weekend Theta: ${abs(result['theta']['weekend_decay']):,.0f}",
+            f"📊 IV Rank: {result['vega']['iv_current']}%",
+            "",
+            f"🎯 BREAKEVEN: ${result['breakeven']['price']}",
+            "",
+            "📋 WARNINGS:"
         ]
         
-        for rec in result['recommendations'][:4]:
+        for rec in result['recommendations'][:3]:
             lines.append(f"   • {rec}")
         
-        lines.extend([
-            "",
-            f"🎯 BREAKEVEN: ${result['breakeven']['price']} ({result['breakeven']['percent_move_needed']:+.1f}%)",
-            "━" * 40
-        ])
-        
+        lines.append("━" * 50)
         return "\n".join(lines)
     
     def _format_exit_strategy(self, result: Dict, contracts: int, strike: float) -> str:
         """Format exit strategy as text"""
         lines = [
-            "━" * 40,
-            f"🚪 EXIT STRATEGY: {contracts}x IREN ${strike} Calls",
-            "━" * 40,
+            "━" * 50,
+            f"🚪 EXIT STRATEGY: {contracts}x IREN ${strike} CALLS",
+            "━" * 50,
             "",
             f"STRATEGY: {result['strategy']}",
             "",
@@ -565,22 +765,17 @@ class PaulBot:
         ]
         
         for t in result['tranches']:
-            lines.append(f"   {t['size']} contracts @ {t['timing']} → ~${t['expected_fill']}")
+            lines.append(f"   {t['size']} contracts @ {t['timing']}")
         
         lines.extend([
             "",
-            "💰 COST COMPARISON:",
-            f"   Market Order Cost: ${result['vs_market_order']['market_order_cost']:,.0f}",
-            f"   Tranche Cost: ${result['vs_market_order']['tranche_cost']:,.0f}",
+            "💰 COST SAVINGS:",
+            f"   Market Order: ${result['vs_market_order']['market_order_cost']:,.0f}",
+            f"   Tranche Exit: ${result['vs_market_order']['tranche_cost']:,.0f}",
             f"   Savings: ${result['vs_market_order']['savings']:,.0f}",
-            "",
-            "📋 RECOMMENDATIONS:"
+            "━" * 50
         ])
         
-        for rec in result['recommendations']:
-            lines.append(f"   • {rec}")
-        
-        lines.append("━" * 40)
         return "\n".join(lines)
 
 
@@ -600,36 +795,38 @@ def paul_chat(query: str) -> Dict:
 
 
 def paul_daily() -> Dict:
-    """Get daily strategy"""
+    """Get daily strategy (LONG ONLY)"""
     return get_paul_bot().get_daily_strategy()
 
 
 def paul_weekly() -> Dict:
-    """Get weekly strategy"""
+    """Get weekly strategy (LONG ONLY)"""
     return get_paul_bot().get_weekly_strategy()
+
+
+def paul_coupling() -> Dict:
+    """Get BTC-IREN coupling analysis"""
+    return get_paul_bot().get_coupling_analysis()
+
+
+def paul_core_position() -> Dict:
+    """Get core position status"""
+    return get_paul_bot().get_core_position_status()
 
 
 # CLI Testing
 if __name__ == '__main__':
     print("=" * 60)
-    print("🎯 PAUL BOT TEST")
+    print("🎯 PAUL BOT - LONG ONLY MODE")
     print("=" * 60)
     
     bot = PaulBot()
     
-    print("\n📊 Testing: 'What's the play today?'")
-    result = bot.chat("What's the play today?")
+    print("\n📊 Testing: Daily Strategy")
+    result = bot.get_daily_strategy()
     print(result['formatted'])
     
     print("\n" + "=" * 60)
-    print("📊 Testing: 'Volume check on $60 calls 200 contracts'")
-    result = bot.chat("Volume check on $60 calls 200 contracts")
+    print("📊 Testing: Coupling Analysis")
+    result = bot.get_coupling_analysis()
     print(result['formatted'])
-    
-    print("\n" + "=" * 60)
-    print("📊 Testing: 'Greeks on 150 contracts $58 calls'")
-    result = bot.chat("Greeks on 150 contracts $58 calls")
-    print(result['formatted'])
-    
-    print("\n" + "=" * 60)
-    print("✅ Paul Bot Ready!")
