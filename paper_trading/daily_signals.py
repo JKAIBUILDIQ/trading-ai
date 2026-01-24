@@ -499,20 +499,31 @@ class DailySignalGenerator:
         # Paul wants: current week + next 3 weeks + 2 months out
         expiries = self.get_next_expiries('IREN', count=6)
         
-        # Paul's preferred strike is $60
-        target_strike = 60.0
+        # Paul's strike options: $60 (ATM), $70 (OTM), $80 (far OTM)
+        target_strikes = [60.0, 70.0, 80.0]
         
-        # Generate signal for each expiry (CALLS ONLY at $60 strike)
-        expiry_signals = []
-        for expiry_info in expiries:
-            try:
-                signal = self.generate_iren_signal_for_expiry(
-                    data, btc_data, direction, confidence, expiry_info,
-                    target_strike=target_strike
-                )
-                expiry_signals.append(signal)
-            except Exception as e:
-                logger.warning(f"Failed to generate signal for {expiry_info['date']}: {e}")
+        # Generate signals for each strike level
+        strike_signals = {}
+        for strike in target_strikes:
+            strike_key = f"${int(strike)}"
+            strike_signals[strike_key] = {
+                'strike': strike,
+                'strike_type': 'ATM' if strike == 60.0 else ('OTM' if strike == 70.0 else 'FAR_OTM'),
+                'expiries': []
+            }
+            
+            for expiry_info in expiries:
+                try:
+                    signal = self.generate_iren_signal_for_expiry(
+                        data, btc_data, direction, confidence, expiry_info,
+                        target_strike=strike
+                    )
+                    strike_signals[strike_key]['expiries'].append(signal)
+                except Exception as e:
+                    logger.warning(f"Failed to generate signal for {expiry_info['date']} @ ${strike}: {e}")
+        
+        # Also keep flat expiry list at $60 for backwards compatibility
+        expiry_signals = strike_signals.get('$60', {}).get('expiries', [])
         
         # Find Paul's preferred expiry (paul_pick=True) or use first
         paul_picks = [s for s in expiry_signals if s.get('paul_pick', False)]
@@ -555,6 +566,8 @@ class DailySignalGenerator:
             'confidence': int(confidence),
             # All expiry options for Paul (sorted: Paul's picks first)
             'all_expiries': expiry_signals,
+            # Multiple strike levels: $60, $70, $80
+            'strike_levels': strike_signals,
             # Earnings warning
             'earnings': {
                 'date': IREN_EARNINGS_DATE.strftime('%Y-%m-%d'),
