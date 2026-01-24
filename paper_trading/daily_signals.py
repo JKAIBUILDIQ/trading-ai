@@ -294,7 +294,7 @@ class DailySignalGenerator:
             'is_real': True
         }
     
-    def get_next_4_expiries(self, symbol: str) -> list:
+    def get_next_expiries(self, symbol: str, count: int = 6) -> list:
         """
         Get the next 4 valid options expiry dates for Paul.
         
@@ -359,8 +359,8 @@ class DailySignalGenerator:
             # Sort: Paul's picks first, then by days_out
             valid_expiries.sort(key=lambda x: (not x['paul_pick'], x['days_out']))
             
-            # Return top 4
-            return valid_expiries[:4] if valid_expiries else [{
+            # Return top expiries (count)
+            return valid_expiries[:count] if valid_expiries else [{
                 'date': expirations[0] if expirations else 'N/A',
                 'days_out': 1,
                 'theta_warning': 'NO DATA',
@@ -391,11 +391,13 @@ class DailySignalGenerator:
 
     def generate_iren_signal_for_expiry(self, data: dict, btc_data: dict, 
                                          direction: str, confidence: int,
-                                         expiry_info: dict) -> Dict[str, Any]:
+                                         expiry_info: dict,
+                                         target_strike: float = 60.0) -> Dict[str, Any]:
         """
         Generate IREN signal for a specific expiry date.
         
         FOR PAUL: CALLS ONLY - He is LONG the stock.
+        Paul prefers $60 strike.
         """
         expiry = expiry_info['date']
         days_out = expiry_info['days_out']
@@ -403,7 +405,8 @@ class DailySignalGenerator:
         # PAUL'S RULE: CALLS ONLY (he's long the stock)
         option_type = 'CALL'
         
-        strike = self.get_optimal_strike('IREN', 'LONG', expiry, data['price'])
+        # Paul prefers $60 strike - use target_strike or find optimal near it
+        strike = target_strike
         option_price = self.get_option_price('IREN', strike, expiry, option_type)
         
         # Get theta warning from expiry_info if available, otherwise calculate
@@ -492,15 +495,20 @@ class DailySignalGenerator:
             confidence = 55
             action = 'WAIT FOR DIP'
         
-        # Get next 4 expiries (filtered for Paul's preferences)
-        expiries = self.get_next_4_expiries('IREN')
+        # Get next 6 expiries (filtered for Paul's preferences)
+        # Paul wants: current week + next 3 weeks + 2 months out
+        expiries = self.get_next_expiries('IREN', count=6)
         
-        # Generate signal for each expiry (CALLS ONLY)
+        # Paul's preferred strike is $60
+        target_strike = 60.0
+        
+        # Generate signal for each expiry (CALLS ONLY at $60 strike)
         expiry_signals = []
         for expiry_info in expiries:
             try:
                 signal = self.generate_iren_signal_for_expiry(
-                    data, btc_data, direction, confidence, expiry_info
+                    data, btc_data, direction, confidence, expiry_info,
+                    target_strike=target_strike
                 )
                 expiry_signals.append(signal)
             except Exception as e:
@@ -515,13 +523,26 @@ class DailySignalGenerator:
         earnings_date = IREN_EARNINGS_DATE.date()
         days_to_earnings = (earnings_date - today).days
         
+        # Determine recommended action: BUY or HOLD
+        # BUY if: BTC bullish OR RSI oversold OR good setup
+        # HOLD if: uncertain or near resistance
+        if btc_bullish and confidence >= 65:
+            recommended_action = 'BUY'
+        elif rsi_oversold:
+            recommended_action = 'BUY'  # Oversold = buy opportunity
+        elif btc_bullish:
+            recommended_action = 'BUY'
+        else:
+            recommended_action = 'HOLD'  # Wait for better setup
+        
         return {
             'symbol': 'IREN',
             'asset_type': 'OPTION',
             'direction': direction,  # ALWAYS LONG for Paul
             'action': action,
+            'recommended_action': recommended_action,  # BUY or HOLD
             'option_type': 'CALL',  # ALWAYS CALL for Paul
-            'strike': primary_expiry['strike'] if primary_expiry else round(data['price']),
+            'strike': target_strike,  # Paul's preferred $60 strike
             'expiry': primary_expiry['expiry'] if primary_expiry else 'N/A',
             'current_stock_price': data['price'],
             'option_price': primary_expiry['option_price'] if primary_expiry else 0,
