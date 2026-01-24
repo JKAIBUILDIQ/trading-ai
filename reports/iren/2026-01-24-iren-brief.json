@@ -1,0 +1,95 @@
+{
+  "report_date": "2026-01-24",
+  "generated_at": "2026-01-24T22:13:49.303322Z",
+  "ticker": "IREN",
+  "company": "IREN Limited",
+  "price_summary": {
+    "current_price": 56.68000030517578,
+    "previous_close": 52.2599983215332,
+    "change": 4.420001983642578,
+    "change_pct": 8.457715510146425,
+    "open": 52.36000061035156,
+    "high": 58.58000183105469,
+    "low": 50.11199951171875,
+    "volume": 56438700,
+    "avg_volume": 50173100,
+    "volume_ratio": 1.1248796665942506,
+    "52wk_high": 76.87,
+    "52wk_low": 5.125,
+    "market_cap": 18610407424
+  },
+  "technical_analysis": {
+    "rsi_14": 69.13495158740129,
+    "rsi_status": "NEUTRAL",
+    "sma_20": 47.626749992370605,
+    "sma_50": null,
+    "ema_9": 52.82055376102089,
+    "macd": 3.0975955526313683,
+    "macd_signal": 2.534933657820935,
+    "macd_histogram": 0.5626618948104332,
+    "macd_status": "BULLISH",
+    "trend": "BULLISH",
+    "trend_strength": 88,
+    "above_sma20": true,
+    "above_sma50": null
+  },
+  "btc_correlation": {
+    "correlation_30d": NaN,
+    "correlation_7d": null,
+    "coupling_status": "DECOUPLED",
+    "btc_price": 89272.34375,
+    "btc_change_pct": -0.2586829341187702,
+    "btc_trend": "NEUTRAL",
+    "decoupling_thesis": "CONFIRMED"
+  },
+  "news_summary": {
+    "total_items": 15,
+    "sentiment": {
+      "positive": 0,
+      "neutral": 5,
+      "negative": 0
+    },
+    "top_headlines": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "catalysts": [
+    {
+      "date": "2026-02-05",
+      "event": "Q4 2025 Earnings",
+      "impact": "HIGH",
+      "days_away": 11,
+      "notes": "Watch for AI datacenter revenue growth"
+    },
+    {
+      "date": "2026-Q4",
+      "event": "Paul's Land Deal Completion",
+      "impact": "MAJOR",
+      "days_away": null,
+      "notes": "Texas land + utility rights"
+    }
+  ],
+  "risk_alerts": [
+    {
+      "level": "INFO",
+      "type": "EARNINGS",
+      "message": "Earnings in 11 days - avoid short-term options!"
+    }
+  ],
+  "claudia_take": "IREN showing 88% bullish trend strength. Decoupling from BTC confirmed - trade on IREN fundamentals. \u26a0\ufe0f Earnings in 11 days - position carefully. \ud83d\udcc8 Favorable setup for LONG positions (Paul's thesis).",
+  "recommendation": {
+    "action": "BUY",
+    "confidence": 88,
+    "strikes": [
+      "$60 (ATM)",
+      "$70 (OTM)",
+      "$80 (Far OTM)"
+    ],
+    "preferred_expiry": "Feb 20 or Feb 27 (post-earnings)",
+    "reasoning": "IREN showing 88% bullish trend strength. Decoupling from BTC confirmed - trade on IREN fundamentals. \u26a0\ufe0f Earnings in 11 days - position carefully. \ud83d\udcc8 Favorable setup for LONG positions (Paul's thesis)."
+  }
+}

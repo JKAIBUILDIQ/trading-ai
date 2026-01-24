@@ -1,0 +1,141 @@
+{
+  "timestamp": "2026-01-24T22:11:53.002265Z",
+  "ticker": "IREN",
+  "total_items": 15,
+  "sentiment_summary": {
+    "positive": 0,
+    "neutral": 5,
+    "negative": 0
+  },
+  "news": [
+    {
+      "source": "yahoo_finance",
+      "title": "",
+      "link": "",
+      "publisher": "",
+      "published": "1970-01-01T00:00:00",
+      "type": "news",
+      "thumbnail": ""
+    },
+    {
+      "source": "yahoo_finance",
+      "title": "",
+      "link": "",
+      "publisher": "",
+      "published": "1970-01-01T00:00:00",
+      "type": "news",
+      "thumbnail": ""
+    },
+    {
+      "source": "yahoo_finance",
+      "title": "",
+      "link": "",
+      "publisher": "",
+      "published": "1970-01-01T00:00:00",
+      "type": "news",
+      "thumbnail": ""
+    },
+    {
+      "source": "yahoo_finance",
+      "title": "",
+      "link": "",
+      "publisher": "",
+      "published": "1970-01-01T00:00:00",
+      "type": "news",
+      "thumbnail": ""
+    },
+    {
+      "source": "yahoo_finance",
+      "title": "",
+      "link": "",
+      "publisher": "",
+      "published": "1970-01-01T00:00:00",
+      "type": "news",
+      "thumbnail": ""
+    }
+  ],
+  "filings": [
+    {
+      "source": "sec_edgar",
+      "form_type": "8-K",
+      "filing_date": "2025-12-08",
+      "description": "8-K",
+      "accession_number": "0001140361-25-044888",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000114036125044888/ef20060782_8k.htm"
+    },
+    {
+      "source": "sec_edgar",
+      "form_type": "8-K",
+      "filing_date": "2025-12-03",
+      "description": "8-K",
+      "accession_number": "0001140361-25-044095",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000114036125044095/ny20060080x4_8k.htm"
+    },
+    {
+      "source": "sec_edgar",
+      "form_type": "8-K",
+      "filing_date": "2025-12-01",
+      "description": "8-K",
+      "accession_number": "0001140361-25-043803",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000114036125043803/ny20060080x2_8k.htm"
+    },
+    {
+      "source": "sec_edgar",
+      "form_type": "8-K",
+      "filing_date": "2025-11-28",
+      "description": "8-K",
+      "accession_number": "0001140361-25-043599",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000114036125043599/ef20060170_8k.htm"
+    },
+    {
+      "source": "sec_edgar",
+      "form_type": "8-K",
+      "filing_date": "2025-11-24",
+      "description": "8-K",
+      "accession_number": "0001140361-25-043142",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000114036125043142/ef20059594_8k.htm"
+    },
+    {
+      "source": "sec_edgar",
+      "form_type": "10-Q",
+      "filing_date": "2025-11-06",
+      "description": "10-Q",
+      "accession_number": "0001878848-25-000081",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000187884825000081/iren-20250930.htm"
+    },
+    {
+      "source": "sec_edgar",
+      "form_type": "8-K",
+      "filing_date": "2025-11-06",
+      "description": "8-K",
+      "accession_number": "0001878848-25-000079",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000187884825000079/iren-20251106.htm"
+    },
+    {
+      "source": "sec_edgar",
+      "form_type": "8-K",
+      "filing_date": "2025-11-03",
+      "description": "8-K",
+      "accession_number": "0001140361-25-040072",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000114036125040072/ef20058139_8k.htm"
+    },
+    {
+      "source": "sec_edgar",
+      "form_type": "8-K",
+      "filing_date": "2025-10-14",
+      "description": "8-K",
+      "accession_number": "0001140361-25-038083",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000114036125038083/ef20056955_8k.htm"
+    },
+    {
+      "source": "sec_edgar",
+      "form_type": "8-K",
+      "filing_date": "2025-10-09",
+      "description": "8-K",
+      "accession_number": "0001140361-25-037753",
+      "link": "https://www.sec.gov/Archives/edgar/data/0001878848/000114036125037753/ef20056800_8k.htm"
+    }
+  ],
+  "insider_trades": [],
+  "analyst_actions": []
+}
