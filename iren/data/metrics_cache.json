@@ -1,0 +1,59 @@
+{
+  "timestamp": "2026-01-25T00:35:41.424539",
+  "symbol": "IREN",
+  "price": {
+    "current": 56.68,
+    "previous_close": 52.26,
+    "change": 4.42,
+    "change_pct": 8.46,
+    "day_high": 58.5799,
+    "day_low": 50.112,
+    "52w_high": 76.87,
+    "52w_low": 5.125
+  },
+  "volume": {
+    "current": 56171542,
+    "average": 38100852,
+    "ratio": 1.47
+  },
+  "technicals": {
+    "rsi": 69.1,
+    "ma_5": 54.9,
+    "ma_20": 47.63,
+    "momentum_5d": -1.97,
+    "trend": "BULLISH",
+    "trend_strength": 95.0
+  },
+  "btc_correlation": {
+    "btc_price": 89113.12,
+    "correlation_30d": -0.289,
+    "coupling_status": "DECOUPLING"
+  },
+  "earnings": {
+    "date": "2026-02-05",
+    "days_away": 10,
+    "phase": "PRE_EARNINGS_SETUP"
+  },
+  "signal": {
+    "action": "ACCUMULATE",
+    "confidence": 65,
+    "score": 25,
+    "reasons": [
+      "Bullish trend",
+      "Above-avg volume (1.5x)",
+      "\u26a0\ufe0f Earnings approaching - be cautious"
+    ]
+  },
+  "options_focus": {
+    "primary_strike": 60,
+    "strikes": [
+      60,
+      70,
+      80
+    ],
+    "preferred_dte": [
+      21,
+      35
+    ]
+  }
+}
