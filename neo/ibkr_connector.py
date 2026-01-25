@@ -9,8 +9,12 @@ Ports:
 Requirements:
 1. TWS or IB Gateway running on local machine
 2. API enabled in TWS settings
-3. pip install ib_insync
+3. pip install ib_insync nest_asyncio
 """
+
+# Fix for async event loop in FastAPI/Jupyter
+import nest_asyncio
+nest_asyncio.apply()
 
 from ib_insync import IB, Stock, Option, Contract, Order, LimitOrder, MarketOrder
 from ib_insync import util
@@ -54,7 +58,7 @@ class IBKRConnector:
         'preferred_strikes': [55, 60, 65, 70],
     }
     
-    def __init__(self, paper_trading: bool = True, host: str = "127.0.0.1", 
+    def __init__(self, paper_trading: bool = True, host: str = "100.119.161.65", 
                  client_id: int = 1):
         """
         Initialize IBKR connector
