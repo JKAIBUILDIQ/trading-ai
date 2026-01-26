@@ -1,0 +1,367 @@
+{
+  "XAUUSD": {
+    "symbol": "XAUUSD",
+    "period_days": 365,
+    "total_gaps": 140,
+    "gaps_per_month": 11.506849315068493,
+    "same_day_fill_rate": 39.285714285714285,
+    "week_fill_rate": 72.14285714285714,
+    "total_fill_rate": 77.85714285714286,
+    "up_gap_fill_rate": 71.42857142857143,
+    "down_gap_fill_rate": 89.79591836734694,
+    "avg_gap_size": 27.549314662388394,
+    "avg_gap_percent": 0.7297980356936926,
+    "avg_fill_time_days": 1.3761467889908257,
+    "up_gaps": 91,
+    "down_gaps": 49,
+    "recent_gaps": [
+      {
+        "date": "2026-01-20",
+        "prev_close": 4588.39990234375,
+        "open": 4662.2001953125,
+        "gap_size": 73.80029296875,
+        "gap_percent": 1.6084102201086021,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-21",
+        "prev_close": 4759.60009765625,
+        "open": 4863.5,
+        "gap_size": 103.89990234375,
+        "gap_percent": 2.1829544544070623,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-22",
+        "prev_close": 4831.7998046875,
+        "open": 4791.89990234375,
+        "gap_size": 39.89990234375,
+        "gap_percent": 0.8257772249802589,
+        "direction": "DOWN",
+        "same_day_fill": true,
+        "fill_days": 0,
+        "filled_within_week": true
+      },
+      {
+        "date": "2026-01-23",
+        "prev_close": 4908.7998046875,
+        "open": 4949.60009765625,
+        "gap_size": 40.80029296875,
+        "gap_percent": 0.8311663663649325,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-25",
+        "prev_close": 4976.2001953125,
+        "open": 5013.39990234375,
+        "gap_size": 37.19970703125,
+        "gap_percent": 0.7475524611387525,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      }
+    ]
+  },
+  "EURUSD": {
+    "symbol": "EURUSD",
+    "period_days": 365,
+    "total_gaps": 186,
+    "gaps_per_month": 15.287671232876713,
+    "same_day_fill_rate": 28.49462365591398,
+    "week_fill_rate": 65.59139784946237,
+    "total_fill_rate": 73.11827956989248,
+    "up_gap_fill_rate": 65.26315789473685,
+    "down_gap_fill_rate": 81.31868131868131,
+    "avg_gap_size": 0.0052970705493803946,
+    "avg_gap_percent": 0.46946582245823876,
+    "avg_fill_time_days": 1.7794117647058822,
+    "up_gaps": 95,
+    "down_gaps": 91,
+    "recent_gaps": [
+      {
+        "date": "2026-01-20",
+        "prev_close": 1.162493348121643,
+        "open": 1.1639952659606934,
+        "gap_size": 0.001501917839050293,
+        "gap_percent": 0.1291979727434219,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-21",
+        "prev_close": 1.1639139652252197,
+        "open": 1.1726078987121582,
+        "gap_size": 0.008693933486938477,
+        "gap_percent": 0.7469567121532202,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-22",
+        "prev_close": 1.1727865934371948,
+        "open": 1.167392373085022,
+        "gap_size": 0.0053942203521728516,
+        "gap_percent": 0.4599490122378964,
+        "direction": "DOWN",
+        "same_day_fill": true,
+        "fill_days": 0,
+        "filled_within_week": true
+      },
+      {
+        "date": "2026-01-23",
+        "prev_close": 1.1672970056533813,
+        "open": 1.1753920316696167,
+        "gap_size": 0.008095026016235352,
+        "gap_percent": 0.693484689588855,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-26",
+        "prev_close": 1.1754610538482666,
+        "open": 1.1845533847808838,
+        "gap_size": 0.009092330932617188,
+        "gap_percent": 0.7735118830905021,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      }
+    ]
+  },
+  "GBPUSD": {
+    "symbol": "GBPUSD",
+    "period_days": 365,
+    "total_gaps": 196,
+    "gaps_per_month": 16.10958904109589,
+    "same_day_fill_rate": 36.734693877551024,
+    "week_fill_rate": 65.81632653061224,
+    "total_fill_rate": 71.93877551020408,
+    "up_gap_fill_rate": 65.68627450980392,
+    "down_gap_fill_rate": 78.72340425531915,
+    "avg_gap_size": 0.00576035526334023,
+    "avg_gap_percent": 0.43551265457465926,
+    "avg_fill_time_days": 1.6099290780141844,
+    "up_gaps": 102,
+    "down_gaps": 94,
+    "recent_gaps": [
+      {
+        "date": "2026-01-19",
+        "prev_close": 1.3381328582763672,
+        "open": 1.3403388261795044,
+        "gap_size": 0.002205967903137207,
+        "gap_percent": 0.16485417643646294,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-21",
+        "prev_close": 1.3418315649032593,
+        "open": 1.3439956903457642,
+        "gap_size": 0.002164125442504883,
+        "gap_percent": 0.16128145283725737,
+        "direction": "UP",
+        "same_day_fill": true,
+        "fill_days": 0,
+        "filled_within_week": true
+      },
+      {
+        "date": "2026-01-22",
+        "prev_close": 1.344085931777954,
+        "open": 1.3417415618896484,
+        "gap_size": 0.002344369888305664,
+        "gap_percent": 0.17442113133380813,
+        "direction": "DOWN",
+        "same_day_fill": true,
+        "fill_days": 0,
+        "filled_within_week": true
+      },
+      {
+        "date": "2026-01-23",
+        "prev_close": 1.3419395685195923,
+        "open": 1.350001335144043,
+        "gap_size": 0.008061766624450684,
+        "gap_percent": 0.6007548188883277,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-26",
+        "prev_close": 1.3501288890838623,
+        "open": 1.3636797666549683,
+        "gap_size": 0.013550877571105957,
+        "gap_percent": 1.0036728849125642,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      }
+    ]
+  },
+  "USDJPY": {
+    "symbol": "USDJPY",
+    "period_days": 365,
+    "total_gaps": 217,
+    "gaps_per_month": 17.835616438356166,
+    "same_day_fill_rate": 35.02304147465438,
+    "week_fill_rate": 70.96774193548387,
+    "total_fill_rate": 80.64516129032258,
+    "up_gap_fill_rate": 78.50467289719626,
+    "down_gap_fill_rate": 82.72727272727273,
+    "avg_gap_size": 0.8273830150129609,
+    "avg_gap_percent": 0.5551168056388565,
+    "avg_fill_time_days": 1.7485714285714287,
+    "up_gaps": 107,
+    "down_gaps": 110,
+    "recent_gaps": [
+      {
+        "date": "2026-01-16",
+        "prev_close": 158.40199279785156,
+        "open": 158.57200622558594,
+        "gap_size": 0.170013427734375,
+        "gap_percent": 0.10733035912707338,
+        "direction": "UP",
+        "same_day_fill": true,
+        "fill_days": 0,
+        "filled_within_week": true
+      },
+      {
+        "date": "2026-01-19",
+        "prev_close": 158.5959930419922,
+        "open": 157.56700134277344,
+        "gap_size": 1.02899169921875,
+        "gap_percent": 0.6488131758450538,
+        "direction": "DOWN",
+        "same_day_fill": false,
+        "fill_days": 3,
+        "filled_within_week": true
+      },
+      {
+        "date": "2026-01-20",
+        "prev_close": 157.53500366210938,
+        "open": 158.17999267578125,
+        "gap_size": 0.644989013671875,
+        "gap_percent": 0.4094258410373903,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": 3,
+        "filled_within_week": true
+      },
+      {
+        "date": "2026-01-22",
+        "prev_close": 158.16200256347656,
+        "open": 158.45700073242188,
+        "gap_size": 0.2949981689453125,
+        "gap_percent": 0.18651646044182973,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": 1,
+        "filled_within_week": true
+      },
+      {
+        "date": "2026-01-26",
+        "prev_close": 158.50100708007812,
+        "open": 155.5290069580078,
+        "gap_size": 2.9720001220703125,
+        "gap_percent": 1.8750670275355374,
+        "direction": "DOWN",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      }
+    ]
+  },
+  "AUDUSD": {
+    "symbol": "AUDUSD",
+    "period_days": 365,
+    "total_gaps": 181,
+    "gaps_per_month": 14.876712328767123,
+    "same_day_fill_rate": 33.14917127071823,
+    "week_fill_rate": 66.29834254143645,
+    "total_fill_rate": 78.45303867403315,
+    "up_gap_fill_rate": 72.16494845360825,
+    "down_gap_fill_rate": 85.71428571428571,
+    "avg_gap_size": 0.0035994869569388544,
+    "avg_gap_percent": 0.5595886478585286,
+    "avg_fill_time_days": 2.056338028169014,
+    "up_gaps": 97,
+    "down_gaps": 84,
+    "recent_gaps": [
+      {
+        "date": "2026-01-20",
+        "prev_close": 0.6687598824501038,
+        "open": 0.6710689067840576,
+        "gap_size": 0.0023090243339538574,
+        "gap_percent": 0.34526956454002516,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-21",
+        "prev_close": 0.6709878444671631,
+        "open": 0.6732012033462524,
+        "gap_size": 0.0022133588790893555,
+        "gap_percent": 0.32986571922878893,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-22",
+        "prev_close": 0.6731699109077454,
+        "open": 0.6754702925682068,
+        "gap_size": 0.0023003816604614258,
+        "gap_percent": 0.3417237792698494,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-23",
+        "prev_close": 0.6754794120788574,
+        "open": 0.6839991807937622,
+        "gap_size": 0.008519768714904785,
+        "gap_percent": 1.2612921374885904,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      },
+      {
+        "date": "2026-01-26",
+        "prev_close": 0.6840506792068481,
+        "open": 0.6898455023765564,
+        "gap_size": 0.005794823169708252,
+        "gap_percent": 0.8471336036720711,
+        "direction": "UP",
+        "same_day_fill": false,
+        "fill_days": null,
+        "filled_within_week": false
+      }
+    ]
+  }
+}

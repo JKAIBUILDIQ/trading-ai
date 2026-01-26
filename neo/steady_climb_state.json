@@ -1,0 +1,11 @@
+{
+  "position": 2,
+  "units": 1,
+  "consecutive_wins": 2,
+  "cycle_profit": 100,
+  "cycles_completed": 0,
+  "total_profit": 400,
+  "trades_today": 8,
+  "last_trade_time": "2026-01-26T04:43:03.551224",
+  "last_reset_reason": "Loss at position 6"
+}

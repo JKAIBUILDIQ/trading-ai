@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-25T00:35:41.424539",
+  "timestamp": "2026-01-25T22:34:14.225637",
   "symbol": "IREN",
   "price": {
     "current": 56.68,
@@ -12,9 +12,9 @@
     "52w_low": 5.125
   },
   "volume": {
-    "current": 56171542,
+    "current": 56562246,
     "average": 38100852,
-    "ratio": 1.47
+    "ratio": 1.48
   },
   "technicals": {
     "rsi": 69.1,
@@ -25,8 +25,8 @@
     "trend_strength": 95.0
   },
   "btc_correlation": {
-    "btc_price": 89113.12,
-    "correlation_30d": -0.289,
+    "btc_price": 86327.07,
+    "correlation_30d": -0.065,
     "coupling_status": "DECOUPLING"
   },
   "earnings": {

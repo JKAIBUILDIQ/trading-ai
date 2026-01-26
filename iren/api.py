@@ -126,3 +126,57 @@ async def get_signal():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8600)
+
+
+# ============================================================
+# STEADY CLIMB OPTIONS ENDPOINTS
+# ============================================================
+
+from iren.steady_climb_options import IrenSteadyClimbOptions
+
+# Initialize Steady Climb
+iren_climber = IrenSteadyClimbOptions()
+
+@app.get("/api/iren/climb/status")
+async def get_climb_status():
+    """Get Steady Climb status"""
+    return iren_climber.get_status()
+
+@app.get("/api/iren/climb/signal")
+async def get_climb_signal():
+    """Generate a Steady Climb signal"""
+    return iren_climber.generate_signal()
+
+@app.post("/api/iren/climb/open")
+async def open_climb_position(entry_price: float, contracts: int = None):
+    """Open a position at the current climb level"""
+    signal = iren_climber.generate_signal()
+    if signal['action'] != 'BUY_CALL':
+        return {"error": signal.get('reason', 'Cannot open position')}
+    
+    option = signal['option']
+    contracts = contracts or signal['contracts']
+    return iren_climber.open_position(option, entry_price, contracts)
+
+@app.post("/api/iren/climb/close")
+async def close_climb_position(exit_price: float, reason: str = "Manual"):
+    """Close the current position"""
+    return iren_climber.close_position(exit_price, reason)
+
+@app.post("/api/iren/climb/reset")
+async def reset_climb():
+    """Reset the progression to position 1"""
+    iren_climber.reset_progression("API reset")
+    return {"message": "Progression reset to position 1", "status": iren_climber.get_status()}
+
+@app.post("/api/iren/climb/win")
+async def record_climb_win(profit: float):
+    """Manually record a win (for testing)"""
+    result = iren_climber.record_win(profit)
+    return {"result": result, "status": iren_climber.get_status()}
+
+@app.post("/api/iren/climb/loss")
+async def record_climb_loss(loss: float):
+    """Manually record a loss (for testing)"""
+    result = iren_climber.record_loss(abs(loss) * -1)
+    return {"result": result, "status": iren_climber.get_status()}

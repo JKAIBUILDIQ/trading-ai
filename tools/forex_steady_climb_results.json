@@ -1,0 +1,164 @@
+[
+  {
+    "scenario": "Conservative Technicals",
+    "win_rate": 0.5,
+    "risk_reward": 1.5,
+    "config": {
+      "starting_bankroll": 10000,
+      "unit_size": 100,
+      "win_rate": 0.5,
+      "risk_reward": 1.5,
+      "trades_per_session": 20,
+      "num_sessions": 1000
+    },
+    "results": {
+      "profitable_sessions": 750,
+      "profitable_pct": 75.0,
+      "avg_session_pnl": 654.3,
+      "median_session_pnl": 450.0,
+      "best_session": 10800.0,
+      "worst_session": -1500.0,
+      "std_dev": 1119.0694839910523,
+      "avg_pnl_pct": 6.543,
+      "avg_drawdown": 5.393544551213274,
+      "max_drawdown": 16.0,
+      "avg_win_rate": 49.835,
+      "total_expected_pnl": 654300.0
+    }
+  },
+  {
+    "scenario": "Good Momentum Trading",
+    "win_rate": 0.52,
+    "risk_reward": 1.5,
+    "config": {
+      "starting_bankroll": 10000,
+      "unit_size": 100,
+      "win_rate": 0.52,
+      "risk_reward": 1.5,
+      "trades_per_session": 20,
+      "num_sessions": 1000
+    },
+    "results": {
+      "profitable_sessions": 807,
+      "profitable_pct": 80.7,
+      "avg_session_pnl": 845.15,
+      "median_session_pnl": 600.0,
+      "best_session": 9850.0,
+      "worst_session": -1100.0,
+      "std_dev": 1233.8026493325422,
+      "avg_pnl_pct": 8.4515,
+      "avg_drawdown": 5.2534610277015705,
+      "max_drawdown": 12.0,
+      "avg_win_rate": 51.975,
+      "total_expected_pnl": 845150.0
+    }
+  },
+  {
+    "scenario": "Strong Technicals",
+    "win_rate": 0.55,
+    "risk_reward": 1.5,
+    "config": {
+      "starting_bankroll": 10000,
+      "unit_size": 100,
+      "win_rate": 0.55,
+      "risk_reward": 1.5,
+      "trades_per_session": 20,
+      "num_sessions": 1000
+    },
+    "results": {
+      "profitable_sessions": 880,
+      "profitable_pct": 88.0,
+      "avg_session_pnl": 1090.2,
+      "median_session_pnl": 800.0,
+      "best_session": 9750.0,
+      "worst_session": -1250.0,
+      "std_dev": 1301.4833690831397,
+      "avg_pnl_pct": 10.902,
+      "avg_drawdown": 5.092689057023226,
+      "max_drawdown": 14.622641509433961,
+      "avg_win_rate": 55.225,
+      "total_expected_pnl": 1090200.0
+    }
+  },
+  {
+    "scenario": "Excellent Technicals",
+    "win_rate": 0.55,
+    "risk_reward": 2.0,
+    "config": {
+      "starting_bankroll": 10000,
+      "unit_size": 100,
+      "win_rate": 0.55,
+      "risk_reward": 2.0,
+      "trades_per_session": 20,
+      "num_sessions": 1000
+    },
+    "results": {
+      "profitable_sessions": 970,
+      "profitable_pct": 97.0,
+      "avg_session_pnl": 2003.0,
+      "median_session_pnl": 1500.0,
+      "best_session": 15300.0,
+      "worst_session": -600.0,
+      "std_dev": 1912.6188851938068,
+      "avg_pnl_pct": 20.03,
+      "avg_drawdown": 4.56292309372612,
+      "max_drawdown": 11.926605504587156,
+      "avg_win_rate": 55.3,
+      "total_expected_pnl": 2003000.0
+    }
+  },
+  {
+    "scenario": "NEO Gold Signals (~52%)",
+    "win_rate": 0.52,
+    "risk_reward": 1.8,
+    "config": {
+      "starting_bankroll": 10000,
+      "unit_size": 100,
+      "win_rate": 0.52,
+      "risk_reward": 1.8,
+      "trades_per_session": 20,
+      "num_sessions": 1000
+    },
+    "results": {
+      "profitable_sessions": 896,
+      "profitable_pct": 89.60000000000001,
+      "avg_session_pnl": 1200.26,
+      "median_session_pnl": 960.0,
+      "best_session": 11660.0,
+      "worst_session": -980.0,
+      "std_dev": 1299.1250641874321,
+      "avg_pnl_pct": 12.0026,
+      "avg_drawdown": 4.8677250582738205,
+      "max_drawdown": 13.601532567049809,
+      "avg_win_rate": 51.625,
+      "total_expected_pnl": 1200260.0
+    }
+  },
+  {
+    "scenario": "Gap Fill Strategy (74%)",
+    "win_rate": 0.74,
+    "risk_reward": 1.2,
+    "config": {
+      "starting_bankroll": 10000,
+      "unit_size": 100,
+      "win_rate": 0.74,
+      "risk_reward": 1.2,
+      "trades_per_session": 20,
+      "num_sessions": 1000
+    },
+    "results": {
+      "profitable_sessions": 992,
+      "profitable_pct": 99.2,
+      "avg_session_pnl": 3122.46,
+      "median_session_pnl": 2140.0,
+      "best_session": 15120.0,
+      "worst_session": -320.0,
+      "std_dev": 2675.7512493503577,
+      "avg_pnl_pct": 31.2246,
+      "avg_drawdown": 5.143410230044352,
+      "max_drawdown": 10.416666666666668,
+      "avg_win_rate": 73.96,
+      "total_expected_pnl": 3122460.0
+    }
+  }
+]
