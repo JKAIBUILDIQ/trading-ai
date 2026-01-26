@@ -57,6 +57,16 @@ try:
 except ImportError:
     ALGO_HYPE_AVAILABLE = False
 
+# Signal learner for historical learning
+try:
+    from signal_learner import (
+        SignalLearner, SignalOutcome, get_learner,
+        get_pattern_confidence, detect_breakout, record_signal_outcome
+    )
+    LEARNER_AVAILABLE = True
+except ImportError:
+    LEARNER_AVAILABLE = False
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("SmartSignal")
@@ -107,6 +117,8 @@ class SmartSignalGenerator:
     3. FADE the herd only when exhausted (everyone bullish + volume dying = SELL)
     4. Multi-timeframe confirmation (all timeframes must agree)
     5. Avoid crowded trades (Algo Hype Index)
+    6. LEARN from mistakes (historical pattern performance)
+    7. Handle breakouts intelligently (real vs fake)
     """
     
     def __init__(self, symbol: str = "XAUUSD"):
@@ -115,6 +127,9 @@ class SmartSignalGenerator:
         # Initialize detectors
         self.mm_detector = MMDetector() if MM_DETECTOR_AVAILABLE else None
         self.herd_detector = HerdDetector(symbol) if HERD_DETECTOR_AVAILABLE else None
+        
+        # Initialize learner for historical pattern learning
+        self.learner = get_learner() if LEARNER_AVAILABLE else None
         
         # State tracking
         self.last_signal_time = None
@@ -131,6 +146,7 @@ class SmartSignalGenerator:
         logger.info(f"   Herd Detector: {'✅ ACTIVE' if self.herd_detector else '❌ UNAVAILABLE'}")
         logger.info(f"   Crowd Psychology: {'✅ ACTIVE' if CROWD_PSYCHOLOGY_AVAILABLE else '❌ UNAVAILABLE'}")
         logger.info(f"   Algo Hype Index: {'✅ ACTIVE' if ALGO_HYPE_AVAILABLE else '❌ UNAVAILABLE'}")
+        logger.info(f"   Signal Learner: {'✅ ACTIVE' if self.learner else '❌ UNAVAILABLE'}")
         logger.info("=" * 60)
     
     def _calculate_rsi(self, closes: pd.Series, period: int = 14) -> pd.Series:
@@ -537,7 +553,75 @@ class SmartSignalGenerator:
             return signal
         
         # ═══════════════════════════════════════════════════════════
-        # STEP 7: GENERATE FINAL SIGNAL
+        # STEP 7: BREAKOUT DETECTION
+        # ═══════════════════════════════════════════════════════════
+        logger.info("\n🔍 Checking for breakout patterns...")
+        
+        breakout_info = None
+        if self.learner:
+            breakout_info = self.learner.detect_breakout(df_h1)
+            
+            if breakout_info:
+                logger.info(f"   ⚡ {breakout_info['type']} detected at ${breakout_info['level']:.2f}")
+                
+                if 'probability_real' in breakout_info:
+                    prob = breakout_info['probability_real']
+                    logger.info(f"   📊 Probability real: {prob:.0f}%")
+                    logger.info(f"   🎯 Suggested action: {breakout_info['action']}")
+                    
+                    # If it's a real breakout, RIDE IT!
+                    if prob > 65 and breakout_info['type'] == 'RESISTANCE_BREAK':
+                        initial_direction = "BUY"
+                        reasoning_parts.append(f"Breakout BUY: {prob:.0f}% probability real")
+                        logger.info("   🚀 HIGH probability breakout - RIDE IT!")
+                    elif prob > 65 and breakout_info['type'] == 'SUPPORT_BREAK':
+                        initial_direction = "SELL"
+                        reasoning_parts.append(f"Breakdown SELL: {prob:.0f}% probability real")
+                        logger.info("   📉 HIGH probability breakdown - RIDE IT!")
+                    
+                    # If it's likely a FAKE breakout, FADE IT!
+                    elif prob < 35 and breakout_info['type'] == 'RESISTANCE_BREAK':
+                        initial_direction = "SELL"
+                        reasoning_parts.append(f"Fake breakout FADE: Only {prob:.0f}% real")
+                        logger.info("   🎯 LOW probability breakout - FADE IT!")
+                    elif prob < 35 and breakout_info['type'] == 'SUPPORT_BREAK':
+                        initial_direction = "BUY"
+                        reasoning_parts.append(f"Fake breakdown FADE: Only {prob:.0f}% real")
+                        logger.info("   🎯 LOW probability breakdown - FADE IT!")
+                    
+                    # If uncertain (35-65%), WAIT for confirmation
+                    elif 35 <= prob <= 65:
+                        signal.warnings.append(f"Breakout uncertain ({prob:.0f}%) - need confirmation")
+                        logger.info(f"   ⏳ Uncertain breakout - waiting for confirmation")
+                
+                elif breakout_info['type'] in ['NEAR_RESISTANCE', 'NEAR_SUPPORT']:
+                    signal.warnings.append(f"Near {breakout_info['type'].split('_')[1].lower()} - breakout imminent!")
+                    logger.info(f"   ⏳ {breakout_info['warning']}")
+        
+        # ═══════════════════════════════════════════════════════════
+        # STEP 8: HISTORICAL LEARNING CHECK
+        # ═══════════════════════════════════════════════════════════
+        logger.info("\n🔍 Checking historical pattern performance...")
+        
+        confidence_multiplier = 1.0
+        if self.learner and initial_direction != "WAIT":
+            mult, learn_reason = self.learner.get_pattern_confidence(
+                self.symbol, initial_direction, trend, rsi_h1
+            )
+            confidence_multiplier = mult
+            
+            if mult < 0.8:
+                logger.warning(f"   ⚠️ {learn_reason}")
+                signal.warnings.append(learn_reason)
+                reasoning_parts.append(f"Historical: {mult:.0%} confidence")
+            elif mult > 1.1:
+                logger.info(f"   ✅ {learn_reason}")
+                reasoning_parts.append(f"Historical: {mult:.0%} confidence boost")
+            else:
+                logger.info(f"   📊 {learn_reason}")
+        
+        # ═══════════════════════════════════════════════════════════
+        # STEP 9: GENERATE FINAL SIGNAL
         # ═══════════════════════════════════════════════════════════
         logger.info("\n📊 Generating final signal...")
         
@@ -555,6 +639,9 @@ class SmartSignalGenerator:
         
         # Reduce confidence for warnings
         confidence -= len(signal.warnings) * 5
+        
+        # Apply historical learning multiplier
+        confidence = confidence * confidence_multiplier
         
         confidence = max(0, min(95, confidence))
         
@@ -599,7 +686,61 @@ class SmartSignalGenerator:
         logger.info(f"   Reasoning: {signal.reasoning}")
         logger.info("=" * 60)
         
+        # Record signal for learning (if not WAIT)
+        if signal.direction != "WAIT" and self.learner:
+            outcome = SignalOutcome(
+                signal_id=f"NEO_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}",
+                symbol=self.symbol,
+                direction=signal.direction,
+                entry_price=signal.entry_price,
+                entry_time=signal.timestamp,
+                rsi_at_signal=rsi_h1,
+                trend_at_signal=trend,
+                was_breakout=breakout_info is not None if breakout_info else False,
+                breakout_type=breakout_info.get('type', '') if breakout_info else ''
+            )
+            self.learner.record_signal(outcome)
+            logger.info(f"   📝 Signal recorded for learning: {outcome.signal_id}")
+        
         return signal
+    
+    def record_outcome(
+        self,
+        signal_id: str,
+        exit_price: float,
+        outcome: str,  # WIN, LOSS, BREAKEVEN
+        pnl_pips: float,
+        mistake_type: str = "",
+        lesson: str = ""
+    ):
+        """
+        Record the outcome of a signal for learning.
+        
+        Call this when a trade closes to teach NEO what worked!
+        
+        Common mistake_types:
+        - FOUGHT_TREND: Sold in uptrend or bought in downtrend
+        - EARLY_ENTRY: Entered before confirmation
+        - LATE_EXIT: Held too long, gave back profits
+        - BREAKOUT_FADE: Faded a real breakout
+        - FALSE_BREAKOUT_RIDE: Rode a fake breakout
+        """
+        if self.learner:
+            self.learner.update_outcome(
+                signal_id, exit_price, outcome, pnl_pips,
+                mistake_type=mistake_type, lesson=lesson
+            )
+            logger.info(f"📚 Outcome recorded: {signal_id} → {outcome} ({pnl_pips:+.1f} pips)")
+            
+            if mistake_type:
+                logger.warning(f"   ⚠️ Mistake: {mistake_type}")
+                logger.info(f"   📚 Lesson: {lesson}")
+    
+    def get_learning_summary(self) -> str:
+        """Get summary of what NEO has learned"""
+        if self.learner:
+            return self.learner.get_learning_summary()
+        return "Learning not available"
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
