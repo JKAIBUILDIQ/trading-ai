@@ -24,6 +24,13 @@ from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 
+# Pattern recognition
+try:
+    from pattern_detector import PatternDetector
+    PATTERNS_AVAILABLE = True
+except ImportError:
+    PATTERNS_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("IrenPredictor")
 
@@ -380,6 +387,29 @@ class IrenPredictor:
         # BTC decoupling bonus
         if btc_analysis.get("status") == "DECOUPLING":
             reasoning_parts.append("BTC decoupling (independent movement)")
+        
+        # Pattern recognition
+        if PATTERNS_AVAILABLE:
+            try:
+                detector = PatternDetector("IREN")
+                patterns = detector.analyze(iren_df)
+                pattern_signal = detector.get_combined_signal(patterns)
+                
+                if pattern_signal["direction"] != "NEUTRAL":
+                    pattern_weight = 0.15 * (pattern_signal["confidence"] / 100)
+                    
+                    if pattern_signal["direction"] == "BUY":
+                        bullish_score += pattern_weight
+                    else:
+                        bearish_score += pattern_weight
+                    
+                    reasoning_parts.append(
+                        f"Patterns: {pattern_signal['direction']} "
+                        f"({pattern_signal['pattern_count']} detected)"
+                    )
+                    logger.info(f"   🔍 Patterns: {pattern_signal['patterns']}")
+            except Exception as e:
+                logger.warning(f"Pattern detection failed: {e}")
         
         # Determine direction
         net_score = bullish_score - bearish_score

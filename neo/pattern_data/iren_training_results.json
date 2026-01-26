@@ -1,0 +1,75 @@
+{
+  "symbol": "IREN",
+  "total_patterns": 54,
+  "correct": 27,
+  "incorrect": 27,
+  "pattern_breakdown": {
+    "higher_highs": {
+      "total": 20,
+      "correct": 15,
+      "examples": [],
+      "accuracy": 75.0
+    },
+    "bull_engulfing": {
+      "total": 1,
+      "correct": 1,
+      "examples": [],
+      "accuracy": 100.0
+    },
+    "evening_star": {
+      "total": 1,
+      "correct": 0,
+      "examples": [],
+      "accuracy": 0.0
+    },
+    "lower_lows": {
+      "total": 7,
+      "correct": 0,
+      "examples": [],
+      "accuracy": 0.0
+    },
+    "resistance_rejection": {
+      "total": 8,
+      "correct": 1,
+      "examples": [],
+      "accuracy": 12.5
+    },
+    "breakout_up": {
+      "total": 9,
+      "correct": 5,
+      "examples": [],
+      "accuracy": 55.55555555555556
+    },
+    "shooting_star": {
+      "total": 1,
+      "correct": 0,
+      "examples": [],
+      "accuracy": 0.0
+    },
+    "three_white_soldiers": {
+      "total": 3,
+      "correct": 2,
+      "examples": [],
+      "accuracy": 66.66666666666666
+    },
+    "doji": {
+      "total": 1,
+      "correct": 0,
+      "examples": [],
+      "accuracy": 0.0
+    },
+    "bull_pin_bar": {
+      "total": 1,
+      "correct": 1,
+      "examples": [],
+      "accuracy": 100.0
+    },
+    "trend_reversal_up": {
+      "total": 2,
+      "correct": 2,
+      "examples": [],
+      "accuracy": 100.0
+    }
+  },
+  "overall_accuracy": 50.0
+}

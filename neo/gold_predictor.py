@@ -30,6 +30,13 @@ from dataclasses import dataclass, field, asdict
 from pathlib import Path
 import uuid
 
+# Pattern recognition
+try:
+    from pattern_detector import PatternDetector
+    PATTERNS_AVAILABLE = True
+except ImportError:
+    PATTERNS_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("GoldPredictor")
 
@@ -459,6 +466,35 @@ class GoldPredictor:
         if features["atr_spike"]:
             contributions["atr_spike"] = 0
             reasoning_parts.append("⚠️ High volatility - reduce size!")
+        
+        # ═══ PATTERN RECOGNITION ═══
+        
+        if PATTERNS_AVAILABLE:
+            try:
+                df = self._get_gold_data(period="10d", interval="1h")
+                if not df.empty:
+                    detector = PatternDetector("XAUUSD")
+                    patterns = detector.analyze(df)
+                    pattern_signal = detector.get_combined_signal(patterns)
+                    
+                    if pattern_signal["direction"] != "NEUTRAL":
+                        pattern_weight = 0.15 * (pattern_signal["confidence"] / 100)
+                        
+                        if pattern_signal["direction"] == "BUY":
+                            bullish_score += pattern_weight
+                            contributions["patterns"] = pattern_weight
+                        else:
+                            bearish_score += pattern_weight
+                            contributions["patterns"] = -pattern_weight
+                        
+                        reasoning_parts.append(
+                            f"Patterns: {pattern_signal['direction']} "
+                            f"({pattern_signal['pattern_count']} detected, {pattern_signal['confidence']:.0f}%)"
+                        )
+                        
+                        logger.info(f"   🔍 Patterns detected: {pattern_signal['patterns']}")
+            except Exception as e:
+                logger.warning(f"Pattern detection failed: {e}")
         
         # ═══ CALCULATE FINAL PREDICTION ═══
         

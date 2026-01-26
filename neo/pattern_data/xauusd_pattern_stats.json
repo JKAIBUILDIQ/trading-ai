@@ -1,0 +1,86 @@
+{
+  "bear_engulfing": {
+    "total": 11,
+    "correct": 3
+  },
+  "three_white_soldiers": {
+    "total": 23,
+    "correct": 16
+  },
+  "resistance_rejection": {
+    "total": 9,
+    "correct": 1
+  },
+  "higher_highs": {
+    "total": 154,
+    "correct": 95
+  },
+  "lower_lows": {
+    "total": 7,
+    "correct": 1
+  },
+  "evening_star": {
+    "total": 4,
+    "correct": 2
+  },
+  "double_bottom": {
+    "total": 74,
+    "correct": 48
+  },
+  "breakout_up": {
+    "total": 39,
+    "correct": 26
+  },
+  "trend_reversal_down": {
+    "total": 5,
+    "correct": 1
+  },
+  "bull_engulfing": {
+    "total": 10,
+    "correct": 4
+  },
+  "trend_reversal_up": {
+    "total": 14,
+    "correct": 7
+  },
+  "doji": {
+    "total": 2,
+    "correct": 2
+  },
+  "bear_pin_bar": {
+    "total": 4,
+    "correct": 1
+  },
+  "double_top": {
+    "total": 20,
+    "correct": 7
+  },
+  "morning_star": {
+    "total": 6,
+    "correct": 3
+  },
+  "three_black_crows": {
+    "total": 13,
+    "correct": 4
+  },
+  "bull_pin_bar": {
+    "total": 3,
+    "correct": 2
+  },
+  "hammer": {
+    "total": 3,
+    "correct": 3
+  },
+  "shooting_star": {
+    "total": 2,
+    "correct": 1
+  },
+  "breakout_down": {
+    "total": 3,
+    "correct": 0
+  },
+  "support_bounce": {
+    "total": 6,
+    "correct": 2
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "symbol": "XAUUSD",
+  "total_patterns": 412,
+  "correct": 229,
+  "incorrect": 183,
+  "pattern_breakdown": {
+    "bear_engulfing": {
+      "total": 11,
+      "correct": 3,
+      "examples": [],
+      "accuracy": 27.27272727272727
+    },
+    "three_white_soldiers": {
+      "total": 23,
+      "correct": 16,
+      "examples": [],
+      "accuracy": 69.56521739130434
+    },
+    "resistance_rejection": {
+      "total": 9,
+      "correct": 1,
+      "examples": [],
+      "accuracy": 11.11111111111111
+    },
+    "higher_highs": {
+      "total": 154,
+      "correct": 95,
+      "examples": [],
+      "accuracy": 61.68831168831169
+    },
+    "lower_lows": {
+      "total": 7,
+      "correct": 1,
+      "examples": [],
+      "accuracy": 14.285714285714285
+    },
+    "evening_star": {
+      "total": 4,
+      "correct": 2,
+      "examples": [],
+      "accuracy": 50.0
+    },
+    "double_bottom": {
+      "total": 74,
+      "correct": 48,
+      "examples": [],
+      "accuracy": 64.86486486486487
+    },
+    "breakout_up": {
+      "total": 39,
+      "correct": 26,
+      "examples": [],
+      "accuracy": 66.66666666666666
+    },
+    "trend_reversal_down": {
+      "total": 5,
+      "correct": 1,
+      "examples": [],
+      "accuracy": 20.0
+    },
+    "bull_engulfing": {
+      "total": 10,
+      "correct": 4,
+      "examples": [],
+      "accuracy": 40.0
+    },
+    "trend_reversal_up": {
+      "total": 14,
+      "correct": 7,
+      "examples": [],
+      "accuracy": 50.0
+    },
+    "doji": {
+      "total": 2,
+      "correct": 2,
+      "examples": [],
+      "accuracy": 100.0
+    },
+    "bear_pin_bar": {
+      "total": 4,
+      "correct": 1,
+      "examples": [],
+      "accuracy": 25.0
+    },
+    "double_top": {
+      "total": 20,
+      "correct": 7,
+      "examples": [],
+      "accuracy": 35.0
+    },
+    "morning_star": {
+      "total": 6,
+      "correct": 3,
+      "examples": [],
+      "accuracy": 50.0
+    },
+    "three_black_crows": {
+      "total": 13,
+      "correct": 4,
+      "examples": [],
+      "accuracy": 30.76923076923077
+    },
+    "bull_pin_bar": {
+      "total": 3,
+      "correct": 2,
+      "examples": [],
+      "accuracy": 66.66666666666666
+    },
+    "hammer": {
+      "total": 3,
+      "correct": 3,
+      "examples": [],
+      "accuracy": 100.0
+    },
+    "shooting_star": {
+      "total": 2,
+      "correct": 1,
+      "examples": [],
+      "accuracy": 50.0
+    },
+    "breakout_down": {
+      "total": 3,
+      "correct": 0,
+      "examples": [],
+      "accuracy": 0.0
+    },
+    "support_bounce": {
+      "total": 6,
+      "correct": 2,
+      "examples": [],
+      "accuracy": 33.33333333333333
+    }
+  },
+  "overall_accuracy": 55.582524271844655
+}
