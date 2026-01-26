@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-26T06:04:04.488041",
+  "timestamp": "2026-01-26T14:12:50.460410",
   "symbol": "IREN",
   "price": {
     "current": 56.68,
@@ -25,8 +25,8 @@
     "trend_strength": 95.0
   },
   "btc_correlation": {
-    "btc_price": 87695.12,
-    "correlation_30d": -0.019,
+    "btc_price": 87668.14,
+    "correlation_30d": 0.318,
     "coupling_status": "DECOUPLING"
   },
   "earnings": {
