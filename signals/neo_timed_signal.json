@@ -1,0 +1,30 @@
+{
+  "signal_id": "SIGNAL_20260126_083337",
+  "prediction_id": "PRED_20260126_083337_c594",
+  "symbol": "XAUUSD",
+  "direction": "BUY",
+  "confidence": 81.52,
+  "predicted_change": 37.68581696428571,
+  "hold_minutes": 240,
+  "emergency_sl_pips": 200,
+  "risk_percent": 1.0,
+  "max_lots": 5.0,
+  "reasoning": "RSI 86 overbought but UPTREND (reduced) | EMA trend BULLISH (+11%) | Momentum +0.49% (+15%) | MACD bullish (+10%) | London session (+6%) | Near resistance $5108 (-4%)",
+  "timestamp": "2026-01-26T08:33:37.212987+00:00",
+  "target_time": "2026-01-26T12:33:37.212248+00:00",
+  "status": "PENDING",
+  "executed_at": "",
+  "closed_at": "",
+  "entry_price": 0.0,
+  "exit_price": 0.0,
+  "profit": 0.0,
+  "instructions": {
+    "mode": "TIMED",
+    "entry": "MARKET",
+    "sl_type": "EMERGENCY_ONLY",
+    "sl_pips": 200,
+    "tp_type": "NONE",
+    "exit_method": "TIME",
+    "exit_after_minutes": 240
+  }
+}
