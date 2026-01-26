@@ -443,7 +443,9 @@ async def get_neo_signal():
     
     return {
         "signal": direction,
+        "action": direction,       # Ghost Commander looks for this!
         "direction": direction,
+        "type": direction,         # Alias for compatibility
         "symbol": "XAUUSD",
         "price": current_prediction.current_price,
         "target": current_prediction.predicted_price,
