@@ -397,6 +397,118 @@ async def prediction_learning_loop():
             await asyncio.sleep(60)
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# GHOST COMMANDER COMPATIBILITY ENDPOINTS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+class TradeUpdate(BaseModel):
+    """Trade update from Ghost Commander"""
+    trade_id: Optional[str] = None
+    prediction_id: Optional[str] = None
+    symbol: str = "XAUUSD"
+    direction: str  # BUY or SELL
+    entry_price: Optional[float] = None
+    exit_price: Optional[float] = None
+    profit_pips: Optional[float] = None
+    status: str = "OPENED"  # OPENED, CLOSED, STOPPED
+    timestamp: Optional[str] = None
+
+
+@app.get("/neo/signal")
+@app.get("/xauusd/signal")
+@app.get("/api/xauusd/signal")
+async def get_neo_signal():
+    """
+    Simple signal endpoint for Ghost Commander.
+    Returns BUY/SELL direction with confidence.
+    """
+    global current_prediction
+    
+    now = datetime.now(timezone.utc)
+    
+    # Get or refresh prediction
+    if current_prediction is None:
+        current_prediction = predictor.predict_4h()
+        store.save_prediction(current_prediction)
+    else:
+        target_time = datetime.fromisoformat(current_prediction.target_time.replace('Z', '+00:00'))
+        if target_time.tzinfo is None:
+            target_time = target_time.replace(tzinfo=timezone.utc)
+        if now > target_time:
+            current_prediction = predictor.predict_4h()
+            store.save_prediction(current_prediction)
+    
+    # Convert direction to Ghost format
+    direction = "BUY" if current_prediction.predicted_direction == "UP" else "SELL"
+    
+    return {
+        "signal": direction,
+        "direction": direction,
+        "symbol": "XAUUSD",
+        "price": current_prediction.current_price,
+        "target": current_prediction.predicted_price,
+        "confidence": current_prediction.confidence,
+        "prediction_id": current_prediction.prediction_id,
+        "valid_until": current_prediction.target_time,
+        "reasoning": current_prediction.reasoning,
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+
+
+@app.post("/trade/update")
+@app.post("/neo/trade/update")
+@app.post("/api/neo/trade/update")
+async def update_trade(trade: TradeUpdate):
+    """
+    Receive trade updates from Ghost Commander.
+    Used for learning and tracking.
+    """
+    logger.info(f"📥 Trade update received: {trade.direction} {trade.symbol} - {trade.status}")
+    
+    # Log the trade
+    trade_log = {
+        "trade_id": trade.trade_id or f"TRADE_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+        "prediction_id": trade.prediction_id,
+        "symbol": trade.symbol,
+        "direction": trade.direction,
+        "entry_price": trade.entry_price,
+        "exit_price": trade.exit_price,
+        "profit_pips": trade.profit_pips,
+        "status": trade.status,
+        "received_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    # If trade closed, use for learning
+    if trade.status == "CLOSED" and trade.profit_pips is not None:
+        outcome = "correct" if trade.profit_pips > 0 else "incorrect"
+        logger.info(f"   Trade outcome: {outcome} ({trade.profit_pips:+.1f} pips)")
+        
+        # TODO: Integrate with learning system
+        # learner.record_trade_outcome(trade)
+    
+    return {
+        "success": True,
+        "message": f"Trade update received: {trade.status}",
+        "trade_id": trade_log["trade_id"]
+    }
+
+
+@app.get("/health")
+@app.get("/api/health")
+async def health_check():
+    """Health check endpoint"""
+    return {
+        "status": "healthy",
+        "service": "NEO Gold Prediction",
+        "prediction_active": current_prediction is not None,
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# LIFECYCLE
+# ═══════════════════════════════════════════════════════════════════════════════
+
 @app.on_event("startup")
 async def startup_event():
     """Start background tasks on API startup"""
