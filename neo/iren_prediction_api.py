@@ -27,12 +27,14 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from iren_predictor import IrenPredictor, IrenPrediction, get_iren_predictor
+from iren_ibkr_bridge import IrenIBKRBridge
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("IrenPredictionAPI")
 
 # Initialize
 predictor = get_iren_predictor()
+ibkr_bridge: Optional[IrenIBKRBridge] = None
 
 # FastAPI app
 app = FastAPI(
@@ -224,6 +226,173 @@ async def startup():
     current_prediction = predictor.predict_4h()
     last_prediction_time = datetime.now(timezone.utc)
     logger.info(f"Initial prediction: {current_prediction.predicted_direction} ({current_prediction.confidence}%)")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# IBKR BRIDGE ENDPOINTS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@app.get("/api/iren/ibkr/status")
+async def get_ibkr_status():
+    """Get IBKR bridge status"""
+    global ibkr_bridge, current_prediction
+    
+    if ibkr_bridge is None:
+        ibkr_bridge = IrenIBKRBridge(paper_trading=True, auto_execute=False)
+    
+    status = ibkr_bridge.get_status()
+    # Inject current prediction from local predictor
+    if current_prediction:
+        status['current_prediction'] = {
+            'prediction_id': current_prediction.prediction_id,
+            'signal': current_prediction.signal,
+            'confidence': current_prediction.confidence,
+            'direction': current_prediction.predicted_direction,
+            'best_option': current_prediction.best_option
+        }
+        # Check if signal is valid
+        if current_prediction.signal == 'BUY_CALLS' and current_prediction.confidence >= 60:
+            status['pending_signals'] = 1
+    
+    return status
+
+
+@app.post("/api/iren/ibkr/connect")
+async def connect_ibkr():
+    """Connect to IBKR"""
+    global ibkr_bridge
+    
+    if ibkr_bridge is None:
+        ibkr_bridge = IrenIBKRBridge(paper_trading=True, auto_execute=False)
+    
+    success = ibkr_bridge.connect_ibkr()
+    
+    return {
+        "success": success,
+        "message": "Connected to IBKR" if success else "Failed to connect",
+        "paper_trading": ibkr_bridge.paper_trading
+    }
+
+
+@app.get("/api/iren/ibkr/signal")
+async def get_ibkr_signal():
+    """Get current signal formatted for IBKR execution"""
+    global ibkr_bridge, current_prediction
+    
+    if ibkr_bridge is None:
+        ibkr_bridge = IrenIBKRBridge(paper_trading=True, auto_execute=False)
+    
+    if current_prediction is None:
+        return {"success": False, "error": "No prediction available"}
+    
+    # Validate signal
+    pred_dict = {
+        'signal': current_prediction.signal,
+        'confidence': current_prediction.confidence,
+        'best_option': current_prediction.best_option,
+        'earnings_days_away': current_prediction.earnings.get('days_away', 100),
+        'prediction_id': current_prediction.prediction_id
+    }
+    
+    valid, reason = ibkr_bridge.validate_signal(pred_dict)
+    
+    if not valid:
+        return {
+            "success": False,
+            "valid": False,
+            "reason": reason,
+            "prediction": {
+                "signal": current_prediction.signal,
+                "confidence": current_prediction.confidence,
+                "direction": current_prediction.predicted_direction,
+                "best_option": current_prediction.best_option
+            }
+        }
+    
+    # Format order
+    order = ibkr_bridge.format_order(pred_dict)
+    
+    return {
+        "success": True,
+        "valid": True,
+        "order": order,
+        "executed": False,
+        "ibkr_connected": ibkr_bridge.connected,
+        "prediction": {
+            "signal": current_prediction.signal,
+            "confidence": current_prediction.confidence,
+            "direction": current_prediction.predicted_direction,
+            "price": current_prediction.current_price,
+            "best_option": current_prediction.best_option
+        }
+    }
+
+
+@app.post("/api/iren/ibkr/execute")
+async def execute_ibkr_order(quantity: int = 5):
+    """Execute current signal on IBKR (USE WITH CAUTION!)"""
+    global ibkr_bridge, current_prediction
+    
+    if ibkr_bridge is None:
+        ibkr_bridge = IrenIBKRBridge(paper_trading=True, auto_execute=False)
+    
+    if current_prediction is None:
+        return {"success": False, "error": "No prediction available"}
+    
+    # Validate signal first
+    pred_dict = {
+        'signal': current_prediction.signal,
+        'confidence': current_prediction.confidence,
+        'best_option': current_prediction.best_option,
+        'earnings_days_away': current_prediction.earnings.get('days_away', 100),
+        'prediction_id': current_prediction.prediction_id
+    }
+    
+    valid, reason = ibkr_bridge.validate_signal(pred_dict)
+    
+    if not valid:
+        return {
+            "success": False,
+            "valid": False,
+            "reason": reason,
+            "executed": False
+        }
+    
+    # Connect if not connected
+    if not ibkr_bridge.connected:
+        connected = ibkr_bridge.connect_ibkr()
+        if not connected:
+            return {
+                "success": False,
+                "error": "Could not connect to IBKR. Make sure TWS is running with API enabled.",
+                "executed": False
+            }
+    
+    # Format and execute order
+    order = ibkr_bridge.format_order(pred_dict, quantity)
+    result = ibkr_bridge.execute_order(order)
+    
+    return {
+        "success": result.get('success', False),
+        "valid": True,
+        "order": order,
+        "executed": True,
+        "result": result
+    }
+
+
+@app.get("/api/iren/ibkr/history")
+async def get_ibkr_history():
+    """Get signal execution history"""
+    global ibkr_bridge
+    
+    if ibkr_bridge is None:
+        ibkr_bridge = IrenIBKRBridge(paper_trading=True, auto_execute=False)
+    
+    return {
+        "total_signals": len(ibkr_bridge.signal_history),
+        "recent": ibkr_bridge.signal_history[-10:] if ibkr_bridge.signal_history else []
+    }
 
 
 if __name__ == "__main__":
