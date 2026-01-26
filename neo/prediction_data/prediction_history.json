@@ -1,0 +1,77 @@
+{
+  "predictions": [
+    {
+      "prediction_id": "PRED_20260126_082816_3024",
+      "timestamp": "2026-01-26T08:28:16.742991+00:00",
+      "target_time": "2026-01-26T12:28:16.742991+00:00",
+      "current_price": 5094.39990234375,
+      "predicted_direction": "UP",
+      "predicted_change_pips": 37.68581696428571,
+      "predicted_price": 5132.085719308036,
+      "confidence": 81.52,
+      "features": {
+        "current_price": 5094.39990234375,
+        "ema20": 5028.993863551988,
+        "ema50": 4960.610607702419,
+        "rsi_h1": 90.94407195318527,
+        "rsi_h4": 85.53280806070347,
+        "macd_value": 42.75282648657321,
+        "macd_signal": 38.424784686128596,
+        "macd_state": "BULLISH",
+        "momentum_4h": 0.5090124332245106,
+        "atr": 25.057059151785715,
+        "rsi_oversold": false,
+        "rsi_overbought": true,
+        "rsi_extreme_oversold": false,
+        "rsi_extreme_overbought": true,
+        "ema_trend": "BULLISH",
+        "ema_strength": 1.3785249691517791,
+        "atr_spike": "False",
+        "session": "LONDON",
+        "session_london": true,
+        "session_ny": false,
+        "session_asia": false,
+        "day_name": "MONDAY",
+        "day_bias": 0.55,
+        "support": 4918.7998046875,
+        "resistance": 5107.89990234375,
+        "near_support": "False",
+        "near_resistance": "True",
+        "extracted_at": "2026-01-26T08:28:16.742830"
+      },
+      "feature_contributions": {
+        "ema_trend": 0.10600000000000001,
+        "momentum_h4": 0.15,
+        "macd_signal": 0.1,
+        "session_london": 0.06,
+        "near_resistance": -0.04000000000000001
+      },
+      "reasoning": "RSI 86 overbought but UPTREND (reduced) | EMA trend BULLISH (+11%) | Momentum +0.51% (+15%) | MACD bullish (+10%) | London session (+6%) | Near resistance $5108 (-4%)",
+      "status": "PENDING",
+      "actual_price": 0.0,
+      "actual_change_pips": 0.0,
+      "actual_direction": "",
+      "direction_correct": false,
+      "magnitude_accuracy": 0.0,
+      "score": 0.0,
+      "evaluated_at": ""
+    }
+  ],
+  "stats": {
+    "total_predictions": 1,
+    "evaluated_predictions": 0,
+    "correct_direction": 0,
+    "accuracy": 0.0,
+    "avg_confidence_when_correct": 0.0,
+    "avg_confidence_when_wrong": 0.0,
+    "current_streak": 0,
+    "best_streak": 0,
+    "worst_streak": 0,
+    "feature_performance": {},
+    "last_updated": "2026-01-26T08:28:16.743326"
+  },
+  "meta": {
+    "created_at": "2026-01-26T08:28:16.412113",
+    "version": "1.0"
+  }
+}
