@@ -101,6 +101,61 @@
         "session_london": 0.06
       },
       "reasoning": "RSI 86 overbought but UPTREND (reduced) | EMA trend BULLISH (+11%) | MACD bearish (-10%) | London session (+6%)",
+      "status": "EVALUATED",
+      "actual_price": 5099.10009765625,
+      "actual_change_pips": 13.10009765625,
+      "actual_direction": "UP",
+      "direction_correct": true,
+      "magnitude_accuracy": 0,
+      "score": 1.0,
+      "evaluated_at": "2026-01-26T16:28:35.418739"
+    },
+    {
+      "prediction_id": "PRED_20260126_162835_7ae1",
+      "timestamp": "2026-01-26T16:28:35.629987+00:00",
+      "target_time": "2026-01-26T20:28:35.629987+00:00",
+      "current_price": 5099.10009765625,
+      "predicted_direction": "UP",
+      "predicted_change_pips": 11.07963448660714,
+      "predicted_price": 5110.179732142858,
+      "confidence": 67.32,
+      "features": {
+        "current_price": 5099.10009765625,
+        "ema20": 5060.107903312612,
+        "ema50": 4994.571658487703,
+        "rsi_h1": 59.18182544544171,
+        "rsi_h4": 85.90488352093023,
+        "macd_value": 32.352602488565935,
+        "macd_signal": 35.52875789579677,
+        "macd_state": "BEARISH",
+        "momentum_4h": 0.45112291601297333,
+        "atr": 23.878522600446427,
+        "rsi_oversold": false,
+        "rsi_overbought": true,
+        "rsi_extreme_oversold": false,
+        "rsi_extreme_overbought": true,
+        "ema_trend": "BULLISH",
+        "ema_strength": 1.3121494555701794,
+        "atr_spike": "False",
+        "session": "NEW_YORK",
+        "session_london": false,
+        "session_ny": true,
+        "session_asia": false,
+        "day_name": "MONDAY",
+        "day_bias": 0.55,
+        "support": 4971.7001953125,
+        "resistance": 5107.89990234375,
+        "near_support": "False",
+        "near_resistance": "True",
+        "extracted_at": "2026-01-26T16:28:35.629832"
+      },
+      "feature_contributions": {
+        "ema_trend": 0.10600000000000001,
+        "momentum_h4": 0.15,
+        "macd_signal": -0.1,
+        "near_resistance": -0.04000000000000001
+      },
+      "reasoning": "RSI 86 overbought but UPTREND (reduced) | EMA trend BULLISH (+11%) | Momentum +0.45% (+15%) | MACD bearish (-10%) | Near resistance $5108 (-4%)",
       "status": "PENDING",
       "actual_price": 0.0,
       "actual_change_pips": 0.0,
@@ -112,24 +167,24 @@
     }
   ],
   "stats": {
-    "total_predictions": 2,
-    "evaluated_predictions": 1,
-    "correct_direction": 0,
-    "accuracy": 0.0,
-    "avg_confidence_when_correct": 0.0,
+    "total_predictions": 3,
+    "evaluated_predictions": 2,
+    "correct_direction": 1,
+    "accuracy": 50.0,
+    "avg_confidence_when_correct": 71.32,
     "avg_confidence_when_wrong": 81.52,
-    "current_streak": -1,
+    "current_streak": 0,
     "best_streak": 0,
     "worst_streak": 0,
     "feature_performance": {
       "ema_trend": {
-        "total_uses": 1,
-        "correct_predictions": 0,
-        "bullish_signals": 1,
+        "total_uses": 2,
+        "correct_predictions": 1,
+        "bullish_signals": 2,
         "bearish_signals": 0,
-        "bullish_correct": 0,
+        "bullish_correct": 1,
         "bearish_correct": 0,
-        "accuracy": 0.0
+        "accuracy": 50.0
       },
       "momentum_h4": {
         "total_uses": 1,
@@ -141,22 +196,22 @@
         "accuracy": 0.0
       },
       "macd_signal": {
-        "total_uses": 1,
-        "correct_predictions": 0,
+        "total_uses": 2,
+        "correct_predictions": 1,
         "bullish_signals": 1,
-        "bearish_signals": 0,
+        "bearish_signals": 1,
         "bullish_correct": 0,
         "bearish_correct": 0,
-        "accuracy": 0.0
+        "accuracy": 50.0
       },
       "session_london": {
-        "total_uses": 1,
-        "correct_predictions": 0,
-        "bullish_signals": 1,
+        "total_uses": 2,
+        "correct_predictions": 1,
+        "bullish_signals": 2,
         "bearish_signals": 0,
-        "bullish_correct": 0,
+        "bullish_correct": 1,
         "bearish_correct": 0,
-        "accuracy": 0.0
+        "accuracy": 50.0
       },
       "near_resistance": {
         "total_uses": 1,
@@ -168,7 +223,7 @@
         "accuracy": 0.0
       }
     },
-    "last_updated": "2026-01-26T12:28:35.284097"
+    "last_updated": "2026-01-26T16:28:35.630306"
   },
   "meta": {
     "created_at": "2026-01-26T08:28:16.412113",
