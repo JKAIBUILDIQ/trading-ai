@@ -1,0 +1,15 @@
+{
+  "position": {
+    "symbol": "QQQ",
+    "type": "BUY_PUT",
+    "quantity": 3,
+    "entry_price": 5.36,
+    "is_option": true,
+    "option_type": "put",
+    "strike": 530,
+    "expiration": "2026-05-15",
+    "notes": "Portfolio hedge - black swan insurance"
+  },
+  "status": "PENDING_ENTRY",
+  "created_at": "2026-01-26T19:42:04.913763"
+}

@@ -1,0 +1,13 @@
+{
+  "prediction_id": "XAUUSD_20260127",
+  "symbol": "XAUUSD",
+  "strategy": "FADE_THE_SQUEEZE",
+  "direction": "SELL",
+  "entry_price": 5108,
+  "exit_price": 5070,
+  "pnl_pips": 38,
+  "hunt_hit": true,
+  "direction_correct": true,
+  "notes": "Perfect fade setup, exited at first support",
+  "reported_at": "2026-01-27T06:40:02.817263"
+}

@@ -1,0 +1,12 @@
+{
+  "symbol": "QQQ",
+  "type": "PUT",
+  "strike": 530.0,
+  "expiration": "2026-05-15",
+  "premium": 5.36,
+  "contracts": 3,
+  "total_cost": 1608.0,
+  "otm_percent": 15.454314083749255,
+  "rationale": "Portfolio insurance against tech crash",
+  "timestamp": "2026-01-26T19:41:34.423248"
+}

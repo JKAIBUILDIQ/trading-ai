@@ -1,32 +1,32 @@
 {
-  "timestamp": "2026-01-26T14:12:50.460410",
+  "timestamp": "2026-01-26T20:58:01.713660",
   "symbol": "IREN",
   "price": {
-    "current": 56.68,
-    "previous_close": 52.26,
-    "change": 4.42,
-    "change_pct": 8.46,
-    "day_high": 58.5799,
-    "day_low": 50.112,
+    "current": 52.38,
+    "previous_close": 56.68,
+    "change": -4.3,
+    "change_pct": -7.58,
+    "day_high": 57.0456,
+    "day_low": 51.785,
     "52w_high": 76.87,
     "52w_low": 5.125
   },
   "volume": {
-    "current": 56562246,
+    "current": 38297198,
     "average": 38100852,
-    "ratio": 1.48
+    "ratio": 1.01
   },
   "technicals": {
-    "rsi": 69.1,
-    "ma_5": 54.9,
-    "ma_20": 47.63,
-    "momentum_5d": -1.97,
-    "trend": "BULLISH",
-    "trend_strength": 95.0
+    "rsi": 55.9,
+    "ma_5": 53.81,
+    "ma_20": 48.15,
+    "momentum_5d": -3.46,
+    "trend": "NEUTRAL",
+    "trend_strength": 50
   },
   "btc_correlation": {
-    "btc_price": 87668.14,
-    "correlation_30d": 0.318,
+    "btc_price": 87463.52,
+    "correlation_30d": -0.171,
     "coupling_status": "DECOUPLING"
   },
   "earnings": {
@@ -35,12 +35,10 @@
     "phase": "PRE_EARNINGS_SETUP"
   },
   "signal": {
-    "action": "ACCUMULATE",
-    "confidence": 65,
-    "score": 25,
+    "action": "WAIT",
+    "confidence": 40,
+    "score": -10,
     "reasons": [
-      "Bullish trend",
-      "Above-avg volume (1.5x)",
       "\u26a0\ufe0f Earnings approaching - be cautious"
     ]
   },

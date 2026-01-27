@@ -1,0 +1,72 @@
+{
+  "long_positions": [
+    {
+      "symbol": "IREN",
+      "type": "shares",
+      "quantity": 1000
+    },
+    {
+      "symbol": "IREN",
+      "type": "calls",
+      "strike": 50,
+      "contracts": 10
+    },
+    {
+      "symbol": "NVDA",
+      "type": "calls",
+      "contracts": 2
+    },
+    {
+      "symbol": "AMD",
+      "type": "calls",
+      "contracts": 2
+    },
+    {
+      "symbol": "TSM",
+      "type": "calls",
+      "contracts": 2
+    },
+    {
+      "symbol": "ASML",
+      "type": "calls",
+      "contracts": 2
+    },
+    {
+      "symbol": "LRCX",
+      "type": "calls",
+      "contracts": 2
+    },
+    {
+      "symbol": "KLAC",
+      "type": "calls",
+      "contracts": 2
+    },
+    {
+      "symbol": "AMAT",
+      "type": "calls",
+      "contracts": 2
+    },
+    {
+      "symbol": "HUT",
+      "type": "calls",
+      "contracts": 2
+    }
+  ],
+  "hedge_positions": [
+    {
+      "symbol": "QQQ",
+      "type": "puts",
+      "strike": 530,
+      "expiration": "2026-05-15",
+      "contracts": 3,
+      "premium": 5.36
+    }
+  ],
+  "strategy_rules": {
+    "dca_on_5pct_drop": true,
+    "exit_on_supertrend_bearish": true,
+    "hedge_size": "3% of portfolio",
+    "roll_hedge": "Every 3 months if not triggered"
+  },
+  "updated": "2026-01-26T19:42:04.914203"
+}

@@ -1,0 +1,36 @@
+{
+  "total_trades": 1,
+  "wins": 1,
+  "losses": 0,
+  "breakeven": 0,
+  "win_rate": 100.0,
+  "total_pips": 38.0,
+  "avg_pips_per_trade": 38.0,
+  "best_trade": 38,
+  "worst_trade": 0.0,
+  "hunt_accuracy": 100.0,
+  "direction_accuracy": 100.0,
+  "by_strategy": {
+    "FADE_THE_SQUEEZE": {
+      "trades": 1,
+      "wins": 1,
+      "pips": 38
+    }
+  },
+  "by_day_of_week": {
+    "Tuesday": {
+      "trades": 1,
+      "wins": 1,
+      "pips": 38
+    }
+  },
+  "recent_trades": [
+    {
+      "date": "2026-01-27T06:40:02.817487",
+      "symbol": "XAUUSD",
+      "strategy": "FADE_THE_SQUEEZE",
+      "pnl": 38,
+      "direction_correct": true
+    }
+  ]
+}

@@ -1,0 +1,713 @@
+{
+  "generated_at": "2026-01-26T19:02:31.118288",
+  "total_screened": 80,
+  "total_analyzed": 78,
+  "top_breakout_candidates": [
+    {
+      "symbol": "NVDA",
+      "name": "Semiconductors",
+      "price_action": {
+        "current_price": 186.79,
+        "sma_20": 186.19,
+        "sma_50": 183.7,
+        "sma_200": 166.14,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 212.18,
+        "low_52w": 86.6,
+        "pct_from_52w_high": -12.0,
+        "pct_from_52w_low": 115.7,
+        "change_1w": 4.9,
+        "change_1m": -1.0,
+        "change_3m": 0.3,
+        "near_breakout": "False",
+        "resistance_20d": 193.63
+      },
+      "volume": {
+        "recent_avg": 157518039,
+        "avg_20d": 154146209,
+        "avg_50d": 179826851,
+        "volume_ratio": 1.02,
+        "volume_increasing": false,
+        "accumulation": "False"
+      },
+      "rsi": 48.0,
+      "macd": {
+        "macd": 0.278719734813734,
+        "signal": 0.2769913707802045,
+        "histogram": 0.0017283640335294947,
+        "bullish_cross": "True"
+      },
+      "fundamentals": {
+        "market_cap": 4547761668096,
+        "market_cap_fmt": "$4.55T",
+        "pe_ratio": 46.349724,
+        "forward_pe": 24.372757,
+        "peg_ratio": null,
+        "revenue_growth": 0.625,
+        "earnings_growth": 0.667,
+        "profit_margin": 0.53007,
+        "gross_margin": 0.7005,
+        "debt_to_equity": 9.102,
+        "current_ratio": 4.468,
+        "return_on_equity": 1.07359,
+        "beta": 2.314,
+        "analyst_rating": "strong_buy",
+        "target_price": 253.19034,
+        "sector": "Technology",
+        "industry": "Semiconductors",
+        "short_interest": 0.011,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 4,
+        "signals": [
+          "\u2728 Golden cross active",
+          "\ud83d\udd00 MACD bullish cross",
+          "\ud83d\udcc8 Revenue growth +62%",
+          "\ud83c\udfaf Target upside: +36%"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "NORMAL"
+      }
+    },
+    {
+      "symbol": "AMD",
+      "name": "Semiconductors",
+      "price_action": {
+        "current_price": 253.19,
+        "sma_20": 224.86,
+        "sma_50": 221.3,
+        "sma_200": 172.71,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 267.08,
+        "low_52w": 76.48,
+        "pct_from_52w_high": -5.2,
+        "pct_from_52w_low": 231.1,
+        "change_1w": 9.2,
+        "change_1m": 17.7,
+        "change_3m": 0.1,
+        "near_breakout": "False",
+        "resistance_20d": 266.96
+      },
+      "volume": {
+        "recent_avg": 42561550,
+        "avg_20d": 34762562,
+        "avg_50d": 37855461,
+        "volume_ratio": 1.22,
+        "volume_increasing": false,
+        "accumulation": "True"
+      },
+      "rsi": 69.8,
+      "macd": {
+        "macd": 9.307168186087864,
+        "signal": 4.438055988258484,
+        "histogram": 4.86911219782938,
+        "bullish_cross": "False"
+      },
+      "fundamentals": {
+        "market_cap": 412203843584,
+        "market_cap_fmt": "$412.20B",
+        "pe_ratio": 131.8698,
+        "forward_pe": 38.538757,
+        "peg_ratio": null,
+        "revenue_growth": 0.356,
+        "earnings_growth": 0.603,
+        "profit_margin": 0.10323,
+        "gross_margin": 0.51457,
+        "debt_to_equity": 6.366,
+        "current_ratio": 2.308,
+        "return_on_equity": 0.05317,
+        "beta": 1.95,
+        "analyst_rating": "buy",
+        "target_price": 287.38022,
+        "sector": "Technology",
+        "industry": "Semiconductors",
+        "short_interest": 0.0227,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 4,
+        "signals": [
+          "\u2728 Golden cross active",
+          "\ud83d\udcca Accumulation detected",
+          "\ud83d\udcc8 Revenue growth +36%",
+          "\u2b50 Analyst rating: buy"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "HIGH"
+      }
+    },
+    {
+      "symbol": "DOCN",
+      "name": "Software - Infrastructure",
+      "price_action": {
+        "current_price": 60.19,
+        "sma_20": 52.28,
+        "sma_50": 48.7,
+        "sma_200": 36.62,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 61.67,
+        "low_52w": 25.45,
+        "pct_from_52w_high": -2.4,
+        "pct_from_52w_low": 136.5,
+        "change_1w": 20.3,
+        "change_1m": 22.4,
+        "change_3m": 52.6,
+        "near_breakout": "False",
+        "resistance_20d": 61.67
+      },
+      "volume": {
+        "recent_avg": 2852842,
+        "avg_20d": 2041950,
+        "avg_50d": 1877678,
+        "volume_ratio": 1.4,
+        "volume_increasing": false,
+        "accumulation": "True"
+      },
+      "rsi": 69.2,
+      "macd": {
+        "macd": 1.9349139798046906,
+        "signal": 1.6357978976178942,
+        "histogram": 0.2991160821867964,
+        "bullish_cross": "True"
+      },
+      "fundamentals": {
+        "market_cap": 5506912256,
+        "market_cap_fmt": "$5.51B",
+        "pe_ratio": 24.076,
+        "forward_pe": 30.912796,
+        "peg_ratio": null,
+        "revenue_growth": 0.157,
+        "earnings_growth": 3.537,
+        "profit_margin": 0.29153,
+        "gross_margin": 0.60582,
+        "debt_to_equity": null,
+        "current_ratio": 1.131,
+        "return_on_equity": null,
+        "beta": 1.762,
+        "analyst_rating": "buy",
+        "target_price": 55.16667,
+        "sector": "Technology",
+        "industry": "Software - Infrastructure",
+        "short_interest": 0.161,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 4,
+        "signals": [
+          "\u2728 Golden cross active",
+          "\ud83d\udd00 MACD bullish cross",
+          "\ud83d\udcca Accumulation detected",
+          "\u2b50 Analyst rating: buy"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "HIGH"
+      }
+    },
+    {
+      "symbol": "IREN",
+      "name": "Capital Markets",
+      "price_action": {
+        "current_price": 54.17,
+        "sma_20": 48.24,
+        "sma_50": 45.78,
+        "sma_200": 30.66,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 76.87,
+        "low_52w": 5.12,
+        "pct_from_52w_high": -29.5,
+        "pct_from_52w_low": 957.1,
+        "change_1w": -0.2,
+        "change_1m": 29.0,
+        "change_3m": -13.9,
+        "near_breakout": "False",
+        "resistance_20d": 58.75
+      },
+      "volume": {
+        "recent_avg": 45342774,
+        "avg_20d": 37501388,
+        "avg_50d": 37533599,
+        "volume_ratio": 1.21,
+        "volume_increasing": false,
+        "accumulation": "False"
+      },
+      "rsi": 58.9,
+      "macd": {
+        "macd": 2.9656239844327743,
+        "signal": 2.152616861323382,
+        "histogram": 0.8130071231093923,
+        "bullish_cross": "False"
+      },
+      "fundamentals": {
+        "market_cap": 17787910144,
+        "market_cap_fmt": "$17.79B",
+        "pe_ratio": 31.135057,
+        "forward_pe": 64.743,
+        "peg_ratio": null,
+        "revenue_growth": 3.554,
+        "earnings_growth": null,
+        "profit_margin": 0.75992996,
+        "gross_margin": 0.6982,
+        "debt_to_equity": 33.574,
+        "current_ratio": 5.516,
+        "return_on_equity": 0.26125,
+        "beta": 4.266,
+        "analyst_rating": "buy",
+        "target_price": 84.84615,
+        "sector": "Financial Services",
+        "industry": "Capital Markets",
+        "short_interest": 0.1578,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 4,
+        "signals": [
+          "\u2728 Golden cross active",
+          "\ud83d\udcc8 Revenue growth +355%",
+          "\u2b50 Analyst rating: buy",
+          "\ud83c\udfaf Target upside: +57%"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "HIGH"
+      }
+    },
+    {
+      "symbol": "HUT",
+      "name": "Capital Markets",
+      "price_action": {
+        "current_price": 59.7,
+        "sma_20": 56.13,
+        "sma_50": 47.3,
+        "sma_200": 31.16,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 62.91,
+        "low_52w": 10.04,
+        "pct_from_52w_high": -5.1,
+        "pct_from_52w_low": 494.6,
+        "change_1w": 2.4,
+        "change_1m": 13.1,
+        "change_3m": 25.3,
+        "near_breakout": "False",
+        "resistance_20d": 62.91
+      },
+      "volume": {
+        "recent_avg": 4751225,
+        "avg_20d": 4847466,
+        "avg_50d": 6521210,
+        "volume_ratio": 0.98,
+        "volume_increasing": false,
+        "accumulation": "False"
+      },
+      "rsi": 53.4,
+      "macd": {
+        "macd": 3.2204280807080323,
+        "signal": 3.623738788764515,
+        "histogram": -0.4033107080564826,
+        "bullish_cross": "False"
+      },
+      "fundamentals": {
+        "market_cap": 6449786880,
+        "market_cap_fmt": "$6.45B",
+        "pe_ratio": 30.773195,
+        "forward_pe": -54.520546,
+        "peg_ratio": null,
+        "revenue_growth": 0.909,
+        "earnings_growth": 60.068,
+        "profit_margin": 1.15388,
+        "gross_margin": 0.47801998,
+        "debt_to_equity": 23.623,
+        "current_ratio": 0.721,
+        "return_on_equity": 0.17196,
+        "beta": 6.185,
+        "analyst_rating": "strong_buy",
+        "target_price": 64.26667,
+        "sector": "Financial Services",
+        "industry": "Capital Markets",
+        "short_interest": 0.17,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 2,
+        "signals": [
+          "\u2728 Golden cross active",
+          "\ud83d\udcc8 Revenue growth +91%"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "NORMAL"
+      }
+    },
+    {
+      "symbol": "TSM",
+      "name": "Semiconductors",
+      "price_action": {
+        "current_price": 334.55,
+        "sma_20": 323.05,
+        "sma_50": 302.76,
+        "sma_200": 250.13,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 351.33,
+        "low_52w": 132.98,
+        "pct_from_52w_high": -4.8,
+        "pct_from_52w_low": 151.6,
+        "change_1w": 2.3,
+        "change_1m": 12.0,
+        "change_3m": 13.7,
+        "near_breakout": "False",
+        "resistance_20d": 351.33
+      },
+      "volume": {
+        "recent_avg": 14207723,
+        "avg_20d": 13953130,
+        "avg_50d": 12576250,
+        "volume_ratio": 1.02,
+        "volume_increasing": false,
+        "accumulation": "False"
+      },
+      "rsi": 58.3,
+      "macd": {
+        "macd": 9.251077287263684,
+        "signal": 9.408559299647154,
+        "histogram": -0.15748201238347015,
+        "bullish_cross": "False"
+      },
+      "fundamentals": {
+        "market_cap": 1735145029632,
+        "market_cap_fmt": "$1.74T",
+        "pe_ratio": 31.92271,
+        "forward_pe": 18.587877,
+        "peg_ratio": null,
+        "revenue_growth": 0.205,
+        "earnings_growth": 0.406,
+        "profit_margin": 0.45099998,
+        "gross_margin": 0.59891,
+        "debt_to_equity": 18.187,
+        "current_ratio": 2.618,
+        "return_on_equity": 0.35224,
+        "beta": 1.274,
+        "analyst_rating": "strong_buy",
+        "target_price": 419.81354,
+        "sector": "Technology",
+        "industry": "Semiconductors",
+        "short_interest": 0.0046,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 2,
+        "signals": [
+          "\u2728 Golden cross active",
+          "\ud83c\udfaf Target upside: +25%"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "NORMAL"
+      }
+    },
+    {
+      "symbol": "ASML",
+      "name": "Semiconductor Equipment & Materials",
+      "price_action": {
+        "current_price": 1417.79,
+        "sma_20": 1250.24,
+        "sma_50": 1134.59,
+        "sma_200": 890.76,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 1419.95,
+        "low_52w": 574.25,
+        "pct_from_52w_high": -0.2,
+        "pct_from_52w_low": 146.9,
+        "change_1w": 6.9,
+        "change_1m": 33.1,
+        "change_3m": 37.5,
+        "near_breakout": "True",
+        "resistance_20d": 1419.95
+      },
+      "volume": {
+        "recent_avg": 2047048,
+        "avg_20d": 1771552,
+        "avg_50d": 1555832,
+        "volume_ratio": 1.16,
+        "volume_increasing": false,
+        "accumulation": "False"
+      },
+      "rsi": 73.9,
+      "macd": {
+        "macd": 80.33265333160443,
+        "signal": 67.00721573575615,
+        "histogram": 13.325437595848285,
+        "bullish_cross": "False"
+      },
+      "fundamentals": {
+        "market_cap": 550311886848,
+        "market_cap_fmt": "$550.31B",
+        "pe_ratio": 49.781956,
+        "forward_pe": 43.74162,
+        "peg_ratio": null,
+        "revenue_growth": 0.007,
+        "earnings_growth": 0.038,
+        "profit_margin": 0.29378,
+        "gross_margin": 0.52711,
+        "debt_to_equity": 14.24,
+        "current_ratio": 1.308,
+        "return_on_equity": 0.53852004,
+        "beta": 1.341,
+        "analyst_rating": "buy",
+        "target_price": 1353.5413,
+        "sector": "Technology",
+        "industry": "Semiconductor Equipment & Materials",
+        "short_interest": 0.0033000002,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 3,
+        "signals": [
+          "\ud83d\udcc8 Near 20-day breakout",
+          "\u2728 Golden cross active",
+          "\u2b50 Analyst rating: buy"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "NORMAL"
+      }
+    },
+    {
+      "symbol": "LRCX",
+      "name": "Semiconductor Equipment & Materials",
+      "price_action": {
+        "current_price": 224.4,
+        "sma_20": 205.3,
+        "sma_50": 177.25,
+        "sma_200": 123.01,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 236.1,
+        "low_52w": 55.98,
+        "pct_from_52w_high": -5.0,
+        "pct_from_52w_low": 300.9,
+        "change_1w": 0.9,
+        "change_1m": 26.5,
+        "change_3m": 48.2,
+        "near_breakout": "False",
+        "resistance_20d": 236.1
+      },
+      "volume": {
+        "recent_avg": 10319840,
+        "avg_20d": 11912260,
+        "avg_50d": 11615506,
+        "volume_ratio": 0.87,
+        "volume_increasing": false,
+        "accumulation": "False"
+      },
+      "rsi": 67.1,
+      "macd": {
+        "macd": 14.104286200315642,
+        "signal": 13.970339238639689,
+        "histogram": 0.133946961675953,
+        "bullish_cross": "False"
+      },
+      "fundamentals": {
+        "market_cap": 282979926016,
+        "market_cap_fmt": "$282.98B",
+        "pe_ratio": 49.53717,
+        "forward_pe": 37.673447,
+        "peg_ratio": null,
+        "revenue_growth": 0.277,
+        "earnings_growth": 0.443,
+        "profit_margin": 0.29657,
+        "gross_margin": 0.49313,
+        "debt_to_equity": 43.991,
+        "current_ratio": 2.207,
+        "return_on_equity": 0.62261003,
+        "beta": 1.779,
+        "analyst_rating": "buy",
+        "target_price": 215.35484,
+        "sector": "Technology",
+        "industry": "Semiconductor Equipment & Materials",
+        "short_interest": 0.0295,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 3,
+        "signals": [
+          "\u2728 Golden cross active",
+          "\ud83d\udcc8 Revenue growth +28%",
+          "\u2b50 Analyst rating: buy"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "NORMAL"
+      }
+    },
+    {
+      "symbol": "KLAC",
+      "name": "Semiconductor Equipment & Materials",
+      "price_action": {
+        "current_price": 1549.12,
+        "sma_20": 1404.51,
+        "sma_50": 1276.62,
+        "sma_200": 1001.5,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 1581.34,
+        "low_52w": 547.89,
+        "pct_from_52w_high": -2.0,
+        "pct_from_52w_low": 182.7,
+        "change_1w": 4.2,
+        "change_1m": 21.3,
+        "change_3m": 31.2,
+        "near_breakout": "False",
+        "resistance_20d": 1581.34
+      },
+      "volume": {
+        "recent_avg": 1167732,
+        "avg_20d": 999833,
+        "avg_50d": 984623,
+        "volume_ratio": 1.17,
+        "volume_increasing": false,
+        "accumulation": "False"
+      },
+      "rsi": 67.7,
+      "macd": {
+        "macd": 78.20463852546823,
+        "signal": 70.25806304878553,
+        "histogram": 7.946575476682696,
+        "bullish_cross": "False"
+      },
+      "fundamentals": {
+        "market_cap": 203995136000,
+        "market_cap_fmt": "$204.00B",
+        "pe_ratio": 48.760464,
+        "forward_pe": 34.95665,
+        "peg_ratio": null,
+        "revenue_growth": 0.13,
+        "earnings_growth": 0.208,
+        "profit_margin": 0.33828998,
+        "gross_margin": 0.61294997,
+        "debt_to_equity": 122.127,
+        "current_ratio": 2.692,
+        "return_on_equity": 0.99167997,
+        "beta": 1.444,
+        "analyst_rating": "buy",
+        "target_price": 1513.069,
+        "sector": "Technology",
+        "industry": "Semiconductor Equipment & Materials",
+        "short_interest": 0.028499998,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 2,
+        "signals": [
+          "\u2728 Golden cross active",
+          "\u2b50 Analyst rating: buy"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "NORMAL"
+      }
+    },
+    {
+      "symbol": "AMAT",
+      "name": "Semiconductor Equipment & Materials",
+      "price_action": {
+        "current_price": 320.46,
+        "sma_20": 296.57,
+        "sma_50": 268.83,
+        "sma_200": 203.69,
+        "above_20_sma": "True",
+        "above_50_sma": "True",
+        "above_200_sma": "True",
+        "golden_cross": "True",
+        "high_52w": 333.03,
+        "low_52w": 122.8,
+        "pct_from_52w_high": -3.8,
+        "pct_from_52w_low": 161.0,
+        "change_1w": 0.7,
+        "change_1m": 22.9,
+        "change_3m": 40.4,
+        "near_breakout": "False",
+        "resistance_20d": 333.03
+      },
+      "volume": {
+        "recent_avg": 6401137,
+        "avg_20d": 6544364,
+        "avg_50d": 7421827,
+        "volume_ratio": 0.98,
+        "volume_increasing": false,
+        "accumulation": "False"
+      },
+      "rsi": 66.4,
+      "macd": {
+        "macd": 16.798902372085195,
+        "signal": 15.552650946927347,
+        "histogram": 1.2462514251578476,
+        "bullish_cross": "False"
+      },
+      "fundamentals": {
+        "market_cap": 255296012288,
+        "market_cap_fmt": "$255.30B",
+        "pe_ratio": 36.962513,
+        "forward_pe": 26.687824,
+        "peg_ratio": null,
+        "revenue_growth": -0.035,
+        "earnings_growth": 0.133,
+        "profit_margin": 0.24669,
+        "gross_margin": 0.48675,
+        "debt_to_equity": 34.533,
+        "current_ratio": 2.61,
+        "return_on_equity": 0.35508,
+        "beta": 1.671,
+        "analyst_rating": "buy",
+        "target_price": 314.72726,
+        "sector": "Technology",
+        "industry": "Semiconductor Equipment & Materials",
+        "short_interest": 0.0177,
+        "earnings_date": "N/A"
+      },
+      "breakout_score": 100,
+      "summary": {
+        "bullish_signals": 2,
+        "signals": [
+          "\u2728 Golden cross active",
+          "\u2b50 Analyst rating: buy"
+        ],
+        "trend": "BULLISH",
+        "volume_status": "NORMAL"
+      }
+    }
+  ],
+  "methodology": {
+    "technical_weight": "40%",
+    "volume_weight": "25%",
+    "fundamentals_weight": "20%",
+    "momentum_weight": "15%"
+  }
+}

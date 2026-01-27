@@ -405,18 +405,77 @@ class PatternDetector:
     # ═══════════════════════════════════════════════════════════════════════════
     
     def _detect_flag_patterns(self, opens, highs, lows, closes) -> List[PatternResult]:
-        """Detect bull and bear flag patterns"""
+        """Detect bull and bear flag patterns - both forming and confirmed"""
         patterns = []
         
-        if len(closes) < 15:
+        if len(closes) < 20:
             return patterns
         
-        # Look at last 15 bars
+        # Use 100-bar lookback to capture larger rallies/drops
+        lookback = min(100, len(closes))
+        extended = closes[-lookback:]
+        ext_highs = highs[-lookback:]
+        ext_lows = lows[-lookback:]
+        
+        # Find the major pole (strong trending move)
+        # Look for the biggest rally in the data
+        max_high = max(ext_highs)
+        min_low = min(ext_lows)
+        
+        # Find where the high occurred
+        high_idx = list(ext_highs).index(max_high)
+        
+        # Bull flag: price rallied to high, now consolidating below it
+        if high_idx < len(ext_highs) - 3:  # High was at least 3 bars ago
+            # Pole = rally to the high
+            pole_low = min(ext_lows[:high_idx+1]) if high_idx > 0 else ext_lows[0]
+            pole_size = max_high - pole_low
+            
+            # Flag = consolidation after the high
+            flag_data = ext_highs[high_idx:]
+            flag_lows = ext_lows[high_idx:]
+            flag_range = max(flag_data) - min(flag_lows)
+            flag_avg = sum(extended[high_idx:]) / len(extended[high_idx:]) if len(extended) > high_idx else closes[-1]
+            
+            current_price = closes[-1]
+            flag_high = max(flag_data)
+            flag_low = min(flag_lows)
+            
+            # Bull flag criteria:
+            # 1. Strong pole (significant rally)
+            # 2. Flag consolidation is tighter than pole
+            # 3. Price holding above 50% of the move
+            pole_midpoint = pole_low + (pole_size * 0.5)
+            
+            if pole_size > 0 and flag_range < pole_size * 0.6:
+                if current_price > pole_midpoint:  # Holding above 50% retracement
+                    
+                    # Check if breakout confirmed
+                    if current_price > flag_high * 0.998:  # At or above flag high
+                        confidence = min(85, 60 + (pole_size / flag_range) * 2)
+                        patterns.append(PatternResult(
+                            pattern_type=PatternType.BULL_FLAG,
+                            confidence=confidence,
+                            direction="BUY",
+                            description=f"Bull flag BREAKOUT! Pole: {pole_size:.0f}, Flag: {flag_range:.0f}"
+                        ))
+                    else:
+                        # Bull flag forming - waiting for breakout
+                        # Calculate probability based on how well price is holding
+                        hold_ratio = (current_price - flag_low) / flag_range if flag_range > 0 else 0.5
+                        confidence = min(75, 50 + hold_ratio * 20 + (pole_size / flag_range))
+                        patterns.append(PatternResult(
+                            pattern_type=PatternType.BULL_FLAG,
+                            confidence=confidence,
+                            direction="BUY",
+                            description=f"Bull flag FORMING - Pole: {pole_size:.0f}, Flag: {flag_range:.0f}, Watch for breakout above {flag_high:.2f}"
+                        ))
+        
+        # Also check for traditional 15-bar pattern
         recent = closes[-15:]
         recent_highs = highs[-15:]
         recent_lows = lows[-15:]
         
-        # Pole detection (first 7 bars)
         pole_start_low = min(recent_lows[:7])
         pole_end_high = max(recent_highs[:7])
         pole_start_high = max(recent_highs[:7])
@@ -425,31 +484,32 @@ class PatternDetector:
         bull_pole = pole_end_high - pole_start_low
         bear_pole = pole_start_high - pole_end_low
         
-        # Flag detection (last 8 bars)
         flag_highs = recent_highs[7:]
-        flag_lows = recent_lows[7:]
-        flag_range = max(flag_highs) - min(flag_lows)
+        flag_lows_short = recent_lows[7:]
+        flag_range_short = max(flag_highs) - min(flag_lows_short)
         
-        # Bull flag: strong up move, tight consolidation, breakout up
-        if bull_pole > 0 and flag_range < bull_pole * 0.5:
-            if closes[-1] > max(flag_highs[:-1]):  # Breakout
-                confidence = min(80, 55 + (bull_pole / flag_range) * 3)
-                patterns.append(PatternResult(
-                    pattern_type=PatternType.BULL_FLAG,
-                    confidence=confidence,
-                    direction="BUY",
-                    description=f"Bull flag breakout - pole {bull_pole:.1f}, flag {flag_range:.1f}"
-                ))
+        # Bull flag breakout (traditional)
+        if bull_pole > 0 and flag_range_short < bull_pole * 0.5:
+            if closes[-1] > max(flag_highs[:-1]):
+                confidence = min(80, 55 + (bull_pole / flag_range_short) * 3)
+                # Avoid duplicate if already detected
+                if not any(p.pattern_type == PatternType.BULL_FLAG for p in patterns):
+                    patterns.append(PatternResult(
+                        pattern_type=PatternType.BULL_FLAG,
+                        confidence=confidence,
+                        direction="BUY",
+                        description=f"Bull flag breakout - pole {bull_pole:.1f}, flag {flag_range_short:.1f}"
+                    ))
         
-        # Bear flag: strong down move, tight consolidation, breakout down
-        if bear_pole > 0 and flag_range < bear_pole * 0.5:
-            if closes[-1] < min(flag_lows[:-1]):  # Breakdown
-                confidence = min(80, 55 + (bear_pole / flag_range) * 3)
+        # Bear flag breakout
+        if bear_pole > 0 and flag_range_short < bear_pole * 0.5:
+            if closes[-1] < min(flag_lows_short[:-1]):
+                confidence = min(80, 55 + (bear_pole / flag_range_short) * 3)
                 patterns.append(PatternResult(
                     pattern_type=PatternType.BEAR_FLAG,
                     confidence=confidence,
                     direction="SELL",
-                    description=f"Bear flag breakdown - pole {bear_pole:.1f}, flag {flag_range:.1f}"
+                    description=f"Bear flag breakdown - pole {bear_pole:.1f}, flag {flag_range_short:.1f}"
                 ))
         
         return patterns

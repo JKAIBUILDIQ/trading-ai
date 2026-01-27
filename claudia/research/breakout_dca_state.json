@@ -1,0 +1,207 @@
+{
+  "created_at": "2026-01-26T19:37:29.430186",
+  "positions": {
+    "NVDA": {
+      "symbol": "NVDA",
+      "target_price": 253.19,
+      "reference_price": 186.51,
+      "last_buy_price": 186.51,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-26T19:37:29.968816",
+          "stock_price": 186.51,
+          "option_price": 7.1,
+          "strike": 195.0,
+          "expiry": "2026-03-06",
+          "contracts": 2,
+          "reason": "Initial position - SuperTrend bullish"
+        }
+      ],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    },
+    "AMD": {
+      "symbol": "AMD",
+      "target_price": 287.38,
+      "reference_price": 252.87,
+      "last_buy_price": 252.87,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-26T19:37:30.297789",
+          "stock_price": 252.87,
+          "option_price": 14.25,
+          "strike": 265.0,
+          "expiry": "2026-03-06",
+          "contracts": 2,
+          "reason": "Initial position - SuperTrend bullish"
+        }
+      ],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    },
+    "DOCN": {
+      "symbol": "DOCN",
+      "target_price": 70.0,
+      "reference_price": 59.26,
+      "last_buy_price": null,
+      "dca_count": 0,
+      "total_contracts": 0,
+      "entries": [],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    },
+    "IREN": {
+      "symbol": "IREN",
+      "target_price": 150.0,
+      "reference_price": 53.0,
+      "last_buy_price": 53.0,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-26T19:37:30.805437",
+          "stock_price": 53.0,
+          "option_price": 7.45,
+          "strike": 56.0,
+          "expiry": "2026-03-06",
+          "contracts": 2,
+          "reason": "Initial position - SuperTrend bullish"
+        }
+      ],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    },
+    "HUT": {
+      "symbol": "HUT",
+      "target_price": 80.0,
+      "reference_price": 58.04,
+      "last_buy_price": 58.04,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-26T19:37:31.153195",
+          "stock_price": 58.04,
+          "option_price": 9.4,
+          "strike": 60.0,
+          "expiry": "2026-03-06",
+          "contracts": 2,
+          "reason": "Initial position - SuperTrend bullish"
+        }
+      ],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    },
+    "TSM": {
+      "symbol": "TSM",
+      "target_price": 419.81,
+      "reference_price": 334.84,
+      "last_buy_price": 334.84,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-26T19:37:31.553090",
+          "stock_price": 334.84,
+          "option_price": 10.05,
+          "strike": 350.0,
+          "expiry": "2026-03-06",
+          "contracts": 2,
+          "reason": "Initial position - SuperTrend bullish"
+        }
+      ],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    },
+    "ASML": {
+      "symbol": "ASML",
+      "target_price": 1500.0,
+      "reference_price": 1415.04,
+      "last_buy_price": 1415.04,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-26T19:37:31.888811",
+          "stock_price": 1415.04,
+          "option_price": 88.5,
+          "strike": 1420.0,
+          "expiry": "2026-03-06",
+          "contracts": 2,
+          "reason": "Initial position - SuperTrend bullish"
+        }
+      ],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    },
+    "LRCX": {
+      "symbol": "LRCX",
+      "target_price": 280.0,
+      "reference_price": 224.1,
+      "last_buy_price": 224.1,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-26T19:37:32.233864",
+          "stock_price": 224.1,
+          "option_price": 11.9,
+          "strike": 240.0,
+          "expiry": "2026-03-06",
+          "contracts": 2,
+          "reason": "Initial position - SuperTrend bullish"
+        }
+      ],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    },
+    "KLAC": {
+      "symbol": "KLAC",
+      "target_price": 1700.0,
+      "reference_price": 1547.34,
+      "last_buy_price": 1547.34,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-26T19:37:32.630233",
+          "stock_price": 1547.34,
+          "option_price": 91.0,
+          "strike": 1620.0,
+          "expiry": "2026-03-20",
+          "contracts": 2,
+          "reason": "Initial position - SuperTrend bullish"
+        }
+      ],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    },
+    "AMAT": {
+      "symbol": "AMAT",
+      "target_price": 380.0,
+      "reference_price": 320.16,
+      "last_buy_price": 320.16,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-26T19:37:33.005175",
+          "stock_price": 320.16,
+          "option_price": 16.55,
+          "strike": 335.0,
+          "expiry": "2026-03-06",
+          "contracts": 2,
+          "reason": "Initial position - SuperTrend bullish"
+        }
+      ],
+      "supertrend_status": "BULLISH",
+      "buying_enabled": true
+    }
+  },
+  "signals_history": [],
+  "updated_at": "2026-01-26T20:30:04.664324"
+}

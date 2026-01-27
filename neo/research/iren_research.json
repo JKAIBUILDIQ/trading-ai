@@ -1,0 +1,1098 @@
+{
+  "time_based_volume": {
+    "volume_by_day": {
+      "Monday": {
+        "avg_volume": 28625375,
+        "avg_return": 2.46,
+        "win_rate": 69.4,
+        "sample_size": 49
+      },
+      "Tuesday": {
+        "avg_volume": 28052694,
+        "avg_return": -0.18,
+        "win_rate": 42.3,
+        "sample_size": 52
+      },
+      "Wednesday": {
+        "avg_volume": 26528682,
+        "avg_return": 1.07,
+        "win_rate": 53.8,
+        "sample_size": 52
+      },
+      "Thursday": {
+        "avg_volume": 27025170,
+        "avg_return": -0.65,
+        "win_rate": 45.8,
+        "sample_size": 48
+      },
+      "Friday": {
+        "avg_volume": 28690654,
+        "avg_return": 1.55,
+        "win_rate": 52.0,
+        "sample_size": 50
+      }
+    },
+    "best_volume_day": "Friday",
+    "best_return_day": "Monday",
+    "insights": [
+      "\u2705 Monday: 69.4% win rate (bullish bias)",
+      "\u26a0\ufe0f Tuesday: 42.3% win rate (bearish bias)"
+    ]
+  },
+  "post_rally": {
+    "threshold": 5.0,
+    "total_rallies": 61,
+    "rally_dates": [
+      {
+        "date": "2025-02-07",
+        "rally_pct": 7.59
+      },
+      {
+        "date": "2025-03-05",
+        "rally_pct": 6.9
+      },
+      {
+        "date": "2025-03-11",
+        "rally_pct": 6.5
+      },
+      {
+        "date": "2025-03-14",
+        "rally_pct": 6.81
+      },
+      {
+        "date": "2025-03-19",
+        "rally_pct": 9.26
+      },
+      {
+        "date": "2025-03-24",
+        "rally_pct": 7.55
+      },
+      {
+        "date": "2025-04-01",
+        "rally_pct": 9.03
+      },
+      {
+        "date": "2025-04-09",
+        "rally_pct": 11.32
+      },
+      {
+        "date": "2025-04-22",
+        "rally_pct": 9.98
+      },
+      {
+        "date": "2025-05-06",
+        "rally_pct": 5.01
+      },
+      {
+        "date": "2025-05-12",
+        "rally_pct": 6.68
+      },
+      {
+        "date": "2025-05-13",
+        "rally_pct": 8.12
+      },
+      {
+        "date": "2025-05-16",
+        "rally_pct": 8.52
+      },
+      {
+        "date": "2025-06-04",
+        "rally_pct": 6.07
+      },
+      {
+        "date": "2025-06-06",
+        "rally_pct": 8.94
+      },
+      {
+        "date": "2025-06-09",
+        "rally_pct": 6.05
+      },
+      {
+        "date": "2025-06-16",
+        "rally_pct": 5.8
+      },
+      {
+        "date": "2025-06-20",
+        "rally_pct": 6.84
+      },
+      {
+        "date": "2025-06-24",
+        "rally_pct": 8.26
+      },
+      {
+        "date": "2025-06-26",
+        "rally_pct": 10.45
+      },
+      {
+        "date": "2025-06-27",
+        "rally_pct": 6.79
+      },
+      {
+        "date": "2025-07-03",
+        "rally_pct": 7.41
+      },
+      {
+        "date": "2025-07-14",
+        "rally_pct": 6.47
+      },
+      {
+        "date": "2025-08-04",
+        "rally_pct": 7.01
+      },
+      {
+        "date": "2025-08-06",
+        "rally_pct": 11.37
+      },
+      {
+        "date": "2025-08-14",
+        "rally_pct": 7.61
+      },
+      {
+        "date": "2025-08-18",
+        "rally_pct": 5.15
+      },
+      {
+        "date": "2025-08-20",
+        "rally_pct": 5.5
+      },
+      {
+        "date": "2025-08-22",
+        "rally_pct": 9.39
+      },
+      {
+        "date": "2025-08-25",
+        "rally_pct": 7.89
+      },
+      {
+        "date": "2025-08-29",
+        "rally_pct": 14.93
+      },
+      {
+        "date": "2025-09-02",
+        "rally_pct": 9.93
+      },
+      {
+        "date": "2025-09-09",
+        "rally_pct": 15.27
+      },
+      {
+        "date": "2025-09-10",
+        "rally_pct": 11.39
+      },
+      {
+        "date": "2025-09-15",
+        "rally_pct": 9.36
+      },
+      {
+        "date": "2025-09-19",
+        "rally_pct": 6.39
+      },
+      {
+        "date": "2025-09-22",
+        "rally_pct": 8.44
+      },
+      {
+        "date": "2025-09-24",
+        "rally_pct": 12.86
+      },
+      {
+        "date": "2025-09-29",
+        "rally_pct": 9.72
+      },
+      {
+        "date": "2025-10-03",
+        "rally_pct": 7.32
+      },
+      {
+        "date": "2025-10-06",
+        "rally_pct": 14.45
+      },
+      {
+        "date": "2025-10-07",
+        "rally_pct": 6.81
+      },
+      {
+        "date": "2025-10-09",
+        "rally_pct": 6.26
+      },
+      {
+        "date": "2025-10-13",
+        "rally_pct": 7.31
+      },
+      {
+        "date": "2025-10-14",
+        "rally_pct": 8.45
+      },
+      {
+        "date": "2025-10-23",
+        "rally_pct": 7.78
+      },
+      {
+        "date": "2025-10-24",
+        "rally_pct": 12.6
+      },
+      {
+        "date": "2025-11-03",
+        "rally_pct": 11.52
+      },
+      {
+        "date": "2025-11-05",
+        "rally_pct": 14.68
+      },
+      {
+        "date": "2025-11-24",
+        "rally_pct": 14.74
+      },
+      {
+        "date": "2025-12-03",
+        "rally_pct": 6.91
+      },
+      {
+        "date": "2025-12-04",
+        "rally_pct": 5.66
+      },
+      {
+        "date": "2025-12-18",
+        "rally_pct": 5.98
+      },
+      {
+        "date": "2025-12-19",
+        "rally_pct": 11.51
+      },
+      {
+        "date": "2025-12-22",
+        "rally_pct": 5.31
+      },
+      {
+        "date": "2026-01-02",
+        "rally_pct": 13.05
+      },
+      {
+        "date": "2026-01-05",
+        "rally_pct": 12.97
+      },
+      {
+        "date": "2026-01-12",
+        "rally_pct": 9.34
+      },
+      {
+        "date": "2026-01-13",
+        "rally_pct": 5.29
+      },
+      {
+        "date": "2026-01-16",
+        "rally_pct": 11.43
+      },
+      {
+        "date": "2026-01-23",
+        "rally_pct": 8.46
+      }
+    ],
+    "next_day_stats": {
+      "avg_return": 1.18,
+      "win_rate": 54.1,
+      "median_return": 0.66,
+      "worst": -12.37,
+      "best": 14.45
+    },
+    "next_3day_stats": {
+      "avg_return": 2.85,
+      "win_rate": 60.0,
+      "median_return": 2.74
+    },
+    "next_5day_stats": {
+      "avg_return": 4.45,
+      "win_rate": 61.7,
+      "median_return": 4.28
+    },
+    "take_profit_timing": [
+      2,
+      1,
+      2,
+      2,
+      4,
+      1,
+      2,
+      1,
+      4,
+      2,
+      1,
+      5,
+      1,
+      3,
+      2,
+      1,
+      5,
+      1,
+      5,
+      3,
+      3,
+      1,
+      5,
+      3,
+      2,
+      2,
+      1,
+      2,
+      1,
+      1,
+      4,
+      3,
+      1,
+      3,
+      2,
+      1,
+      1,
+      2,
+      1,
+      3,
+      2,
+      1,
+      1,
+      1,
+      2,
+      1,
+      5,
+      4,
+      3,
+      2,
+      1,
+      3,
+      2,
+      1
+    ],
+    "insights": [
+      "\ud83d\udcca After 5.0%+ rally, average take-profit happens on day 2.2",
+      "\u2705 After 5.0%+ rally, momentum continues 54% of the time"
+    ],
+    "avg_take_profit_days": 2.2
+  },
+  "post_drop": {
+    "threshold": -3.0,
+    "total_drops": 61,
+    "drop_dates": [
+      {
+        "date": "2025-02-11",
+        "drop_pct": -3.42
+      },
+      {
+        "date": "2025-02-20",
+        "drop_pct": -4.92
+      },
+      {
+        "date": "2025-02-21",
+        "drop_pct": -11.97
+      },
+      {
+        "date": "2025-02-24",
+        "drop_pct": -6.62
+      },
+      {
+        "date": "2025-02-25",
+        "drop_pct": -13.58
+      },
+      {
+        "date": "2025-02-26",
+        "drop_pct": -3.3
+      },
+      {
+        "date": "2025-02-27",
+        "drop_pct": -7.42
+      },
+      {
+        "date": "2025-03-03",
+        "drop_pct": -8.13
+      },
+      {
+        "date": "2025-03-06",
+        "drop_pct": -5.46
+      },
+      {
+        "date": "2025-03-10",
+        "drop_pct": -14.03
+      },
+      {
+        "date": "2025-03-13",
+        "drop_pct": -4.12
+      },
+      {
+        "date": "2025-03-18",
+        "drop_pct": -10.34
+      },
+      {
+        "date": "2025-03-25",
+        "drop_pct": -3.77
+      },
+      {
+        "date": "2025-03-26",
+        "drop_pct": -9.32
+      },
+      {
+        "date": "2025-03-27",
+        "drop_pct": -3.73
+      },
+      {
+        "date": "2025-03-28",
+        "drop_pct": -6.04
+      },
+      {
+        "date": "2025-04-03",
+        "drop_pct": -10.65
+      },
+      {
+        "date": "2025-04-08",
+        "drop_pct": -9.86
+      },
+      {
+        "date": "2025-04-10",
+        "drop_pct": -6.95
+      },
+      {
+        "date": "2025-04-15",
+        "drop_pct": -5.22
+      },
+      {
+        "date": "2025-05-05",
+        "drop_pct": -5.21
+      },
+      {
+        "date": "2025-05-28",
+        "drop_pct": -4.11
+      },
+      {
+        "date": "2025-06-05",
+        "drop_pct": -5.09
+      },
+      {
+        "date": "2025-06-13",
+        "drop_pct": -3.34
+      },
+      {
+        "date": "2025-06-17",
+        "drop_pct": -6.06
+      },
+      {
+        "date": "2025-07-11",
+        "drop_pct": -4.7
+      },
+      {
+        "date": "2025-07-24",
+        "drop_pct": -4.48
+      },
+      {
+        "date": "2025-07-28",
+        "drop_pct": -6.43
+      },
+      {
+        "date": "2025-07-29",
+        "drop_pct": -4.76
+      },
+      {
+        "date": "2025-08-01",
+        "drop_pct": -4.41
+      },
+      {
+        "date": "2025-08-19",
+        "drop_pct": -9.54
+      },
+      {
+        "date": "2025-09-03",
+        "drop_pct": -3.09
+      },
+      {
+        "date": "2025-09-04",
+        "drop_pct": -7.37
+      },
+      {
+        "date": "2025-09-18",
+        "drop_pct": -4.17
+      },
+      {
+        "date": "2025-09-26",
+        "drop_pct": -9.57
+      },
+      {
+        "date": "2025-10-10",
+        "drop_pct": -6.39
+      },
+      {
+        "date": "2025-10-16",
+        "drop_pct": -9.05
+      },
+      {
+        "date": "2025-10-21",
+        "drop_pct": -6.8
+      },
+      {
+        "date": "2025-10-22",
+        "drop_pct": -6.1
+      },
+      {
+        "date": "2025-10-28",
+        "drop_pct": -3.95
+      },
+      {
+        "date": "2025-10-29",
+        "drop_pct": -3.2
+      },
+      {
+        "date": "2025-10-30",
+        "drop_pct": -3.64
+      },
+      {
+        "date": "2025-11-06",
+        "drop_pct": -12.37
+      },
+      {
+        "date": "2025-11-07",
+        "drop_pct": -6.84
+      },
+      {
+        "date": "2025-11-10",
+        "drop_pct": -3.54
+      },
+      {
+        "date": "2025-11-11",
+        "drop_pct": -4.64
+      },
+      {
+        "date": "2025-11-13",
+        "drop_pct": -12.66
+      },
+      {
+        "date": "2025-11-14",
+        "drop_pct": -4.69
+      },
+      {
+        "date": "2025-11-19",
+        "drop_pct": -6.18
+      },
+      {
+        "date": "2025-11-20",
+        "drop_pct": -5.15
+      },
+      {
+        "date": "2025-12-02",
+        "drop_pct": -15.2
+      },
+      {
+        "date": "2025-12-05",
+        "drop_pct": -3.75
+      },
+      {
+        "date": "2025-12-10",
+        "drop_pct": -6.23
+      },
+      {
+        "date": "2025-12-12",
+        "drop_pct": -8.67
+      },
+      {
+        "date": "2025-12-15",
+        "drop_pct": -11.59
+      },
+      {
+        "date": "2025-12-17",
+        "drop_pct": -7.68
+      },
+      {
+        "date": "2025-12-26",
+        "drop_pct": -4.0
+      },
+      {
+        "date": "2026-01-06",
+        "drop_pct": -4.83
+      },
+      {
+        "date": "2026-01-07",
+        "drop_pct": -4.98
+      },
+      {
+        "date": "2026-01-20",
+        "drop_pct": -6.16
+      },
+      {
+        "date": "2026-01-26",
+        "drop_pct": -6.51
+      }
+    ],
+    "next_day_stats": {
+      "avg_return": 0.07,
+      "bounce_rate": 51.7,
+      "median_return": 0.06,
+      "worst": -13.58,
+      "best": 11.32
+    },
+    "next_3day_stats": {
+      "avg_return": 0.24,
+      "recovery_rate": 51.7
+    },
+    "bounce_rate": 51.7,
+    "insights": [
+      "\u2705 BUY THE DIP: After 3.0%+ drop, bounces 52% next day!"
+    ]
+  },
+  "divergences": {
+    "bearish_divergences": [
+      {
+        "date": "2025-03-11",
+        "return_on_day": 6.5,
+        "volume_ratio": 0.68,
+        "next_2day_return": -4.26
+      },
+      {
+        "date": "2025-03-14",
+        "return_on_day": 6.81,
+        "volume_ratio": 0.74,
+        "next_2day_return": -8.4
+      },
+      {
+        "date": "2025-03-17",
+        "return_on_day": 1.94,
+        "volume_ratio": 0.66,
+        "next_2day_return": -1.08
+      },
+      {
+        "date": "2025-04-14",
+        "return_on_day": 2.13,
+        "volume_ratio": 0.8,
+        "next_2day_return": -4.85
+      },
+      {
+        "date": "2025-04-17",
+        "return_on_day": 2.19,
+        "volume_ratio": 0.54,
+        "next_2day_return": 8.55
+      },
+      {
+        "date": "2025-05-06",
+        "return_on_day": 5.01,
+        "volume_ratio": 0.65,
+        "next_2day_return": 5.95
+      },
+      {
+        "date": "2025-05-07",
+        "return_on_day": 1.08,
+        "volume_ratio": 0.61,
+        "next_2day_return": 7.05
+      },
+      {
+        "date": "2025-06-02",
+        "return_on_day": 4.05,
+        "volume_ratio": 0.63,
+        "next_2day_return": 7.91
+      },
+      {
+        "date": "2025-07-16",
+        "return_on_day": 2.55,
+        "volume_ratio": 0.67,
+        "next_2day_return": 3.67
+      },
+      {
+        "date": "2025-07-30",
+        "return_on_day": 2.22,
+        "volume_ratio": 0.48,
+        "next_2day_return": -4.59
+      },
+      {
+        "date": "2025-08-04",
+        "return_on_day": 7.01,
+        "volume_ratio": 0.39,
+        "next_2day_return": 11.19
+      },
+      {
+        "date": "2025-08-07",
+        "return_on_day": 1.36,
+        "volume_ratio": 0.78,
+        "next_2day_return": -3.25
+      },
+      {
+        "date": "2025-09-12",
+        "return_on_day": 3.38,
+        "volume_ratio": 0.66,
+        "next_2day_return": 7.51
+      },
+      {
+        "date": "2025-10-23",
+        "return_on_day": 7.78,
+        "volume_ratio": 0.67,
+        "next_2day_return": 15.93
+      },
+      {
+        "date": "2025-10-27",
+        "return_on_day": 3.32,
+        "volume_ratio": 0.74,
+        "next_2day_return": -7.16
+      },
+      {
+        "date": "2025-10-31",
+        "return_on_day": 4.35,
+        "volume_ratio": 0.48,
+        "next_2day_return": 9.87
+      },
+      {
+        "date": "2025-11-26",
+        "return_on_day": 2.06,
+        "volume_ratio": 0.64,
+        "next_2day_return": 0.1
+      },
+      {
+        "date": "2025-12-01",
+        "return_on_day": 1.42,
+        "volume_ratio": 0.54,
+        "next_2day_return": -8.29
+      },
+      {
+        "date": "2025-12-08",
+        "return_on_day": 3.65,
+        "volume_ratio": 0.77,
+        "next_2day_return": -5.16
+      },
+      {
+        "date": "2025-12-09",
+        "return_on_day": 1.08,
+        "volume_ratio": 0.77,
+        "next_2day_return": -6.19
+      }
+    ],
+    "bullish_divergences": [
+      {
+        "date": "2025-04-04",
+        "return_on_day": -1.66,
+        "volume_ratio": 1.63,
+        "next_2day_return": -10.87
+      },
+      {
+        "date": "2025-04-08",
+        "return_on_day": -9.86,
+        "volume_ratio": 1.31,
+        "next_2day_return": 4.37
+      },
+      {
+        "date": "2025-05-14",
+        "return_on_day": -1.85,
+        "volume_ratio": 1.4,
+        "next_2day_return": 5.76
+      },
+      {
+        "date": "2025-05-15",
+        "return_on_day": -2.76,
+        "volume_ratio": 1.34,
+        "next_2day_return": 10.06
+      },
+      {
+        "date": "2025-06-11",
+        "return_on_day": -1.81,
+        "volume_ratio": 1.68,
+        "next_2day_return": -4.61
+      },
+      {
+        "date": "2025-09-25",
+        "return_on_day": -1.8,
+        "volume_ratio": 1.55,
+        "next_2day_return": 0.15
+      },
+      {
+        "date": "2025-09-26",
+        "return_on_day": -9.57,
+        "volume_ratio": 1.44,
+        "next_2day_return": 11.9
+      },
+      {
+        "date": "2025-10-08",
+        "return_on_day": -2.58,
+        "volume_ratio": 1.39,
+        "next_2day_return": -0.13
+      },
+      {
+        "date": "2025-10-10",
+        "return_on_day": -6.39,
+        "volume_ratio": 1.6,
+        "next_2day_return": 15.76
+      },
+      {
+        "date": "2025-11-06",
+        "return_on_day": -12.37,
+        "volume_ratio": 1.22,
+        "next_2day_return": -10.38
+      },
+      {
+        "date": "2025-11-07",
+        "return_on_day": -6.84,
+        "volume_ratio": 1.28,
+        "next_2day_return": -8.18
+      },
+      {
+        "date": "2025-11-13",
+        "return_on_day": -12.66,
+        "volume_ratio": 1.25,
+        "next_2day_return": -2.44
+      },
+      {
+        "date": "2025-11-14",
+        "return_on_day": -4.69,
+        "volume_ratio": 1.24,
+        "next_2day_return": 5.28
+      },
+      {
+        "date": "2025-11-20",
+        "return_on_day": -5.15,
+        "volume_ratio": 1.54,
+        "next_2day_return": 11.96
+      },
+      {
+        "date": "2025-11-21",
+        "return_on_day": -2.78,
+        "volume_ratio": 1.22,
+        "next_2day_return": 12.64
+      },
+      {
+        "date": "2025-12-02",
+        "return_on_day": -15.2,
+        "volume_ratio": 1.96,
+        "next_2day_return": 12.57
+      },
+      {
+        "date": "2025-12-15",
+        "return_on_day": -11.59,
+        "volume_ratio": 1.21,
+        "next_2day_return": -4.55
+      },
+      {
+        "date": "2026-01-06",
+        "return_on_day": -4.83,
+        "volume_ratio": 1.27,
+        "next_2day_return": -0.27
+      },
+      {
+        "date": "2026-01-20",
+        "return_on_day": -6.16,
+        "volume_ratio": 1.36,
+        "next_2day_return": -3.72
+      },
+      {
+        "date": "2026-01-21",
+        "return_on_day": -1.44,
+        "volume_ratio": 1.77,
+        "next_2day_return": 6.18
+      }
+    ],
+    "bearish_div_accuracy": 50.0,
+    "bullish_div_accuracy": 55.0,
+    "insights": []
+  },
+  "support_resistance": {
+    "current_price": 52.99,
+    "60_day_high": 76.87,
+    "60_day_low": 33.34,
+    "fibonacci_levels": {
+      "0.0 (Low)": 33.34,
+      "0.236": 43.61,
+      "0.382": 49.97,
+      "0.5": 55.11,
+      "0.618": 60.24,
+      "0.786": 67.55,
+      "1.0 (High)": 76.87
+    },
+    "key_supports": [
+      {
+        "level": "0.382",
+        "price": 49.97,
+        "distance_pct": 5.7
+      },
+      {
+        "level": "20-day MA",
+        "price": 48.18,
+        "distance_pct": 9.1
+      },
+      {
+        "level": "0.236",
+        "price": 43.61,
+        "distance_pct": 17.7
+      },
+      {
+        "level": "0.0 (Low)",
+        "price": 33.34,
+        "distance_pct": 37.1
+      }
+    ],
+    "key_resistances": [
+      {
+        "level": "0.5",
+        "price": 55.11,
+        "distance_pct": 4.0
+      },
+      {
+        "level": "0.618",
+        "price": 60.24,
+        "distance_pct": 13.7
+      },
+      {
+        "level": "0.786",
+        "price": 67.55,
+        "distance_pct": 27.5
+      },
+      {
+        "level": "1.0 (High)",
+        "price": 76.87,
+        "distance_pct": 45.1
+      }
+    ],
+    "insights": [
+      "\ud83d\udcaa Nearest support: $49.97 (5.7% below)",
+      "\ud83d\udea7 Nearest resistance: $55.11 (4.0% above)"
+    ]
+  },
+  "optimal_tp_sl": {
+    "current_price": 52.99,
+    "atr_14": 5.03,
+    "atr_pct": 9.49,
+    "recommendations": {
+      "take_profit_pct": 10,
+      "stop_loss_pct": 5,
+      "take_profit_price": 58.29,
+      "stop_loss_price": 50.34,
+      "expected_win_rate": 44.2,
+      "risk_reward": 2.0,
+      "expected_value_per_trade": 1.62
+    },
+    "scenarios": [
+      {
+        "tp_pct": 10,
+        "sl_pct": 5,
+        "r_r": 2.0,
+        "win_rate": 44.2,
+        "expected_value": 1.62,
+        "trades": 231
+      },
+      {
+        "tp_pct": 7,
+        "sl_pct": 5,
+        "r_r": 1.4,
+        "win_rate": 53.2,
+        "expected_value": 1.39,
+        "trades": 231
+      },
+      {
+        "tp_pct": 7,
+        "sl_pct": 2,
+        "r_r": 3.5,
+        "win_rate": 37.2,
+        "expected_value": 1.35,
+        "trades": 231
+      },
+      {
+        "tp_pct": 5,
+        "sl_pct": 2,
+        "r_r": 2.5,
+        "win_rate": 47.6,
+        "expected_value": 1.33,
+        "trades": 231
+      },
+      {
+        "tp_pct": 3,
+        "sl_pct": 2,
+        "r_r": 1.5,
+        "win_rate": 64.5,
+        "expected_value": 1.23,
+        "trades": 231
+      },
+      {
+        "tp_pct": 5,
+        "sl_pct": 3,
+        "r_r": 1.7,
+        "win_rate": 52.8,
+        "expected_value": 1.23,
+        "trades": 231
+      },
+      {
+        "tp_pct": 10,
+        "sl_pct": 3,
+        "r_r": 3.3,
+        "win_rate": 32.5,
+        "expected_value": 1.22,
+        "trades": 231
+      },
+      {
+        "tp_pct": 7,
+        "sl_pct": 3,
+        "r_r": 2.3,
+        "win_rate": 41.6,
+        "expected_value": 1.16,
+        "trades": 231
+      },
+      {
+        "tp_pct": 10,
+        "sl_pct": 2,
+        "r_r": 5.0,
+        "win_rate": 26.0,
+        "expected_value": 1.12,
+        "trades": 231
+      },
+      {
+        "tp_pct": 5,
+        "sl_pct": 5,
+        "r_r": 1.0,
+        "win_rate": 61.0,
+        "expected_value": 1.1,
+        "trades": 231
+      },
+      {
+        "tp_pct": 3,
+        "sl_pct": 3,
+        "r_r": 1.0,
+        "win_rate": 65.8,
+        "expected_value": 0.95,
+        "trades": 231
+      },
+      {
+        "tp_pct": 3,
+        "sl_pct": 5,
+        "r_r": 0.6,
+        "win_rate": 70.6,
+        "expected_value": 0.65,
+        "trades": 231
+      }
+    ],
+    "insights": [
+      "\ud83c\udfaf OPTIMAL: TP +10% / SL -5% (Win rate: 44%, EV: +1.62%)"
+    ]
+  },
+  "trading_strategy": {
+    "title": "IREN TRADING STRATEGY - Research-Based",
+    "generated": "2026-01-26 17:19",
+    "summary": {
+      "current_price": 52.99,
+      "recommended_tp_pct": 10,
+      "recommended_sl_pct": 5,
+      "take_profit_target": 58.29,
+      "stop_loss_target": 50.34
+    },
+    "entry_rules": [
+      "\ud83d\udfe2 BUY after 3%+ drop if volume is 1.2x+ average (capitulation signal)",
+      "\ud83d\udfe2 BUY near support levels: [49.97, 48.18, 43.61]",
+      "\ud83d\udfe2 BUY on bearish divergence reversal (volume up, price stabilizing)",
+      "\u26a0\ufe0f AVOID buying day after 5%+ rally (tends to pull back)"
+    ],
+    "exit_rules": [
+      "\u2705 TAKE PROFIT at +10% from entry",
+      "\u274c STOP LOSS at -5% from entry",
+      "\u23f0 Take profit typically triggers within 2 days after rally",
+      "\ud83d\udcc9 EXIT if price rises on falling volume (bearish divergence)"
+    ],
+    "risk_management": {
+      "position_size": "Max 10% of portfolio per trade",
+      "max_daily_loss": "Stop trading if down 5% in a day",
+      "scaling": "Scale in: 50% initial, 50% on confirmation",
+      "holding_period": "Optimal: 3-5 days for swings"
+    },
+    "key_levels": {
+      "strong_support": 49.97,
+      "first_resistance": 55.11,
+      "60_day_high": 76.87,
+      "60_day_low": 33.34
+    },
+    "warnings": [],
+    "paul_summary": "\n\ud83d\udcca IREN TRADING STRATEGY\nGenerated: 2026-01-26 17:19\n\n\ud83d\udcb0 CURRENT: $52.99\n\ud83c\udfaf TAKE PROFIT: $58.29 (+10%)\n\ud83d\uded1 STOP LOSS: $50.34 (-5%)\n\n\ud83d\udcc8 WHEN TO BUY:\n\u2022 After 3%+ drop with high volume (bounce rate: 52%)\n\u2022 Near support: $49.97\n\u2022 On volume spike capitulation\n\n\ud83d\udcc9 WHEN TO SELL:\n\u2022 At TP target (+10%)\n\u2022 After 5%+ rally (next day drops 46% of time)\n\u2022 Price up on LOW volume = exit soon\n\n\u23f0 TIMING:\n\u2022 Take profits usually hit in 2 days\n\u2022 Best volume day: Friday\n\n\ud83d\udccf KEY LEVELS:\n\u2022 Support: $49.97\n\u2022 Resistance: $55.11\n\u2022 60-day range: $33.34 - $76.87\n"
+  }
+}
