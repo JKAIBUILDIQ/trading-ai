@@ -1,0 +1,114 @@
+{
+  "symbol": "CIFR",
+  "thesis": "HYBRID_TRANSITION_TO_AI",
+  "thesis_date": "2026-01-28",
+  "confidence": 70,
+  
+  "current_state": {
+    "primary_business": "BTC Mining",
+    "ai_transition_progress": 50,
+    "btc_correlation": 0.55,
+    "decoupling_stage": "BEGINNING"
+  },
+  
+  "hyperscaling_initiatives": [
+    {
+      "initiative": "AI Datacenter Conversion",
+      "status": "IN_PROGRESS",
+      "timeline": "2026-2027",
+      "impact": "Could add 30-50% to valuation"
+    },
+    {
+      "initiative": "HPC Client Exploration",
+      "status": "EXPLORING",
+      "potential_customers": ["Enterprise HPC", "AI startups", "Research institutions"],
+      "impact": "Recurring revenue stream"
+    },
+    {
+      "initiative": "Grid Services",
+      "status": "ACTIVE",
+      "description": "Texas grid stabilization services",
+      "impact": "Additional revenue diversification"
+    }
+  ],
+  
+  "competitive_advantages": [
+    "Texas location (low-cost power)",
+    "Existing power infrastructure",
+    "Grid services expertise",
+    "Expandable Odessa facility",
+    "Management pivoting toward AI"
+  ],
+  
+  "contract_catalyst_probability": {
+    "likelihood": 55,
+    "timeline_months": "6-18",
+    "potential_customers": ["Regional AI companies", "HPC users", "Hyperscaler overflow"],
+    "catalyst_impact": "+40-60% on announcement"
+  },
+  
+  "btc_correlation_decay": {
+    "current": 0.55,
+    "6_months": 0.45,
+    "12_months": 0.35,
+    "trend": "SLOWLY_DECLINING",
+    "catalyst_needed": "Major AI contract"
+  },
+  
+  "model_adjustments": {
+    "btc_weight": {
+      "current": 0.40,
+      "target_6m": 0.30,
+      "target_12m": 0.20
+    },
+    "ai_sector_weight": {
+      "current": 0.15,
+      "target_6m": 0.25,
+      "target_12m": 0.35
+    },
+    "contract_catalyst_weight": {
+      "current": 0.10,
+      "target_6m": 0.20,
+      "target_12m": 0.25
+    }
+  },
+  
+  "divergence_rules": {
+    "cifr_up_btc_down": {
+      "signal": "BUY",
+      "interpretation": "AI thesis gaining traction",
+      "btc_weight_override": 0.20
+    },
+    "cifr_down_btc_up": {
+      "signal": "WATCH",
+      "interpretation": "Still BTC-correlated, may lag",
+      "btc_weight_override": "normal"
+    }
+  },
+  
+  "price_targets": {
+    "current": 18.50,
+    "target_6m": {
+      "conservative": 22,
+      "base": 28,
+      "bull": 35
+    },
+    "target_12m": {
+      "conservative": 28,
+      "base": 40,
+      "bull": 55
+    },
+    "catalyst_targets": {
+      "ai_contract_announced": "+40-60%",
+      "hyperscaler_partnership": "+50-80%"
+    }
+  },
+  
+  "trading_implications": {
+    "buy_the_dip": true,
+    "dip_threshold_percent": 7,
+    "max_position_size": "moderate",
+    "hold_through_btc_weakness": "partial",
+    "exit_signal": "SuperTrend bearish + no AI progress"
+  }
+}

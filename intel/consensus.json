@@ -1,50 +1,50 @@
 {
-  "timestamp": "2026-01-27T18:03:49.327570",
+  "timestamp": "2026-01-28T14:49:13.820836",
   "source": "MQL5 Top Signals",
   "consensus_signals": [],
   "top_traders_positions": [],
   "top_signals": [
     {
-      "name": "Gold Empire Edge V2",
-      "growth_pct": 827.17,
-      "drawdown": 25.4,
-      "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2353143"
-    },
-    {
       "name": "Gold Reaper Goldtrade Pro Daytrade Pro",
-      "growth_pct": 807.09,
+      "growth_pct": 826.58,
       "drawdown": 32.6,
       "subscribers": 0,
       "url": "https://www.mql5.com/en/signals/2204998"
     },
     {
       "name": "Daily Gold Sniper",
-      "growth_pct": 779.54,
+      "growth_pct": 790.88,
       "drawdown": 34.3,
       "subscribers": 0,
       "url": "https://www.mql5.com/en/signals/2284676"
     },
     {
-      "name": "Aghost",
-      "growth_pct": 710.76,
-      "drawdown": 19.1,
+      "name": "Scalp IC Markets MT5",
+      "growth_pct": 706.13,
+      "drawdown": 32.9,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2333819"
+      "url": "https://www.mql5.com/en/signals/1560883"
     },
     {
-      "name": "MSC Gold Invest Pro",
-      "growth_pct": 603.8,
-      "drawdown": 26.2,
+      "name": "Goldora",
+      "growth_pct": 650.21,
+      "drawdown": 40.4,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/1988269"
+      "url": "https://www.mql5.com/en/signals/2317345"
     },
     {
-      "name": "Steady",
-      "growth_pct": 488.29,
-      "drawdown": 22.2,
+      "name": "NAS100 XAUUSD XAGUSD",
+      "growth_pct": 547.43,
+      "drawdown": 47.2,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2303631"
+      "url": "https://www.mql5.com/en/signals/2352377"
+    },
+    {
+      "name": "Falqonea pro _Robofxea Pro",
+      "growth_pct": 404.23,
+      "drawdown": 18.7,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2329641"
     },
     {
       "name": "King222",
@@ -54,25 +54,25 @@
       "url": "https://www.mql5.com/en/signals/2335155"
     },
     {
-      "name": "Falqonea pro _Robofxea Pro",
-      "growth_pct": 380.57,
-      "drawdown": 18.7,
+      "name": "GoldWave signal",
+      "growth_pct": 387.9,
+      "drawdown": 15.0,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2329641"
+      "url": "https://www.mql5.com/en/signals/2339082"
     },
     {
-      "name": "THPX AI 3C",
-      "growth_pct": 354.25,
-      "drawdown": 13.4,
+      "name": "GCEA XAU 1",
+      "growth_pct": 378.34,
+      "drawdown": 22.0,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2336814"
+      "url": "https://www.mql5.com/en/signals/2332085"
     },
     {
-      "name": "OnlyUJ",
-      "growth_pct": 325.68,
-      "drawdown": 16.7,
+      "name": "Gold Trend X",
+      "growth_pct": 368.27,
+      "drawdown": 34.3,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2245675"
+      "url": "https://www.mql5.com/en/signals/2248087"
     }
   ],
   "summary": {
@@ -80,6 +80,6 @@
     "total_positions_found": 0,
     "consensus_count": 0,
     "confidence_boost": 0,
-    "top_growth": 827.17
+    "top_growth": 826.58
   }
 }

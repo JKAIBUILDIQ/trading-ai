@@ -1,0 +1,39 @@
+{
+  "symbol": "XAUUSD",
+  "generated_at": "2026-01-28T03:03:26.005970",
+  "signal_type": "FRESH_INTRADAY",
+  "current_price": 5221.7998046875,
+  "action": "STRONG_BUY",
+  "strategy": "BUY_THE_DIP",
+  "confidence": 85,
+  "trend_score": 5,
+  "entry": 5206.07,
+  "entry_zone_low": 5190.35,
+  "entry_zone_high": 5215.51,
+  "in_entry_zone": false,
+  "stop_loss": 5143.18,
+  "take_profit_1": 5268.97,
+  "take_profit_2": 5316.15,
+  "risk_reward": 1.0,
+  "technicals": {
+    "ema20": 5126.31,
+    "ema50": 5074.44,
+    "ema200": 4876.91,
+    "rsi": 79.5,
+    "atr": 31.45,
+    "macd": 35.68,
+    "macd_signal": 23.47,
+    "recent_high": 5224.2,
+    "recent_low": 5042.0,
+    "price_change_24h": 3.05
+  },
+  "reasons": [
+    "\u2705 EMA20 > EMA50 (bullish)",
+    "\u2705 Price above EMA200 (long-term bullish)",
+    "\u26a0\ufe0f RSI overbought (79.5)",
+    "\u2705 MACD bullish crossover",
+    "\u2705 Strong momentum (+3.05% 24h)"
+  ],
+  "valid": true,
+  "signal_id": "NEO_XAUUSD_FRESH_20260128_0303"
+}

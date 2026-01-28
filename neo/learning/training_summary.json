@@ -1,0 +1,16 @@
+[
+  {
+    "training_date": "2026-01-28",
+    "source": "Real trading session",
+    "result": "+$41,341 (41.3%)",
+    "key_insight": "SELL attempts lost $38k, DCA gained $40k",
+    "weights_updated": [
+      "trend_following",
+      "exhaustion_detection",
+      "oversold_bounce",
+      "rsi_overbought_sell",
+      "bear_patterns"
+    ],
+    "recommendation": "GoldBuyOnly + DCA on dips + Trust exhaustion detection"
+  }
+]

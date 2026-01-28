@@ -1,0 +1,132 @@
+{
+  "tier_1_leaders": [
+    {
+      "symbol": "IREN",
+      "name": "Iris Energy",
+      "current_price": 59.99,
+      "btc_correlation": 0.31,
+      "ai_progress": 80,
+      "key_catalyst": "Microsoft Contract",
+      "ai_status": "EXECUTING",
+      "thesis": "Leading the BTC-to-AI transition with proven hyperscaler contract",
+      "target": "$100-150",
+      "conviction": "HIGH",
+      "watchlist_priority": 1
+    },
+    {
+      "symbol": "HUT",
+      "name": "Hut 8 Mining",
+      "current_price": 61.84,
+      "btc_correlation": 0.3,
+      "ai_progress": 60,
+      "key_catalyst": "AI datacenter buildout",
+      "ai_status": "BUILDING",
+      "thesis": "Lowest BTC correlation - following IREN playbook 6-12 months behind",
+      "target": "$80-120",
+      "conviction": "MEDIUM-HIGH",
+      "watchlist_priority": 2
+    },
+    {
+      "symbol": "CORZ",
+      "name": "Core Scientific",
+      "current_price": 19.94,
+      "btc_correlation": 0.35,
+      "ai_progress": 55,
+      "key_catalyst": "CoreWeave partnership",
+      "ai_status": "EXECUTING",
+      "thesis": "Post-bankruptcy with clean balance sheet, already has AI revenue",
+      "target": "$35-50",
+      "conviction": "MEDIUM-HIGH",
+      "watchlist_priority": 3
+    }
+  ],
+  "tier_2_transitioning": [
+    {
+      "symbol": "CIFR",
+      "name": "Cipher Mining",
+      "current_price": 18.75,
+      "btc_correlation": 0.26,
+      "ai_progress": 50,
+      "key_catalyst": "AI contract announcement needed",
+      "ai_status": "EXPLORING",
+      "thesis": "Strong Texas infrastructure, waiting for catalyst",
+      "target": "$28-40",
+      "conviction": "MEDIUM",
+      "watchlist_priority": 4
+    },
+    {
+      "symbol": "WULF",
+      "name": "TeraWulf",
+      "current_price": 15.31,
+      "btc_correlation": 0.45,
+      "ai_progress": 40,
+      "key_catalyst": "ESG-focused AI customers",
+      "ai_status": "EXPLORING",
+      "thesis": "Zero-carbon advantage could attract premium AI customers",
+      "target": "$25-35",
+      "conviction": "MEDIUM",
+      "watchlist_priority": 5
+    },
+    {
+      "symbol": "CLSK",
+      "name": "CleanSpark",
+      "current_price": 13.27,
+      "btc_correlation": 0.58,
+      "ai_progress": 30,
+      "key_catalyst": "AI pivot announcement",
+      "ai_status": "EARLY",
+      "thesis": "Best pure BTC miner, AI optionality not priced in",
+      "target": "$20-40",
+      "conviction": "MEDIUM",
+      "watchlist_priority": 6
+    }
+  ],
+  "tier_3_traditional_miners": [
+    {
+      "symbol": "MARA",
+      "name": "Marathon Digital",
+      "current_price": 10.52,
+      "btc_correlation": 0.66,
+      "ai_progress": 20,
+      "key_catalyst": "Needs AI pivot",
+      "ai_status": "TRADITIONAL",
+      "thesis": "Largest miner by hash rate, but slow to pivot. BTC proxy.",
+      "target": "BTC-dependent",
+      "conviction": "LOW",
+      "watchlist_priority": 7
+    },
+    {
+      "symbol": "RIOT",
+      "name": "Riot Platforms",
+      "current_price": 17.55,
+      "btc_correlation": 0.37,
+      "ai_progress": 35,
+      "key_catalyst": "Hosting business could pivot to AI",
+      "ai_status": "POTENTIAL",
+      "thesis": "Mining + hosting model could transition to AI hosting",
+      "target": "$25-35",
+      "conviction": "MEDIUM",
+      "watchlist_priority": 8
+    }
+  ],
+  "ai_infrastructure_comparisons": [
+    {
+      "symbol": "VRT",
+      "name": "Vertiv Holdings",
+      "thesis": "Datacenter cooling/power - benefits from all AI buildout",
+      "relevance": "Picks-and-shovels for AI datacenters"
+    },
+    {
+      "symbol": "EQIX",
+      "name": "Equinix",
+      "thesis": "Datacenter REIT - similar land/power moat thesis",
+      "relevance": "Validates infrastructure moat"
+    },
+    {
+      "symbol": "SMCI",
+      "name": "Super Micro",
+      "thesis": "AI server manufacturer - demand indicator",
+      "relevance": "Tracks AI infrastructure demand"
+    }
+  ]
+}

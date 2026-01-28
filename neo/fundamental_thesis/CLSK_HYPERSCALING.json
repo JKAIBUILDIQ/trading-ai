@@ -1,0 +1,122 @@
+{
+  "symbol": "CLSK",
+  "thesis": "TRADITIONAL_MINER_WITH_PIVOT_OPTIONALITY",
+  "thesis_date": "2026-01-28",
+  "confidence": 60,
+  
+  "current_state": {
+    "primary_business": "BTC Mining (Efficiency Leader)",
+    "ai_transition_progress": 30,
+    "btc_correlation": 0.75,
+    "decoupling_stage": "EARLY"
+  },
+  
+  "hyperscaling_potential": [
+    {
+      "initiative": "AI/HPC Exploration",
+      "status": "EARLY_STAGE",
+      "timeline": "2026-2028",
+      "impact": "Major upside if executed"
+    },
+    {
+      "initiative": "Clean Energy Focus",
+      "status": "ACTIVE",
+      "description": "Marketing advantage for ESG-conscious AI customers",
+      "impact": "Differentiation vs competitors"
+    },
+    {
+      "initiative": "Facility Expansion",
+      "status": "ONGOING",
+      "description": "Multiple US facilities could convert to AI",
+      "impact": "Infrastructure ready for pivot"
+    }
+  ],
+  
+  "competitive_advantages": [
+    "Mining efficiency leader (low cost/BTC)",
+    "Clean energy narrative",
+    "Multiple US facilities",
+    "Strong management execution",
+    "Late-mover advantage (learn from IREN/CIFR)"
+  ],
+  
+  "contract_catalyst_probability": {
+    "likelihood": 35,
+    "timeline_months": "12-24",
+    "rationale": "Still focused on BTC mining, AI pivot not priority yet",
+    "catalyst_impact": "+60-100% if surprise AI contract"
+  },
+  
+  "btc_correlation_decay": {
+    "current": 0.75,
+    "6_months": 0.65,
+    "12_months": 0.50,
+    "trend": "STABLE_HIGH",
+    "catalyst_needed": "Management AI pivot announcement"
+  },
+  
+  "model_adjustments": {
+    "btc_weight": {
+      "current": 0.60,
+      "target_6m": 0.50,
+      "target_12m": 0.35
+    },
+    "ai_sector_weight": {
+      "current": 0.05,
+      "target_6m": 0.15,
+      "target_12m": 0.25
+    },
+    "btc_price_weight": {
+      "current": 0.25,
+      "description": "Still primarily a BTC play"
+    }
+  },
+  
+  "divergence_rules": {
+    "clsk_up_btc_down": {
+      "signal": "STRONG_BUY",
+      "interpretation": "Rare - indicates AI pivot news or sector rotation",
+      "btc_weight_override": 0.30
+    },
+    "clsk_down_btc_up": {
+      "signal": "EXPECTED",
+      "interpretation": "CLSK may lag BTC moves, normal for miners",
+      "btc_weight_override": "normal"
+    }
+  },
+  
+  "price_targets": {
+    "current": 13.50,
+    "target_6m": {
+      "conservative": 15,
+      "base": 20,
+      "bull": 28
+    },
+    "target_12m": {
+      "conservative": 18,
+      "base": 30,
+      "bull": 45
+    },
+    "catalyst_targets": {
+      "btc_100k": "+30-50%",
+      "ai_pivot_announced": "+60-100%",
+      "ai_contract_signed": "+80-120%"
+    }
+  },
+  
+  "trading_implications": {
+    "buy_the_dip": true,
+    "dip_threshold_percent": 10,
+    "max_position_size": "speculative",
+    "hold_through_btc_weakness": false,
+    "btc_correlation_trade": true,
+    "exit_signal": "BTC trend reversal OR SuperTrend bearish"
+  },
+  
+  "speculative_upside": {
+    "description": "AI optionality NOT priced in",
+    "probability": 35,
+    "potential_return": "+100-150%",
+    "rationale": "If CLSK announces AI pivot, could re-rate like IREN"
+  }
+}

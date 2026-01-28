@@ -1,0 +1,122 @@
+[
+  {
+    "signal_id": "MANUAL_20260128_135609",
+    "evaluated_at": "2026-01-28T13:56:09.769021",
+    "symbol": "XAUUSD",
+    "action": "SELL",
+    "price_at_signal": 5080,
+    "actual_price": 5300,
+    "price_change": 220,
+    "price_change_pct": 4.33,
+    "actual_direction": "UP",
+    "grade": "F",
+    "grade_reason": "MANUAL CORRECTION: SELL at $5080 was WRONG. Price is now $5300 (+4.3%)",
+    "is_mistake": true,
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "features_used": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence": 70
+  },
+  {
+    "signal_id": "MANUAL_20260128_135609",
+    "evaluated_at": "2026-01-28T13:56:09.769578",
+    "symbol": "XAUUSD",
+    "action": "SELL",
+    "price_at_signal": 5100,
+    "actual_price": 5300,
+    "price_change": 200,
+    "price_change_pct": 3.92,
+    "actual_direction": "UP",
+    "grade": "F",
+    "grade_reason": "MANUAL CORRECTION: SELL at $5100 was WRONG. Price is now $5300 (+3.9%)",
+    "is_mistake": true,
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "features_used": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence": 70
+  },
+  {
+    "signal_id": "MANUAL_20260128_135609",
+    "evaluated_at": "2026-01-28T13:56:09.770120",
+    "symbol": "XAUUSD",
+    "action": "SELL",
+    "price_at_signal": 5150,
+    "actual_price": 5300,
+    "price_change": 150,
+    "price_change_pct": 2.91,
+    "actual_direction": "UP",
+    "grade": "F",
+    "grade_reason": "MANUAL CORRECTION: SELL at $5150 was WRONG. Price is now $5300 (+2.9%)",
+    "is_mistake": true,
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "features_used": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence": 70
+  },
+  {
+    "signal_id": "MANUAL_20260128_145312",
+    "evaluated_at": "2026-01-28T14:53:12.655987",
+    "symbol": "XAUUSD",
+    "action": "SELL",
+    "price_at_signal": 5200,
+    "actual_price": 5280,
+    "price_change": 80,
+    "price_change_pct": 1.54,
+    "actual_direction": "UP",
+    "grade": "F",
+    "grade_reason": "MANUAL CORRECTION: SELL at $5200 was WRONG. Price is now $5280 (+1.5%)",
+    "is_mistake": true,
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "features_used": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence": 70
+  },
+  {
+    "signal_id": "MANUAL_20260128_145312",
+    "evaluated_at": "2026-01-28T14:53:12.673892",
+    "symbol": "XAUUSD",
+    "action": "SELL",
+    "price_at_signal": 5200,
+    "actual_price": 5280,
+    "price_change": 80,
+    "price_change_pct": 1.54,
+    "actual_direction": "UP",
+    "grade": "F",
+    "grade_reason": "MANUAL CORRECTION: SELL at $5200 was WRONG. Price is now $5280 (+1.5%)",
+    "is_mistake": true,
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "features_used": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence": 70
+  },
+  {
+    "signal_id": "MANUAL_20260128_145312",
+    "evaluated_at": "2026-01-28T14:53:12.674599",
+    "symbol": "XAUUSD",
+    "action": "SELL",
+    "price_at_signal": 5200,
+    "actual_price": 5280,
+    "price_change": 80,
+    "price_change_pct": 1.54,
+    "actual_direction": "UP",
+    "grade": "F",
+    "grade_reason": "MANUAL CORRECTION: SELL at $5200 was WRONG. Price is now $5280 (+1.5%)",
+    "is_mistake": true,
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "features_used": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence": 70
+  }
+]

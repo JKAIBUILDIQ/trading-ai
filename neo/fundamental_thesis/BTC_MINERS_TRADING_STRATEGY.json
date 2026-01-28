@@ -1,0 +1,155 @@
+{
+  "strategy_name": "AGGRESSIVE_ACCUMULATION_WITH_MOONSHOT_LEAPS",
+  "created": "2026-01-28",
+  "author": "Gringot + NEO",
+  
+  "core_thesis": {
+    "summary": "BTC miners have LEGACY land + energy rights that create a 3-5 year MOAT",
+    "key_insight": "New datacenter entrants in Texas must wait 3-5 years for energy access. AI demand can't wait that long. These miners have what hyperscalers NEED NOW.",
+    "moat_components": [
+      "Legacy power purchase agreements",
+      "Existing grid connections",
+      "Permitted land and facilities",
+      "Cooling infrastructure built",
+      "Regulatory approvals in place"
+    ],
+    "time_advantage": "3-5 years head start vs new entrants",
+    "implication": "AI hyperscalers MUST partner with existing miners or wait years"
+  },
+  
+  "supertrend_rules": {
+    "default_bias": "BULLISH",
+    "invalidation_triggers": [
+      "Earnings miss + negative forward guidance",
+      "Contract cancellation announcement",
+      "Management abandons AI pivot",
+      "Regulatory issues blocking datacenter conversion",
+      "Fundamental thesis debunked"
+    ],
+    "note": "SuperTrend stays BULLISH unless above triggers occur"
+  },
+  
+  "dca_strategy": {
+    "mode": "AGGRESSIVE",
+    "trigger": "Any dip > 5% from recent high",
+    "scaling": {
+      "dip_5_percent": { "action": "ADD 20% of target position" },
+      "dip_10_percent": { "action": "ADD 30% of target position" },
+      "dip_15_percent": { "action": "ADD 40% of target position" },
+      "dip_20_percent": { "action": "LOAD UP - remaining position" }
+    },
+    "never_fully_exit": true,
+    "minimum_core_position": "25% of max allocation",
+    "rationale": "Thesis is intact - dips are buying opportunities"
+  },
+  
+  "profit_taking_strategy": {
+    "mode": "SCALE_OUT_SCALE_BACK_IN",
+    "rules": [
+      {
+        "trigger": "Position up 20%",
+        "action": "Sell 15% of position",
+        "reinvest": "Set limit buy 10% below current price"
+      },
+      {
+        "trigger": "Position up 40%",
+        "action": "Sell 20% of position",
+        "reinvest": "Set limit buy 15% below current price"
+      },
+      {
+        "trigger": "Position up 60%",
+        "action": "Sell 25% of position",
+        "reinvest": "Set limit buy 20% below current price"
+      },
+      {
+        "trigger": "Position up 100%+",
+        "action": "Sell 30% of position",
+        "protect": "Trail stop on remaining 70%",
+        "reinvest": "Always have buy orders below market"
+      }
+    ],
+    "key_rule": "ALWAYS have active buy orders below market price",
+    "never_miss_runup": "Maintain 25% minimum position at all times"
+  },
+  
+  "leaps_moonshot_strategy": {
+    "purpose": "Never miss a massive breakout",
+    "allocation": "5-10% of total BTC miner allocation",
+    "target_expiration": "December 2026 or January 2027",
+    "strike_selection": {
+      "IREN": {
+        "current_price": 60,
+        "moonshot_strikes": [100, 120, 150],
+        "rationale": "2x-3x from current on second contract announcement"
+      },
+      "CIFR": {
+        "current_price": 18,
+        "moonshot_strikes": [30, 40, 50],
+        "rationale": "2x-3x on AI contract announcement"
+      },
+      "CLSK": {
+        "current_price": 13,
+        "moonshot_strikes": [25, 35, 45],
+        "rationale": "2x-3x on AI pivot + BTC bull market"
+      }
+    },
+    "entry_timing": [
+      "After 10%+ pullback from highs",
+      "When IV is relatively low",
+      "Spread purchases across multiple entries"
+    ],
+    "position_sizing": {
+      "per_stock": "2-3% of total portfolio",
+      "max_loss": "Entire premium (treat as lottery ticket)",
+      "potential_return": "5x-20x if thesis plays out"
+    },
+    "key_rule": "These are MOONSHOTS - size for 100% loss possibility"
+  },
+  
+  "entry_rules": {
+    "always_have_orders": true,
+    "stink_bids": {
+      "IREN": ["$50", "$45", "$40"],
+      "CIFR": ["$15", "$13", "$11"],
+      "CLSK": ["$11", "$10", "$9"]
+    },
+    "rationale": "Market panics happen - be ready to buy the fear"
+  },
+  
+  "position_management": {
+    "core_position": {
+      "description": "25% of max allocation ALWAYS held",
+      "never_sell": "Even in drawdowns, keep core",
+      "rationale": "Never miss the run-up"
+    },
+    "trading_position": {
+      "description": "75% that can be scaled in/out",
+      "dca_on_dips": true,
+      "take_profits_on_rips": true
+    }
+  },
+  
+  "risk_management": {
+    "max_portfolio_allocation": {
+      "all_btc_miners_combined": "30% of portfolio",
+      "single_stock_max": "15% of portfolio"
+    },
+    "stop_loss": {
+      "type": "THESIS_BASED_NOT_PRICE_BASED",
+      "rule": "Only exit if thesis is invalidated by fundamentals",
+      "NOT": "Don't stop out on normal volatility"
+    }
+  },
+  
+  "catalyst_calendar": {
+    "watch_for": [
+      "Quarterly earnings calls",
+      "Partnership announcements",
+      "Government contract awards",
+      "Datacenter capacity updates",
+      "Competitor contract wins (FOMO for others)",
+      "NVIDIA earnings (AI demand indicator)",
+      "BTC halving effects on mining profitability"
+    ]
+  }
+}

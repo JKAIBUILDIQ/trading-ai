@@ -1,0 +1,124 @@
+{
+  "symbol": "IREN",
+  "thesis": "BTC_TO_HYPERSCALER_PIVOT",
+  "thesis_date": "2026-01-28",
+  "confidence": 85,
+  
+  "current_contracts": [
+    {
+      "customer": "Microsoft",
+      "type": "Hyperscale Datacenter Services",
+      "status": "ACTIVE",
+      "significance": "TRANSFORMATIONAL",
+      "revenue_impact": "50%+ of forward revenue"
+    }
+  ],
+  
+  "second_contract_probability": {
+    "likelihood": 75,
+    "timeline_months": "3-12",
+    "potential_customers": [
+      "Meta",
+      "Amazon AWS", 
+      "Google Cloud",
+      "Oracle",
+      "OpenAI/Anthropic",
+      "US Government/DoD"
+    ],
+    "catalyst_triggers": [
+      "Earnings call announcement",
+      "8-K filing",
+      "Press release",
+      "Conference presentation"
+    ]
+  },
+  
+  "btc_correlation_decay": {
+    "current": 0.60,
+    "6_months": 0.40,
+    "12_months": 0.20,
+    "trend": "DECLINING"
+  },
+  
+  "model_adjustments": {
+    "btc_weight": {
+      "current": 0.25,
+      "target_6m": 0.15,
+      "target_12m": 0.05
+    },
+    "ai_sector_weight": {
+      "current": 0.20,
+      "target_6m": 0.30,
+      "target_12m": 0.40
+    },
+    "contract_catalyst_weight": {
+      "current": 0.15,
+      "target_6m": 0.25,
+      "target_12m": 0.30
+    }
+  },
+  
+  "divergence_rules": {
+    "iren_up_btc_down": {
+      "signal": "STRONG_BUY",
+      "interpretation": "Independent strength - hyperscaling thesis in play",
+      "btc_weight_override": 0.10
+    },
+    "iren_down_btc_up": {
+      "signal": "CAUTION",
+      "interpretation": "Relative weakness - check for IREN-specific news",
+      "btc_weight_override": 0.10
+    },
+    "iren_up_btc_up": {
+      "signal": "BUY",
+      "interpretation": "Rising tide - follow the trend",
+      "btc_weight_override": "normal"
+    }
+  },
+  
+  "price_targets": {
+    "current": 59.94,
+    "target_6m": {
+      "conservative": 80,
+      "base": 100,
+      "bull": 120
+    },
+    "target_12m": {
+      "conservative": 100,
+      "base": 150,
+      "bull": 200
+    },
+    "catalyst_targets": {
+      "second_contract_announced": "+30-50%",
+      "third_contract_announced": "+20-30%",
+      "full_btc_exit": "+15-25%"
+    }
+  },
+  
+  "key_metrics_to_watch": [
+    "Datacenter capacity utilization",
+    "New customer announcements",
+    "Revenue mix (mining vs hyperscaling)",
+    "Power capacity expansion",
+    "GPU/infrastructure orders",
+    "Enterprise customer pipeline",
+    "Government contract bids"
+  ],
+  
+  "trading_implications": {
+    "buy_the_dip": true,
+    "dip_threshold_percent": 5,
+    "max_position_size": "aggressive",
+    "hold_through_btc_weakness": true,
+    "exit_signal": "SuperTrend bearish + fundamental deterioration"
+  },
+  
+  "lesson_from_20260127": {
+    "date": "2026-01-27",
+    "event": "IREN rallied +14.5% while BTC flat",
+    "neo_prediction": "BEARISH (based on BTC)",
+    "actual": "+14.5%",
+    "lesson": "Divergence from BTC = hyperscaling thesis in play, FOLLOW IREN not BTC",
+    "model_update": "Reduce BTC weight when divergence detected"
+  }
+}

@@ -627,11 +627,26 @@ def generate_fresh_xauusd_signal(current_price: float) -> Dict:
     
     Called when the pre-market signal becomes stale (price moved significantly).
     This ensures Ghost always has actionable, up-to-date signals.
+    
+    🎓 LEARNING INTEGRATED:
+    - Uses learned feature weights from /home/jbot/trading_ai/neo/learning/
+    - Avoids SELL signals during strong uptrends (learned from mistakes)
+    - RSI overbought weight reduced to 0.1 (was causing bad SELL signals)
     """
     import yfinance as yf
     import numpy as np
+    from pathlib import Path
     
     logger.info(f"🔄 GENERATING FRESH XAUUSD SIGNAL @ ${current_price:.2f}")
+    
+    # Load learned weights
+    weights_file = Path("/home/jbot/trading_ai/neo/learning/feature_weights.json")
+    weights = {}
+    if weights_file.exists():
+        import json
+        with open(weights_file) as f:
+            weights = json.load(f)
+        logger.info(f"📚 Loaded learned weights: RSI_overbought={weights.get('rsi_overbought', 'N/A')}")
     
     try:
         # Fetch recent data for analysis
@@ -694,8 +709,21 @@ def generate_fresh_xauusd_signal(current_price: float) -> Dict:
             
         elif current_price < ema20_val < ema50_val:
             # BEARISH: Price below falling EMAs
-            direction = "SELL"
-            strategy = "SELL_THE_RALLY"
+            # 🎓 LEARNED: Check if we're in a macro uptrend before SELL
+            macro_bullish = current_price > close.rolling(50).mean().iloc[-1]
+            
+            if macro_bullish:
+                # Don't SELL in macro uptrend - learned from mistakes!
+                direction = "HOLD"
+                strategy = "MACRO_UPTREND_PROTECTION"
+                reasoning = f"🎓 LEARNED: Avoiding SELL in macro uptrend. Price > 50-period avg."
+                confidence = 40
+                logger.warning(f"🎓 LEARNING APPLIED: Blocked SELL signal in macro uptrend")
+            else:
+                direction = "SELL"
+                strategy = "SELL_THE_RALLY"
+                reasoning = f"BEARISH: Price ${current_price:.0f} < EMA20 ${ema20_val:.0f} < EMA50 ${ema50_val:.0f}"
+                confidence = 70 if current_rsi > 30 else 55
             
             # Entry zone: near EMA20 or recent resistance
             entry_zone_low = ema20_val - atr * 0.3
@@ -709,11 +737,11 @@ def generate_fresh_xauusd_signal(current_price: float) -> Dict:
             take_profit_1 = current_price - atr * 1.5
             take_profit_2 = current_price - atr * 3.0
             
-            reasoning = f"BEARISH: Price ${current_price:.0f} < EMA20 ${ema20_val:.0f} < EMA50 ${ema50_val:.0f}"
-            confidence = 70 if current_rsi > 30 else 55  # Lower conf if oversold
-            
         else:
             # MIXED/CONSOLIDATION - Wait for breakout or buy dip
+            # 🎓 LEARNED: In Gold, prefer BUY on dips (fundamental thesis)
+            rsi_overbought_weight = weights.get('rsi_overbought', 0.3)  # Default 0.3, learned may be 0.1
+            
             if current_rsi < 40:
                 direction = "BUY"
                 strategy = "OVERSOLD_BOUNCE"
@@ -721,17 +749,30 @@ def generate_fresh_xauusd_signal(current_price: float) -> Dict:
                 stop_loss = recent_low - atr * 0.5
                 take_profit_1 = ema20_val
                 take_profit_2 = ema50_val
-                confidence = 60
-                reasoning = f"OVERSOLD: RSI {current_rsi:.0f} < 40, looking for bounce"
-            elif current_rsi > 60:
+                confidence = 65  # Increased from 60 - oversold bounces work better
+                reasoning = f"OVERSOLD: RSI {current_rsi:.0f} < 40, looking for bounce (Gold dip = opportunity)"
+            elif current_rsi > 60 and rsi_overbought_weight > 0.2:
+                # 🎓 LEARNED: Only SELL on overbought if weight is still significant
+                # Weight was reduced to 0.1 due to bad SELL signals, so this won't trigger!
                 direction = "SELL"
                 strategy = "OVERBOUGHT_FADE"
                 optimal_entry = current_price
                 stop_loss = recent_high + atr * 0.5
                 take_profit_1 = ema20_val
                 take_profit_2 = ema50_val
-                confidence = 55
-                reasoning = f"OVERBOUGHT: RSI {current_rsi:.0f} > 60, looking for pullback"
+                confidence = int(55 * rsi_overbought_weight)  # Reduced by learned weight!
+                reasoning = f"OVERBOUGHT: RSI {current_rsi:.0f} > 60 (weight={rsi_overbought_weight})"
+            elif current_rsi > 60 and rsi_overbought_weight <= 0.2:
+                # 🎓 LEARNED: RSI overbought weight too low - prefer HOLD/BUY
+                direction = "HOLD"
+                strategy = "RSI_OVERBOUGHT_IGNORED"
+                optimal_entry = current_price
+                stop_loss = recent_low - atr * 0.5
+                take_profit_1 = current_price + atr
+                take_profit_2 = current_price + atr * 2
+                confidence = 45
+                reasoning = f"🎓 LEARNED: RSI overbought ignored (weight={rsi_overbought_weight}). Gold can stay overbought in uptrends!"
+                logger.info(f"🎓 LEARNING APPLIED: RSI overbought signal ignored due to low weight")
             else:
                 direction = "WAIT"
                 strategy = "NO_CLEAR_SETUP"
@@ -1412,6 +1453,465 @@ async def get_supertrend_only(symbol: str):
 # ═══════════════════════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# LEARNING ENDPOINTS - Track NEO's mistakes and improvements
+# ═══════════════════════════════════════════════════════════════════════════════
+
+sys.path.insert(0, '/home/jbot/trading_ai/neo/learning')
+
+@app.get("/api/neo/learning/stats")
+async def get_neo_learning_stats():
+    """Get NEO's learning statistics - what it has learned from mistakes"""
+    try:
+        from neo_trainer import get_learning_stats, get_recent_mistakes
+        stats = get_learning_stats()
+        recent_mistakes = get_recent_mistakes(5)
+        
+        return {
+            "status": "success",
+            "learning_stats": stats,
+            "recent_mistakes": recent_mistakes,
+            "key_learnings": [
+                {
+                    "lesson": "RSI overbought does NOT mean SELL in strong Gold uptrends",
+                    "weight_before": 0.3,
+                    "weight_after": stats.get("current_weights", {}).get("rsi_overbought", 0.1),
+                    "outcome": "Now ignoring RSI > 70 as SELL trigger"
+                },
+                {
+                    "lesson": "Bear flag patterns often fail in Gold uptrends",
+                    "weight_before": 0.6,
+                    "weight_after": stats.get("current_weights", {}).get("bear_flag", 0.1),
+                    "outcome": "Reduced bearish pattern weight significantly"
+                }
+            ],
+            "biggest_problem": stats.get("biggest_problem"),
+            "accuracy_trend": f"{stats.get('accuracy_overall', 0):.1f}% overall → {stats.get('accuracy_recent_20', 0):.1f}% recent"
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.post("/api/neo/learning/teach")
+async def teach_neo_manually(lesson: Dict):
+    """
+    Manually teach NEO about a mistake.
+    
+    Body:
+    {
+        "symbol": "XAUUSD",
+        "action_taken": "SELL",
+        "price_at_signal": 5100,
+        "actual_price": 5300,
+        "reason": "NEO sold during rally, price went up 4%"
+    }
+    """
+    try:
+        from neo_trainer import force_learn_from_current_state
+        
+        result = force_learn_from_current_state(
+            symbol=lesson.get("symbol", "XAUUSD"),
+            price_when_sold=lesson.get("price_at_signal"),
+            current_price=lesson.get("actual_price"),
+            action=lesson.get("action_taken", "SELL")
+        )
+        
+        return {
+            "status": "success",
+            "message": "NEO has learned from this mistake",
+            "grade": result["grade"],
+            "lesson": result.get("lesson", ""),
+            "weights_adjusted": True
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/neo/learning/weights")
+async def get_neo_feature_weights():
+    """Get current feature weights used in signal generation"""
+    try:
+        from neo_trainer import load_weights
+        weights = load_weights()
+        
+        # Categorize weights
+        high_weight = {k: v for k, v in weights.items() if v >= 1.0}
+        medium_weight = {k: v for k, v in weights.items() if 0.5 <= v < 1.0}
+        low_weight = {k: v for k, v in weights.items() if v < 0.5}
+        
+        return {
+            "status": "success",
+            "weights": weights,
+            "by_priority": {
+                "high_impact": high_weight,
+                "medium_impact": medium_weight,
+                "low_impact_or_penalized": low_weight
+            },
+            "explanation": {
+                "rsi_overbought": "REDUCED to 0.1 - was causing bad SELL signals during Gold rallies",
+                "bear_flag": "REDUCED to 0.1 - patterns often wrong in strong uptrends",
+                "ema_trend": "HIGH at 1.5 - trend following is key",
+                "supertrend": "HIGH at 1.4 - reliable trend indicator"
+            }
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# UNIFIED SIGNAL ENDPOINT - NEO + META BOT COMBINED
+# ═══════════════════════════════════════════════════════════════════════════════
+
+import httpx
+
+async def get_meta_bot_signal(symbol: str) -> Optional[Dict]:
+    """Fetch signal from Meta Bot API"""
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"http://127.0.0.1:8035/api/meta/{symbol.lower()}/signal",
+                timeout=5
+            )
+            if response.status_code == 200:
+                return response.json()
+    except Exception as e:
+        logger.warning(f"Meta Bot not available: {e}")
+    return None
+
+
+@app.get("/api/unified/xauusd/signal")
+async def get_unified_xauusd_signal():
+    """
+    UNIFIED SIGNAL - Combines NEO + Meta Bot for consensus.
+    
+    This is the PRIMARY endpoint Ghost should use!
+    
+    Decision Matrix:
+    - NEO BUY + Meta BUY → STRONG BUY (confidence avg)
+    - NEO BUY + Meta HOLD → BUY (reduced confidence)
+    - NEO BUY + Meta SELL → HOLD (conflict - wait)
+    - NEO SELL + Meta SELL → STRONG SELL (but Gold bias overrides)
+    - NEO HOLD + Meta HOLD → HOLD
+    
+    Gold Bias Rule: For XAUUSD, prefer LONG due to fundamental thesis.
+    """
+    # Get NEO signal
+    neo_signal = await get_xauusd_quick_signal()
+    
+    # Get Meta Bot signal
+    meta_signal = await get_meta_bot_signal("xauusd")
+    
+    # Default values
+    neo_action = neo_signal.get("action", "HOLD")
+    neo_confidence = neo_signal.get("confidence", 50)
+    neo_direction = neo_signal.get("direction", neo_action)
+    
+    meta_action = "HOLD"
+    meta_confidence = 50
+    meta_reasoning = "Meta Bot unavailable"
+    
+    if meta_signal:
+        meta_action = meta_signal.get("action", "HOLD")
+        meta_confidence = meta_signal.get("confidence", 50)
+        meta_reasoning = meta_signal.get("reasoning", "")
+    
+    # Consensus logic
+    consensus_action = "HOLD"
+    consensus_confidence = 50
+    consensus_reason = ""
+    
+    # Both agree on BUY
+    if neo_action == "BUY" and meta_action == "BUY":
+        consensus_action = "BUY"
+        consensus_confidence = (neo_confidence + meta_confidence) / 2
+        consensus_reason = "CONSENSUS: NEO + Meta both BUY"
+    
+    # NEO BUY, Meta HOLD - lean BUY with reduced confidence
+    elif neo_action == "BUY" and meta_action == "HOLD":
+        consensus_action = "BUY"
+        consensus_confidence = neo_confidence * 0.8  # 20% reduction
+        consensus_reason = "NEO BUY, Meta HOLD - cautious BUY"
+    
+    # Both agree on SELL (but Gold bias favors waiting)
+    elif neo_action == "SELL" and meta_action == "SELL":
+        # Gold fundamental thesis: Don't short, wait for dip to buy
+        consensus_action = "HOLD"
+        consensus_confidence = 60
+        consensus_reason = "GOLD BIAS: Both say SELL but prefer to HOLD for dip buying opportunity"
+    
+    # Conflict - NEO and Meta disagree
+    elif (neo_action == "BUY" and meta_action == "SELL") or (neo_action == "SELL" and meta_action == "BUY"):
+        consensus_action = "HOLD"
+        consensus_confidence = 40
+        consensus_reason = f"CONFLICT: NEO={neo_action}, Meta={meta_action} - waiting for agreement"
+    
+    # Default: Follow NEO with reduced confidence
+    else:
+        consensus_action = neo_action if neo_action != "HOLD" else "HOLD"
+        consensus_confidence = neo_confidence * 0.75
+        consensus_reason = f"Following NEO ({neo_action}) with caution"
+    
+    # Build unified response
+    return {
+        "symbol": "XAUUSD",
+        "timestamp": datetime.utcnow().isoformat(),
+        "signal_type": "UNIFIED_CONSENSUS",
+        
+        # UNIFIED SIGNAL (use this!)
+        "action": consensus_action,
+        "direction": consensus_action if consensus_action in ["BUY", "SELL"] else neo_direction,
+        "confidence": round(consensus_confidence, 1),
+        "reasoning": consensus_reason,
+        
+        # Trade parameters (from NEO)
+        "current_price": neo_signal.get("current_price"),
+        "entry": neo_signal.get("entry"),
+        "entry_zone_low": neo_signal.get("entry_zone_low"),
+        "entry_zone_high": neo_signal.get("entry_zone_high"),
+        "in_entry_zone": neo_signal.get("in_entry_zone"),
+        "stop_loss": neo_signal.get("stop_loss"),
+        "take_profit_1": neo_signal.get("take_profit_1"),
+        "take_profit_2": neo_signal.get("take_profit_2"),
+        "strategy": neo_signal.get("strategy"),
+        
+        # Validity (from NEO)
+        "valid": neo_signal.get("valid", True),
+        "invalidation": neo_signal.get("invalidation"),
+        
+        # Individual signals (for debugging)
+        "neo": {
+            "action": neo_action,
+            "confidence": neo_confidence,
+            "strategy": neo_signal.get("strategy"),
+            "signal_type": neo_signal.get("signal_type")
+        },
+        "meta": {
+            "action": meta_action,
+            "confidence": meta_confidence,
+            "reasoning": meta_reasoning,
+            "bullish_count": meta_signal.get("indicator_count", {}).get("bullish", 0) if meta_signal else 0,
+            "bearish_count": meta_signal.get("indicator_count", {}).get("bearish", 0) if meta_signal else 0
+        },
+        
+        # SUPERTREND (from NEO)
+        "supertrend": neo_signal.get("supertrend", {}).get("direction", "UNKNOWN") if isinstance(neo_signal.get("supertrend"), dict) else "BULLISH",
+        "supertrend_confidence": neo_signal.get("supertrend", {}).get("confidence", 50) if isinstance(neo_signal.get("supertrend"), dict) else 50,
+        
+        "last_updated": datetime.utcnow().isoformat(),
+        "signal_id": f"UNIFIED_XAUUSD_{datetime.utcnow().strftime('%Y%m%d_%H%M')}"
+    }
+
+
+@app.get("/api/unified/iren/signal")
+async def get_unified_iren_signal():
+    """UNIFIED IREN signal - NEO + Meta Bot combined"""
+    # Get NEO signal
+    neo_signal = await get_iren_quick_signal()
+    
+    # Get Meta Bot signal
+    meta_signal = await get_meta_bot_signal("iren")
+    
+    neo_action = neo_signal.get("action", "HOLD")
+    neo_confidence = neo_signal.get("confidence", 50)
+    
+    meta_action = "HOLD"
+    meta_confidence = 50
+    
+    if meta_signal:
+        meta_action = meta_signal.get("action", "HOLD")
+        meta_confidence = meta_signal.get("confidence", 50)
+    
+    # Simple consensus for IREN (similar logic)
+    if neo_action == "BUY" and meta_action == "BUY":
+        action = "BUY"
+        confidence = (neo_confidence + meta_confidence) / 2
+        reason = "CONSENSUS: NEO + Meta both BUY"
+    elif neo_action == "BUY" and meta_action == "HOLD":
+        action = "BUY"
+        confidence = neo_confidence * 0.8
+        reason = "NEO BUY, Meta HOLD"
+    elif neo_action == "SELL" and meta_action == "SELL":
+        action = "SELL"
+        confidence = (neo_confidence + meta_confidence) / 2
+        reason = "CONSENSUS: NEO + Meta both SELL"
+    else:
+        action = "HOLD"
+        confidence = 50
+        reason = f"No consensus: NEO={neo_action}, Meta={meta_action}"
+    
+    return {
+        "symbol": "IREN",
+        "timestamp": datetime.utcnow().isoformat(),
+        "signal_type": "UNIFIED_CONSENSUS",
+        "action": action,
+        "confidence": round(confidence, 1),
+        "reasoning": reason,
+        "current_price": neo_signal.get("current_price"),
+        "entry": neo_signal.get("entry"),
+        "stop_loss": neo_signal.get("stop_loss"),
+        "take_profit": neo_signal.get("take_profit"),
+        "valid": neo_signal.get("valid", True),
+        "neo": {"action": neo_action, "confidence": neo_confidence},
+        "meta": {"action": meta_action, "confidence": meta_confidence},
+        "last_updated": datetime.utcnow().isoformat()
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# INSTITUTIONAL DETECTOR ENDPOINTS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Import institutional detector
+try:
+    from institutional_detector import InstitutionalDetector
+    institutional_detector = InstitutionalDetector()
+    INSTITUTIONAL_DETECTOR_AVAILABLE = True
+    logger.info("✅ Institutional Detector loaded successfully")
+except ImportError as e:
+    INSTITUTIONAL_DETECTOR_AVAILABLE = False
+    institutional_detector = None
+    logger.warning(f"⚠️ Institutional Detector not available: {e}")
+
+
+@app.get("/api/neo/institutional/{symbol}")
+async def get_institutional_analysis(symbol: str):
+    """
+    Get institutional analysis for a symbol.
+    Includes: options flow, sentiment, stop hunt risk, cascade protection.
+    
+    This helps NEO see what Citadel sees - trade the TRADER, not just the chart.
+    """
+    if not INSTITUTIONAL_DETECTOR_AVAILABLE:
+        return {
+            "error": "Institutional detector not available",
+            "symbol": symbol,
+            "fallback": True,
+            "signal": "NEUTRAL",
+            "action": "FOLLOW_TREND"
+        }
+    
+    # Get current price (would be from market feed in production)
+    current_prices = {
+        "XAUUSD": 5270.0,
+        "GOLD": 5270.0,
+        "GLD": 265.0,
+        "IREN": 59.94,
+        "CIFR": 12.50,
+        "CLSK": 15.75
+    }
+    
+    current_price = current_prices.get(symbol.upper(), 100.0)
+    
+    # Recent price levels (would be from market data in production)
+    recent_lows = {
+        "XAUUSD": [5200, 5180, 5150, 5100, 5050],
+        "IREN": [52, 48, 45, 42, 40],
+        "CIFR": [11, 10.5, 10, 9.5, 9],
+        "CLSK": [14, 13.5, 13, 12.5, 12]
+    }
+    
+    recent_highs = {
+        "XAUUSD": [5280, 5300, 5320],
+        "IREN": [60, 62, 65],
+        "CIFR": [13, 13.5, 14],
+        "CLSK": [16, 16.5, 17]
+    }
+    
+    try:
+        analysis = await institutional_detector.get_full_analysis(
+            symbol=symbol.upper(),
+            current_price=current_price,
+            recent_lows=recent_lows.get(symbol.upper(), []),
+            recent_highs=recent_highs.get(symbol.upper(), [])
+        )
+        
+        return analysis
+        
+    except Exception as e:
+        logger.error(f"Institutional analysis error for {symbol}: {e}")
+        return {
+            "error": str(e),
+            "symbol": symbol,
+            "fallback": True,
+            "signal": "NEUTRAL",
+            "action": "FOLLOW_TREND"
+        }
+
+
+@app.get("/api/neo/options-flow/{symbol}")
+async def get_options_flow(symbol: str):
+    """
+    Get options flow analysis (put/call ratio, unusual activity).
+    
+    Key signals:
+    - Put/Call > 2.0 = Retail euphoria (DANGER - institutions may dump)
+    - Put/Call < 0.5 = Retail panic (OPPORTUNITY - institutions may buy)
+    """
+    if not INSTITUTIONAL_DETECTOR_AVAILABLE:
+        return {"error": "Institutional detector not available", "fallback": True}
+    
+    try:
+        return await institutional_detector.options_detector.get_put_call_ratio(symbol)
+    except Exception as e:
+        return {"error": str(e), "fallback": True}
+
+
+@app.get("/api/neo/sentiment/{symbol}")
+async def get_social_sentiment(symbol: str):
+    """
+    Get social media sentiment analysis.
+    
+    Key signals:
+    - Score > 80 = EUPHORIA (everyone bullish = potential top)
+    - Score < 20 = PANIC (everyone bearish = potential bottom)
+    """
+    if not INSTITUTIONAL_DETECTOR_AVAILABLE:
+        return {"error": "Institutional detector not available", "fallback": True}
+    
+    try:
+        return await institutional_detector.sentiment_detector.get_sentiment_score(symbol)
+    except Exception as e:
+        return {"error": str(e), "fallback": True}
+
+
+@app.get("/api/neo/cascade-protection")
+async def get_cascade_protection_status():
+    """
+    Get current cascade protection status.
+    
+    Unlike other algos that freeze at fixed 92% volatility,
+    NEO uses RANDOMIZED thresholds (85-95%) to avoid coordinated hunts.
+    """
+    if not INSTITUTIONAL_DETECTOR_AVAILABLE:
+        return {"error": "Institutional detector not available", "fallback": True}
+    
+    try:
+        return institutional_detector.cascade_protection.get_current_threshold()
+    except Exception as e:
+        return {"error": str(e), "fallback": True}
+
+
+@app.get("/api/neo/gold-thesis")
+async def get_gold_thesis():
+    """
+    Get NEO's Gold macro thesis ($10K-$50K target).
+    This is the fundamental backdrop for all Gold trading decisions.
+    """
+    thesis_file = DATA_DIR.parent / "learning" / "gold_macro_thesis.json"
+    
+    if thesis_file.exists():
+        with open(thesis_file) as f:
+            return json.load(f)
+    
+    return {
+        "core_thesis": "Gold in multi-decade bull market",
+        "2030_target": 15000,
+        "2035_target": 50000,
+        "bias": "EXTREME_LONG",
+        "file_missing": True
+    }
+
 
 if __name__ == "__main__":
     uvicorn.run(

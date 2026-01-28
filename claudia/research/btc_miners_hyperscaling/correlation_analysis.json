@@ -1,0 +1,112 @@
+[
+  {
+    "symbol": "HUT",
+    "description": "Hut 8 Mining - AI Exploration",
+    "current_price": 61.84,
+    "performance_90d": 23.1,
+    "btc_correlation": 0.3,
+    "alpha_vs_btc": 23.1,
+    "decoupling_score": 69.6,
+    "status": "\ud83d\ude80 DECOUPLING LEADER"
+  },
+  {
+    "symbol": "CORZ",
+    "description": "Core Scientific - AI Pivot Post-BK",
+    "current_price": 19.94,
+    "performance_90d": -0.7,
+    "btc_correlation": 0.35,
+    "alpha_vs_btc": -0.7,
+    "decoupling_score": 65.0,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  },
+  {
+    "symbol": "IREN",
+    "description": "Iris Energy - Microsoft AI Deal",
+    "current_price": 59.99,
+    "performance_90d": -3.9,
+    "btc_correlation": 0.31,
+    "alpha_vs_btc": -3.9,
+    "decoupling_score": 68.9,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  },
+  {
+    "symbol": "WULF",
+    "description": "TeraWulf - Zero-Carbon Focus",
+    "current_price": 15.31,
+    "performance_90d": -4.0,
+    "btc_correlation": 0.45,
+    "alpha_vs_btc": -4.0,
+    "decoupling_score": 54.9,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  },
+  {
+    "symbol": "CIFR",
+    "description": "Cipher Mining - Texas Operations",
+    "current_price": 18.75,
+    "performance_90d": -6.1,
+    "btc_correlation": 0.26,
+    "alpha_vs_btc": -6.1,
+    "decoupling_score": 74.3,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  },
+  {
+    "symbol": "RIOT",
+    "description": "Riot Platforms - Mining + Hosting",
+    "current_price": 17.55,
+    "performance_90d": -18.6,
+    "btc_correlation": 0.37,
+    "alpha_vs_btc": -18.6,
+    "decoupling_score": 63.3,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  },
+  {
+    "symbol": "CLSK",
+    "description": "CleanSpark - Efficiency Leader",
+    "current_price": 13.27,
+    "performance_90d": -30.7,
+    "btc_correlation": 0.58,
+    "alpha_vs_btc": -30.7,
+    "decoupling_score": 42.3,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  },
+  {
+    "symbol": "BITF",
+    "description": "Bitfarms - Canadian Operations",
+    "current_price": 2.6,
+    "performance_90d": -39.5,
+    "btc_correlation": 0.44,
+    "alpha_vs_btc": -39.5,
+    "decoupling_score": 56.5,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  },
+  {
+    "symbol": "BTBT",
+    "description": "Bit Digital - Diversifying to AI",
+    "current_price": 2.22,
+    "performance_90d": -41.0,
+    "btc_correlation": 0.66,
+    "alpha_vs_btc": -41.0,
+    "decoupling_score": 33.7,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  },
+  {
+    "symbol": "MARA",
+    "description": "Marathon Digital - Largest Miner",
+    "current_price": 10.52,
+    "performance_90d": -44.3,
+    "btc_correlation": 0.66,
+    "alpha_vs_btc": -44.3,
+    "decoupling_score": 34.3,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  },
+  {
+    "symbol": "HIVE",
+    "description": "HIVE Blockchain - GPU Mining",
+    "current_price": 3.04,
+    "performance_90d": -45.4,
+    "btc_correlation": 0.54,
+    "alpha_vs_btc": -45.4,
+    "decoupling_score": 45.9,
+    "status": "\ud83d\udfe1 EARLY SIGNS"
+  }
+]

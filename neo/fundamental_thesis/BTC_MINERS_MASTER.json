@@ -1,0 +1,87 @@
+{
+  "thesis_name": "BTC_MINERS_AI_HYPERSCALING_TRANSITION",
+  "last_updated": "2026-01-28",
+  "author": "NEO + Gringot Analysis",
+  
+  "macro_thesis": {
+    "summary": "BTC miners are transitioning from commodity mining to AI infrastructure",
+    "drivers": [
+      "AI/GPU demand explosion",
+      "Existing power infrastructure advantage",
+      "Mining margins compressing post-halving",
+      "Hyperscaler datacenter shortage",
+      "Government AI infrastructure push"
+    ],
+    "timeline": "2024-2028 (5-year transition)",
+    "winners": "Early movers with hyperscaler contracts"
+  },
+  
+  "ranking": [
+    {
+      "rank": 1,
+      "symbol": "IREN",
+      "status": "LEADER",
+      "ai_progress": 80,
+      "btc_correlation": 0.40,
+      "catalyst": "Microsoft contract executed",
+      "strategy": "ACCUMULATE",
+      "btc_weight": 0.25
+    },
+    {
+      "rank": 2,
+      "symbol": "CIFR",
+      "status": "TRANSITIONING",
+      "ai_progress": 50,
+      "btc_correlation": 0.55,
+      "catalyst": "Needs AI contract announcement",
+      "strategy": "ACCUMULATE",
+      "btc_weight": 0.40
+    },
+    {
+      "rank": 3,
+      "symbol": "CLSK",
+      "status": "TRADITIONAL",
+      "ai_progress": 30,
+      "btc_correlation": 0.75,
+      "catalyst": "AI pivot not priced in",
+      "strategy": "SPECULATIVE",
+      "btc_weight": 0.60
+    }
+  ],
+  
+  "divergence_trading_rules": {
+    "rule_1": {
+      "condition": "Stock UP > 5% AND BTC flat/down",
+      "action": "STRONG_BUY - Independent strength",
+      "btc_weight": "REDUCE by 50%"
+    },
+    "rule_2": {
+      "condition": "Stock DOWN > 5% AND BTC UP",
+      "action": "WATCH - Relative weakness",
+      "btc_weight": "MAINTAIN"
+    },
+    "rule_3": {
+      "condition": "All 3 stocks UP, BTC flat",
+      "action": "SECTOR ROTATION - BUY ALL",
+      "interpretation": "AI narrative driving sector"
+    }
+  },
+  
+  "catalyst_watch_list": [
+    "Hyperscaler partnership announcements",
+    "Government/DoD contracts",
+    "Enterprise AI customer wins",
+    "Datacenter capacity expansions",
+    "GPU/NVIDIA hardware orders",
+    "Earnings calls mentioning AI revenue %"
+  ],
+  
+  "key_insight": "AI infrastructure demand is NOT going away. Companies that successfully pivot from BTC mining to AI hyperscaling will see massive re-rating. The question is not IF but WHEN and WHO executes best.",
+  
+  "neo_learning_from_20260127": {
+    "event": "IREN +14.5% while BTC flat",
+    "mistake": "NEO predicted bearish based on BTC",
+    "lesson": "Divergence = hyperscaling thesis in play",
+    "correction": "Reduce BTC weight when divergence detected"
+  }
+}

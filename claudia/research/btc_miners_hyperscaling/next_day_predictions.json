@@ -1,0 +1,75 @@
+{
+  "IREN": {
+    "prediction": "FLAT",
+    "confidence": 50,
+    "score": 0,
+    "reasons": [
+      "RSI elevated (67)",
+      "EMA trend bullish"
+    ],
+    "current_price": 59.9900016784668,
+    "rsi": 67.33563035487668,
+    "trend": "UP",
+    "five_day_return": 12.17277896775062,
+    "avg_daily_move": 5.817809463159079
+  },
+  "CIFR": {
+    "prediction": "FLAT",
+    "confidence": 50,
+    "score": 1,
+    "reasons": [
+      "RSI neutral (56)",
+      "EMA trend bullish"
+    ],
+    "current_price": 18.75,
+    "rsi": 55.72374228669634,
+    "trend": "UP",
+    "five_day_return": 5.8126451837346105,
+    "avg_daily_move": 4.816677595082222
+  },
+  "CLSK": {
+    "prediction": "FLAT",
+    "confidence": 50,
+    "score": 0,
+    "reasons": [
+      "RSI neutral (59)",
+      "EMA trend bullish",
+      "7+ up days in 10"
+    ],
+    "current_price": 13.270000457763672,
+    "rsi": 58.96358861435956,
+    "trend": "UP",
+    "five_day_return": 3.5909447547132656,
+    "avg_daily_move": 4.367000120009033
+  },
+  "HUT": {
+    "prediction": "FLAT",
+    "confidence": 50,
+    "score": 1,
+    "reasons": [
+      "RSI neutral (56)",
+      "EMA trend bullish"
+    ],
+    "current_price": 61.84000015258789,
+    "rsi": 56.49907147292908,
+    "trend": "UP",
+    "five_day_return": 4.92026059288837,
+    "avg_daily_move": 5.375599494962524
+  },
+  "CORZ": {
+    "prediction": "DOWN",
+    "confidence": 71,
+    "score": -2,
+    "reasons": [
+      "RSI overbought (76)",
+      "EMA trend bullish"
+    ],
+    "current_price": 19.940000534057617,
+    "rsi": 75.86205708576645,
+    "trend": "UP",
+    "five_day_return": 9.56043790207588,
+    "avg_daily_move": 3.261714859744813
+  },
+  "generated_at": "2026-01-28T04:36:04.049064",
+  "note": "Based on RSI, EMA trend, 5-day momentum, and mean reversion"
+}

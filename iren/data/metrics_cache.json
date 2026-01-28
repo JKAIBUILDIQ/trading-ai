@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-27T23:03:12.055724",
+  "timestamp": "2026-01-28T13:26:15.348866",
   "symbol": "IREN",
   "price": {
     "current": 59.99,
@@ -13,8 +13,8 @@
   },
   "volume": {
     "current": 54028136,
-    "average": 38247116,
-    "ratio": 1.41
+    "average": 38699640,
+    "ratio": 1.4
   },
   "technicals": {
     "rsi": 67.3,
@@ -25,24 +25,24 @@
     "trend_strength": 100
   },
   "btc_correlation": {
-    "btc_price": 89113.1,
-    "correlation_30d": -0.135,
+    "btc_price": 89982.72,
+    "correlation_30d": 0.291,
     "coupling_status": "DECOUPLING"
   },
   "earnings": {
     "date": "2026-02-05",
-    "days_away": 8,
-    "phase": "PRE_EARNINGS_SETUP"
+    "days_away": 7,
+    "phase": "PRE_EARNINGS_FINAL"
   },
   "signal": {
     "action": "ACCUMULATE",
-    "confidence": 80,
-    "score": 40,
+    "confidence": 70,
+    "score": 30,
     "reasons": [
       "Bullish trend",
       "Above-avg volume (1.4x)",
       "Strong momentum (+12.2%)",
-      "\u26a0\ufe0f Earnings approaching - be cautious"
+      "\u26a0\ufe0f Earnings within 7 days - reduce size"
     ]
   },
   "options_focus": {

@@ -1,0 +1,125 @@
+{
+  "session_id": "XAUUSD_20260128",
+  "date": "2026-01-28",
+  "account": {
+    "starting_balance": 100000,
+    "ending_balance": 141340.98,
+    "total_profit": 41340.98,
+    "total_return_pct": 41.3
+  },
+  
+  "strategy_performance": {
+    "SELL_SCALP_MANUAL": {
+      "total_pnl": -38000,
+      "trades": [
+        {"pnl": -4993, "reason": "Selling into rally"},
+        {"pnl": -5000, "reason": "Selling into rally"},
+        {"pnl": -4987, "reason": "Selling into rally"},
+        {"pnl": -6817, "reason": "Selling into rally - OUCH"},
+        {"pnl": -2908, "reason": "Selling into rally"},
+        {"pnl": -6163, "reason": "Selling into rally - OUCH"},
+        {"pnl": -2501, "reason": "Selling into rally"},
+        {"pnl": -2508, "reason": "Selling into rally"},
+        {"pnl": -2500, "reason": "Selling into rally"}
+      ],
+      "verdict": "FAILED",
+      "lesson": "DO NOT SELL INTO GOLD RALLIES - Fighting accumulation = losing!"
+    },
+    
+    "DROPBUY_DCA": {
+      "total_pnl": 40000,
+      "trades": [
+        {"pnl": 1259.50, "reason": "DCA on dip"},
+        {"pnl": 1668.06, "reason": "DCA on dip"},
+        {"pnl": 1323.00, "reason": "DCA on dip"},
+        {"pnl": 1246.50, "reason": "DCA on dip"},
+        {"pnl": 1262.50, "reason": "DCA on dip"},
+        {"pnl": 1200.00, "reason": "DCA on dip"},
+        {"pnl": 6076.00, "reason": "DCA on dip - BIG WIN"}
+      ],
+      "verdict": "SUCCESS",
+      "lesson": "DCA ON DIPS WORKS - Accumulate at better prices, let TPs take profit"
+    },
+    
+    "GHOST_EXHAUSTION_BLOCK": {
+      "action": "BLOCKED BUY at $5,281",
+      "reason": "Price exhausted at highs, RSI overbought, far from EMA support",
+      "verdict": "CORRECT DECISION",
+      "lesson": "Ghost's exhaustion detection PROTECTED from buying high"
+    },
+    
+    "MANUAL_BUY_5266": {
+      "entry": 5266.05,
+      "current": 5281.44,
+      "pnl": 1539.00,
+      "verdict": "SUCCESS",
+      "lesson": "Good manual entry at reasonable level, not at exhausted highs"
+    }
+  },
+  
+  "market_pattern": {
+    "phase_1": {
+      "name": "EXPLOSIVE RUN-UP",
+      "price_from": 5100,
+      "price_to": 5280,
+      "what_happened": "Gold rallied hard",
+      "sell_attempts": "All stopped out = losses",
+      "buy_dips": "Accumulated positions hit TPs = profits"
+    },
+    "phase_2": {
+      "name": "GRADUAL SWEEP DOWN",
+      "price_from": 5280,
+      "price_to": 5266,
+      "what_happened": "Minor pullback",
+      "sell_positions": "Finally profited (small)",
+      "buy_positions": "Small losses but overall net positive"
+    }
+  },
+  
+  "key_lessons": [
+    {
+      "lesson": "SELL attempts cost ~$38k in losses - STOP doing this!",
+      "action": "Disable SELL signals for Gold or require very high confidence",
+      "weight_adjustment": "rsi_overbought: 0.1 (already done), bear_flag: 0.1 (already done)"
+    },
+    {
+      "lesson": "DCA/DropBuy generated ~$40k in gains - KEEP doing this!",
+      "action": "Prioritize BUY_THE_DIP strategy",
+      "weight_adjustment": "Increase oversold_bounce weight, increase support_bounce weight"
+    },
+    {
+      "lesson": "Ghost exhaustion detection WORKS - Trust it!",
+      "action": "When exhausted, WAIT don't buy. The dip WILL come.",
+      "weight_adjustment": "Add exhaustion_detection as high-weight feature"
+    },
+    {
+      "lesson": "Fighting the uptrend is EXPENSIVE",
+      "action": "GoldBuyOnly mode is CORRECT for this thesis",
+      "weight_adjustment": "trend_following weight should be highest"
+    }
+  ],
+  
+  "optimal_strategy": {
+    "gold_buy_only": true,
+    "wait_for_dips": true,
+    "dca_on_drops": true,
+    "let_tps_auto_close": true,
+    "no_manual_sell": true,
+    "trust_exhaustion_detection": true
+  },
+  
+  "feature_weight_updates": {
+    "trend_following": {"before": 1.5, "after": 2.0, "reason": "Trend is everything in Gold"},
+    "exhaustion_detection": {"before": 0.5, "after": 1.5, "reason": "Ghost's blocking saved money"},
+    "oversold_bounce": {"before": 0.8, "after": 1.2, "reason": "DropBuy profits validated this"},
+    "rsi_overbought_sell": {"before": 0.3, "after": 0.05, "reason": "SELL attempts lost $38k"},
+    "bear_patterns": {"before": 0.1, "after": 0.05, "reason": "Bear patterns wrong in uptrend"}
+  },
+  
+  "summary": {
+    "what_worked": ["DCA on dips", "Ghost exhaustion blocks", "Letting TPs auto-close", "BuyOnly mode"],
+    "what_failed": ["Manual SELL attempts", "Trying to catch the top", "Fighting the trend"],
+    "net_result": "+$41,340 (+41.3%) PROFITABLE despite SELL mistakes",
+    "recommendation": "TRUST THE BOTS - DCA on dips, no manual SELL, let TPs work"
+  }
+}

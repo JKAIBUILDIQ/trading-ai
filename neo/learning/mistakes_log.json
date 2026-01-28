@@ -1,0 +1,98 @@
+[
+  {
+    "timestamp": "2026-01-28T13:56:09.769071",
+    "signal_id": "MANUAL_20260128_135609",
+    "symbol": "XAUUSD",
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "action_taken": "SELL",
+    "price_at_signal": 5080,
+    "actual_price": 5300,
+    "missed_move_pct": 4.33,
+    "features_that_failed": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence_at_time": 70,
+    "lesson": "CRITICAL LESSON: Sold at $5080.00 but price rallied to $5300.00 (+4.3%). Features that caused bad signal: ['rsi_overbought', 'bear_flag']. DO NOT SELL INTO STRONG UPTRENDS even if RSI is 'overbought'!"
+  },
+  {
+    "timestamp": "2026-01-28T13:56:09.769644",
+    "signal_id": "MANUAL_20260128_135609",
+    "symbol": "XAUUSD",
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "action_taken": "SELL",
+    "price_at_signal": 5100,
+    "actual_price": 5300,
+    "missed_move_pct": 3.92,
+    "features_that_failed": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence_at_time": 70,
+    "lesson": "CRITICAL LESSON: Sold at $5100.00 but price rallied to $5300.00 (+3.9%). Features that caused bad signal: ['rsi_overbought', 'bear_flag']. DO NOT SELL INTO STRONG UPTRENDS even if RSI is 'overbought'!"
+  },
+  {
+    "timestamp": "2026-01-28T13:56:09.770163",
+    "signal_id": "MANUAL_20260128_135609",
+    "symbol": "XAUUSD",
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "action_taken": "SELL",
+    "price_at_signal": 5150,
+    "actual_price": 5300,
+    "missed_move_pct": 2.91,
+    "features_that_failed": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence_at_time": 70,
+    "lesson": "CRITICAL LESSON: Sold at $5150.00 but price rallied to $5300.00 (+2.9%). Features that caused bad signal: ['rsi_overbought', 'bear_flag']. DO NOT SELL INTO STRONG UPTRENDS even if RSI is 'overbought'!"
+  },
+  {
+    "timestamp": "2026-01-28T14:53:12.656052",
+    "signal_id": "MANUAL_20260128_145312",
+    "symbol": "XAUUSD",
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "action_taken": "SELL",
+    "price_at_signal": 5200,
+    "actual_price": 5280,
+    "missed_move_pct": 1.54,
+    "features_that_failed": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence_at_time": 70,
+    "lesson": "CRITICAL LESSON: Sold at $5200.00 but price rallied to $5280.00 (+1.5%). Features that caused bad signal: ['rsi_overbought', 'bear_flag']. DO NOT SELL INTO STRONG UPTRENDS even if RSI is 'overbought'!"
+  },
+  {
+    "timestamp": "2026-01-28T14:53:12.673962",
+    "signal_id": "MANUAL_20260128_145312",
+    "symbol": "XAUUSD",
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "action_taken": "SELL",
+    "price_at_signal": 5200,
+    "actual_price": 5280,
+    "missed_move_pct": 1.54,
+    "features_that_failed": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence_at_time": 70,
+    "lesson": "CRITICAL LESSON: Sold at $5200.00 but price rallied to $5280.00 (+1.5%). Features that caused bad signal: ['rsi_overbought', 'bear_flag']. DO NOT SELL INTO STRONG UPTRENDS even if RSI is 'overbought'!"
+  },
+  {
+    "timestamp": "2026-01-28T14:53:12.674646",
+    "signal_id": "MANUAL_20260128_145312",
+    "symbol": "XAUUSD",
+    "mistake_type": "CATASTROPHIC_SELL_DURING_RALLY",
+    "action_taken": "SELL",
+    "price_at_signal": 5200,
+    "actual_price": 5280,
+    "missed_move_pct": 1.54,
+    "features_that_failed": {
+      "rsi_overbought": true,
+      "bear_flag": true
+    },
+    "confidence_at_time": 70,
+    "lesson": "CRITICAL LESSON: Sold at $5200.00 but price rallied to $5280.00 (+1.5%). Features that caused bad signal: ['rsi_overbought', 'bear_flag']. DO NOT SELL INTO STRONG UPTRENDS even if RSI is 'overbought'!"
+  }
+]
