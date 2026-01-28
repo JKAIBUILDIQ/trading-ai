@@ -611,7 +611,7 @@ def get_realtime_price(symbol: str) -> float:
     """Get real-time price for invalidation checks"""
     try:
         import yfinance as yf
-        ticker_map = {"XAUUSD": "GC=F", "IREN": "IREN"}
+        ticker_map = {"XAUUSD": "GC=F", "IREN": "IREN", "CLSK": "CLSK", "CIFR": "CIFR"}
         ticker = ticker_map.get(symbol, symbol)
         data = yf.Ticker(ticker).history(period="1d", interval="1m")
         if not data.empty:
@@ -619,6 +619,208 @@ def get_realtime_price(symbol: str) -> float:
     except Exception as e:
         logger.warning(f"Could not fetch real-time price for {symbol}: {e}")
     return 0.0
+
+
+def generate_fresh_xauusd_signal(current_price: float) -> Dict:
+    """
+    Generate a FRESH intraday signal based on current market conditions.
+    
+    Called when the pre-market signal becomes stale (price moved significantly).
+    This ensures Ghost always has actionable, up-to-date signals.
+    """
+    import yfinance as yf
+    import numpy as np
+    
+    logger.info(f"🔄 GENERATING FRESH XAUUSD SIGNAL @ ${current_price:.2f}")
+    
+    try:
+        # Fetch recent data for analysis
+        ticker = yf.Ticker("GC=F")
+        df = ticker.history(period="5d", interval="1h")
+        
+        if df.empty:
+            return _fallback_signal("XAUUSD", current_price, "NO_DATA")
+        
+        close = df['Close']
+        high = df['High']
+        low = df['Low']
+        
+        # Calculate EMAs
+        ema20 = close.ewm(span=20).mean()
+        ema50 = close.ewm(span=50).mean()
+        
+        # Calculate RSI
+        delta = close.diff()
+        gain = (delta.where(delta > 0, 0)).rolling(14).mean()
+        loss = (-delta.where(delta < 0, 0)).rolling(14).mean()
+        rs = gain / loss
+        rsi = 100 - (100 / (1 + rs))
+        current_rsi = float(rsi.iloc[-1])
+        
+        # Calculate ATR for stop loss
+        tr = np.maximum(high - low, 
+                       np.maximum(abs(high - close.shift(1)), 
+                                  abs(low - close.shift(1))))
+        atr = float(tr.rolling(14).mean().iloc[-1])
+        
+        # Support/Resistance from recent swing points
+        recent_high = float(high.tail(20).max())
+        recent_low = float(low.tail(20).min())
+        
+        # Determine trend and direction
+        ema20_val = float(ema20.iloc[-1])
+        ema50_val = float(ema50.iloc[-1])
+        
+        # DETERMINE SIGNAL BASED ON CURRENT CONDITIONS
+        if current_price > ema20_val > ema50_val:
+            # BULLISH: Price above rising EMAs
+            direction = "BUY"
+            strategy = "BUY_THE_DIP"
+            
+            # Entry zone: near EMA20 or recent support
+            entry_zone_low = max(ema20_val - atr * 0.5, recent_low)
+            entry_zone_high = ema20_val + atr * 0.3
+            optimal_entry = (entry_zone_low + entry_zone_high) / 2
+            
+            # Stop below recent swing low
+            stop_loss = min(ema50_val, recent_low) - atr * 0.5
+            
+            # Targets
+            take_profit_1 = current_price + atr * 1.5
+            take_profit_2 = current_price + atr * 3.0
+            
+            reasoning = f"BULLISH: Price ${current_price:.0f} > EMA20 ${ema20_val:.0f} > EMA50 ${ema50_val:.0f}"
+            confidence = 70 if current_rsi < 70 else 55  # Lower conf if overbought
+            
+        elif current_price < ema20_val < ema50_val:
+            # BEARISH: Price below falling EMAs
+            direction = "SELL"
+            strategy = "SELL_THE_RALLY"
+            
+            # Entry zone: near EMA20 or recent resistance
+            entry_zone_low = ema20_val - atr * 0.3
+            entry_zone_high = min(ema20_val + atr * 0.5, recent_high)
+            optimal_entry = (entry_zone_low + entry_zone_high) / 2
+            
+            # Stop above recent swing high
+            stop_loss = max(ema50_val, recent_high) + atr * 0.5
+            
+            # Targets
+            take_profit_1 = current_price - atr * 1.5
+            take_profit_2 = current_price - atr * 3.0
+            
+            reasoning = f"BEARISH: Price ${current_price:.0f} < EMA20 ${ema20_val:.0f} < EMA50 ${ema50_val:.0f}"
+            confidence = 70 if current_rsi > 30 else 55  # Lower conf if oversold
+            
+        else:
+            # MIXED/CONSOLIDATION - Wait for breakout or buy dip
+            if current_rsi < 40:
+                direction = "BUY"
+                strategy = "OVERSOLD_BOUNCE"
+                optimal_entry = current_price
+                stop_loss = recent_low - atr * 0.5
+                take_profit_1 = ema20_val
+                take_profit_2 = ema50_val
+                confidence = 60
+                reasoning = f"OVERSOLD: RSI {current_rsi:.0f} < 40, looking for bounce"
+            elif current_rsi > 60:
+                direction = "SELL"
+                strategy = "OVERBOUGHT_FADE"
+                optimal_entry = current_price
+                stop_loss = recent_high + atr * 0.5
+                take_profit_1 = ema20_val
+                take_profit_2 = ema50_val
+                confidence = 55
+                reasoning = f"OVERBOUGHT: RSI {current_rsi:.0f} > 60, looking for pullback"
+            else:
+                direction = "WAIT"
+                strategy = "NO_CLEAR_SETUP"
+                optimal_entry = current_price
+                stop_loss = current_price - atr
+                take_profit_1 = current_price + atr
+                take_profit_2 = current_price + atr * 2
+                confidence = 40
+                reasoning = f"CONSOLIDATION: EMAs mixed, RSI neutral at {current_rsi:.0f}"
+        
+        # Distance from optimal entry
+        distance_from_entry = abs(current_price - optimal_entry)
+        in_entry_zone = distance_from_entry < atr * 0.5
+        
+        signal = {
+            "symbol": "XAUUSD",
+            "signal_type": "FRESH_INTRADAY",
+            "generated_at": datetime.utcnow().isoformat(),
+            "action": direction,
+            "direction": direction,
+            "strategy": strategy,
+            
+            "current_price": round(current_price, 2),
+            "entry": round(optimal_entry, 2),
+            "entry_zone_low": round(entry_zone_low if direction != "WAIT" else current_price - atr * 0.5, 2),
+            "entry_zone_high": round(entry_zone_high if direction != "WAIT" else current_price + atr * 0.5, 2),
+            "in_entry_zone": in_entry_zone,
+            "distance_to_entry": round(distance_from_entry, 2),
+            
+            "stop_loss": round(stop_loss, 2),
+            "take_profit_1": round(take_profit_1, 2),
+            "take_profit_2": round(take_profit_2, 2),
+            
+            "confidence": confidence,
+            "reasoning": reasoning,
+            
+            "technicals": {
+                "ema20": round(ema20_val, 2),
+                "ema50": round(ema50_val, 2),
+                "rsi": round(current_rsi, 1),
+                "atr": round(atr, 2),
+                "recent_high": round(recent_high, 2),
+                "recent_low": round(recent_low, 2),
+            },
+            
+            "valid": direction != "WAIT" and confidence >= 50,
+            "invalidation": {
+                "level": round(stop_loss, 2),
+                "reason": None if direction != "WAIT" else "NO_CLEAR_SETUP",
+                "confidence_check": "PASS" if confidence >= 50 else "FAIL"
+            },
+            
+            "last_updated": datetime.utcnow().isoformat(),
+            "signal_id": f"NEO_XAUUSD_FRESH_{datetime.utcnow().strftime('%Y%m%d_%H%M')}"
+        }
+        
+        logger.info(f"✅ FRESH SIGNAL: {direction} @ ${optimal_entry:.0f} (conf: {confidence}%)")
+        return signal
+        
+    except Exception as e:
+        logger.error(f"Error generating fresh signal: {e}")
+        return _fallback_signal("XAUUSD", current_price, str(e))
+
+
+def _fallback_signal(symbol: str, current_price: float, error: str) -> Dict:
+    """Return a safe fallback signal when generation fails"""
+    return {
+        "symbol": symbol,
+        "signal_type": "FALLBACK",
+        "generated_at": datetime.utcnow().isoformat(),
+        "action": "WAIT",
+        "direction": "WAIT",
+        "strategy": "ERROR_FALLBACK",
+        "current_price": round(current_price, 2),
+        "entry": round(current_price, 2),
+        "stop_loss": round(current_price - 50, 2),
+        "take_profit_1": round(current_price + 50, 2),
+        "take_profit_2": round(current_price + 100, 2),
+        "confidence": 0,
+        "reasoning": f"Fallback due to: {error}",
+        "valid": False,
+        "invalidation": {
+            "level": round(current_price - 50, 2),
+            "reason": f"FALLBACK: {error}",
+            "confidence_check": "FAIL"
+        },
+        "last_updated": datetime.utcnow().isoformat(),
+        "signal_id": f"NEO_{symbol}_FALLBACK_{datetime.utcnow().strftime('%Y%m%d_%H%M')}"
+    }
 
 
 def check_invalidation_xauusd(plan: Dict, current_price: float) -> Dict:
@@ -753,30 +955,57 @@ def check_invalidation_iren(plan: Dict, current_price: float) -> Dict:
 @app.get("/api/neo/xauusd/signal")
 async def get_xauusd_quick_signal():
     """
-    Quick signal endpoint for Ghost - with INVALIDATION support.
+    Quick signal endpoint for Ghost - with INVALIDATION support + FRESH SIGNAL GENERATION.
     
     Ghost should poll this every 20 minutes and check:
     - valid: true/false
     - invalidation.level: Price that breaks the trade
     - invalidation.reason: Why invalidated
     - last_updated: When signal was last checked
+    
+    🆕 NEW: When pre-market signal becomes stale, this endpoint generates a FRESH
+    intraday signal based on current market conditions instead of returning invalid data.
     """
     plan = await get_xauusd_daily_plan()
     current_price = get_realtime_price("XAUUSD") or plan["current_price"]
     
-    # Check invalidation rules
+    # Check invalidation rules against the pre-market plan
     invalidation = check_invalidation_xauusd(plan, current_price)
     
+    # 🆕 NEW: If signal is invalidated due to MISSED_ENTRY, generate FRESH signal!
+    if not invalidation["valid"]:
+        reason = invalidation.get("reason", "")
+        
+        # These invalidation types mean we should generate a fresh signal
+        should_regenerate = any([
+            "MISSED_ENTRY" in reason,  # Price moved significantly
+            "SL_BREACH" in reason,     # Original setup failed
+        ])
+        
+        if should_regenerate:
+            logger.info(f"⚠️ Pre-market signal stale ({reason}). Generating FRESH signal...")
+            fresh_signal = generate_fresh_xauusd_signal(current_price)
+            fresh_signal["original_plan_invalidated"] = True
+            fresh_signal["invalidation_reason"] = reason
+            return fresh_signal
+    
+    # Original pre-market signal still valid - return it
     return {
         "symbol": "XAUUSD",
+        "signal_type": "PREMARKET_PLAN",
         "action": plan["direction"],
         "strategy": plan["strategy"],
         "entry": plan["entry"]["level"],
+        "entry_zone_low": plan["entry"]["level"] - 15,
+        "entry_zone_high": plan["entry"]["level"] + 15,
         "stop_loss": plan["risk"]["stop_loss"],
         "take_profit": plan["risk"]["take_profit_1"],
+        "take_profit_1": plan["risk"]["take_profit_1"],
         "take_profit_2": plan["risk"]["take_profit_2"],
         "confidence": plan["confidence"],
         "current_price": current_price,
+        "in_entry_zone": abs(current_price - plan["entry"]["level"]) < 20,
+        "distance_to_entry": abs(current_price - plan["entry"]["level"]),
         
         # INVALIDATION FIELDS (for Ghost's 20-min checks)
         "valid": invalidation["valid"],

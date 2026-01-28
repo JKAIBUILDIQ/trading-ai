@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Dict, Optional
 
-from .crellastein_meta import CrellaSteinMetaBot, get_xauusd_signal, get_iren_signal
+from .crellastein_meta import CrellaSteinMetaBot, get_xauusd_signal, get_iren_signal, get_clsk_signal, get_cifr_signal
 from .aggressive_dca import AggressiveDCAManager, get_xauusd_dca_status, get_iren_dca_status
 from .entry_calculator import EntryCalculator
 from .volume_analyzer import VolumeAnalyzer
@@ -39,22 +39,29 @@ app.add_middleware(
 # Initialize bots
 xauusd_bot = CrellaSteinMetaBot("XAUUSD")
 iren_bot = CrellaSteinMetaBot("IREN")
+clsk_bot = CrellaSteinMetaBot("CLSK")
+cifr_bot = CrellaSteinMetaBot("CIFR")
 
 xauusd_dca = AggressiveDCAManager("XAUUSD")
 iren_dca = AggressiveDCAManager("IREN")
+clsk_dca = AggressiveDCAManager("CLSK")
+cifr_dca = AggressiveDCAManager("CIFR")
 
 
 @app.get("/")
 async def root():
     return {
         "service": "Crellastein Meta Bot",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "status": "ACTIVE",
-        "description": "Weighted Indicator Ensemble for XAUUSD & IREN",
+        "description": "Weighted Indicator Ensemble for XAUUSD, IREN, CLSK & CIFR",
+        "supported_symbols": ["XAUUSD", "IREN", "CLSK", "CIFR"],
         "endpoints": {
             "signals": [
                 "/api/meta/xauusd/signal",
                 "/api/meta/iren/signal",
+                "/api/meta/clsk/signal",
+                "/api/meta/cifr/signal",
                 "/api/meta/{symbol}/composite"
             ],
             "dca": [
@@ -77,7 +84,7 @@ async def health():
     return {
         "status": "healthy",
         "timestamp": datetime.now(timezone.utc).isoformat(),
-        "bots": ["XAUUSD", "IREN"]
+        "bots": ["XAUUSD", "IREN", "CLSK", "CIFR"]
     }
 
 
@@ -105,6 +112,28 @@ async def iren_signal():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.get("/api/meta/clsk/signal")
+async def clsk_signal():
+    """Get CLSK composite signal from Meta Bot"""
+    try:
+        signal = clsk_bot.get_signal_summary()
+        return signal
+    except Exception as e:
+        logger.error(f"Error getting CLSK signal: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/meta/cifr/signal")
+async def cifr_signal():
+    """Get CIFR composite signal from Meta Bot"""
+    try:
+        signal = cifr_bot.get_signal_summary()
+        return signal
+    except Exception as e:
+        logger.error(f"Error getting CIFR signal: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/api/meta/{symbol}/composite")
 async def get_composite_signal(symbol: str):
     """Get full composite signal with all indicator details"""
@@ -114,8 +143,12 @@ async def get_composite_signal(symbol: str):
             signal = xauusd_bot.calculate_composite_signal()
         elif symbol == "IREN":
             signal = iren_bot.calculate_composite_signal()
+        elif symbol == "CLSK":
+            signal = clsk_bot.calculate_composite_signal()
+        elif symbol == "CIFR":
+            signal = cifr_bot.calculate_composite_signal()
         else:
-            raise HTTPException(status_code=400, detail=f"Unknown symbol: {symbol}")
+            raise HTTPException(status_code=400, detail=f"Unknown symbol: {symbol}. Supported: XAUUSD, IREN, CLSK, CIFR")
         
         from dataclasses import asdict
         return asdict(signal)

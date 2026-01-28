@@ -96,6 +96,44 @@ class AggressiveDCAManager:
             ],
             "trail_after_tp": 2,
             "trailing_pips": 300,  # $3 trailing
+        },
+        "CLSK": {
+            "ticker": "CLSK",
+            "pip_value": 0.01,  # $0.01 per pip
+            "base_lots": 100,  # 100 shares base
+            "dca_trigger_pips": 65,  # ~5% at $13 = $0.65
+            "lot_multiplier": 1.5,
+            "max_total_lots": 2000,  # 2000 shares max
+            "max_dca_levels": 5,
+            "no_stop_loss": True,
+            "emergency_sl_pips": 260,  # 20% emergency at $13 = $2.60
+            "take_profit_levels": [
+                {"level": 1, "pips": 100, "close_pct": 20},   # +$1
+                {"level": 2, "pips": 200, "close_pct": 25},   # +$2
+                {"level": 3, "pips": 500, "close_pct": 25},   # +$5
+                {"level": 4, "pips": 1000, "close_pct": 30},  # +$10
+            ],
+            "trail_after_tp": 2,
+            "trailing_pips": 50,  # $0.50 trailing
+        },
+        "CIFR": {
+            "ticker": "CIFR",
+            "pip_value": 0.01,  # $0.01 per pip
+            "base_lots": 100,  # 100 shares base
+            "dca_trigger_pips": 90,  # ~5% at $18 = $0.90
+            "lot_multiplier": 1.5,
+            "max_total_lots": 2000,  # 2000 shares max
+            "max_dca_levels": 5,
+            "no_stop_loss": True,
+            "emergency_sl_pips": 360,  # 20% emergency at $18 = $3.60
+            "take_profit_levels": [
+                {"level": 1, "pips": 100, "close_pct": 20},   # +$1
+                {"level": 2, "pips": 200, "close_pct": 25},   # +$2
+                {"level": 3, "pips": 500, "close_pct": 25},   # +$5
+                {"level": 4, "pips": 1000, "close_pct": 30},  # +$10
+            ],
+            "trail_after_tp": 2,
+            "trailing_pips": 60,  # $0.60 trailing
         }
     }
     
@@ -463,12 +501,24 @@ def get_iren_dca_status() -> Dict:
     return manager.get_position_status()
 
 
+def get_clsk_dca_status() -> Dict:
+    """Get CLSK DCA position status"""
+    manager = AggressiveDCAManager("CLSK")
+    return manager.get_position_status()
+
+
+def get_cifr_dca_status() -> Dict:
+    """Get CIFR DCA position status"""
+    manager = AggressiveDCAManager("CIFR")
+    return manager.get_position_status()
+
+
 if __name__ == "__main__":
     print("=" * 70)
     print("🔥 AGGRESSIVE DCA MANAGER - Testing")
     print("=" * 70)
     
-    for symbol in ["XAUUSD", "IREN"]:
+    for symbol in ["XAUUSD", "IREN", "CLSK", "CIFR"]:
         print(f"\n📊 {symbol} DCA Status:")
         manager = AggressiveDCAManager(symbol)
         status = manager.get_position_status()

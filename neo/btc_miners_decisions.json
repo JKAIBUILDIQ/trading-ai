@@ -1,0 +1,56 @@
+[
+  {
+    "symbol": "IREN",
+    "action": "HOLD",
+    "reason": "No action needed",
+    "price": 60.0,
+    "meta_signal": "BUY",
+    "meta_confidence": 69.2,
+    "timestamp": "2026-01-27T23:36:58.465120"
+  },
+  {
+    "symbol": "CLSK",
+    "action": "HOLD",
+    "reason": "No action needed",
+    "price": 13.244999885559082,
+    "meta_signal": "STRONG_BUY",
+    "meta_confidence": 65.6,
+    "timestamp": "2026-01-27T23:37:00.446210"
+  },
+  {
+    "symbol": "CIFR",
+    "action": "HOLD",
+    "reason": "No action needed",
+    "price": 18.739999771118164,
+    "meta_signal": "HOLD",
+    "meta_confidence": 67.9,
+    "timestamp": "2026-01-27T23:37:02.530819"
+  },
+  {
+    "symbol": "IREN",
+    "action": "HOLD",
+    "reason": "No action needed",
+    "price": 60.0,
+    "meta_signal": "BUY",
+    "meta_confidence": 69.2,
+    "timestamp": "2026-01-27T23:40:10.863025"
+  },
+  {
+    "symbol": "CLSK",
+    "action": "HOLD",
+    "reason": "No action needed",
+    "price": 13.244999885559082,
+    "meta_signal": "STRONG_BUY",
+    "meta_confidence": 65.6,
+    "timestamp": "2026-01-27T23:40:12.855886"
+  },
+  {
+    "symbol": "CIFR",
+    "action": "HOLD",
+    "reason": "No action needed",
+    "price": 18.739999771118164,
+    "meta_signal": "HOLD",
+    "meta_confidence": 67.9,
+    "timestamp": "2026-01-27T23:40:14.788370"
+  }
+]

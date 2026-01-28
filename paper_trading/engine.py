@@ -117,8 +117,24 @@ class PaperTradingEngine:
     
     def _get_stock_price(self, symbol: str) -> Dict[str, Any]:
         """Get REAL stock/ETF price from Yahoo Finance"""
+        # Symbol mapping for forex/commodities
+        SYMBOL_MAP = {
+            'XAUUSD': 'GC=F',      # Gold futures
+            'GOLD': 'GC=F',
+            'XAGUSD': 'SI=F',      # Silver futures
+            'SILVER': 'SI=F',
+            'EURUSD': 'EURUSD=X',  # Euro/USD
+            'GBPUSD': 'GBPUSD=X',  # British Pound/USD
+            'USDJPY': 'JPY=X',     # USD/Japanese Yen
+            'OIL': 'CL=F',         # Crude Oil
+            'WTICOUSD': 'CL=F',
+        }
+        
+        # Map symbol if needed
+        yahoo_symbol = SYMBOL_MAP.get(symbol.upper(), symbol)
+        
         try:
-            ticker = yf.Ticker(symbol)
+            ticker = yf.Ticker(yahoo_symbol)
             
             # Get current data
             hist = ticker.history(period='2d')

@@ -1,0 +1,39 @@
+{
+  "date": "2026-01-27",
+  "symbol": "IREN",
+  "price_action": {
+    "open": 53.41,
+    "high": 60.0,
+    "low": 52.9,
+    "close": 59.99,
+    "change_pct": 12.32,
+    "volume": 54028136,
+    "avg_volume_20d": 39828161,
+    "volume_ratio": 1.36
+  },
+  "patterns": {
+    "big_up_days_90d": 11,
+    "after_big_up_avg": -0.05,
+    "after_big_up_positive_rate": 40.0,
+    "after_mod_up_avg": 2.84,
+    "volume_increasing": false
+  },
+  "btc": {
+    "btc_change_pct": 1.24,
+    "correlation_90d": NaN
+  },
+  "short_squeeze": {
+    "short_percent_float": 15.8,
+    "short_ratio": 1.5,
+    "float_shares": 257979108,
+    "squeeze_potential": "HIGH"
+  },
+  "fundamentals": {
+    "institutional_pct": 52.7,
+    "market_cap": 19697219584,
+    "52w_high": 76.87,
+    "52w_low": 5.125,
+    "pct_from_high": -22.0,
+    "pct_from_low": 1070.5
+  }
+}

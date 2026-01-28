@@ -98,6 +98,28 @@ class CrellaSteinMetaBot:
             "buy_threshold": 0.58,
             "sell_threshold": 0.42,
             "strong_threshold": 0.72,
+        },
+        "CLSK": {
+            "ticker": "CLSK",  # CleanSpark - BTC miner
+            "long_bias": True,  # Paul's conviction - BTC miners long-term play
+            "max_drawdown_accept": 35.0,  # Higher volatility tolerance for miners
+            "dca_trigger_percent": 5.0,  # 5% pullback = DCA
+            "dca_max_levels": 5,
+            "dca_lot_multiplier": 1.5,
+            "buy_threshold": 0.58,
+            "sell_threshold": 0.42,
+            "strong_threshold": 0.72,
+        },
+        "CIFR": {
+            "ticker": "CIFR",  # Cipher Mining - BTC miner
+            "long_bias": True,  # Paul's conviction - BTC miners long-term play
+            "max_drawdown_accept": 35.0,  # Higher volatility tolerance for miners
+            "dca_trigger_percent": 5.0,  # 5% pullback = DCA
+            "dca_max_levels": 5,
+            "dca_lot_multiplier": 1.5,
+            "buy_threshold": 0.58,
+            "sell_threshold": 0.42,
+            "strong_threshold": 0.72,
         }
     }
     
@@ -638,12 +660,24 @@ def get_iren_signal() -> Dict:
     return bot.get_signal_summary()
 
 
+def get_clsk_signal() -> Dict:
+    """Get CLSK composite signal"""
+    bot = CrellaSteinMetaBot("CLSK")
+    return bot.get_signal_summary()
+
+
+def get_cifr_signal() -> Dict:
+    """Get CIFR composite signal"""
+    bot = CrellaSteinMetaBot("CIFR")
+    return bot.get_signal_summary()
+
+
 if __name__ == "__main__":
     print("=" * 70)
     print("🧠 CRELLASTEIN META BOT - Testing")
     print("=" * 70)
     
-    for symbol in ["XAUUSD", "IREN"]:
+    for symbol in ["XAUUSD", "IREN", "CLSK", "CIFR"]:
         print(f"\n📊 {symbol} Signal:")
         bot = CrellaSteinMetaBot(symbol)
         signal = bot.get_signal_summary()

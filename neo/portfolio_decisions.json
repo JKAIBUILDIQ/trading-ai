@@ -1,0 +1,90 @@
+[
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 8.225,
+    "reason": "Scalp TP hit: +33.7%",
+    "timestamp": "2026-01-27T17:15:03.624636+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 8.1,
+    "reason": "Scalp TP hit: +31.7%",
+    "timestamp": "2026-01-27T19:30:03.137877+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 8.125,
+    "reason": "Scalp TP hit: +32.1%",
+    "timestamp": "2026-01-27T19:45:03.360496+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 8.325,
+    "reason": "Scalp TP hit: +35.4%",
+    "timestamp": "2026-01-27T20:00:03.646533+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 8.35,
+    "reason": "Scalp TP hit: +35.8%",
+    "timestamp": "2026-01-27T20:15:03.247978+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 9.0,
+    "reason": "Scalp TP hit: +46.3%",
+    "timestamp": "2026-01-27T20:30:03.299274+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 9.524999999999999,
+    "reason": "Scalp TP hit: +54.9%",
+    "timestamp": "2026-01-27T20:45:03.478537+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 9.65,
+    "reason": "Scalp TP hit: +56.9%",
+    "timestamp": "2026-01-27T21:00:03.014543+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 9.325,
+    "reason": "Scalp TP hit: +51.6%",
+    "timestamp": "2026-01-27T21:15:03.707483+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 9.8,
+    "reason": "Scalp TP hit: +59.3%",
+    "timestamp": "2026-01-27T21:30:03.539141+00:00"
+  },
+  {
+    "action": "CLOSE",
+    "symbol": "IREN",
+    "position_id": 2,
+    "price": 9.725000000000001,
+    "reason": "Scalp TP hit: +58.1%",
+    "timestamp": "2026-01-27T21:45:02.703146+00:00"
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "IREN_ATM": {
+    "symbol": "IREN",
+    "type": "ATM",
+    "strike": 55.0,
+    "expiration": "2026-02-13",
+    "premium": 7.35,
+    "breakeven": 62.35
+  },
+  "IREN_OTM": {
+    "symbol": "IREN",
+    "type": "OTM",
+    "strike": 60.0,
+    "expiration": "2026-02-13",
+    "premium": 5.0,
+    "breakeven": 65.0
+  },
+  "CIFR_ATM": {
+    "symbol": "CIFR",
+    "type": "ATM",
+    "strike": 17.0,
+    "expiration": "2026-02-13",
+    "premium": 1.97,
+    "breakeven": 18.97
+  },
+  "CIFR_OTM": {
+    "symbol": "CIFR",
+    "type": "OTM",
+    "strike": 18.5,
+    "expiration": "2026-02-13",
+    "premium": 1.36,
+    "breakeven": 19.86
+  },
+  "CLSK_ATM": {
+    "symbol": "CLSK",
+    "type": "ATM",
+    "strike": 12.0,
+    "expiration": "2026-02-13",
+    "premium": 1.47,
+    "breakeven": 13.47
+  },
+  "CLSK_OTM": {
+    "symbol": "CLSK",
+    "type": "OTM",
+    "strike": 13.5,
+    "expiration": "2026-02-13",
+    "premium": 0.84,
+    "breakeven": 14.34
+  }
+}
