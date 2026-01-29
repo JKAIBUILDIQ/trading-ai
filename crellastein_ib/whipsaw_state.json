@@ -8,20 +8,11 @@
   "hedge_active": true,
   "pattern_override": "CORRECTION",
   "bear_flag_mode": false,
-  "bear_flag_invalidation_price": 5610,
+  "bear_flag_invalidation_price": 5611,
   "long_contracts": 0,
   "long_avg_entry": 0,
-  "short_contracts": 4,
-  "short_avg_entry": 5588.625,
-  "target_short_position": {
-    "contracts": 9,
-    "stop_loss": 5630,
-    "take_profit": 5400,
-    "invalidation": 5610,
-    "status": "PENDING",
-    "created": "2026-01-29T09:00:00",
-    "note": "Full 9 SHORT position - add 5 more contracts"
-  },
+  "short_contracts": 10,
+  "short_avg_entry": 5604.21,
   "buy_levels": [
     {
       "price": 5551.0,
@@ -149,9 +140,10 @@
       "offset": 60,
       "size": 4,
       "desc": "SHORT L3 FULL",
-      "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5611.0
+      "status": "FILLED",
+      "fill_price": 5615.4,
+      "tp_price": 5595.4,
+      "fill_time": "2026-01-29T06:31:49.606553"
     },
     {
       "price": 5651.0,
@@ -201,7 +193,17 @@
   ],
   "long_tp_profit": 0,
   "short_tp_profit": 0,
-  "total_trades": 2,
+  "total_trades": 3,
   "winning_trades": 0,
-  "last_update": "2026-01-29T06:11:21.093543"
+  "last_update": "2026-01-29T06:31:49.606568",
+  "target_short_position": {
+    "contracts": 10,
+    "current": 8,
+    "add": 2,
+    "stop_loss": 5630,
+    "take_profit": 5400,
+    "invalidation": 5610,
+    "status": "FILLED",
+    "note": "10 MGC SHORT = 1 MT5 lot - POSITION COMPLETE"
+  }
 }

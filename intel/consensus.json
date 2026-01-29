@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-29T06:19:13.753820",
+  "timestamp": "2026-01-29T06:49:13.144344",
   "source": "MQL5 Top Signals",
   "consensus_signals": [],
   "top_traders_positions": [],
@@ -10,20 +10,6 @@
       "drawdown": 32.6,
       "subscribers": 0,
       "url": "https://www.mql5.com/en/signals/2204998"
-    },
-    {
-      "name": "X657 Stay true to the mission",
-      "growth_pct": 797.0,
-      "drawdown": 36.0,
-      "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2021129"
-    },
-    {
-      "name": "Daily Gold Sniper",
-      "growth_pct": 790.88,
-      "drawdown": 34.3,
-      "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2284676"
     },
     {
       "name": "Scalp IC Markets MT5",
@@ -40,6 +26,13 @@
       "url": "https://www.mql5.com/en/signals/2333819"
     },
     {
+      "name": "MSC Gold Invest Pro",
+      "growth_pct": 691.97,
+      "drawdown": 26.2,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/1988269"
+    },
+    {
       "name": "Goldora",
       "growth_pct": 654.7,
       "drawdown": 40.4,
@@ -52,6 +45,13 @@
       "drawdown": 22.2,
       "subscribers": 0,
       "url": "https://www.mql5.com/en/signals/2303631"
+    },
+    {
+      "name": "JAME EA GOLD",
+      "growth_pct": 409.64,
+      "drawdown": 49.6,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2298866"
     },
     {
       "name": "Falqonea pro _Robofxea Pro",
@@ -76,7 +76,7 @@
     }
   ],
   "summary": {
-    "total_signals_tracked": 19,
+    "total_signals_tracked": 20,
     "total_positions_found": 0,
     "consensus_count": 0,
     "confidence_boost": 0,

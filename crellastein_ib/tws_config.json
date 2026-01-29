@@ -1,0 +1,25 @@
+{
+  "connection": {
+    "host": "100.119.161.65",
+    "port": 7497,
+    "client_id_base": 100,
+    "timeout": 15,
+    "note": "desktop-gringot via Tailscale"
+  },
+  "fallback_hosts": [
+    "100.119.161.65",
+    "127.0.0.1"
+  ],
+  "contract": {
+    "symbol": "MGC",
+    "exchange": "COMEX",
+    "con_id": 706903676,
+    "local_symbol": "MGCJ6",
+    "last_trade_date": "20260428",
+    "multiplier": "10"
+  },
+  "health_check": {
+    "interval_seconds": 60,
+    "max_retries": 3
+  }
+}
