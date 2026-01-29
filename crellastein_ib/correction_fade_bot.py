@@ -161,15 +161,24 @@ class CorrectionFadeBot:
                 {'name': 'TP3', 'drop_pct': 3.0, 'close_pct': 100},
             ],
             
-            # Accumulation settings - when to BUY (half positions)
+            # Accumulation settings - $20 spacing, tighter DCA
+            # HALF = 2 contracts, FULL = 4 contracts, DOUBLE = 8 contracts
             'accumulation_levels': [
-                {'price': 5500, 'desc': 'Psychological', 'size': 2},
-                {'price': 5400, 'desc': 'Support', 'size': 2},
-                {'price': 5231, 'desc': 'Fib 23.6%', 'size': 3},
-                {'price': 5000, 'desc': 'Major Psych', 'size': 4},
-                {'price': 4850, 'desc': 'Wyckoff', 'size': 4},
-                {'price': 4700, 'desc': 'Deep Support', 'size': 5},
-                {'price': 4650, 'desc': 'THE GAP', 'size': 6},
+                # Tight $20 spacing from current level
+                {'price': 5551, 'desc': '$20 drop - HALF', 'size': 2},
+                {'price': 5531, 'desc': '$40 drop - HALF', 'size': 2},
+                {'price': 5511, 'desc': '$60 drop - FULL', 'size': 4},
+                {'price': 5491, 'desc': '$80 drop - FULL', 'size': 4},
+                {'price': 5471, 'desc': '$100 drop - FULL', 'size': 4},
+                {'price': 5451, 'desc': '$120 drop - FULL', 'size': 4},
+                {'price': 5431, 'desc': '$140 drop - FULL', 'size': 4},
+                {'price': 5411, 'desc': '$160 drop - FULL', 'size': 4},
+                # Major levels
+                {'price': 5231, 'desc': 'Fib 23.6% - DOUBLE', 'size': 8},
+                {'price': 5000, 'desc': 'Psychological - DOUBLE', 'size': 8},
+                {'price': 4991, 'desc': '$5000 zone - FULL', 'size': 4},
+                {'price': 4971, 'desc': 'Below $5000 - DOUBLE', 'size': 8},
+                {'price': 4650, 'desc': 'THE GAP - TRIPLE', 'size': 12},
             ],
             
             # Respawn settings
@@ -178,7 +187,7 @@ class CorrectionFadeBot:
             
             # Safety
             'max_short_contracts': 15,
-            'max_long_contracts': 20,
+            'max_long_contracts': 50,  # More levels = need more capacity
             'stop_loss_pct': 3.0,  # Stop loss on shorts at +3% above entry
         }
         
