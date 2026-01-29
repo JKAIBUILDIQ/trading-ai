@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-29T05:34:15.519022",
+  "timestamp": "2026-01-29T05:49:07.605889",
   "source": "MQL5 Top Signals",
   "consensus_signals": [],
   "top_traders_positions": [],
@@ -12,11 +12,11 @@
       "url": "https://www.mql5.com/en/signals/2204998"
     },
     {
-      "name": "X657 Stay true to the mission",
-      "growth_pct": 797.0,
-      "drawdown": 36.0,
+      "name": "Daily Gold Sniper",
+      "growth_pct": 790.88,
+      "drawdown": 34.3,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2021129"
+      "url": "https://www.mql5.com/en/signals/2284676"
     },
     {
       "name": "Scalp IC Markets MT5",
@@ -47,18 +47,18 @@
       "url": "https://www.mql5.com/en/signals/2317345"
     },
     {
-      "name": "NAS100 XAUUSD XAGUSD",
-      "growth_pct": 583.28,
-      "drawdown": 47.2,
-      "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2352377"
-    },
-    {
       "name": "Steady",
       "growth_pct": 482.74,
       "drawdown": 22.2,
       "subscribers": 0,
       "url": "https://www.mql5.com/en/signals/2303631"
+    },
+    {
+      "name": "JAME EA GOLD",
+      "growth_pct": 409.64,
+      "drawdown": 49.6,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2298866"
     },
     {
       "name": "Falqonea pro _Robofxea Pro",
@@ -68,15 +68,15 @@
       "url": "https://www.mql5.com/en/signals/2329641"
     },
     {
-      "name": "GoldWave signal",
-      "growth_pct": 387.9,
-      "drawdown": 15.0,
+      "name": "Gold Trend X",
+      "growth_pct": 368.27,
+      "drawdown": 34.3,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2339082"
+      "url": "https://www.mql5.com/en/signals/2248087"
     }
   ],
   "summary": {
-    "total_signals_tracked": 18,
+    "total_signals_tracked": 20,
     "total_positions_found": 0,
     "consensus_count": 0,
     "confidence_boost": 0,
