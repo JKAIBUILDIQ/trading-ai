@@ -243,6 +243,71 @@ class ConvictionCalculator:
             
             score += pa_score
         
+        # 8. VOLUME PATTERNS (+0 to +15) - CRITICAL for bull flag traps
+        if "volume" in factors:
+            vol = factors["volume"]
+            vol_score = 0
+            
+            # Red candles with increasing volume = distribution
+            if direction == "BEARISH" and vol.get("red_candles_volume_increasing"):
+                vol_score += 8
+                factor_details.append({
+                    "factor": "Red Candle Volume Increasing",
+                    "contribution": 8,
+                    "detail": "Distribution pattern - smart money selling"
+                })
+            
+            # Two consecutive red candles with rising volume = breakdown starting
+            if direction == "BEARISH" and vol.get("two_red_rising_volume"):
+                vol_score += 7
+                factor_details.append({
+                    "factor": "Two Red + Rising Volume",
+                    "contribution": 7,
+                    "detail": "Breakdown starting - bull flag trap detected"
+                })
+            
+            # Consolidation at ATH with volume NOT decreasing = NOT a real bull flag
+            if direction == "BEARISH" and vol.get("consolidation_volume_not_decreasing"):
+                vol_score += 5
+                factor_details.append({
+                    "factor": "Consolidation Volume Anomaly",
+                    "contribution": 5,
+                    "detail": "Real bull flags have decreasing volume - this doesn't"
+                })
+            
+            score += vol_score
+        
+        # 9. MACRO CALENDAR (+0 to +15) - FOMC, earnings, etc
+        if "calendar" in factors:
+            cal = factors["calendar"]
+            cal_score = 0
+            
+            if cal.get("fomc_today") or cal.get("fomc_yesterday"):
+                cal_score += 10
+                factor_details.append({
+                    "factor": "FOMC Day/Aftermath",
+                    "contribution": 10,
+                    "detail": "Fed decision creates volatility"
+                })
+            
+            if cal.get("mega_cap_earnings"):
+                cal_score += 5
+                factor_details.append({
+                    "factor": "Mega-Cap Earnings",
+                    "contribution": 5,
+                    "detail": "MSFT/AAPL/NVDA/GOOGL can move markets"
+                })
+            
+            if cal.get("risk_events_stacked"):
+                cal_score += 8
+                factor_details.append({
+                    "factor": "Multiple Risk Events",
+                    "contribution": 8,
+                    "detail": "Stacked catalysts = extreme volatility"
+                })
+            
+            score += cal_score
+        
         # Cap at 100
         score = min(100, int(score))
         
@@ -428,11 +493,99 @@ def save_signal_for_ea(signal: ConvictionSignal, path: str = "/home/jbot/trading
     return ea_data
 
 
+def detect_bullflag_trap(candles: list, volumes: list) -> dict:
+    """
+    Detect if what looks like a bull flag is actually a distribution top.
+    
+    CRITICAL INSIGHT: Volume signature on red candles during consolidation 
+    at ATH = distribution, not continuation.
+    
+    Real Bull Flag: Volume DECREASES during consolidation, surges UP on green breakout
+    Distribution Top: Volume INCREASES on red candles, surges DOWN on breakdown
+    
+    Args:
+        candles: List of dicts with 'open', 'close', 'high', 'low'
+        volumes: List of volume values corresponding to candles
+    
+    Returns:
+        dict with detection results
+    """
+    if len(candles) < 5 or len(volumes) < 5:
+        return {"is_trap": False, "confidence": 0, "signals": []}
+    
+    signals = []
+    trap_score = 0
+    
+    # Check last 5 candles for the pattern
+    recent_candles = candles[-5:]
+    recent_volumes = volumes[-5:]
+    
+    # Count red vs green candles
+    red_candles = [(i, c) for i, c in enumerate(recent_candles) if c['close'] < c['open']]
+    green_candles = [(i, c) for i, c in enumerate(recent_candles) if c['close'] >= c['open']]
+    
+    # Check: Two consecutive red candles at end?
+    if len(recent_candles) >= 2:
+        last_two_red = (
+            recent_candles[-1]['close'] < recent_candles[-1]['open'] and
+            recent_candles[-2]['close'] < recent_candles[-2]['open']
+        )
+        if last_two_red:
+            signals.append("Two consecutive red candles")
+            trap_score += 25
+    
+    # Check: Volume increasing on red candles?
+    if len(red_candles) >= 2:
+        red_indices = [i for i, _ in red_candles]
+        red_volumes = [recent_volumes[i] for i in red_indices]
+        if len(red_volumes) >= 2 and red_volumes[-1] > red_volumes[-2]:
+            signals.append("Volume INCREASING on red candles")
+            trap_score += 30
+    
+    # Check: Red candle volume > average green candle volume?
+    if red_candles and green_candles:
+        avg_red_vol = np.mean([recent_volumes[i] for i, _ in red_candles])
+        avg_green_vol = np.mean([recent_volumes[i] for i, _ in green_candles])
+        if avg_red_vol > avg_green_vol * 1.1:  # 10% higher
+            signals.append("Red candles have higher volume than green")
+            trap_score += 20
+    
+    # Check: Lower highs in consolidation?
+    if len(recent_candles) >= 3:
+        highs = [c['high'] for c in recent_candles]
+        if highs[-1] < highs[-2] < highs[-3]:
+            signals.append("Lower highs forming (not flat consolidation)")
+            trap_score += 15
+    
+    # Check: Two red with rising volume specifically
+    if len(recent_candles) >= 2 and len(recent_volumes) >= 2:
+        two_red_rising = (
+            recent_candles[-1]['close'] < recent_candles[-1]['open'] and
+            recent_candles[-2]['close'] < recent_candles[-2]['open'] and
+            recent_volumes[-1] > recent_volumes[-2]
+        )
+        if two_red_rising:
+            signals.append("TWO RED + RISING VOLUME = Breakdown starting")
+            trap_score += 25
+    
+    is_trap = trap_score >= 50
+    
+    return {
+        "is_trap": is_trap,
+        "confidence": min(trap_score, 100),
+        "signals": signals,
+        "recommendation": "CODE ORANGE - Do not add longs, tighten stops" if is_trap else "Monitor closely"
+    }
+
+
 # Example: 2026-01-29 case study
 def example_2026_01_29():
     """
     What NEO should have output on 2026-01-29 morning.
     This would have triggered defensive mode and prevented heavy losses.
+    
+    KEY INSIGHT from user: "That looked like a bull flag the drop came from.
+    Maybe the 2 candles before were red and then the volume picking up was the signal."
     """
     
     factors = {
@@ -464,6 +617,19 @@ def example_2026_01_29():
         "price_action": {
             "at_ath": True,
             "wicks_showing_rejection": True
+        },
+        # NEW: Volume patterns - the KEY TELL
+        "volume": {
+            "red_candles_volume_increasing": True,  # Distribution signal
+            "two_red_rising_volume": True,  # Breakdown starting
+            "consolidation_volume_not_decreasing": True  # Not a real bull flag
+        },
+        # NEW: Calendar events - FOMC + MSFT stacked
+        "calendar": {
+            "fomc_today": False,
+            "fomc_yesterday": True,  # Jan 28 FOMC
+            "mega_cap_earnings": True,  # MSFT after hours
+            "risk_events_stacked": True  # FOMC + MSFT same day
         }
     }
     
@@ -479,12 +645,44 @@ def example_2026_01_29():
     
     print(format_signal_for_telegram(signal))
     print("\n" + "="*50)
+    print("KEY INSIGHT: Bull Flag Trap Detection")
+    print("="*50)
+    print("What it LOOKED like: Classic bull flag consolidation")
+    print("What it ACTUALLY was: Distribution top")
+    print("")
+    print("THE TELL: Two red candles with INCREASING volume")
+    print("- Real bull flag: Volume decreases during consolidation")
+    print("- Distribution: Volume increases on red candles")
+    print("")
     print("This signal would have:")
-    print("- Conviction: 87% (HIGH)")
+    print("- Conviction: EXTREME (volume + ATH + FOMC + MSFT)")
     print("- Paused all LONG entries")
-    print("- Reduced lot size to 50%")
-    print("- Tightened SL by 30 pips")
+    print("- Reduced lot size to 25%")
+    print("- Tightened SL by 50 pips")
     print("- Prevented the 461-point drawdown")
+    
+    # Demonstrate bull flag trap detection
+    print("\n" + "="*50)
+    print("BULL FLAG TRAP DETECTOR TEST:")
+    print("="*50)
+    
+    # Simulate the Jan 28-29 candles
+    test_candles = [
+        {"open": 5560, "high": 5575, "low": 5555, "close": 5570},  # Green
+        {"open": 5570, "high": 5585, "low": 5565, "close": 5580},  # Green  
+        {"open": 5580, "high": 5590, "low": 5570, "close": 5575},  # RED - start
+        {"open": 5575, "high": 5580, "low": 5560, "close": 5565},  # RED - increasing vol
+        {"open": 5565, "high": 5570, "low": 5500, "close": 5510},  # RED - breakdown
+    ]
+    test_volumes = [10000, 12000, 15000, 18000, 25000]  # Volume INCREASING on red
+    
+    trap_result = detect_bullflag_trap(test_candles, test_volumes)
+    print(f"Is Trap: {trap_result['is_trap']}")
+    print(f"Confidence: {trap_result['confidence']}%")
+    print(f"Signals Detected:")
+    for sig in trap_result['signals']:
+        print(f"  - {sig}")
+    print(f"Recommendation: {trap_result['recommendation']}")
     
     return signal
 

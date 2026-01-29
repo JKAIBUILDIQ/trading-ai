@@ -1,6 +1,46 @@
 {
   "description": "NEO Pattern Library - Historical sweep/correction patterns for training",
   "patterns": {
+    "BULLFLAG_TRAP_DISTRIBUTION": {
+      "description": "What LOOKS like bull flag consolidation is actually distribution top about to dump",
+      "critical_insight": "Volume signature on red candles during consolidation at ATH = distribution, not continuation",
+      "signals": [
+        "Strong uptrend (flagpole) followed by sideways consolidation (looks like flag)",
+        "BUT: Volume INCREASES on red candles during consolidation",
+        "Two consecutive red candles with rising volume = breakdown starting",
+        "Location at ATH or major resistance",
+        "Lower highs within the 'flag' (not truly sideways)"
+      ],
+      "volume_signature": {
+        "real_bull_flag": "Volume DECREASES during consolidation, surges UP on green breakout",
+        "distribution_top": "Volume INCREASES on red candles, surges DOWN on breakdown"
+      },
+      "detection_rules": [
+        "Check if red candles show volume increase vs prior green candles",
+        "Check if consolidation occurs at ATH or major resistance",
+        "Check for two consecutive red candles with rising volume",
+        "Check for lower highs within consolidation (not flat)"
+      ],
+      "action": "CODE ORANGE - Do not add longs, tighten stops immediately",
+      "examples": [
+        {
+          "date": "2026-01-29",
+          "symbol": "XAUUSD",
+          "flagpole": "2026-01-26 to 2026-01-27 strong uptrend",
+          "consolidation": "2026-01-27 15:00 to 2026-01-28 20:00",
+          "red_flags_present": [
+            "volume_increasing_on_red: true",
+            "at_ath: true ($5587)",
+            "two_consecutive_red_before_drop: true",
+            "lower_highs_in_consolidation: true"
+          ],
+          "expected_by_pattern": "breakout UP (classic bull flag)",
+          "actual_result": "breakdown 461 points",
+          "trap_severity": "extreme",
+          "lesson": "The two red candles with increasing volume were the tell"
+        }
+      ]
+    },
     "ATH_EXHAUSTION_REVERSAL": {
       "description": "Price at all-time high with exhaustion signals",
       "signals": [

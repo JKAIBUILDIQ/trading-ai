@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-29T23:23:56.612453",
+  "timestamp": "2026-01-29T23:32:57.748940",
   "symbol": "XAUUSD",
   "direction": "BEARISH",
   "conviction": 100,
@@ -17,5 +17,5 @@
     "tighten_sl_pips": 50,
     "max_drawdown_override": 100
   },
-  "valid_until": "2026-01-30T13:23:56.612444"
+  "valid_until": "2026-01-30T13:32:57.748927"
 }
