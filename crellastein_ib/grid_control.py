@@ -55,21 +55,16 @@ def mode_1_bullish():
     """
     MODE 1: BULLISH GRID (Default)
     
-    When to use: SuperTrend bullish, no warning signs, normal conditions
-    
-    - ✅ DCA BUY ladder: ACTIVE
-    - ✅ Grid LONG levels: ACTIVE  
-    - ✅ Grid SHORT levels: ACTIVE (scalp rises)
-    - ❌ Hedge: OFF
+    All BUYs with DCA on drops. Normal bullish trading - buying dips.
+    SHORT grid can scalp but bias is LONG.
     """
-    # Only update mode flags - PRESERVE LEVELS!
     save_state_mode_only({
         'trading_mode': 1,
         'grid_mode': 'BULLISH',
-        'buy_enabled': True,
-        'short_enabled': True,  # Scalp shorts still active
+        'buy_enabled': True,      # ✅ DCA every $20 drop
+        'short_enabled': True,    # ✅ Scalp shorts active
         'bear_flag_mode': False,
-        'hedge_active': False,
+        'hedge_active': False,    # ❌ No hedge
         'pattern_override': None,
     })
     
@@ -103,21 +98,17 @@ def mode_2_correction():
     """
     MODE 2: CORRECTION GRID
     
-    When to use: Overextended but trend still bullish, want to hedge profits
-    
-    - ✅ DCA BUY ladder: ACTIVE
-    - ✅ Grid LONG levels: ACTIVE
-    - ✅ Grid SHORT levels: ACTIVE
-    - ✅ Hedge: ACTIVE
+    FULL HEDGE POSITION on top of grid.
+    Favors correction down to gap fills/necklines.
+    Grid still trades both ways. Bias is EXPECTING DOWNSIDE but still accumulating.
     """
-    # Only update mode flags - PRESERVE LEVELS!
     save_state_mode_only({
         'trading_mode': 2,
         'grid_mode': 'CORRECTION',
-        'buy_enabled': True,
-        'short_enabled': True,
+        'buy_enabled': True,      # ✅ Accumulate on way down
+        'short_enabled': True,    # ✅ Fade bounces
         'bear_flag_mode': False,
-        'hedge_active': True,
+        'hedge_active': True,     # ✅ FULL HEDGE expecting drop
         'pattern_override': 'CORRECTION',
     })
     
@@ -151,21 +142,16 @@ def mode_3_bearish():
     """
     MODE 3: BEARISH SIGHTING
     
-    When to use: Bear flag, divergence, breakdown imminent
-    
-    - ❌ DCA BUY ladder: STOPPED
-    - ❌ Grid LONG levels: STOPPED
-    - ✅ Grid SHORT levels: ACTIVE
-    - ✅ Hedge: ACTIVE
+    Bear signal spotted (bear flag, breakdown).
+    STOPS any new buys completely. Shorts only - ride the drop.
     """
-    # Only update mode flags - PRESERVE LEVELS!
     save_state_mode_only({
         'trading_mode': 3,
         'grid_mode': 'BEARISH',
-        'buy_enabled': False,  # BUYs BLOCKED
-        'short_enabled': True,
+        'buy_enabled': False,     # ❌ NO NEW BUYS
+        'short_enabled': True,    # ✅ Profit from drops
         'bear_flag_mode': True,
-        'hedge_active': True,
+        'hedge_active': True,     # ✅ Hedge active
         'bear_flag_invalidation_price': 5611,
         'pattern_override': 'BEAR_FLAG',
     })
