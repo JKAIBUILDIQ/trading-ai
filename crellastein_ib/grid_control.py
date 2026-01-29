@@ -208,6 +208,40 @@ def show_status():
 """)
 
 
+def activate_supertrend():
+    """
+    SUPERTREND DEFAULT MODE
+    - Follow SuperTrend direction (currently BULLISH)
+    - No pattern override active
+    - Use when: Pattern invalidated, return to baseline
+    """
+    state = load_state()
+    state['bear_flag_mode'] = False
+    state['grid_mode'] = 'BULLISH'  # SuperTrend is bullish
+    state['buy_enabled'] = True
+    state['short_enabled'] = False  # Only buy in bullish supertrend
+    state['pattern_override'] = None
+    save_state(state)
+    
+    print("""
+═══════════════════════════════════════════════════════════════════════════════
+                    📈 SUPERTREND MODE (Baseline)
+═══════════════════════════════════════════════════════════════════════════════
+
+  SuperTrend: BULLISH
+  Pattern Override: NONE (cleared)
+  
+  BUY orders:   ✅ ACTIVE (buy the dips)
+  SHORT orders: ❌ BLOCKED (ride the trend)
+
+  Strategy: Follow SuperTrend - buy dips, ride the bull
+  
+  "No pattern spotted. Following the trend."
+
+═══════════════════════════════════════════════════════════════════════════════
+""")
+
+
 def main():
     if len(sys.argv) < 2:
         show_status()
@@ -221,11 +255,13 @@ def main():
         activate_bearish()
     elif command in ['correction', 'whipsaw', 'both', 'grid', 'neutral']:
         activate_correction()
+    elif command in ['supertrend', 'default', 'baseline', 'trend']:
+        activate_supertrend()
     elif command in ['status', 'show', 'info']:
         show_status()
     else:
         print(f"Unknown command: {command}")
-        print("Use: bullish, bearish, correction, or status")
+        print("Use: bullish, bearish, correction, supertrend, or status")
 
 
 if __name__ == "__main__":
