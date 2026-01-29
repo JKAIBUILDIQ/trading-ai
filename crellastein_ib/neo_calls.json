@@ -1,0 +1,24 @@
+[
+  {
+    "id": "NEO_20260129_060856",
+    "timestamp": "2026-01-29T06:08:56.545941",
+    "setup_name": "FADE_THE_SQUEEZE",
+    "setup_description": "MMs will squeeze shorts above $5598 then reverse down",
+    "direction": "SHORT",
+    "entry_price": 5598,
+    "stop_loss": 5613,
+    "take_profit_1": 5409,
+    "take_profit_2": 5200,
+    "risk_pips": 15,
+    "reward_pips": 189,
+    "risk_reward": 12.6,
+    "current_mode": 2,
+    "trigger_mode": 3,
+    "trigger_condition": "Price fails at $5598 and reverses",
+    "status": "PENDING",
+    "triggered_at": "",
+    "outcome_price": 0,
+    "outcome_pnl": 0,
+    "notes": ""
+  }
+]

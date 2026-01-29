@@ -29,10 +29,19 @@
     }
   ],
   "neo_intel": {
-    "mm_prediction": "Break above 5598 to squeeze shorts then reverse",
+    "active_call": "FADE_THE_SQUEEZE",
+    "direction": "SHORT",
+    "entry": 5598,
+    "stop_loss": 5613,
+    "take_profit": 5409,
+    "risk_reward": "1:12.6",
+    "current_mode": 2,
+    "trigger_mode": 3,
+    "trigger_condition": "Price fails at $5598 and reverses",
+    "mm_prediction": "MMs will squeeze shorts above $5598 then reverse down",
     "hunt_direction": "UP",
     "best_action": "FADE_THE_SQUEEZE",
-    "received_at": "2026-01-29T06:05:41.763387"
+    "received_at": "2026-01-29T06:08:56.546211"
   },
   "key_levels": {
     "gap": {
