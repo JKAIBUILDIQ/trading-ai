@@ -116,26 +116,26 @@ class GhostCommanderLive:
         self.runner_position = None
         
         # Settings - HALF SIZE FOR TESTING (50% of MT5 equivalent)
-        # Full size would be: initial=5, increment=2-3
+        # MGC uses DOLLARS not pips! $10 spacing for gold volatility
         self.settings = {
             # Entry settings
             'supertrend_period': 10,
             'supertrend_multiplier': 3.0,
             'initial_contracts': 2,         # HALF SIZE (full=5, 0.5 lots)
             
-            # DCA settings - HALF SIZE LADDER
-            # Full: 5, 7, 9, 11, 13 = 45 contracts max
-            # Half: 2, 3, 4, 5, 6 = 20 contracts max
-            'dca_pip_spacing': 30,          # Pips between DCA levels ($3 drop per level)
+            # DCA settings - IN DOLLARS for MGC!
+            # $10 spacing chosen for gold's volatility
+            # Half size ladder: 2, 3, 4, 5, 6 = 20 contracts max
+            'dca_dollar_spacing': 10.0,     # $10 drop triggers next DCA level
             'dca_max_levels': 5,            # Max DCA positions
             'dca_base_contracts': 2,        # HALF SIZE base (full=5)
             'dca_increment': 1,             # HALF SIZE increment (full=2)
-            'dca_min_entry_gap': 20,        # Min points between entries
+            'min_entry_gap_dollars': 5.0,   # $5 anti-stack minimum
             
-            # TP settings (same as MT5)
-            'tp1_pips': 30,                 # +$3
-            'tp2_pips': 60,                 # +$6
-            'tp3_pips': 90,                 # +$9
+            # TP settings - IN DOLLARS from average entry
+            'tp1_dollars': 7.0,             # +$7 = Close 30%
+            'tp2_dollars': 15.0,            # +$15 = Close 30%
+            'tp3_dollars': 25.0,            # +$25 = Close ALL
             'tp1_close_percent': 30,
             'tp2_close_percent': 30,
             
@@ -451,7 +451,13 @@ class GhostCommanderLive:
     def check_dca_ladder(self, current_price: float) -> Optional[Dict]:
         """
         Check if should add DCA position on dip.
-        REQUIRES: Price dropped 30/60/90/120 pips from highest entry
+        MGC uses DOLLARS not pips!
+        
+        DCA Ladder ($10 spacing for gold volatility):
+          Level 2: $10 drop from highest entry
+          Level 3: $20 drop
+          Level 4: $30 drop
+          Level 5: $40 drop
         """
         if self.dca_total_contracts == 0:
             return None  # Use check_initial_entry first
@@ -459,20 +465,22 @@ class GhostCommanderLive:
         if self.dca_ladder_count >= self.settings['dca_max_levels']:
             return None  # Max levels reached
         
-        # Calculate drop from highest entry
-        drop_pips = (self.dca_highest_entry - current_price) * 10
+        # Calculate drop in DOLLARS (not pips!)
+        drop_dollars = self.dca_highest_entry - current_price
         
-        # Required drop for next level
-        required_drop = self.settings['dca_pip_spacing'] * self.dca_ladder_count
+        # Required drop for next level (in dollars)
+        # Level 1 already open, so for Level 2 need $10 drop
+        # Level 2 open, for Level 3 need $20 total drop, etc.
+        required_drop = self.settings['dca_dollar_spacing'] * self.dca_ladder_count
         
-        if drop_pips < required_drop:
+        if drop_dollars < required_drop:
             return None  # Not enough drop
         
-        # Anti-stack check
+        # Anti-stack check - $5 minimum gap between entries
         for pos in self.positions:
-            distance = abs(current_price - pos['entry_price']) * 10
-            if distance < self.settings['dca_min_entry_gap']:
-                logger.debug("Anti-stack: Too close to existing position")
+            distance = abs(current_price - pos['entry_price'])
+            if distance < self.settings['min_entry_gap_dollars']:
+                logger.debug(f"Anti-stack: Too close (${distance:.2f} < ${self.settings['min_entry_gap_dollars']})")
                 return None
         
         # Calculate contracts for this level - HALF SIZE LADDER
@@ -481,15 +489,15 @@ class GhostCommanderLive:
             self.settings['dca_increment'] * self.dca_ladder_count
         )
         
-        logger.info(f"📉 DCA TRIGGER: Drop {drop_pips:.1f} pips >= {required_drop} required")
+        logger.info(f"📉 DCA TRIGGER: ${drop_dollars:.2f} drop >= ${required_drop:.2f} required")
         
         return {
             'type': 'DCA',
             'level': self.dca_ladder_count + 1,
             'contracts': contracts,
             'price': current_price,
-            'drop_pips': drop_pips,
-            'comment': f'GHOST|DCA{self.dca_ladder_count + 1}|{drop_pips:.0f}p'
+            'drop_dollars': drop_dollars,
+            'comment': f'GHOST|DCA{self.dca_ladder_count + 1}|${drop_dollars:.0f}'
         }
     
     def execute_entry(self, entry: Dict) -> bool:
@@ -547,40 +555,41 @@ class GhostCommanderLive:
     # =========================================================================
     
     def check_take_profits(self, current_price: float) -> Optional[Dict]:
-        """Check tiered take profit levels"""
+        """Check tiered take profit levels - IN DOLLARS for MGC"""
         if self.dca_total_contracts <= 0 or self.dca_average_entry == 0:
             return None
         
-        profit_pips = (current_price - self.dca_average_entry) * 10
+        # Calculate profit in DOLLARS (not pips!)
+        profit_dollars = current_price - self.dca_average_entry
         
-        # TP3: Full exit at +90 pips
-        if profit_pips >= self.settings['tp3_pips']:
+        # TP3: Full exit at +$25
+        if profit_dollars >= self.settings['tp3_dollars']:
             return {
                 'action': 'CLOSE_ALL',
                 'level': 'TP3',
-                'profit_pips': profit_pips,
+                'profit_dollars': profit_dollars,
                 'contracts': self.dca_total_contracts
             }
         
-        # TP2: Close 30% at +60 pips
-        if not self.tp2_hit and profit_pips >= self.settings['tp2_pips']:
+        # TP2: Close 30% at +$15
+        if not self.tp2_hit and profit_dollars >= self.settings['tp2_dollars']:
             close_pct = self.settings['tp2_close_percent'] / 100
             contracts = max(1, int(self.dca_total_contracts * close_pct))
             return {
                 'action': 'PARTIAL_CLOSE',
                 'level': 'TP2',
-                'profit_pips': profit_pips,
+                'profit_dollars': profit_dollars,
                 'contracts': contracts
             }
         
-        # TP1: Close 30% at +30 pips
-        if not self.tp1_hit and profit_pips >= self.settings['tp1_pips']:
+        # TP1: Close 30% at +$7
+        if not self.tp1_hit and profit_dollars >= self.settings['tp1_dollars']:
             close_pct = self.settings['tp1_close_percent'] / 100
             contracts = max(1, int(self.dca_total_contracts * close_pct))
             return {
                 'action': 'PARTIAL_CLOSE',
                 'level': 'TP1',
-                'profit_pips': profit_pips,
+                'profit_dollars': profit_dollars,
                 'contracts': contracts
             }
         
@@ -753,7 +762,7 @@ class GhostCommanderLive:
             logger.error(f"Error in run_once: {e}")
     
     def _log_status(self, current_price: float):
-        """Log current status"""
+        """Log current status - all in DOLLARS for MGC"""
         # Check SuperTrend for status
         candles = self.get_candles("5 D", "1 hour")
         st_trend = "?"
@@ -762,10 +771,13 @@ class GhostCommanderLive:
             st_trend = "BULL" if st['trend'] == 1 else "BEAR"
         
         if self.dca_total_contracts > 0:
+            # P&L calculation: $10 per point per contract for MGC
             unrealized = (current_price - self.dca_average_entry) * self.dca_total_contracts * 10
-            tp1_price = self.dca_average_entry + 3
-            tp2_price = self.dca_average_entry + 6
-            tp3_price = self.dca_average_entry + 9
+            
+            # TP prices in DOLLARS: +$7, +$15, +$25 from average entry
+            tp1_price = self.dca_average_entry + self.settings['tp1_dollars']
+            tp2_price = self.dca_average_entry + self.settings['tp2_dollars']
+            tp3_price = self.dca_average_entry + self.settings['tp3_dollars']
             
             logger.info(
                 f"📊 MGC: ${current_price:.2f} | "
