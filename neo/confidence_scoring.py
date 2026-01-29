@@ -1,5 +1,5 @@
 """
-NEO CONVICTION SCORING SYSTEM
+NEO CONVICTION SCORING SYSTEM with DEFCON LEVELS
 Differentiates routine calls from high-alert situations.
 
 Solves the "boy who cried wolf" problem:
@@ -7,11 +7,19 @@ Solves the "boy who cried wolf" problem:
 - User ignores because all calls look the same
 - NEO was RIGHT on 461-point drop, we just didn't listen
 
-Conviction Levels:
-├── 50-60%: LOW    - Normal market noise, proceed as usual
-├── 61-75%: MEDIUM - Elevated caution, reduce position sizing  
-├── 76-90%: HIGH   - Strong signal, consider pausing new entries
-└── 91-100%: EXTREME - Rare, high-probability event, defensive mode
+DEFCON LEVELS:
+├── DEFCON 5 (Green):  Normal conditions - trade as usual
+├── DEFCON 4 (Blue):   Elevated awareness - monitor closely
+├── DEFCON 3 (Yellow): High alert - reduce position sizing 50%
+├── DEFCON 2 (Orange): Severe - pause new entries, tighten stops
+└── DEFCON 1 (Red):    Maximum threat - defensive mode, hedge positions
+
+Conviction → DEFCON Mapping:
+├── 50-60%: DEFCON 5
+├── 61-70%: DEFCON 4
+├── 71-80%: DEFCON 3
+├── 81-90%: DEFCON 2
+└── 91-100%: DEFCON 1
 """
 
 import json
@@ -27,7 +35,8 @@ class ConvictionSignal:
     symbol: str
     direction: str  # BULLISH, BEARISH, NEUTRAL
     conviction: int  # 50-100
-    conviction_level: str  # LOW, MEDIUM, HIGH, EXTREME
+    defcon: int  # 1-5 (1 = max threat, 5 = normal)
+    defcon_color: str  # RED, ORANGE, YELLOW, BLUE, GREEN
     action: str  # PROCEED, REDUCE_SIZE, PAUSE_LONGS, PAUSE_SHORTS, DEFENSIVE_MODE
     
     # Targets
@@ -39,9 +48,50 @@ class ConvictionSignal:
     factors: List[Dict] = None
     pattern_match: Optional[str] = None
     valid_until: Optional[str] = None
+    macro_events: List[Dict] = None  # Upcoming high-impact events
+    correlations: Dict = None  # DXY, yields, VIX status
     
     # EA instructions
     ea_instructions: Dict = None
+    
+    # Legacy compatibility
+    @property
+    def conviction_level(self) -> str:
+        """Map DEFCON to legacy level names."""
+        return {5: "LOW", 4: "MEDIUM", 3: "HIGH", 2: "HIGH", 1: "EXTREME"}.get(self.defcon, "LOW")
+
+
+# Macro Event Impact Points
+MACRO_EVENTS = {
+    # HIGH IMPACT - Auto DEFCON 3+
+    "FOMC": 50,
+    "NFP": 30,
+    "CPI": 30,
+    "POWELL_SPEECH": 25,
+    "GDP": 20,
+    "MEGA_CAP_EARNINGS": 20,  # MSFT, AAPL, NVDA, GOOGL
+    
+    # MEDIUM IMPACT
+    "FED_GOVERNOR": 10,
+    "JOBLESS_CLAIMS": 10,
+    "PMI": 10,
+    "TREASURY_AUCTION": 10,
+    
+    # LOW IMPACT
+    "FED_MINUTES": 8,
+    "HOUSING_DATA": 5,
+    "CONSUMER_SENTIMENT": 5,
+}
+
+# Correlation thresholds for gold
+GOLD_CORRELATIONS = {
+    "DXY": {"correlation": -0.85, "description": "DXY up = Gold down"},
+    "US10Y": {"correlation": -0.70, "description": "Yields up = Gold down"},
+    "US2Y": {"correlation": -0.65, "description": "Yields up = Gold down"},
+    "VIX": {"correlation": 0.40, "description": "VIX spike = Gold volatile"},
+    "SPX": {"correlation": 0.30, "description": "Risk-off = Gold can drop too"},
+    "BTC": {"correlation": 0.25, "description": "Liquidity proxy"},
+}
 
 
 class ConvictionCalculator:
@@ -311,20 +361,35 @@ class ConvictionCalculator:
         # Cap at 100
         score = min(100, int(score))
         
-        # Determine conviction level
+        # Determine DEFCON level (1 = max threat, 5 = normal)
         if score >= 91:
-            level = "EXTREME"
-        elif score >= 76:
-            level = "HIGH"
+            defcon = 1
+            defcon_color = "RED"
+        elif score >= 81:
+            defcon = 2
+            defcon_color = "ORANGE"
+        elif score >= 71:
+            defcon = 3
+            defcon_color = "YELLOW"
         elif score >= 61:
-            level = "MEDIUM"
+            defcon = 4
+            defcon_color = "BLUE"
         else:
-            level = "LOW"
+            defcon = 5
+            defcon_color = "GREEN"
         
-        return score, level, factor_details
+        return score, defcon, defcon_color, factor_details
     
-    def determine_action(self, direction: str, conviction: int, level: str) -> Tuple[str, Dict]:
-        """Determine recommended action and EA instructions."""
+    def determine_action(self, direction: str, defcon: int) -> Tuple[str, Dict]:
+        """
+        Determine recommended action and EA instructions based on DEFCON level.
+        
+        DEFCON 5 (Green):  Normal - trade as usual
+        DEFCON 4 (Blue):   Elevated - monitor closely
+        DEFCON 3 (Yellow): High alert - reduce sizing 50%
+        DEFCON 2 (Orange): Severe - pause new entries, tighten stops
+        DEFCON 1 (Red):    Maximum threat - defensive mode, hedge
+        """
         
         ea_instructions = {
             "pause_longs": False,
@@ -332,40 +397,46 @@ class ConvictionCalculator:
             "reduce_lot_multiplier": 1.0,
             "tighten_sl_pips": 0,
             "max_drawdown_override": None,
+            "close_partial": 0,  # Percentage to close
+            "set_breakeven": False,
+            "consider_hedge": False,
         }
         
-        if level == "EXTREME":
+        if defcon == 1:  # MAXIMUM THREAT
+            action = "DEFENSIVE_MODE"
             if direction == "BEARISH":
-                action = "DEFENSIVE_MODE"
                 ea_instructions["pause_longs"] = True
-                ea_instructions["reduce_lot_multiplier"] = 0.25
-                ea_instructions["tighten_sl_pips"] = 50
-                ea_instructions["max_drawdown_override"] = 100
             else:
-                action = "DEFENSIVE_MODE"
                 ea_instructions["pause_shorts"] = True
-                ea_instructions["reduce_lot_multiplier"] = 0.25
-                ea_instructions["tighten_sl_pips"] = 50
-                ea_instructions["max_drawdown_override"] = 100
+            ea_instructions["reduce_lot_multiplier"] = 0.0  # No new entries
+            ea_instructions["tighten_sl_pips"] = 50
+            ea_instructions["max_drawdown_override"] = 100
+            ea_instructions["close_partial"] = 50  # Close 50% at market
+            ea_instructions["set_breakeven"] = True
+            ea_instructions["consider_hedge"] = True
         
-        elif level == "HIGH":
+        elif defcon == 2:  # SEVERE
             if direction == "BEARISH":
                 action = "PAUSE_LONGS"
                 ea_instructions["pause_longs"] = True
-                ea_instructions["reduce_lot_multiplier"] = 0.5
-                ea_instructions["tighten_sl_pips"] = 30
             else:
                 action = "PAUSE_SHORTS"
                 ea_instructions["pause_shorts"] = True
-                ea_instructions["reduce_lot_multiplier"] = 0.5
-                ea_instructions["tighten_sl_pips"] = 30
+            ea_instructions["reduce_lot_multiplier"] = 0.0  # No new entries
+            ea_instructions["tighten_sl_pips"] = 30
+            ea_instructions["max_drawdown_override"] = 150
         
-        elif level == "MEDIUM":
+        elif defcon == 3:  # HIGH ALERT
             action = "REDUCE_SIZE"
-            ea_instructions["reduce_lot_multiplier"] = 0.75
-            ea_instructions["tighten_sl_pips"] = 15
+            ea_instructions["reduce_lot_multiplier"] = 0.5  # 50% size
+            ea_instructions["tighten_sl_pips"] = 20
         
-        else:  # LOW
+        elif defcon == 4:  # ELEVATED
+            action = "MONITOR"
+            ea_instructions["reduce_lot_multiplier"] = 0.75  # 75% size
+            ea_instructions["tighten_sl_pips"] = 10
+        
+        else:  # DEFCON 5 - NORMAL
             action = "PROCEED"
         
         return action, ea_instructions
@@ -379,13 +450,15 @@ def generate_conviction_signal(
     sl: float = None,
     hunt_zone: float = None,
     pattern_match: str = None,
-    valid_hours: int = 14
+    valid_hours: int = 14,
+    macro_events: List[Dict] = None,
+    correlations: Dict = None
 ) -> ConvictionSignal:
-    """Generate a complete conviction signal."""
+    """Generate a complete conviction signal with DEFCON level."""
     
     calculator = ConvictionCalculator()
-    conviction, level, factor_details = calculator.calculate(symbol, direction, factors)
-    action, ea_instructions = calculator.determine_action(direction, conviction, level)
+    conviction, defcon, defcon_color, factor_details = calculator.calculate(symbol, direction, factors)
+    action, ea_instructions = calculator.determine_action(direction, defcon)
     
     from datetime import timedelta
     valid_until = datetime.now() + timedelta(hours=valid_hours)
@@ -395,7 +468,8 @@ def generate_conviction_signal(
         symbol=symbol,
         direction=direction,
         conviction=conviction,
-        conviction_level=level,
+        defcon=defcon,
+        defcon_color=defcon_color,
         action=action,
         tp=tp,
         sl=sl,
@@ -403,6 +477,8 @@ def generate_conviction_signal(
         factors=factor_details,
         pattern_match=pattern_match,
         valid_until=valid_until.isoformat(),
+        macro_events=macro_events or [],
+        correlations=correlations or {},
         ea_instructions=ea_instructions
     )
     
@@ -410,24 +486,27 @@ def generate_conviction_signal(
 
 
 def format_signal_for_telegram(signal: ConvictionSignal) -> str:
-    """Format signal for Telegram notification."""
+    """Format signal for Telegram notification with DEFCON level."""
     
-    # Emoji based on level
-    level_emoji = {
-        "LOW": "🟢",
-        "MEDIUM": "🟡", 
-        "HIGH": "🟠",
-        "EXTREME": "🔴"
+    # DEFCON emoji and color
+    defcon_display = {
+        1: ("🔴", "DEFCON 1 - MAXIMUM THREAT"),
+        2: ("🟠", "DEFCON 2 - SEVERE"),
+        3: ("🟡", "DEFCON 3 - HIGH ALERT"),
+        4: ("🔵", "DEFCON 4 - ELEVATED"),
+        5: ("🟢", "DEFCON 5 - NORMAL"),
     }
     
-    emoji = level_emoji.get(signal.conviction_level, "⚪")
+    emoji, defcon_text = defcon_display.get(signal.defcon, ("⚪", "UNKNOWN"))
     
     lines = [
         f"{emoji} NEO SIGNAL - {signal.symbol}",
         f"━━━━━━━━━━━━━━━━━━━━━━━━",
         f"",
+        f"🚨 {defcon_text}",
+        f"",
         f"🎯 DIRECTION: {signal.direction}",
-        f"⚡ CONVICTION: {signal.conviction}% ({signal.conviction_level})",
+        f"⚡ CONVICTION: {signal.conviction}%",
         f"📋 ACTION: {signal.action}",
         f"",
     ]
@@ -442,20 +521,45 @@ def format_signal_for_telegram(signal: ConvictionSignal) -> str:
             lines.append(f"   Hunt Zone: ${signal.hunt_zone:.2f}")
         lines.append("")
     
+    # Show macro events if any
+    if signal.macro_events:
+        lines.append("📅 MACRO EVENTS:")
+        for event in signal.macro_events[:3]:
+            lines.append(f"   ⚠️ {event.get('name', 'Unknown')} - {event.get('impact', 'N/A')}")
+        lines.append("")
+    
+    # Show correlations if bearish
+    if signal.correlations and signal.defcon <= 3:
+        lines.append("📈 CORRELATIONS:")
+        for asset, status in list(signal.correlations.items())[:4]:
+            lines.append(f"   {asset}: {status}")
+        lines.append("")
+    
     if signal.factors:
-        lines.append("🔍 FACTORS:")
-        for f in signal.factors[:5]:  # Top 5 factors
+        lines.append("🔍 TOP FACTORS:")
+        for f in signal.factors[:5]:
             lines.append(f"   +{f['contribution']}: {f['factor']}")
         lines.append("")
     
-    if signal.conviction_level in ["HIGH", "EXTREME"]:
+    # EA instructions based on DEFCON
+    if signal.defcon <= 3:
         lines.append("⚠️ EA INSTRUCTIONS:")
         if signal.ea_instructions.get("pause_longs"):
-            lines.append("   • PAUSE LONG ENTRIES")
+            lines.append("   🛑 PAUSE LONG ENTRIES")
         if signal.ea_instructions.get("pause_shorts"):
-            lines.append("   • PAUSE SHORT ENTRIES")
-        if signal.ea_instructions.get("reduce_lot_multiplier", 1.0) < 1.0:
-            lines.append(f"   • Reduce lot size to {signal.ea_instructions['reduce_lot_multiplier']*100:.0f}%")
+            lines.append("   🛑 PAUSE SHORT ENTRIES")
+        mult = signal.ea_instructions.get("reduce_lot_multiplier", 1.0)
+        if mult < 1.0:
+            if mult == 0:
+                lines.append("   🛑 NO NEW ENTRIES")
+            else:
+                lines.append(f"   📉 Reduce lot size to {mult*100:.0f}%")
+        if signal.ea_instructions.get("close_partial", 0) > 0:
+            lines.append(f"   💰 Close {signal.ea_instructions['close_partial']}% at market")
+        if signal.ea_instructions.get("set_breakeven"):
+            lines.append("   🎯 Set breakeven stops")
+        if signal.ea_instructions.get("consider_hedge"):
+            lines.append("   🛡️ Consider hedge position")
         lines.append("")
     
     if signal.pattern_match:
@@ -474,7 +578,8 @@ def save_signal_for_ea(signal: ConvictionSignal, path: str = "/home/jbot/trading
         "symbol": signal.symbol,
         "direction": signal.direction,
         "conviction": signal.conviction,
-        "conviction_level": signal.conviction_level,
+        "defcon": signal.defcon,
+        "defcon_color": signal.defcon_color,
         "action": signal.action,
         "targets": {
             "tp": signal.tp,
@@ -482,6 +587,8 @@ def save_signal_for_ea(signal: ConvictionSignal, path: str = "/home/jbot/trading
             "hunt_zone": signal.hunt_zone
         },
         "ea_instructions": signal.ea_instructions,
+        "macro_events": signal.macro_events,
+        "correlations": signal.correlations,
         "valid_until": signal.valid_until
     }
     
@@ -633,6 +740,21 @@ def example_2026_01_29():
         }
     }
     
+    # Macro events that were active Jan 28-29
+    macro_events = [
+        {"name": "FOMC Decision", "time": "Jan 28 2:00 PM ET", "impact": "HIGH (+50 pts)", "result": "Hawkish hold"},
+        {"name": "Powell Press Conference", "time": "Jan 28 2:30 PM ET", "impact": "HIGH (+25 pts)", "result": "Extended pause language"},
+        {"name": "MSFT Earnings", "time": "Jan 28 4:05 PM ET", "impact": "HIGH (+20 pts)", "result": "Beat but -10% on capex fears"},
+    ]
+    
+    # Correlation status on Jan 29
+    correlations = {
+        "DXY": "+0.3% rising → BEARISH GOLD ⚠️",
+        "10Y Yield": "Rising post-FOMC → BEARISH GOLD ⚠️",
+        "VIX": "Elevated → HIGH VOLATILITY ⚠️",
+        "SPX": "-0.1% (MSFT drag) → RISK-OFF ⚠️",
+    }
+    
     signal = generate_conviction_signal(
         symbol="XAUUSD",
         direction="BEARISH",
@@ -640,7 +762,9 @@ def example_2026_01_29():
         tp=5409,
         sl=5613,
         hunt_zone=5150,
-        pattern_match="ATH_EXHAUSTION_REVERSAL"
+        pattern_match="BULLFLAG_TRAP_DISTRIBUTION",
+        macro_events=macro_events,
+        correlations=correlations
     )
     
     print(format_signal_for_telegram(signal))

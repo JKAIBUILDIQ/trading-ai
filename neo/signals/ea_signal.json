@@ -1,9 +1,10 @@
 {
-  "timestamp": "2026-01-29T23:32:57.748940",
+  "timestamp": "2026-01-29T23:43:18.501554",
   "symbol": "XAUUSD",
   "direction": "BEARISH",
   "conviction": 100,
-  "conviction_level": "EXTREME",
+  "defcon": 1,
+  "defcon_color": "RED",
   "action": "DEFENSIVE_MODE",
   "targets": {
     "tp": 5409,
@@ -13,9 +14,38 @@
   "ea_instructions": {
     "pause_longs": true,
     "pause_shorts": false,
-    "reduce_lot_multiplier": 0.25,
+    "reduce_lot_multiplier": 0.0,
     "tighten_sl_pips": 50,
-    "max_drawdown_override": 100
+    "max_drawdown_override": 100,
+    "close_partial": 50,
+    "set_breakeven": true,
+    "consider_hedge": true
   },
-  "valid_until": "2026-01-30T13:32:57.748927"
+  "macro_events": [
+    {
+      "name": "FOMC Decision",
+      "time": "Jan 28 2:00 PM ET",
+      "impact": "HIGH (+50 pts)",
+      "result": "Hawkish hold"
+    },
+    {
+      "name": "Powell Press Conference",
+      "time": "Jan 28 2:30 PM ET",
+      "impact": "HIGH (+25 pts)",
+      "result": "Extended pause language"
+    },
+    {
+      "name": "MSFT Earnings",
+      "time": "Jan 28 4:05 PM ET",
+      "impact": "HIGH (+20 pts)",
+      "result": "Beat but -10% on capex fears"
+    }
+  ],
+  "correlations": {
+    "DXY": "+0.3% rising \u2192 BEARISH GOLD \u26a0\ufe0f",
+    "10Y Yield": "Rising post-FOMC \u2192 BEARISH GOLD \u26a0\ufe0f",
+    "VIX": "Elevated \u2192 HIGH VOLATILITY \u26a0\ufe0f",
+    "SPX": "-0.1% (MSFT drag) \u2192 RISK-OFF \u26a0\ufe0f"
+  },
+  "valid_until": "2026-01-30T13:43:18.501546"
 }

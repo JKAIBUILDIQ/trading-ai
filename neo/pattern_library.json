@@ -21,7 +21,7 @@
         "Check for two consecutive red candles with rising volume",
         "Check for lower highs within consolidation (not flat)"
       ],
-      "action": "CODE ORANGE - Do not add longs, tighten stops immediately",
+      "action": "DEFCON 2 - Do not add longs, tighten stops immediately",
       "examples": [
         {
           "date": "2026-01-29",
