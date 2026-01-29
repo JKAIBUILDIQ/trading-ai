@@ -1,0 +1,68 @@
+{
+  "mode": 1,
+  "mode_name": "BULLISH_DCA",
+  "strategy": "SELL_OPTIONS_DCA",
+  "description": "Scale in by selling options as premium drops - DCA into positions",
+  "date": "2026-01-30",
+  "status": "READY",
+  
+  "symbols": {
+    "CIFR": {
+      "current_position": 1000,
+      "current_price": 18.68,
+      "unrealized_pnl": 1174,
+      "dca_enabled": true,
+      "notes": "2 positions @ 500 each"
+    },
+    "CLSK": {
+      "current_position": 1000,
+      "current_price": 13.57,
+      "unrealized_pnl": 941,
+      "dca_enabled": true,
+      "notes": "2 positions @ 500 each"
+    },
+    "IREN": {
+      "current_position": 100,
+      "current_price": 62.11,
+      "unrealized_pnl": 0,
+      "dca_enabled": true,
+      "notes": "Fresh entry from NEO_DCA_L1"
+    }
+  },
+  
+  "dca_rules": {
+    "trigger": "Option premium drops 20%+ from entry",
+    "action": "SELL more options at lower strike or roll",
+    "sizing": "Scale: HALF → FULL → DOUBLE as premium drops",
+    "max_positions_per_symbol": 5
+  },
+  
+  "mode_1_rules": {
+    "required_base_position": "Always have exposure (freeroll)",
+    "on_dip": "DCA - sell more puts or add shares",
+    "on_rally": "Let winners run, partial TP at targets",
+    "hedge": false
+  },
+  
+  "targets": {
+    "CIFR": {"tp1": 20.14, "tp2": 22.00, "sl": 16.11},
+    "CLSK": {"tp1": 14.51, "tp2": 16.00, "sl": 11.61},
+    "IREN": {"tp1": 70.00, "tp2": 80.00, "sl": 57.14}
+  },
+  
+  "total_account": {
+    "balance": 115690,
+    "total_value": 117806,
+    "total_pnl": 17806,
+    "realized": 15689.81,
+    "unrealized": 2116.45
+  },
+  
+  "recent_wins": [
+    {"symbol": "IREN", "type": "BUY_CALL $55", "pnl": 1587, "return": "48.8%"},
+    {"symbol": "IREN", "type": "BUY_CALL $50", "pnl": 4230, "return": "48.6%"},
+    {"symbol": "IREN", "type": "BUY_CALL $55", "pnl": 1260, "return": "77.1%"},
+    {"symbol": "IREN", "type": "BUY_CALL $56", "pnl": 510, "return": "34.2%"},
+    {"symbol": "IREN", "type": "LONG 800", "pnl": 6509, "return": "15.3%"}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "mode": 1,
+  "mode_name": "BULLISH_DCA",
+  "dca_enabled": true,
+  "hedge_enabled": false,
+  "symbols": [
+    "CIFR",
+    "CLSK",
+    "IREN"
+  ],
+  "new_sells_enabled": true,
+  "close_longs": false,
+  "last_update": "2026-01-29T07:21:40.282512"
+}
