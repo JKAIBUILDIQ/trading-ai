@@ -11,8 +11,8 @@
   "bear_flag_invalidation_price": 5611,
   "long_contracts": 0,
   "long_avg_entry": 0,
-  "short_contracts": 2,
-  "short_avg_entry": 5577.35,
+  "short_contracts": 4,
+  "short_avg_entry": 5588.625,
   "buy_levels": [
     {
       "price": 5551.0,
@@ -130,9 +130,10 @@
       "offset": 40,
       "size": 2,
       "desc": "SHORT L2 HALF",
-      "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5591.0
+      "status": "FILLED",
+      "fill_price": 5599.9,
+      "tp_price": 5579.9,
+      "fill_time": "2026-01-29T06:11:21.093524"
     },
     {
       "price": 5631.0,
@@ -191,7 +192,7 @@
   ],
   "long_tp_profit": 0,
   "short_tp_profit": 0,
-  "total_trades": 1,
+  "total_trades": 2,
   "winning_trades": 0,
-  "last_update": "2026-01-29T05:45:59.488415"
+  "last_update": "2026-01-29T06:11:21.093543"
 }
