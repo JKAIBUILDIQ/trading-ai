@@ -114,6 +114,11 @@ class CasperLive:
             # Safety - HALF SIZE LIMITS
             'max_contracts': 24,            # Sum of ladder (2+2+5+5+10)
             'entry_cooldown_seconds': 120,  # 2 min between entries
+            
+            # PARABOLIC MOVE SAFEGUARDS
+            'max_drawdown_percent': 10.0,   # Close ALL if down 10% from peak
+            'parabolic_threshold_pct': 5.0, # Warn if +5% in 5 days
+            'max_position_percent': 30.0,   # Max 30% of account in gold
         }
         
         # Position tracking
@@ -125,6 +130,11 @@ class CasperLive:
         self.session_high = 0
         self.current_level = 0
         self.trailing_stop = 0
+        
+        # PARABOLIC SAFEGUARD TRACKING
+        self.peak_equity = 0
+        self.parabolic_mode = False
+        self.safeguard_triggered = False
         
         # Status
         self.last_price = 0
@@ -326,7 +336,13 @@ class CasperLive:
         
         # Required drop for next level
         # Level 0->1: $10, Level 1->2: $20, etc.
-        required_drop = self.settings['trigger_drop'] * (self.current_level + 1)
+        trigger_drop = self.settings['trigger_drop']
+        
+        # PARABOLIC MODE: Widen spacing by 50% ($10 → $15)
+        if self.parabolic_mode:
+            trigger_drop *= 1.5
+        
+        required_drop = trigger_drop * (self.current_level + 1)
         
         if drop >= required_drop:
             # Get contracts for this level
@@ -491,8 +507,12 @@ class CasperLive:
     # =========================================================================
     
     def run_once(self):
-        """Run one iteration"""
+        """Run one iteration - with SAFEGUARDS"""
         if not self.connected:
+            return
+        
+        # If safeguard was triggered, don't trade
+        if self.safeguard_triggered:
             return
         
         try:
@@ -504,6 +524,10 @@ class CasperLive:
             
             current_price = price_data['last']
             
+            # === SAFEGUARD CHECKS (FIRST!) ===
+            if self.run_safeguard_checks():
+                return  # Stop trading if safeguard triggered
+            
             # === TP CHECK (first priority) ===
             tp = self.check_take_profit(current_price)
             if tp:
@@ -512,9 +536,17 @@ class CasperLive:
             
             # === ENTRY CHECK ===
             if self.can_execute_entry():
-                entry = self.check_drop_buy(current_price)
-                if entry:
-                    self.execute_drop_buy(entry)
+                # Check position limit before any entry
+                if not self.check_position_limit():
+                    pass  # Position too large, skip entry
+                else:
+                    entry = self.check_drop_buy(current_price)
+                    if entry:
+                        # In parabolic mode, halve the contracts
+                        if self.parabolic_mode:
+                            entry['contracts'] = max(1, entry['contracts'] // 2)
+                            entry['comment'] += '|PARA'
+                        self.execute_drop_buy(entry)
             
             # === STATUS LOG ===
             if (datetime.now() - self.last_status_log).seconds >= 60:
@@ -596,8 +628,170 @@ class CasperLive:
             'drop': self.session_high - self.last_price if self.session_high > 0 else 0,
             'trailing_stop': self.trailing_stop,
             'unrealized_pnl': (self.last_price - self.average_entry) * self.total_contracts * 10 if self.total_contracts > 0 else 0,
+            'parabolic_mode': self.parabolic_mode,
+            'safeguard_triggered': self.safeguard_triggered,
             'last_update': datetime.now().isoformat()
         }
+    
+    # =========================================================================
+    # PARABOLIC MOVE SAFEGUARDS
+    # =========================================================================
+    
+    def get_account_equity(self) -> float:
+        """Get current account equity from IB"""
+        try:
+            account_values = self.ib.accountSummary()
+            for av in account_values:
+                if av.tag == 'NetLiquidation':
+                    return float(av.value)
+            return 0
+        except Exception as e:
+            logger.error(f"Error getting account equity: {e}")
+            return 0
+    
+    def check_drawdown_stop(self) -> bool:
+        """
+        CRITICAL: Emergency stop if drawdown exceeds limit
+        Close ALL if down 10% from peak equity
+        """
+        current_equity = self.get_account_equity()
+        if current_equity <= 0:
+            return False
+        
+        # Track peak equity
+        if current_equity > self.peak_equity:
+            self.peak_equity = current_equity
+        
+        # Calculate drawdown %
+        if self.peak_equity > 0:
+            drawdown_pct = ((self.peak_equity - current_equity) / self.peak_equity) * 100
+            
+            if drawdown_pct >= self.settings['max_drawdown_percent']:
+                logger.critical(f"🚨 DRAWDOWN STOP: {drawdown_pct:.1f}% >= {self.settings['max_drawdown_percent']}%")
+                send_alert(f"🚨 CASPER DRAWDOWN STOP! {drawdown_pct:.1f}% loss - closing ALL", "error")
+                self.emergency_close_all("DRAWDOWN_STOP")
+                self.safeguard_triggered = True
+                return True
+        
+        return False
+    
+    def check_position_limit(self) -> bool:
+        """Check if position is too large relative to account - blocks new entries"""
+        account_value = self.get_account_equity()
+        if account_value <= 0:
+            return True  # Can't check, allow
+        
+        # MGC = 10 oz per contract
+        position_value = self.total_contracts * self.last_price * 10
+        position_pct = (position_value / account_value) * 100
+        
+        if position_pct >= self.settings['max_position_percent']:
+            logger.warning(f"⚠️ POSITION LIMIT: {position_pct:.1f}% of account (max {self.settings['max_position_percent']}%)")
+            return False  # Block new entries
+        
+        return True  # OK to add
+    
+    def get_candles(self, duration: str = "5 D", bar_size: str = "1 hour") -> list:
+        """Get historical candles for parabolic detection"""
+        if not self.connected or not self.contract:
+            return []
+        
+        try:
+            bars = self.ib.reqHistoricalData(
+                self.contract,
+                endDateTime='',
+                durationStr=duration,
+                barSizeSetting=bar_size,
+                whatToShow='TRADES',
+                useRTH=False,
+                formatDate=1
+            )
+            return [{'open': b.open, 'high': b.high, 'low': b.low, 
+                     'close': b.close, 'volume': b.volume} for b in bars]
+        except Exception as e:
+            logger.error(f"Error getting candles: {e}")
+            return []
+    
+    def is_parabolic_move(self) -> bool:
+        """
+        Detect parabolic move - high correction risk!
+        Triggers if price rose >5% in 5 days
+        """
+        candles = self.get_candles("5 D", "1 hour")
+        if len(candles) < 120:
+            return False
+        
+        price_5_days_ago = candles[0]['close']
+        current_price = candles[-1]['close']
+        
+        gain_pct = ((current_price - price_5_days_ago) / price_5_days_ago) * 100
+        
+        if gain_pct > self.settings['parabolic_threshold_pct']:
+            logger.warning(f"⚠️ PARABOLIC WARNING: +{gain_pct:.1f}% in 5 days!")
+            return True
+        
+        return False
+    
+    def adjust_for_parabolic(self):
+        """Reduce risk during parabolic moves"""
+        if not self.parabolic_mode:
+            self.parabolic_mode = True
+            logger.info("📉 ENTERING PARABOLIC MODE: Reduced size")
+            send_alert("⚠️ CASPER: Parabolic mode - reducing risk", "warning")
+    
+    def emergency_close_all(self, reason: str):
+        """Emergency close all positions"""
+        if self.total_contracts <= 0:
+            return
+        
+        try:
+            qty = self.validate_sell_quantity(int(self.total_contracts))
+            if qty <= 0:
+                return
+            
+            order = MarketOrder('SELL', qty)
+            order.orderRef = f'CASPER|EMERGENCY|{reason}'
+            
+            logger.critical(f"🚨 EMERGENCY CLOSE: {qty} contracts - {reason}")
+            
+            trade = self.ib.placeOrder(self.contract, order)
+            
+            timeout = 30
+            start = datetime.now()
+            while not trade.isDone():
+                self.ib.sleep(0.5)
+                if (datetime.now() - start).total_seconds() > timeout:
+                    break
+            
+            if trade.orderStatus.status == 'Filled':
+                logger.info(f"✅ EMERGENCY CLOSE FILLED @ ${trade.orderStatus.avgFillPrice:.2f}")
+                send_alert(f"🚨 CASPER emergency close: {qty} @ ${trade.orderStatus.avgFillPrice:.2f}", "error")
+            
+            # Reset state
+            self.current_level = 0
+            self.trailing_stop = 0
+            
+            self.ib.sleep(2)
+            self.sync_positions()
+            
+        except Exception as e:
+            logger.error(f"Emergency close failed: {e}")
+    
+    def run_safeguard_checks(self) -> bool:
+        """
+        Run all safeguard checks - returns True if trading should STOP
+        """
+        # 1. Drawdown stop (most critical)
+        if self.check_drawdown_stop():
+            return True
+        
+        # 2. Parabolic move detection (adjust risk)
+        if self.is_parabolic_move():
+            self.adjust_for_parabolic()
+        else:
+            self.parabolic_mode = False
+        
+        return False
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
