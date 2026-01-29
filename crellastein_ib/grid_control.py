@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 """
 ═══════════════════════════════════════════════════════════════════════════════
-                    GRID CONTROL - Mode Switching
+                    GRID CONTROL - Trading Mode Commands
+                    Ghost Commander IBKR - MGC Futures
 ═══════════════════════════════════════════════════════════════════════════════
 
-Quick commands to switch grid modes:
+Quick commands to switch trading modes:
 
-  python3 grid_control.py bullish     # Activate Bullish Grid (BUY only)
-  python3 grid_control.py bearish     # Activate Bearish Setup (SHORT only)  
-  python3 grid_control.py correction  # Activate Correction Grid (both ways)
+  python3 grid_control.py 1           # Activate Bullish Grid (Mode 1)
+  python3 grid_control.py 2           # Activate Correction Grid (Mode 2)
+  python3 grid_control.py 3           # Activate Bearish Sighting (Mode 3)
   python3 grid_control.py status      # Show current mode
+
+Voice/Text Commands:
+  "Activate Bullish Grid"      → Mode 1
+  "Activate Correction Grid"   → Mode 2  
+  "Activate Bearish Sighting"  → Mode 3
 
 ═══════════════════════════════════════════════════════════════════════════════
 """
@@ -35,118 +41,153 @@ def save_state(state):
         json.dump(state, f, indent=2)
 
 
-def activate_bullish():
+def mode_1_bullish():
     """
-    BULLISH GRID MODE
-    - BUY orders: ACTIVE
-    - SHORT orders: BLOCKED
-    - Use when: SuperTrend bullish, buying dips
+    MODE 1: BULLISH GRID (Default)
+    
+    When to use: SuperTrend bullish, no warning signs, normal conditions
+    
+    - ✅ DCA BUY ladder: ACTIVE
+    - ✅ Grid LONG levels: ACTIVE  
+    - ✅ Grid SHORT levels: ACTIVE (scalp rises)
+    - ❌ Hedge: OFF
     """
     state = load_state()
-    state['bear_flag_mode'] = False
+    state['trading_mode'] = 1
     state['grid_mode'] = 'BULLISH'
     state['buy_enabled'] = True
-    state['short_enabled'] = False
-    save_state(state)
-    
-    print("""
-═══════════════════════════════════════════════════════════════════════════════
-                    📈 BULLISH GRID ACTIVATED
-═══════════════════════════════════════════════════════════════════════════════
-
-  BUY orders:   ✅ ACTIVE (accumulate dips)
-  SHORT orders: ❌ BLOCKED
-
-  Strategy: Buy the dips, ride the trend
-  
-  Grid Levels:
-    $5,551 ── BUY 2 ✅
-    $5,531 ── BUY 2 ✅
-    $5,511 ── BUY 4 ✅
-    ...all BUY levels active
-    
-    $5,591 ── SHORT 🚫 BLOCKED
-    $5,611 ── SHORT 🚫 BLOCKED
-    ...all SHORT levels blocked
-
-═══════════════════════════════════════════════════════════════════════════════
-""")
-
-
-def activate_bearish():
-    """
-    BEARISH SETUP MODE (Bear Flag)
-    - BUY orders: BLOCKED
-    - SHORT orders: ACTIVE
-    - Use when: Bear flag, correction expected
-    """
-    state = load_state()
-    state['bear_flag_mode'] = True
-    state['grid_mode'] = 'BEARISH'
-    state['buy_enabled'] = False
-    state['short_enabled'] = True
-    state['bear_flag_invalidation_price'] = 5611  # Debunk level
-    save_state(state)
-    
-    print("""
-═══════════════════════════════════════════════════════════════════════════════
-                    📉 BEARISH SETUP ACTIVATED (Bear Flag Mode)
-═══════════════════════════════════════════════════════════════════════════════
-
-  BUY orders:   ❌ BLOCKED (no new longs)
-  SHORT orders: ✅ ACTIVE (fade rises)
-
-  Strategy: Lean into correction, SHORT only
-  Auto-debunk: If price >= $5,611, switches to CORRECTION mode
-  
-  Grid Levels:
-    $5,591 ── SHORT 2 ✅
-    $5,611 ── SHORT 2 ✅ (also debunk trigger)
-    $5,631 ── SHORT 4 ✅
-    ...all SHORT levels active
-    
-    $5,551 ── BUY 🚫 BLOCKED
-    $5,531 ── BUY 🚫 BLOCKED
-    ...all BUY levels blocked
-
-═══════════════════════════════════════════════════════════════════════════════
-""")
-
-
-def activate_correction():
-    """
-    CORRECTION/WHIPSAW GRID MODE
-    - BUY orders: ACTIVE
-    - SHORT orders: ACTIVE
-    - Use when: Choppy market, profit from volatility
-    """
-    state = load_state()
+    state['short_enabled'] = True  # Scalp shorts still active
     state['bear_flag_mode'] = False
+    state['hedge_active'] = False
+    state['pattern_override'] = None
+    save_state(state)
+    
+    print("""
+═══════════════════════════════════════════════════════════════════════════════
+            📈 MODE 1: BULLISH GRID ACTIVATED (Default)
+═══════════════════════════════════════════════════════════════════════════════
+
+  When to use: SuperTrend bullish, no warning signs, normal conditions
+
+  ✅ DCA BUY ladder:    ACTIVE (buy every $20 drop)
+  ✅ Grid LONG levels:  ACTIVE (auto-buy at grid levels)
+  ✅ Grid SHORT levels: ACTIVE (auto-scalp on rises)
+  ❌ Hedge SELL:        OFF
+
+  Grid:
+    $5,611 ─── SHORT 2 ✅ scalp
+    $5,591 ─── SHORT 2 ✅ scalp
+         ══ CENTER ══
+    $5,551 ─── BUY 2 ✅ 
+    $5,531 ─── BUY 2 ✅
+    ...all levels active
+
+  "Normal bullish trading - buy dips, scalp rises"
+
+═══════════════════════════════════════════════════════════════════════════════
+""")
+
+
+def mode_2_correction():
+    """
+    MODE 2: CORRECTION GRID
+    
+    When to use: Overextended but trend still bullish, want to hedge profits
+    
+    - ✅ DCA BUY ladder: ACTIVE
+    - ✅ Grid LONG levels: ACTIVE
+    - ✅ Grid SHORT levels: ACTIVE
+    - ✅ Hedge: ACTIVE
+    """
+    state = load_state()
+    state['trading_mode'] = 2
     state['grid_mode'] = 'CORRECTION'
     state['buy_enabled'] = True
     state['short_enabled'] = True
+    state['bear_flag_mode'] = False
+    state['hedge_active'] = True
+    state['pattern_override'] = 'CORRECTION'
     save_state(state)
     
     print("""
 ═══════════════════════════════════════════════════════════════════════════════
-                    🔄 CORRECTION GRID ACTIVATED (Whipsaw Mode)
+            📊 MODE 2: CORRECTION GRID ACTIVATED
 ═══════════════════════════════════════════════════════════════════════════════
 
-  BUY orders:   ✅ ACTIVE (accumulate dips)
-  SHORT orders: ✅ ACTIVE (fade rises)
+  When to use: Overextended but trend still bullish, want to hedge profits
 
-  Strategy: Profit from BOTH directions - the chop is the opportunity!
+  ✅ DCA BUY ladder:    ACTIVE (keep buying dips)
+  ✅ Grid LONG levels:  ACTIVE
+  ✅ Grid SHORT levels: ACTIVE
+  ✅ Hedge SELL:        ACTIVE (protection)
+
+  Example scenarios:
+    • Gold parabolic (+20% in 2 weeks)
+    • RSI overbought (85+)
+    • FOMC tomorrow
+    • Want protection but still bullish long-term
+
+  Grid: ALL levels active BOTH directions
   
-  Grid Levels:
-    $5,591 ── SHORT 2 ✅  TP @ $5,571
-    $5,611 ── SHORT 2 ✅  TP @ $5,591
-    ...
-    ════ CENTER $5,571 ════
-    ...
-    $5,551 ── BUY 2 ✅    TP @ $5,571
-    $5,531 ── BUY 2 ✅    TP @ $5,551
+  "Hedged but still bullish - protect profits, keep buying dips"
+
+═══════════════════════════════════════════════════════════════════════════════
+""")
+
+
+def mode_3_bearish():
+    """
+    MODE 3: BEARISH SIGHTING
     
-  Every $20 move = profit opportunity on BOTH sides
+    When to use: Bear flag, divergence, breakdown imminent
+    
+    - ❌ DCA BUY ladder: STOPPED
+    - ❌ Grid LONG levels: STOPPED
+    - ✅ Grid SHORT levels: ACTIVE
+    - ✅ Hedge: ACTIVE
+    """
+    state = load_state()
+    state['trading_mode'] = 3
+    state['grid_mode'] = 'BEARISH'
+    state['buy_enabled'] = False  # BUYs BLOCKED
+    state['short_enabled'] = True
+    state['bear_flag_mode'] = True
+    state['hedge_active'] = True
+    state['bear_flag_invalidation_price'] = 5611
+    state['pattern_override'] = 'BEAR_FLAG'
+    save_state(state)
+    
+    print("""
+═══════════════════════════════════════════════════════════════════════════════
+            🐻 MODE 3: BEARISH SIGHTING ACTIVATED
+═══════════════════════════════════════════════════════════════════════════════
+
+  When to use: Bear flag, divergence, breakdown imminent
+
+  ❌ DCA BUY ladder:    STOPPED (no new longs)
+  ❌ Grid LONG levels:  STOPPED
+  ✅ Grid SHORT levels: ACTIVE (profit from drops)
+  ✅ Hedge SELL:        ACTIVE
+
+  Example scenarios:
+    • Bear flag pattern forming
+    • RSI divergence (price higher, RSI lower)
+    • Major support about to break
+    • "What goes up must come down"
+
+  Grid:
+    $5,611 ─── SHORT 2 ✅
+    $5,591 ─── SHORT 2 ✅
+         ══ CENTER ══
+    $5,551 ─── BUY 🚫 BLOCKED
+    $5,531 ─── BUY 🚫 BLOCKED
+    ...all BUY levels blocked
+
+  Exit criteria:
+    • Pattern breaks down → Keep mode 3, ride shorts
+    • Pattern invalidated (price >= $5,611) → Switch to mode 1
+
+  "Bearish sighting - shorts only, waiting for breakdown"
 
 ═══════════════════════════════════════════════════════════════════════════════
 """)
@@ -156,37 +197,36 @@ def show_status():
     """Show current mode status"""
     state = load_state()
     
-    mode = state.get('grid_mode', 'UNKNOWN')
-    bear_flag = state.get('bear_flag_mode', False)
+    mode = state.get('trading_mode', 1)
+    grid_mode = state.get('grid_mode', 'BULLISH')
     buy_enabled = state.get('buy_enabled', True)
     short_enabled = state.get('short_enabled', True)
+    hedge_active = state.get('hedge_active', False)
+    pattern = state.get('pattern_override', None)
     
-    # Determine actual mode from flags
-    if bear_flag:
-        mode = 'BEARISH'
-    elif buy_enabled and short_enabled:
-        mode = 'CORRECTION'
-    elif buy_enabled and not short_enabled:
-        mode = 'BULLISH'
-    elif not buy_enabled and short_enabled:
-        mode = 'BEARISH'
+    mode_names = {
+        1: ('📈 BULLISH GRID', 'Normal bullish trading'),
+        2: ('📊 CORRECTION GRID', 'Hedged, still buying dips'),
+        3: ('🐻 BEARISH SIGHTING', 'Shorts only, BUYs blocked'),
+    }
     
-    mode_icon = {
-        'BULLISH': '📈',
-        'BEARISH': '📉',
-        'CORRECTION': '🔄',
-    }.get(mode, '❓')
+    mode_name, mode_desc = mode_names.get(mode, ('❓ UNKNOWN', ''))
     
     print(f"""
 ═══════════════════════════════════════════════════════════════════════════════
-                    GRID STATUS
+                    GRID STATUS - Ghost Commander IBKR
 ═══════════════════════════════════════════════════════════════════════════════
 
-  Current Mode: {mode_icon} {mode}
+  Current Mode:    {mode_name} (Mode {mode})
+  Description:     {mode_desc}
+  Pattern Override: {pattern or 'None'}
   
-  BUY orders:   {'✅ ACTIVE' if buy_enabled else '❌ BLOCKED'}
-  SHORT orders: {'✅ ACTIVE' if short_enabled else '❌ BLOCKED'}
-  Bear Flag:    {'🐻 YES' if bear_flag else 'No'}
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │ DCA BUY ladder:    {'✅ ACTIVE' if buy_enabled else '❌ STOPPED':20} │
+  │ Grid LONG levels:  {'✅ ACTIVE' if buy_enabled else '❌ STOPPED':20} │
+  │ Grid SHORT levels: {'✅ ACTIVE' if short_enabled else '❌ STOPPED':20} │
+  │ Hedge SELL:        {'✅ ACTIVE' if hedge_active else '❌ OFF':20} │
+  └─────────────────────────────────────────────────────────────────────────┘
   
   Position:
     Long contracts:  {state.get('long_contracts', 0)}
@@ -198,45 +238,20 @@ def show_status():
 
 ═══════════════════════════════════════════════════════════════════════════════
 
-  Commands:
-    python3 grid_control.py bullish     # BUY only
-    python3 grid_control.py bearish     # SHORT only (bear flag)
-    python3 grid_control.py correction  # Both directions
-    python3 grid_control.py status      # Show this
-
-═══════════════════════════════════════════════════════════════════════════════
-""")
-
-
-def activate_supertrend():
-    """
-    SUPERTREND DEFAULT MODE
-    - Follow SuperTrend direction (currently BULLISH)
-    - No pattern override active
-    - Use when: Pattern invalidated, return to baseline
-    """
-    state = load_state()
-    state['bear_flag_mode'] = False
-    state['grid_mode'] = 'BULLISH'  # SuperTrend is bullish
-    state['buy_enabled'] = True
-    state['short_enabled'] = False  # Only buy in bullish supertrend
-    state['pattern_override'] = None
-    save_state(state)
-    
-    print("""
-═══════════════════════════════════════════════════════════════════════════════
-                    📈 SUPERTREND MODE (Baseline)
-═══════════════════════════════════════════════════════════════════════════════
-
-  SuperTrend: BULLISH
-  Pattern Override: NONE (cleared)
+  COMMANDS:
   
-  BUY orders:   ✅ ACTIVE (buy the dips)
-  SHORT orders: ❌ BLOCKED (ride the trend)
+  │ Command                          │ Mode │ Description              │
+  ├──────────────────────────────────┼──────┼──────────────────────────┤
+  │ python3 grid_control.py 1        │  1   │ Activate Bullish Grid    │
+  │ python3 grid_control.py 2        │  2   │ Activate Correction Grid │
+  │ python3 grid_control.py 3        │  3   │ Activate Bearish Sighting│
+  │ python3 grid_control.py status   │  -   │ Show this status         │
+  └──────────────────────────────────┴──────┴──────────────────────────┘
 
-  Strategy: Follow SuperTrend - buy dips, ride the bull
-  
-  "No pattern spotted. Following the trend."
+  VOICE COMMANDS:
+    "Activate Bullish Grid"      → Mode 1
+    "Activate Correction Grid"   → Mode 2
+    "Activate Bearish Sighting"  → Mode 3
 
 ═══════════════════════════════════════════════════════════════════════════════
 """)
@@ -249,19 +264,31 @@ def main():
     
     command = sys.argv[1].lower()
     
-    if command in ['bullish', 'bull', 'long', 'buy']:
-        activate_bullish()
-    elif command in ['bearish', 'bear', 'short', 'sell']:
-        activate_bearish()
-    elif command in ['correction', 'whipsaw', 'both', 'grid', 'neutral']:
-        activate_correction()
-    elif command in ['supertrend', 'default', 'baseline', 'trend']:
-        activate_supertrend()
-    elif command in ['status', 'show', 'info']:
+    # Mode numbers
+    if command == '1':
+        mode_1_bullish()
+    elif command == '2':
+        mode_2_correction()
+    elif command == '3':
+        mode_3_bearish()
+    
+    # Voice command keywords
+    elif command in ['bullish', 'bull', 'long', 'buy', 'normal', 'default']:
+        mode_1_bullish()
+    elif command in ['correction', 'hedge', 'protect', 'fomc']:
+        mode_2_correction()
+    elif command in ['bearish', 'bear', 'short', 'sell', 'sighting']:
+        mode_3_bearish()
+    
+    # Status
+    elif command in ['status', 'show', 'info', 's']:
         show_status()
     else:
         print(f"Unknown command: {command}")
-        print("Use: bullish, bearish, correction, supertrend, or status")
+        print("Use: 1, 2, 3, or status")
+        print('  1 = "Activate Bullish Grid"')
+        print('  2 = "Activate Correction Grid"')
+        print('  3 = "Activate Bearish Sighting"')
 
 
 if __name__ == "__main__":
