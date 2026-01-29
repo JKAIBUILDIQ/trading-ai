@@ -1,0 +1,188 @@
+{
+  "active": true,
+  "center_price": 5571,
+  "long_contracts": 0,
+  "long_avg_entry": 0,
+  "short_contracts": 0,
+  "short_avg_entry": 0,
+  "buy_levels": [
+    {
+      "price": 5551,
+      "offset": -20,
+      "size": 2,
+      "desc": "BUY L1 HALF",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5571.0
+    },
+    {
+      "price": 5531,
+      "offset": -40,
+      "size": 2,
+      "desc": "BUY L2 HALF",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5551.0
+    },
+    {
+      "price": 5511,
+      "offset": -60,
+      "size": 4,
+      "desc": "BUY L3 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5531.0
+    },
+    {
+      "price": 5491,
+      "offset": -80,
+      "size": 4,
+      "desc": "BUY L4 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5511.0
+    },
+    {
+      "price": 5471,
+      "offset": -100,
+      "size": 4,
+      "desc": "BUY L5 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5491.0
+    },
+    {
+      "price": 5451,
+      "offset": -120,
+      "size": 4,
+      "desc": "BUY L6 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5471.0
+    },
+    {
+      "price": 5431,
+      "offset": -140,
+      "size": 4,
+      "desc": "BUY L7 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5451.0
+    },
+    {
+      "price": 5411,
+      "offset": -160,
+      "size": 4,
+      "desc": "BUY L8 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5431.0
+    },
+    {
+      "price": 5231,
+      "offset": -340,
+      "size": 8,
+      "desc": "BUY Fib DOUBLE",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5251.0
+    },
+    {
+      "price": 5000,
+      "offset": -571,
+      "size": 8,
+      "desc": "BUY $5000 DOUBLE",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5020.0
+    },
+    {
+      "price": 4650,
+      "offset": -921,
+      "size": 12,
+      "desc": "BUY GAP TRIPLE",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 4670.0
+    }
+  ],
+  "short_levels": [
+    {
+      "price": 5591,
+      "offset": 20,
+      "size": 2,
+      "desc": "SHORT L1 HALF",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5571.0
+    },
+    {
+      "price": 5611,
+      "offset": 40,
+      "size": 2,
+      "desc": "SHORT L2 HALF",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5591.0
+    },
+    {
+      "price": 5631,
+      "offset": 60,
+      "size": 4,
+      "desc": "SHORT L3 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5611.0
+    },
+    {
+      "price": 5651,
+      "offset": 80,
+      "size": 4,
+      "desc": "SHORT L4 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5631.0
+    },
+    {
+      "price": 5671,
+      "offset": 100,
+      "size": 4,
+      "desc": "SHORT L5 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5651.0
+    },
+    {
+      "price": 5691,
+      "offset": 120,
+      "size": 4,
+      "desc": "SHORT L6 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5671.0
+    },
+    {
+      "price": 5711,
+      "offset": 140,
+      "size": 4,
+      "desc": "SHORT L7 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5691.0
+    },
+    {
+      "price": 5731,
+      "offset": 160,
+      "size": 4,
+      "desc": "SHORT L8 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5711.0
+    }
+  ],
+  "long_tp_profit": 0,
+  "short_tp_profit": 0,
+  "total_trades": 0,
+  "winning_trades": 0,
+  "last_update": "2026-01-29T04:41:45.370715"
+}
