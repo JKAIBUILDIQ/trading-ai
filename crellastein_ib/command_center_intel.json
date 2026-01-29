@@ -1,0 +1,51 @@
+{
+  "current_mode": 2,
+  "mode_name": "CORRECTION",
+  "sightings": [
+    {
+      "type": "BEAR_FLAG",
+      "description": "Consolidation after spike to ,570",
+      "price_level": 5570.0,
+      "confidence": "HIGH",
+      "timestamp": "2026-01-29T06:05:41.058926",
+      "active": true
+    },
+    {
+      "type": "GAP_FILL",
+      "description": "Major gap needs fill",
+      "price_level": 4650.0,
+      "confidence": "HIGH",
+      "timestamp": "2026-01-29T06:05:41.212383",
+      "active": true
+    }
+  ],
+  "events": [
+    {
+      "name": "FOMC",
+      "datetime": "2026-01-29T19:00:00",
+      "impact": "HIGH",
+      "expected": "Rate decision - volatility expected",
+      "bias": "UNKNOWN"
+    }
+  ],
+  "neo_intel": {
+    "mm_prediction": "Break above 5598 to squeeze shorts then reverse",
+    "hunt_direction": "UP",
+    "best_action": "FADE_THE_SQUEEZE",
+    "received_at": "2026-01-29T06:05:41.763387"
+  },
+  "key_levels": {
+    "gap": {
+      "price": 4650.0,
+      "description": "THE GAP - 52-65% fill probability",
+      "set_at": "2026-01-29T06:05:41.480349"
+    },
+    "short_stops": {
+      "price": 5600.0,
+      "description": "Short stops cluster - MM hunt target",
+      "set_at": "2026-01-29T06:05:41.626225"
+    }
+  },
+  "last_update": "2026-01-29T06:05:41.763402",
+  "last_mode_change": ""
+}
