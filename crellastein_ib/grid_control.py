@@ -53,18 +53,19 @@ def save_state_mode_only(updates: dict):
 
 def mode_1_bullish():
     """
-    MODE 1: BULLISH GRID (Default)
+    MODE 1: BULLISH (Trend Following)
+    Goal: MAXIMIZE GAINS
     
-    All BUYs with DCA on drops. Normal bullish trading - buying dips.
-    SHORT grid can scalp but bias is LONG.
+    Full confidence in uptrend. DCA on dips, TP on way back up.
+    Grid OFF - we know the direction!
     """
     save_state_mode_only({
         'trading_mode': 1,
         'grid_mode': 'BULLISH',
         'buy_enabled': True,      # ✅ DCA every $20 drop
-        'short_enabled': True,    # ✅ Scalp shorts active
+        'short_enabled': False,   # ❌ Grid OFF - directional mode
         'bear_flag_mode': False,
-        'hedge_active': False,    # ❌ No hedge
+        'hedge_active': False,    # ❌ No hedge needed
         'pattern_override': None,
     })
     
@@ -96,19 +97,19 @@ def mode_1_bullish():
 
 def mode_2_correction():
     """
-    MODE 2: CORRECTION GRID
+    MODE 2: CORRECTION (Choppy/Sideways)
+    Goal: SAFEGUARD AGAINST LOSSES + Profit from Chop
     
-    FULL HEDGE POSITION on top of grid.
-    Favors correction down to gap fills/necklines.
-    Grid still trades both ways. Bias is EXPECTING DOWNSIDE but still accumulating.
+    Market is choppy/uncertain. Use GRID to profit from oscillations both ways.
+    DCA ladder OFF (not trending). Grid BOTH directions ON.
     """
     save_state_mode_only({
         'trading_mode': 2,
         'grid_mode': 'CORRECTION',
-        'buy_enabled': True,      # ✅ Accumulate on way down
-        'short_enabled': True,    # ✅ Fade bounces
+        'buy_enabled': True,      # ✅ Grid BUYs at support
+        'short_enabled': True,    # ✅ Grid SHORTs at resistance
         'bear_flag_mode': False,
-        'hedge_active': True,     # ✅ FULL HEDGE expecting drop
+        'hedge_active': True,     # ✅ Hedge for insurance
         'pattern_override': 'CORRECTION',
     })
     
@@ -140,20 +141,21 @@ def mode_2_correction():
 
 def mode_3_bearish():
     """
-    MODE 3: BEARISH SIGHTING
+    MODE 3: BEARISH (Supertrend Switch)
+    Goal: KILL LONGS, SCALE IN SHORTS
     
-    Bear signal spotted (bear flag, breakdown).
-    STOPS any new buys completely. Shorts only - ride the drop.
+    Trend is reversing. STOP all new buys. Ride the new trend DOWN.
+    Scale in shorts on bounces.
     """
     save_state_mode_only({
         'trading_mode': 3,
         'grid_mode': 'BEARISH',
-        'buy_enabled': False,     # ❌ NO NEW BUYS
-        'short_enabled': True,    # ✅ Profit from drops
+        'buy_enabled': False,     # ❌ STOP NEW BUYS
+        'short_enabled': True,    # ✅ Scale in shorts on bounces
         'bear_flag_mode': True,
         'hedge_active': True,     # ✅ Hedge active
         'bear_flag_invalidation_price': 5611,
-        'pattern_override': 'BEAR_FLAG',
+        'pattern_override': 'BEARISH',
     })
     
     print("""

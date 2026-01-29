@@ -1,108 +1,183 @@
-# Trading Modes - Philosophy & Strategy
-
-## Mode Overview
-
-| Mode | Objective | SuperTrend | Mindset |
-|------|-----------|------------|---------|
-| **1 BULLISH** | MAXIMIZE GAINS | Bullish | Full risk, ride up |
-| **2 CORRECTION** | SAFEGUARD LOSSES | Bullish (expecting pullback) | Protect profits |
-| **3 BEARISH** | BREAKEVEN/PROFIT DOWN | Flipped bearish | Follow new trend |
+# Quinn/Neo Trading Mode Commands
+## Ghost Commander IBKR - MGC Futures
 
 ---
 
-## Mode 1: BULLISH 📈
+## 🎯 MODE PHILOSOPHY
 
-### Objective: MAXIMIZE GAINS
-
-**Philosophy:** Full risk on. Aggressive buying. Ride the trend up.
-
-**When to use:**
-- SuperTrend is bullish
-- No warning signs
-- Normal trending conditions
-
-**Actions:**
-- ✅ DCA buy every dip
-- ✅ Grid shorts (scalp only)
-- ❌ No hedge (full exposure)
-
-**Mindset:** *"The trend is our friend - maximize upside."*
+| Mode | Goal | Mindset |
+|------|------|---------|
+| **BULLISH** | Maximize Gains | "Ride the trend, buy every dip" |
+| **CORRECTION** | Safeguard Against Losses | "Protect profits, profit from chop" |
+| **BEARISH** | Ride the Supertrend Change | "Go with the flow down, breakeven or profit" |
 
 ---
 
-## Mode 2: CORRECTION 📊
+## 🎯 TRADING MODE COMMANDS
 
-### Objective: SAFEGUARD AGAINST LOSSES
+### Voice/Text Commands → Mode Input
 
-**Philosophy:** Protect profits. Hedge exposure. Defensive posture.
-
-**When to use:**
-- SuperTrend still bullish BUT expecting pullback
-- Parabolic move, overextended
-- Pre-FOMC, pre-news protection
-- RSI overbought
-
-**Actions:**
-- ✅ FULL HEDGE SHORT (protect profits)
-- ✅ Grid BUYs active (accumulate cheaper on way down)
-- ✅ Grid SHORTs active (capture correction moves)
-- 🎯 Target: Gap fills, necklines, support levels
-
-**Mindset:** *"Protect what we've made while positioning for next move."*
+| Command | Mode | Command |
+|---------|------|---------|
+| "Activate Bullish Grid" | Maximize gains | `python3 grid_control.py 1` |
+| "Activate Correction Grid" | Safeguard losses | `python3 grid_control.py 2` |
+| "Activate Bearish Sighting" | Ride trend change | `python3 grid_control.py 3` |
 
 ---
 
-## Mode 3: BEARISH 🐻
+## 📈 MODE 1: BULLISH (Trend Following)
+### Goal: MAXIMIZE GAINS
 
-### Objective: BREAKEVEN TO PROFIT RIDING DOWN
+**Philosophy:** Full confidence in uptrend. DCA on dips, TP on the way back up.
 
-**Philosophy:** SuperTrend changed. Go with the new trend.
+**What happens:**
+- ✅ DCA BUY ladder: ACTIVE (buy every $20 drop)
+- ❌ Grid: OFF (no need - we know the direction!)
+- ❌ Hedge SELL: OFF (no protection needed)
 
-**When to use:**
-- SuperTrend FLIPPED bearish
-- Bear flag confirmed and broke down
-- Major support broken
-- Trend reversal confirmed
-
-**Actions:**
-- ❌ STOP all new buys (don't fight the trend)
-- ✅ Ride shorts down
-- ✅ Try to breakeven or profit from drop
-
-**Mindset:** *"Trend changed - adapt and profit from the new direction."*
-
----
-
-## Quick Reference
-
+**Strategy:**
 ```
-SITUATION                     → MODE
-─────────────────────────────────────────
-SuperTrend bullish, clear     → 1 BULLISH
-Parabolic, want protection    → 2 CORRECTION
-Pre-FOMC hedge                → 2 CORRECTION
-Bear flag spotted             → 2 CORRECTION (then 3 if confirms)
-SuperTrend flipped bearish    → 3 BEARISH
-Major breakdown confirmed     → 3 BEARISH
-Pattern invalidated (new high)→ 1 BULLISH
+Price drops $20 → BUY 2 contracts
+Price drops $40 → BUY 2 contracts  
+Price drops $60 → BUY 4 contracts
+Price bounces → TPs hit on way up!
 ```
 
+**When to use:**
+- Supertrend confirmed bullish
+- Clear uptrend, no chop
+- RSI healthy (40-70 range)
+- "Ride the trend, buy the dips!"
+
 ---
 
-## Commands
+## 📊 MODE 2: CORRECTION (Choppy/Sideways)
+### Goal: SAFEGUARD AGAINST LOSSES + Profit from Chop
 
-```bash
-python3 grid_control.py 1   # Activate Bullish Grid
-python3 grid_control.py 2   # Activate Correction Grid
-python3 grid_control.py 3   # Activate Bearish Sighting
+**Philosophy:** Market is choppy/uncertain. Use GRID to profit from oscillations both ways.
+
+**What happens:**
+- ❌ DCA BUY ladder: OFF (not trending, don't stack)
+- ✅ Grid LONG levels: ACTIVE (buy at support levels)
+- ✅ Grid SHORT levels: ACTIVE (sell at resistance levels)
+- ✅ Hedge SELL: ACTIVE (insurance)
+
+**Strategy:**
+```
+Price rises to $5,591 → SHORT 2, TP at $5,571
+Price drops to $5,551 → BUY 2, TP at $5,571
+RESPAWN after each TP → Profit from every oscillation!
 ```
 
-**Voice Commands:**
-- "Activate Bullish Grid" → Mode 1
-- "Activate Correction Grid" → Mode 2
-- "Activate Bearish Sighting" → Mode 3
+**When to use:**
+- Parabolic exhaustion (consolidation)
+- Pre-news chop (FOMC, NFP)
+- Range-bound / sideways market
+- "Profit from the whipsaw!"
 
 ---
 
-*Ghost Commander IBKR - MGC Futures*
-*Aligned with MT5 Ghost Commander v0201*
+## 🐻 MODE 3: BEARISH (Supertrend Switch)
+### Goal: KILL LONGS, SCALE IN SHORTS
+
+**Philosophy:** Trend is reversing. CLOSE all longs. Ride the new trend DOWN.
+
+**What happens:**
+- ❌ DCA BUY ladder: OFF
+- ❌ Grid LONG levels: OFF
+- ✅ **STOP NEW BUYS** (exit before more damage!)
+- ✅ **SCALE IN SHORTS** (DCA shorts on bounces)
+- ✅ Hedge SELL: ACTIVE
+
+**Strategy:**
+```
+On activation → Stop all new BUY orders
+Price bounces $20 → SHORT 2 contracts
+Price bounces $40 → SHORT 2 contracts
+Price drops → TPs hit, ride it down!
+```
+
+**When to use:**
+- Supertrend flips bearish
+- Major support breakdown
+- Bear flag confirms
+- "The trend changed - flip with it!"
+
+**Exit to Mode 1 when:**
+- New ATH (reversal failed)
+- Supertrend flips back bullish
+
+---
+
+## 🔄 WHIPSAW GRID (Mode 2 Only - Correction/Choppy)
+
+Grid is ONLY active in Mode 2 for choppy/sideways markets:
+
+```
+SHORT LEVELS (fade rises):
+$5,611 ─── SHORT 2 ─── TP @ $5,591
+$5,591 ─── SHORT 2 ─── TP @ $5,571
+         │
+$5,571 ══╪══ CENTER ══════════════════
+         │
+$5,551 ─── BUY 2 ──── TP @ $5,571
+$5,531 ─── BUY 2 ──── TP @ $5,551
+$5,511 ─── BUY 4 ──── TP @ $5,531
+$5,491 ─── BUY 4 ──── TP @ $5,511
+...down to $4,650 (THE GAP)
+```
+
+**RESPAWN:** After TP hit, level resets for next cycle
+
+**Grid OFF in Mode 1 & 3** - those modes are directional (trend following)
+
+---
+
+## 📋 QUICK REFERENCE
+
+| Situation | Command | Mode | Goal |
+|-----------|---------|------|------|
+| Normal uptrend | `grid_control.py 1` | BULLISH | Maximize gains |
+| Parabolic/overextended | `grid_control.py 2` | CORRECTION | Safeguard profits |
+| Bear flag spotted | `grid_control.py 3` | BEARISH | Ride it down |
+| Divergence detected | `grid_control.py 3` | BEARISH | Ride it down |
+| Pre-FOMC/news | `grid_control.py 2` | CORRECTION | Safeguard profits |
+| Support breakdown | `grid_control.py 3` | BEARISH | Ride it down |
+| New ATH / pattern fails | `grid_control.py 1` | BULLISH | Back to maximize |
+
+---
+
+## 💰 P&L EXPECTATIONS BY MODE
+
+| Mode | Best Case | Worst Case | Philosophy |
+|------|-----------|------------|------------|
+| **Bullish** | Big gains on rally | Losses on drop | "Go for max profit" |
+| **Correction** | Protected both ways | Small hedge loss if rally | "Protect what I have" |
+| **Bearish** | Profit riding down | Breakeven if reverses | "Don't fight the trend" |
+
+---
+
+## 🎓 PATTERN RECOGNITION TRIGGERS
+
+### Switch to Mode 2 (Correction) when:
+- RSI > 80 (overbought)
+- Price > $150 above EMA20
+- 5-day gain > 10%
+- Major news event upcoming (FOMC, NFP)
+
+### Switch to Mode 3 (Bearish) when:
+- Bear flag pattern (consolidation after spike)
+- RSI divergence (price up, RSI down)
+- Failed breakout attempt
+- Support breakdown imminent
+
+### Switch to Mode 1 (Bullish) when:
+- Bear flag invalidated (new high)
+- RSI returns to 40-60 range
+- Pullback complete, uptrend resumes
+- Pattern resolves bullishly
+
+---
+
+*Ghost Commander IBKR - Aligned with MT5 v0201*
+*Generated: January 29, 2026*
