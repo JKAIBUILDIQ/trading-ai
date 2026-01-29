@@ -98,20 +98,21 @@ class CasperLive:
         self.connected = False
         self.contract = None
         
-        # Settings
+        # Settings - HALF SIZE FOR TESTING (50% of MT5 equivalent)
+        # Full MT5: [5, 5, 10, 10, 20] = 50 contracts (0.5, 0.5, 1.0, 1.0, 2.0 lots)
         self.settings = {
-            # Drop-buy settings
+            # Drop-buy settings - HALF SIZE
             'trigger_drop': 10.0,           # $10 drop triggers buy
-            'lot_ladder': [1, 1, 2, 2, 4],  # Contracts per level (simplified from lots)
+            'lot_ladder': [2, 2, 5, 5, 10], # HALF SIZE! (full=[5,5,10,10,20])
             'max_levels': 5,
             
-            # TP settings
+            # TP settings (same as MT5)
             'tp_pips': 20.0,                # +$20 from avg entry
             'trail_start': 10.0,            # Start trailing at +$10
             'trail_distance': 8.0,          # Trail $8 behind
             
-            # Safety
-            'max_contracts': 10,
+            # Safety - HALF SIZE LIMITS
+            'max_contracts': 24,            # Sum of ladder (2+2+5+5+10)
             'entry_cooldown_seconds': 120,  # 2 min between entries
         }
         

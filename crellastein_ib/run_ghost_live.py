@@ -115,21 +115,24 @@ class GhostCommanderLive:
         # Runner
         self.runner_position = None
         
-        # Settings
+        # Settings - HALF SIZE FOR TESTING (50% of MT5 equivalent)
+        # Full size would be: initial=5, increment=2-3
         self.settings = {
             # Entry settings
             'supertrend_period': 10,
             'supertrend_multiplier': 3.0,
-            'initial_contracts': 1,
+            'initial_contracts': 2,         # HALF SIZE (full=5, 0.5 lots)
             
-            # DCA settings
-            'dca_pip_spacing': 30,          # Pips between DCA levels
+            # DCA settings - HALF SIZE LADDER
+            # Full: 5, 7, 9, 11, 13 = 45 contracts max
+            # Half: 2, 3, 4, 5, 6 = 20 contracts max
+            'dca_pip_spacing': 30,          # Pips between DCA levels ($3 drop per level)
             'dca_max_levels': 5,            # Max DCA positions
-            'dca_initial_lots': 0.5,        # Starting lots
-            'dca_lot_increment': 0.25,      # Add per level
+            'dca_base_contracts': 2,        # HALF SIZE base (full=5)
+            'dca_increment': 1,             # HALF SIZE increment (full=2)
             'dca_min_entry_gap': 20,        # Min points between entries
             
-            # TP settings
+            # TP settings (same as MT5)
             'tp1_pips': 30,                 # +$3
             'tp2_pips': 60,                 # +$6
             'tp3_pips': 90,                 # +$9
@@ -140,8 +143,8 @@ class GhostCommanderLive:
             'runner_enabled': True,
             'runner_profit_threshold': 500,
             
-            # Safety settings
-            'max_total_contracts': 10,
+            # Safety settings - HALF SIZE LIMITS
+            'max_total_contracts': 20,      # HALF SIZE (full=40)
             'entry_cooldown_seconds': 300,  # 5 min between entries
             'tp_cooldown_seconds': 10,
         }
@@ -472,11 +475,11 @@ class GhostCommanderLive:
                 logger.debug("Anti-stack: Too close to existing position")
                 return None
         
-        # Calculate contracts for this level
-        lots = self.settings['dca_initial_lots'] + (
-            self.settings['dca_lot_increment'] * self.dca_ladder_count
+        # Calculate contracts for this level - HALF SIZE LADDER
+        # Level 1=2, Level 2=3, Level 3=4, Level 4=5, Level 5=6
+        contracts = self.settings['dca_base_contracts'] + (
+            self.settings['dca_increment'] * self.dca_ladder_count
         )
-        contracts = max(1, int(lots))
         
         logger.info(f"📉 DCA TRIGGER: Drop {drop_pips:.1f} pips >= {required_drop} required")
         
