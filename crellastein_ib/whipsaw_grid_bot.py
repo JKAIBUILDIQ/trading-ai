@@ -77,6 +77,12 @@ class WhipsawState:
     active: bool = True
     center_price: float = 0
     
+    # ═══════════════════════════════════════════════════════════════════
+    # BEAR FLAG MODE - Block new BUYs, only allow SHORTs
+    # ═══════════════════════════════════════════════════════════════════
+    bear_flag_mode: bool = True  # ENABLED - waiting for breakdown
+    bear_flag_invalidation_price: float = 5611  # Price above which bear flag is debunked
+    
     # Positions
     long_contracts: int = 0
     long_avg_entry: float = 0
@@ -274,6 +280,19 @@ class WhipsawGridBot:
     
     def check_buy_triggers(self, price: float) -> Optional[Dict]:
         """Check if any buy level triggered"""
+        # ═══════════════════════════════════════════════════════════════════
+        # BEAR FLAG MODE - Block all new BUY orders
+        # ═══════════════════════════════════════════════════════════════════
+        if self.state.bear_flag_mode:
+            # Check if bear flag should be invalidated (price breaks higher)
+            if price >= self.state.bear_flag_invalidation_price:
+                logger.info(f"🐻❌ BEAR FLAG INVALIDATED! Price ${price:.2f} >= ${self.state.bear_flag_invalidation_price}")
+                self.state.bear_flag_mode = False
+                self._save_state()
+            else:
+                # Bear flag still active - NO BUYS
+                return None
+        
         for level in self.state.buy_levels:
             if level['status'] == 'PENDING':
                 if price <= level['price'] * 1.002:  # Within 0.2%
@@ -489,8 +508,9 @@ class WhipsawGridBot:
         
         net_pos = self.get_position()
         
-        # Log status
-        logger.info(f"💰 Price: ${price:.2f} | Net: {net_pos} | L:{self.state.long_contracts} S:{self.state.short_contracts}")
+        # Log status with bear flag indicator
+        bear_flag = "🐻 BEAR FLAG" if self.state.bear_flag_mode else ""
+        logger.info(f"💰 Price: ${price:.2f} | Net: {net_pos} | L:{self.state.long_contracts} S:{self.state.short_contracts} {bear_flag}")
         
         # Check LONG take profits first
         long_tp = self.check_long_tp(price)

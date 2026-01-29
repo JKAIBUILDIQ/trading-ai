@@ -1,6 +1,8 @@
 {
   "active": true,
   "center_price": 5571.0,
+  "bear_flag_mode": true,
+  "bear_flag_invalidation_price": 5611,
   "long_contracts": 0,
   "long_avg_entry": 0,
   "short_contracts": 2,
@@ -185,5 +187,5 @@
   "short_tp_profit": 0,
   "total_trades": 1,
   "winning_trades": 0,
-  "last_update": "2026-01-29T04:43:49.975820"
+  "last_update": "2026-01-29T05:05:36.526452"
 }
