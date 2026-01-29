@@ -1,0 +1,119 @@
+{
+  "timestamp": "2026-01-29T03:56:41.232672",
+  "current_price": 5561.2998046875,
+  "high_of_move": 5626.7998046875,
+  "primary_target": 5526.54,
+  "worst_case_target": 3950,
+  "wyckoff_phase": "MARKUP",
+  "wyckoff_warnings": [
+    "\u26a0\ufe0f Price extended 26.0% above 50 MA",
+    "\u26a0\ufe0f Near psychological $5500 - watch for resistance"
+  ],
+  "elliott_wave": "Wave 5 of III",
+  "elliott_completion": 100,
+  "fomc_date": "2026-01-29",
+  "fomc_expected_direction": "HOLD",
+  "fomc_impact_estimate": -0.625,
+  "ghost_mode": "DEFENSIVE",
+  "position_recommendation": "REDUCE - Take profits, tighten stops",
+  "dca_allowed": false,
+  "stop_loss_level": 5711.201801757812,
+  "targets": [
+    {
+      "price": 5526.54,
+      "percentage_drop": 0.6,
+      "method": "FOMC Impact",
+      "probability": 70,
+      "description": "Expected FOMC weighted impact (-0.6%)",
+      "action": "HOLD"
+    },
+    {
+      "price": 5231.08,
+      "percentage_drop": 7.0,
+      "method": "Fibonacci 23.6%",
+      "probability": 85,
+      "description": "23.6% retracement of move from $3,950",
+      "action": "HOLD"
+    },
+    {
+      "price": 5000,
+      "percentage_drop": 11.1,
+      "method": "Elliott Wave",
+      "probability": 25,
+      "description": "Wave 4 Normal - Psychological",
+      "action": "ACCUMULATE"
+    },
+    {
+      "price": 4950,
+      "percentage_drop": 12.0,
+      "method": "Wyckoff",
+      "probability": 50,
+      "description": "Wyckoff LPS_1 - MEDIUM",
+      "action": "ACCUMULATE"
+    },
+    {
+      "price": 4850,
+      "percentage_drop": 13.8,
+      "method": "Wyckoff",
+      "probability": 50,
+      "description": "Wyckoff LPS_2 - STRONG",
+      "action": "ACCUMULATE"
+    },
+    {
+      "price": 4788.4,
+      "percentage_drop": 14.9,
+      "method": "Fibonacci 50.0%",
+      "probability": 50,
+      "description": "50.0% retracement of move from $3,950",
+      "action": "STRONG_BUY"
+    },
+    {
+      "price": 4700,
+      "percentage_drop": 16.5,
+      "method": "Elliott Wave",
+      "probability": 25,
+      "description": "Wave 4 Deep - 38.2% of Wave III",
+      "action": "ACCUMULATE"
+    },
+    {
+      "price": 4590.54,
+      "percentage_drop": 18.4,
+      "method": "Fibonacci 61.8%",
+      "probability": 35,
+      "description": "61.8% retracement of move from $3,950",
+      "action": "AGGRESSIVE_BUY"
+    },
+    {
+      "price": 4500,
+      "percentage_drop": 20.0,
+      "method": "Elliott Wave",
+      "probability": 25,
+      "description": "Wave 4 Extreme - 50% retracement",
+      "action": "STRONG_BUY"
+    },
+    {
+      "price": 4308.84,
+      "percentage_drop": 23.4,
+      "method": "Fibonacci 78.6%",
+      "probability": 20,
+      "description": "78.6% retracement of move from $3,950",
+      "action": "MAX_ACCUMULATE"
+    },
+    {
+      "price": 4200,
+      "percentage_drop": 25.4,
+      "method": "Elliott Wave",
+      "probability": 25,
+      "description": "Wave 3 Top - Critical Support",
+      "action": "STRONG_BUY"
+    },
+    {
+      "price": 3950,
+      "percentage_drop": 29.8,
+      "method": "Elliott Wave",
+      "probability": 25,
+      "description": "Wave 4 Low - INVALIDATION",
+      "action": "STRONG_BUY"
+    }
+  ]
+}

@@ -178,6 +178,37 @@ class GhostCommanderLive:
         self.last_tp_time = None
         self.last_entry_time = None
         
+        # ═══ CORRECTION MODE (activated by Claudia's analysis) ═══
+        # FOMC Jan 29, 2026 - Wave 5 completion warning
+        self.correction_mode = True
+        self.correction_settings = {
+            'mode': 'DEFENSIVE',
+            'reason': 'FOMC + Elliott Wave 5 completion (100%)',
+            'new_entries_allowed': False,      # No NEW initial entries
+            'dca_allowed': False,              # No DCA during FOMC
+            'tp_aggressive': True,             # Take profits quickly
+            'tp1_dollars': 5.0,                # Quick TP1 at +$5
+            'tp2_dollars': 10.0,               # TP2 at +$10
+            'stop_loss_enabled': True,
+            'stop_loss_price': 5430.0,         # Below support
+            'correction_targets': [
+                5527,   # FOMC impact target
+                5231,   # Fib 23.6%
+                5000,   # Psychological / Wave 4 normal
+                4850,   # Wyckoff support
+                4700,   # Deep support
+            ],
+            're_entry_levels': [5000, 4850, 4700, 4500, 4200],
+        }
+        
+        if self.correction_mode:
+            logger.warning("⚠️ CORRECTION MODE ACTIVE ⚠️")
+            logger.warning(f"   Reason: {self.correction_settings['reason']}")
+            logger.warning(f"   New entries: {self.correction_settings['new_entries_allowed']}")
+            logger.warning(f"   DCA allowed: {self.correction_settings['dca_allowed']}")
+            logger.warning(f"   TP Aggressive: tp1=${self.correction_settings['tp1_dollars']}")
+            logger.warning(f"   Targets: {self.correction_settings['correction_targets'][:3]}")
+        
         # Candle cache
         self.candle_cache = []
         self.candle_cache_time = None
@@ -441,7 +472,13 @@ class GhostCommanderLive:
         REQUIRES: 
         1. SuperTrend = BULLISH (trend = 1)
         2. NEO approval (if available)
+        3. NOT in correction mode (or correction allows entries)
         """
+        # CORRECTION MODE CHECK
+        if self.correction_mode and not self.correction_settings.get('new_entries_allowed', True):
+            logger.debug("CORRECTION MODE: New entries blocked")
+            return None
+        
         # Already have positions
         if self.dca_total_contracts > 0:
             return None
@@ -508,6 +545,11 @@ class GhostCommanderLive:
           Level 4: $30 drop
           Level 5: $40 drop
         """
+        # CORRECTION MODE CHECK
+        if self.correction_mode and not self.correction_settings.get('dca_allowed', True):
+            logger.debug("CORRECTION MODE: DCA blocked")
+            return None
+        
         if self.dca_total_contracts == 0:
             return None  # Use check_initial_entry first
         
@@ -629,33 +671,43 @@ class GhostCommanderLive:
         # Calculate profit in DOLLARS (not pips!)
         profit_dollars = current_price - self.dca_average_entry
         
-        # TP3: Full exit at +$25
-        if profit_dollars >= self.settings['tp3_dollars']:
+        # Use AGGRESSIVE settings in correction mode
+        if self.correction_mode and self.correction_settings.get('tp_aggressive', False):
+            tp1 = self.correction_settings.get('tp1_dollars', 5.0)
+            tp2 = self.correction_settings.get('tp2_dollars', 10.0)
+            tp3 = tp2 + 5.0  # TP3 = TP2 + $5 in correction mode
+        else:
+            tp1 = self.settings['tp1_dollars']
+            tp2 = self.settings['tp2_dollars']
+            tp3 = self.settings['tp3_dollars']
+        
+        # TP3: Full exit
+        if profit_dollars >= tp3:
             return {
                 'action': 'CLOSE_ALL',
-                'level': 'TP3',
+                'level': 'TP3_CORRECTION' if self.correction_mode else 'TP3',
                 'profit_dollars': profit_dollars,
                 'contracts': self.dca_total_contracts
             }
         
-        # TP2: Close 30% at +$15
-        if not self.tp2_hit and profit_dollars >= self.settings['tp2_dollars']:
+        # TP2: Close 30%
+        if not self.tp2_hit and profit_dollars >= tp2:
             close_pct = self.settings['tp2_close_percent'] / 100
             contracts = max(1, int(self.dca_total_contracts * close_pct))
             return {
                 'action': 'PARTIAL_CLOSE',
-                'level': 'TP2',
+                'level': 'TP2_CORRECTION' if self.correction_mode else 'TP2',
                 'profit_dollars': profit_dollars,
                 'contracts': contracts
             }
         
-        # TP1: Close 30% at +$7
-        if not self.tp1_hit and profit_dollars >= self.settings['tp1_dollars']:
+        # TP1: Close 30%
+        if not self.tp1_hit and profit_dollars >= tp1:
             close_pct = self.settings['tp1_close_percent'] / 100
             contracts = max(1, int(self.dca_total_contracts * close_pct))
             return {
                 'action': 'PARTIAL_CLOSE',
-                'level': 'TP1',
+                'level': 'TP1_CORRECTION' if self.correction_mode else 'TP1',
                 'profit_dollars': profit_dollars,
                 'contracts': contracts
             }
