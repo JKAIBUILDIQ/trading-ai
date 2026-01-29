@@ -1,0 +1,91 @@
+{
+  "calls": [
+    {
+      "id": "NEO_20260129_060057",
+      "timestamp": "2026-01-29T06:00:57.083333",
+      "price_at_call": 5570.0,
+      "recommended_mode": 1,
+      "mode_name": "BULLISH",
+      "confidence": 0.85,
+      "reasoning": [
+        "\ud83d\udcc8 BULLISH CALL: Trend intact, maximize gains"
+      ],
+      "technical_snapshot": {
+        "timestamp": "2026-01-29T06:00:57.083304",
+        "price": 5570.0,
+        "supertrend_direction": "BULLISH",
+        "supertrend_value": 0,
+        "rsi": 50,
+        "rsi_signal": "NEUTRAL",
+        "ema_20": 0,
+        "price_vs_ema": 0,
+        "overextended": false,
+        "pattern_detected": "NONE",
+        "composite_score": 50
+      },
+      "price_24h_later": null,
+      "actual_move": null,
+      "was_correct": null,
+      "lesson_learned": null
+    },
+    {
+      "id": "NEO_20260129_060103",
+      "timestamp": "2026-01-29T06:01:03.619487",
+      "price_at_call": 5570.0,
+      "recommended_mode": 3,
+      "mode_name": "BEARISH",
+      "confidence": 0.8,
+      "reasoning": [
+        "\ud83d\udc3b BEARISH CALL: Multiple reversal signals",
+        "Pattern detected: bear_flag"
+      ],
+      "technical_snapshot": {
+        "timestamp": "2026-01-29T06:01:03.619454",
+        "price": 5570.0,
+        "supertrend_direction": "BULLISH",
+        "supertrend_value": 0,
+        "rsi": 50,
+        "rsi_signal": "NEUTRAL",
+        "ema_20": 0,
+        "price_vs_ema": 0,
+        "overextended": false,
+        "pattern_detected": "NONE",
+        "composite_score": 50
+      },
+      "price_24h_later": null,
+      "actual_move": null,
+      "was_correct": null,
+      "lesson_learned": null
+    },
+    {
+      "id": "NEO_20260129_060111",
+      "timestamp": "2026-01-29T06:01:11.288270",
+      "price_at_call": 5570.0,
+      "recommended_mode": 1,
+      "mode_name": "BULLISH",
+      "confidence": 0.85,
+      "reasoning": [
+        "\ud83d\udcc8 BULLISH CALL: Trend intact, maximize gains",
+        "Pattern: consolidation - choppy market"
+      ],
+      "technical_snapshot": {
+        "timestamp": "2026-01-29T06:01:11.288240",
+        "price": 5570.0,
+        "supertrend_direction": "BULLISH",
+        "supertrend_value": 0,
+        "rsi": 50,
+        "rsi_signal": "NEUTRAL",
+        "ema_20": 0,
+        "price_vs_ema": 0,
+        "overextended": false,
+        "pattern_detected": "NONE",
+        "composite_score": 50
+      },
+      "price_24h_later": null,
+      "actual_move": null,
+      "was_correct": null,
+      "lesson_learned": null
+    }
+  ],
+  "last_updated": "2026-01-29T06:01:11.288490"
+}
