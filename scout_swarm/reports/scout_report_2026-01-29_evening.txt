@@ -1,0 +1,67 @@
+══════════════════════════════════════════════════
+🔍 SCOUT REPORT - 2026-01-29
+   Scanned: 18 stocks
+══════════════════════════════════════════════════
+
+🟢 TOP BOUNCE SETUPS (Buy the dip):
+
+#1 CRM @ $214.08
+   Move: -6.7% (3d) | RSI: 14
+   Score: 85/100 (HIGH)
+   Tech: The stock CRM is significantly oversold with a RSI(14) of 14.4, indicating potential for mean reversion. Additionally, the high volume on move (2.0x vs 20d avg) suggests capitulation or exhaustion. The stock is also at 52W low extremes (-38.7%), increasing the potential for a reversal. Lastly, today's gap of -5.0% may indicate potential for a gap fill.
+   Fund: Quality tech company with temporary selloff likely due to sector rotation, no fundamental issues detected. Oversold blue-chip with strong fundamentals.
+   Entry: $209.80-$216.22
+   Target: $235.49 | Stop: $203.38
+
+#2 COIN @ $199.18
+   Move: -6.7% (3d) | RSI: 21
+   Score: 85/100 (HIGH)
+   Tech: The stock is significantly oversold with an RSI of 21.1 (below the 30 threshold), indicating a potential rebound. Additionally, it's currently at a 52-week low (-55.2% from high) and has experienced high volume on the recent move (-1.6x average). The stock also had a small gap today (-1.2%) which could potentially fill.
+   Fund: Sector rotation and macro-driven crypto market correction, no company-specific issues. Oversold blue chip with reasonable P/E and strong fundamentals.
+   Entry: $195.20-$201.17
+   Target: $219.10 | Stop: $189.22
+
+#3 MSFT @ $433.50
+   Move: -7.8% (3d) | RSI: 33
+   Score: 81/100 (HIGH)
+   Tech: MSFT's RSI is significantly low at 32.6, indicating potential oversold conditions. Additionally, the stock has a high volume ratio of 4.0x compared to its 20-day average, suggesting possible capitulation or exhaustion. Furthermore, it is currently 22.0% away from its 52-week high and has a large gap today (-8.7%), which could indicate potential for a gap fill.
+   Fund: Microsoft's selloff likely reflects sector rotation/macroeconomic concerns, not company-specific issues. High-quality fundamentals with no earnings misses or structural problems. Oversold blue-chip with strong cloud growth and cash flow.
+   Entry: $424.83-$437.84
+   Target: $476.85 | Stop: $411.82
+
+#4 NOW @ $116.73
+   Move: -14.4% (3d) | RSI: 22
+   Score: 81/100 (HIGH)
+   Tech: The stock is significantly oversold as indicated by the RSI of 22.3, which is below the threshold of 30. The high volume on a 9.9% one-day decline suggests potential capitulation or exhaustion. Additionally, the stock is currently at -44.8% from its 52-week high, indicating it has reached an extreme level and may be due for a rebound.
+   Fund: Large-cap tech stock with high P/E; recent drop likely due to sector rotation or market-wide correction. No company-specific issues indicated, suggesting temporary selloff with mean reversion potential.
+   Entry: $114.40-$117.90
+   Target: $128.40 | Stop: $110.89
+
+#5 MSTR @ $143.19
+   Move: -10.8% (3d) | RSI: 36
+   Score: 79/100 (HIGH)
+   Tech: The stock is significantly oversold as indicated by the RSI of 36.3, which is below the oversold threshold of 30. Additionally, the high volume on a downward move could suggest capitulation or exhaustion. The stock is also near its 52-week low, which increases the potential for a reversal. Lastly, there was a small gap today, although not substantial, it might indicate a potential gap fill.
+   Fund: Quality tech company with low P/E ratio; recent selloff likely due to sector rotation and macro concerns, not company-specific issues. Oversold valuation suggests mean reversion potential.
+   Entry: $140.33-$144.62
+   Target: $157.51 | Stop: $136.03
+
+
+🔴 TOP FADE SETUPS (Short the rip):
+
+#1 CLSK @ $12.59
+   Move: +1.2% (3d) | RSI: 54
+   Score: 67/100 (MEDIUM)
+   Tech: The stock is currently not extremely oversold (RSI 53.7) and it's not at its 52-week high or low extremes. However, the stock is close to its 52-week high with a distance of -46.7%, which suggests potential for a correction. The gap today also indicates some selling pressure. Therefore, a 'FADE' might be considered.
+   Fund: Stock's minor 1.2% rise in 3 days lacks clear fundamental catalyst. P/E of 11.2 suggests reasonable valuation, but no evidence of oversold blue-chip status or sector rotation. No reported earnings misses or structural issues, but insufficient data to confirm high-quality fundamentals.
+   Entry: $12.46-$12.84
+   Target: $11.33 | Stop: $13.22
+
+#2 CIFR @ $17.70
+   Move: +7.3% (3d) | RSI: 56
+   Score: 63/100 (MEDIUM)
+   Tech: The stock is currently at its 52-week high, indicating it may have reached an extreme point. The RSI of 55.7 is not extremely overbought but still suggests some level of overbought conditions. The high volume on the recent move could suggest exhaustion. However, the gap today is minimal and doesn't significantly contribute to a potential reversal. Therefore, it might be a good opportunity to consider 'FADE'ing this stock.
+   Fund: P/E ratio is N/A indicating potential unprofitability or structural issues; no clear fundamental catalyst for the move; lacks quality company characteristics.
+   Entry: $17.52-$18.05
+   Target: $15.93 | Stop: $18.59
+
+══════════════════════════════════════════════════

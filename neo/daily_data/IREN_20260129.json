@@ -13,14 +13,14 @@
   "entry_level": 51.78,
   "stop_loss": 57.9,
   "take_profit": 69.23,
-  "actual_high": 0.0,
-  "actual_low": 0.0,
-  "actual_close": 0.0,
+  "actual_high": 62.09000015258789,
+  "actual_low": 56.720001220703125,
+  "actual_close": 59.83000183105469,
   "hunt_hit": false,
   "direction_correct": false,
   "tp_hit": false,
-  "sl_hit": false,
-  "pnl_pips": 0.0,
+  "sl_hit": true,
+  "pnl_pips": -3.109996795654297,
   "score": 0,
-  "lesson_learned": ""
+  "lesson_learned": "Poor prediction - check BTC divergence"
 }

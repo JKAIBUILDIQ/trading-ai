@@ -1,0 +1,147 @@
+{
+  "last_updated": "2026-01-29",
+  "analysts": {
+    "NEO": {
+      "specialty": "Gold/Commodities (XAUUSD, MGC)",
+      "accuracy_by_asset": {
+        "XAUUSD": {
+          "calls": 15,
+          "correct": 12,
+          "accuracy": 0.80,
+          "avg_grade": "A",
+          "last_5": ["A", "B", "A", "A", "B"],
+          "confidence_weight": 0.85
+        },
+        "MGC": {
+          "calls": 10,
+          "correct": 8,
+          "accuracy": 0.80,
+          "avg_grade": "A-",
+          "last_5": ["A", "A", "B", "A", "B"],
+          "confidence_weight": 0.85
+        },
+        "IREN": {
+          "calls": 4,
+          "correct": 1,
+          "accuracy": 0.25,
+          "avg_grade": "D-",
+          "last_5": ["F", "F", "C", "D"],
+          "confidence_weight": 0.20,
+          "latest": {
+            "date": "2026-01-29",
+            "grade": "F",
+            "predicted": "bullish",
+            "actual": "-4.9%",
+            "lesson": "Poor prediction - check BTC divergence"
+          }
+        },
+        "stocks_general": {
+          "calls": 5,
+          "correct": 2,
+          "accuracy": 0.40,
+          "avg_grade": "C-",
+          "confidence_weight": 0.40
+        }
+      },
+      "overall_accuracy": 0.72,
+      "strength": "Commodities, macro trends",
+      "weakness": "Individual stocks, earnings plays"
+    },
+    "CLAUDIA": {
+      "specialty": "BTC Miners & Hyperscaling (IREN, CLSK, CIFR, MARA)",
+      "accuracy_by_asset": {
+        "IREN": {
+          "calls": 8,
+          "correct": 6,
+          "accuracy": 0.75,
+          "avg_grade": "B+",
+          "last_5": ["B", "A", "B", "C", "A"],
+          "confidence_weight": 0.75
+        },
+        "CLSK": {
+          "calls": 5,
+          "correct": 3,
+          "accuracy": 0.60,
+          "avg_grade": "B-",
+          "last_5": ["C", "B", "B", "D", "A"],
+          "confidence_weight": 0.60
+        },
+        "CIFR": {
+          "calls": 4,
+          "correct": 2,
+          "accuracy": 0.50,
+          "avg_grade": "C+",
+          "last_5": ["C", "B", "D", "C"],
+          "confidence_weight": 0.50
+        },
+        "XAUUSD": {
+          "calls": 2,
+          "correct": 1,
+          "accuracy": 0.50,
+          "avg_grade": "C",
+          "confidence_weight": 0.45
+        }
+      },
+      "overall_accuracy": 0.65,
+      "strength": "BTC miners, AI infrastructure thesis",
+      "weakness": "Timing, gold/commodities"
+    },
+    "META": {
+      "specialty": "Technical Analysis (All Assets)",
+      "accuracy_by_asset": {
+        "support_resistance": {
+          "calls": 20,
+          "correct": 15,
+          "accuracy": 0.75,
+          "avg_grade": "B+",
+          "confidence_weight": 0.75
+        },
+        "trend_identification": {
+          "calls": 15,
+          "correct": 12,
+          "accuracy": 0.80,
+          "avg_grade": "A-",
+          "confidence_weight": 0.80
+        },
+        "sweep_identification": {
+          "calls": 10,
+          "correct": 7,
+          "accuracy": 0.70,
+          "avg_grade": "B",
+          "confidence_weight": 0.70
+        }
+      },
+      "overall_accuracy": 0.75,
+      "strength": "Pattern recognition, levels",
+      "weakness": "Fundamental catalysts"
+    }
+  },
+  "weighting_rules": {
+    "position_sizing": {
+      "description": "Size positions based on analyst confidence in that specific asset",
+      "formula": "base_size * analyst_confidence_weight",
+      "example": {
+        "NEO_gold_call": "10 contracts * 0.85 = ~8-9 contracts full size",
+        "NEO_IREN_call": "10 contracts * 0.30 = ~3 contracts (discount heavily)"
+      }
+    },
+    "consensus_weighting": {
+      "description": "When multiple analysts agree, weight by their asset-specific accuracy",
+      "example": {
+        "IREN_call": {
+          "CLAUDIA": {"opinion": "bullish", "weight": 0.75},
+          "NEO": {"opinion": "bullish", "weight": 0.30},
+          "META": {"opinion": "bullish", "weight": 0.70},
+          "weighted_consensus": "(0.75 + 0.30 + 0.70) / 3 = 0.58 (MEDIUM confidence)"
+        }
+      }
+    },
+    "disagreement_handling": {
+      "description": "When analysts disagree, favor the specialist",
+      "example": {
+        "gold_trade": "NEO (0.85) vs CLAUDIA (0.45) → Follow NEO",
+        "IREN_trade": "CLAUDIA (0.75) vs NEO (0.30) → Follow CLAUDIA"
+      }
+    }
+  }
+}

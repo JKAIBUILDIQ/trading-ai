@@ -1,0 +1,165 @@
+{
+  "scan_time": "2026-01-29T23:04:14.615532",
+  "scan_date": "2026-01-29",
+  "stocks_scanned": 18,
+  "bounce_candidates": 16,
+  "fade_candidates": 2,
+  "top_bounces": [
+    {
+      "symbol": "CRM",
+      "price": 214.0800018310547,
+      "change_1d": -6.088789469213573,
+      "change_3d": -6.6782879132694095,
+      "rsi": 14.373348806693542,
+      "volume_ratio": 1.9952167480377914,
+      "technical_score": 85,
+      "fundamental_score": 85,
+      "combined_score": 85.0,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock CRM is significantly oversold with a RSI(14) of 14.4, indicating potential for mean reversion. Additionally, the high volume on move (2.0x vs 20d avg) suggests capitulation or exhaustion. The stock is also at 52W low extremes (-38.7%), increasing the potential for a reversal. Lastly, today's gap of -5.0% may indicate potential for a gap fill.",
+      "fundamental_reason": "Quality tech company with temporary selloff likely due to sector rotation, no fundamental issues detected. Oversold blue-chip with strong fundamentals.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        209.8,
+        216.22
+      ],
+      "target": 235.49,
+      "stop": 203.38
+    },
+    {
+      "symbol": "COIN",
+      "price": 199.17999267578125,
+      "change_1d": -4.894236908974181,
+      "change_3d": -6.6985213312486085,
+      "rsi": 21.105712194643715,
+      "volume_ratio": 1.5861739919822377,
+      "technical_score": 85,
+      "fundamental_score": 85,
+      "combined_score": 85.0,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock is significantly oversold with an RSI of 21.1 (below the 30 threshold), indicating a potential rebound. Additionally, it's currently at a 52-week low (-55.2% from high) and has experienced high volume on the recent move (-1.6x average). The stock also had a small gap today (-1.2%) which could potentially fill.",
+      "fundamental_reason": "Sector rotation and macro-driven crypto market correction, no company-specific issues. Oversold blue chip with reasonable P/E and strong fundamentals.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        195.2,
+        201.17
+      ],
+      "target": 219.1,
+      "stop": 189.22
+    },
+    {
+      "symbol": "MSFT",
+      "price": 433.5,
+      "change_1d": -9.993149179840488,
+      "change_3d": -7.820872432331061,
+      "rsi": 32.6271593341136,
+      "volume_ratio": 4.00333817460109,
+      "technical_score": 75,
+      "fundamental_score": 90,
+      "combined_score": 81.0,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "MSFT's RSI is significantly low at 32.6, indicating potential oversold conditions. Additionally, the stock has a high volume ratio of 4.0x compared to its 20-day average, suggesting possible capitulation or exhaustion. Furthermore, it is currently 22.0% away from its 52-week high and has a large gap today (-8.7%), which could indicate potential for a gap fill.",
+      "fundamental_reason": "Microsoft's selloff likely reflects sector rotation/macroeconomic concerns, not company-specific issues. High-quality fundamentals with no earnings misses or structural problems. Oversold blue-chip with strong cloud growth and cash flow.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        424.83,
+        437.84
+      ],
+      "target": 476.85,
+      "stop": 411.82
+    },
+    {
+      "symbol": "NOW",
+      "price": 116.7300033569336,
+      "change_1d": -9.94444703427142,
+      "change_3d": -14.383154985832402,
+      "rsi": 22.322424766498443,
+      "volume_ratio": 3.650665189926161,
+      "technical_score": 85,
+      "fundamental_score": 75,
+      "combined_score": 81.0,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock is significantly oversold as indicated by the RSI of 22.3, which is below the threshold of 30. The high volume on a 9.9% one-day decline suggests potential capitulation or exhaustion. Additionally, the stock is currently at -44.8% from its 52-week high, indicating it has reached an extreme level and may be due for a rebound.",
+      "fundamental_reason": "Large-cap tech stock with high P/E; recent drop likely due to sector rotation or market-wide correction. No company-specific issues indicated, suggesting temporary selloff with mean reversion potential.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        114.4,
+        117.9
+      ],
+      "target": 128.4,
+      "stop": 110.89
+    },
+    {
+      "symbol": "MSTR",
+      "price": 143.19000244140625,
+      "change_1d": -9.630795077781308,
+      "change_3d": -10.829492583979638,
+      "rsi": 36.30184691078145,
+      "volume_ratio": 1.5691665206529462,
+      "technical_score": 75,
+      "fundamental_score": 85,
+      "combined_score": 79.0,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock is significantly oversold as indicated by the RSI of 36.3, which is below the oversold threshold of 30. Additionally, the high volume on a downward move could suggest capitulation or exhaustion. The stock is also near its 52-week low, which increases the potential for a reversal. Lastly, there was a small gap today, although not substantial, it might indicate a potential gap fill.",
+      "fundamental_reason": "Quality tech company with low P/E ratio; recent selloff likely due to sector rotation and macro concerns, not company-specific issues. Oversold valuation suggests mean reversion potential.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        140.33,
+        144.62
+      ],
+      "target": 157.51,
+      "stop": 136.03
+    }
+  ],
+  "top_fades": [
+    {
+      "symbol": "CLSK",
+      "price": 12.59000015258789,
+      "change_1d": -6.394049582698347,
+      "change_3d": 1.205792421738705,
+      "rsi": 53.7220860995011,
+      "volume_ratio": 0.8844509062230287,
+      "technical_score": 65,
+      "fundamental_score": 70,
+      "combined_score": 67.0,
+      "direction": "FADE",
+      "confidence": "MEDIUM",
+      "technical_reason": "The stock is currently not extremely oversold (RSI 53.7) and it's not at its 52-week high or low extremes. However, the stock is close to its 52-week high with a distance of -46.7%, which suggests potential for a correction. The gap today also indicates some selling pressure. Therefore, a 'FADE' might be considered.",
+      "fundamental_reason": "Stock's minor 1.2% rise in 3 days lacks clear fundamental catalyst. P/E of 11.2 suggests reasonable valuation, but no evidence of oversold blue-chip status or sector rotation. No reported earnings misses or structural issues, but insufficient data to confirm high-quality fundamentals.",
+      "fundamental_quality": "MEDIUM",
+      "entry_zone": [
+        12.46,
+        12.84
+      ],
+      "target": 11.33,
+      "stop": 13.22
+    },
+    {
+      "symbol": "CIFR",
+      "price": 17.700000762939453,
+      "change_1d": -6.6947738343932635,
+      "change_3d": 7.337786589546091,
+      "rsi": 55.676218349866204,
+      "volume_ratio": 1.0880694306080962,
+      "technical_score": 85,
+      "fundamental_score": 30,
+      "combined_score": 63.0,
+      "direction": "FADE",
+      "confidence": "MEDIUM",
+      "technical_reason": "The stock is currently at its 52-week high, indicating it may have reached an extreme point. The RSI of 55.7 is not extremely overbought but still suggests some level of overbought conditions. The high volume on the recent move could suggest exhaustion. However, the gap today is minimal and doesn't significantly contribute to a potential reversal. Therefore, it might be a good opportunity to consider 'FADE'ing this stock.",
+      "fundamental_reason": "P/E ratio is N/A indicating potential unprofitability or structural issues; no clear fundamental catalyst for the move; lacks quality company characteristics.",
+      "fundamental_quality": "LOW",
+      "entry_zone": [
+        17.52,
+        18.05
+      ],
+      "target": 15.93,
+      "stop": 18.59
+    }
+  ]
+}
