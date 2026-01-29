@@ -1,0 +1,119 @@
+{
+  "description": "NEO Pattern Library - Historical sweep/correction patterns for training",
+  "patterns": {
+    "ATH_EXHAUSTION_REVERSAL": {
+      "description": "Price at all-time high with exhaustion signals",
+      "signals": [
+        "Multiple failed attempts at new high",
+        "RSI/momentum divergence",
+        "Long rejection wicks",
+        "Decreasing volume on tests"
+      ],
+      "typical_drop": "3-8%",
+      "recovery_type": "V-shape or gradual",
+      "examples": [
+        {
+          "date": "2026-01-29",
+          "symbol": "XAUUSD",
+          "high": 5587,
+          "low": 5126,
+          "drop_pct": 8.3,
+          "recovery": 5404,
+          "grade": "Textbook example"
+        }
+      ]
+    },
+    "LIQUIDITY_SWEEP": {
+      "description": "Quick spike to grab stops, then sharp reversal",
+      "signals": [
+        "Price spikes above obvious resistance",
+        "High volume on the spike",
+        "Immediate rejection within 1-4 candles",
+        "Often at round numbers or prior highs"
+      ],
+      "typical_duration": "15min - 2 hours",
+      "action": "Wait for reversal confirmation, then trade with trend",
+      "examples": []
+    },
+    "GAP_AND_TRAP": {
+      "description": "Gap open that traps traders, then reverses",
+      "signals": [
+        "Large gap at open (>1%)",
+        "No follow-through in gap direction",
+        "First hour reversal",
+        "Volume spike on reversal"
+      ],
+      "typical_recovery": "Gap fills 60-80%",
+      "action": "Fade the gap after first hour if no follow-through",
+      "examples": [
+        {
+          "date": "2026-01-29",
+          "symbol": "IREN",
+          "gap_pct": -6.7,
+          "recovery_pct": 60,
+          "note": "Stop hunt completed, gap partially filled"
+        }
+      ]
+    },
+    "TREND_EXHAUSTION": {
+      "description": "Extended trend showing signs of fatigue",
+      "signals": [
+        "Multiple timeframe divergence",
+        "Decreasing momentum on advances",
+        "Increasing volume on pullbacks",
+        "Lower highs forming on shorter timeframes"
+      ],
+      "typical_outcome": "Consolidation or reversal",
+      "action": "Reduce position size, tighten stops",
+      "examples": []
+    },
+    "NEWS_WHIPSAW": {
+      "description": "Violent moves around major news events",
+      "signals": [
+        "High-impact news scheduled",
+        "Pre-news positioning creates extremes",
+        "Initial spike in one direction",
+        "Full reversal within hours"
+      ],
+      "events": ["FOMC", "NFP", "CPI", "Fed Speakers"],
+      "action": "Reduce size before event, widen stops, or stay flat",
+      "examples": []
+    },
+    "FALSE_BREAKOUT": {
+      "description": "Breaks key level then fails",
+      "signals": [
+        "Clean break of resistance/support",
+        "No follow-through (1-3 candles)",
+        "Returns inside the range",
+        "Acceleration in opposite direction"
+      ],
+      "action": "Trade the reversal with tight stop above/below false break",
+      "examples": [
+        {
+          "date": "2026-01-29",
+          "symbol": "XAUUSD",
+          "level": 5600,
+          "attempts": 3,
+          "result": "Failed, dropped 461 points"
+        }
+      ]
+    }
+  },
+  "conviction_triggers": {
+    "EXTREME": {
+      "min_factors": 6,
+      "required": ["ATH or multi-year high/low", "Divergence present", "Failed breakout"],
+      "action": "DEFENSIVE_MODE"
+    },
+    "HIGH": {
+      "min_factors": 4,
+      "required": ["Trend alignment", "Key level rejection"],
+      "action": "PAUSE opposite entries"
+    },
+    "MEDIUM": {
+      "min_factors": 3,
+      "required": ["Any 3 factors"],
+      "action": "REDUCE_SIZE"
+    }
+  }
+}

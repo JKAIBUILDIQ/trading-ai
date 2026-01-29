@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-01-29T23:23:56.612453",
+  "symbol": "XAUUSD",
+  "direction": "BEARISH",
+  "conviction": 100,
+  "conviction_level": "EXTREME",
+  "action": "DEFENSIVE_MODE",
+  "targets": {
+    "tp": 5409,
+    "sl": 5613,
+    "hunt_zone": 5150
+  },
+  "ea_instructions": {
+    "pause_longs": true,
+    "pause_shorts": false,
+    "reduce_lot_multiplier": 0.25,
+    "tighten_sl_pips": 50,
+    "max_drawdown_override": 100
+  },
+  "valid_until": "2026-01-30T13:23:56.612444"
+}
