@@ -34,9 +34,19 @@ def load_state():
         return json.load(f)
 
 
-def save_state(state):
-    """Save state"""
+def save_state_mode_only(updates: dict):
+    """
+    Save ONLY mode flags without resetting levels!
+    This preserves buy_levels and short_levels arrays.
+    """
+    state = load_state()
+    
+    # Only update the mode-related fields
+    for key, value in updates.items():
+        state[key] = value
+    
     state['last_update'] = datetime.now().isoformat()
+    
     with open(STATE_FILE, 'w') as f:
         json.dump(state, f, indent=2)
 
@@ -52,15 +62,16 @@ def mode_1_bullish():
     - ✅ Grid SHORT levels: ACTIVE (scalp rises)
     - ❌ Hedge: OFF
     """
-    state = load_state()
-    state['trading_mode'] = 1
-    state['grid_mode'] = 'BULLISH'
-    state['buy_enabled'] = True
-    state['short_enabled'] = True  # Scalp shorts still active
-    state['bear_flag_mode'] = False
-    state['hedge_active'] = False
-    state['pattern_override'] = None
-    save_state(state)
+    # Only update mode flags - PRESERVE LEVELS!
+    save_state_mode_only({
+        'trading_mode': 1,
+        'grid_mode': 'BULLISH',
+        'buy_enabled': True,
+        'short_enabled': True,  # Scalp shorts still active
+        'bear_flag_mode': False,
+        'hedge_active': False,
+        'pattern_override': None,
+    })
     
     print("""
 ═══════════════════════════════════════════════════════════════════════════════
@@ -99,15 +110,16 @@ def mode_2_correction():
     - ✅ Grid SHORT levels: ACTIVE
     - ✅ Hedge: ACTIVE
     """
-    state = load_state()
-    state['trading_mode'] = 2
-    state['grid_mode'] = 'CORRECTION'
-    state['buy_enabled'] = True
-    state['short_enabled'] = True
-    state['bear_flag_mode'] = False
-    state['hedge_active'] = True
-    state['pattern_override'] = 'CORRECTION'
-    save_state(state)
+    # Only update mode flags - PRESERVE LEVELS!
+    save_state_mode_only({
+        'trading_mode': 2,
+        'grid_mode': 'CORRECTION',
+        'buy_enabled': True,
+        'short_enabled': True,
+        'bear_flag_mode': False,
+        'hedge_active': True,
+        'pattern_override': 'CORRECTION',
+    })
     
     print("""
 ═══════════════════════════════════════════════════════════════════════════════
@@ -146,16 +158,17 @@ def mode_3_bearish():
     - ✅ Grid SHORT levels: ACTIVE
     - ✅ Hedge: ACTIVE
     """
-    state = load_state()
-    state['trading_mode'] = 3
-    state['grid_mode'] = 'BEARISH'
-    state['buy_enabled'] = False  # BUYs BLOCKED
-    state['short_enabled'] = True
-    state['bear_flag_mode'] = True
-    state['hedge_active'] = True
-    state['bear_flag_invalidation_price'] = 5611
-    state['pattern_override'] = 'BEAR_FLAG'
-    save_state(state)
+    # Only update mode flags - PRESERVE LEVELS!
+    save_state_mode_only({
+        'trading_mode': 3,
+        'grid_mode': 'BEARISH',
+        'buy_enabled': False,  # BUYs BLOCKED
+        'short_enabled': True,
+        'bear_flag_mode': True,
+        'hedge_active': True,
+        'bear_flag_invalidation_price': 5611,
+        'pattern_override': 'BEAR_FLAG',
+    })
     
     print("""
 ═══════════════════════════════════════════════════════════════════════════════
