@@ -1,15 +1,18 @@
 {
   "active": true,
   "center_price": 5571.0,
-  "grid_mode": "BEARISH",
-  "buy_enabled": false,
+  "trading_mode": 2,
+  "grid_mode": "CORRECTION",
+  "buy_enabled": true,
   "short_enabled": true,
-  "bear_flag_mode": true,
+  "hedge_active": true,
+  "pattern_override": "CORRECTION",
+  "bear_flag_mode": false,
   "bear_flag_invalidation_price": 5611,
   "long_contracts": 0,
   "long_avg_entry": 0,
   "short_contracts": 0,
-  "short_avg_entry": 5584.65,
+  "short_avg_entry": 0,
   "buy_levels": [
     {
       "price": 5551.0,
@@ -118,10 +121,8 @@
       "size": 2,
       "desc": "SHORT L1 HALF",
       "status": "PENDING",
-      "fill_price": 5584.65,
-      "tp_price": 5564.65,
-      "fill_time": "2026-01-29T05:14:44.579056",
-      "tp_hit_time": "2026-01-29T05:31:49.968006"
+      "fill_price": 0,
+      "tp_price": 5571.0
     },
     {
       "price": 5611.0,
@@ -188,11 +189,8 @@
     }
   ],
   "long_tp_profit": 0,
-  "short_tp_profit": 550.9999999999854,
-  "total_trades": 1,
-  "winning_trades": 1,
-  "last_update": "2026-01-29T05:36:05.397558",
-  "trading_mode": 3,
-  "hedge_active": true,
-  "pattern_override": "BEAR_FLAG"
+  "short_tp_profit": 0,
+  "total_trades": 0,
+  "winning_trades": 0,
+  "last_update": "2026-01-29T05:45:05.872528"
 }

@@ -78,15 +78,18 @@ class WhipsawState:
     center_price: float = 0
     
     # ═══════════════════════════════════════════════════════════════════
-    # GRID MODE CONTROL
+    # GRID MODE CONTROL - Defaults to CORRECTION (both directions)
     # ═══════════════════════════════════════════════════════════════════
-    grid_mode: str = 'BEARISH'  # BULLISH, BEARISH, CORRECTION
-    buy_enabled: bool = False   # Allow new BUY orders
+    trading_mode: int = 2       # 1=BULLISH, 2=CORRECTION, 3=BEARISH
+    grid_mode: str = 'CORRECTION'
+    buy_enabled: bool = True    # Allow new BUY orders
     short_enabled: bool = True  # Allow new SHORT orders
+    hedge_active: bool = True   # Hedge protection
+    pattern_override: str = ''  # Current pattern if any
     
     # Bear flag specific
-    bear_flag_mode: bool = True  # ENABLED - waiting for breakdown
-    bear_flag_invalidation_price: float = 5611  # Price above which bear flag is debunked
+    bear_flag_mode: bool = False  # Only True when bear flag spotted
+    bear_flag_invalidation_price: float = 5611
     
     # Positions
     long_contracts: int = 0
