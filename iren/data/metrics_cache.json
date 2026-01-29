@@ -1,32 +1,32 @@
 {
-  "timestamp": "2026-01-29T08:41:24.063913",
+  "timestamp": "2026-01-29T14:35:30.743983",
   "symbol": "IREN",
   "price": {
-    "current": 62.94,
-    "previous_close": 59.99,
-    "change": 2.95,
-    "change_pct": 4.92,
-    "day_high": 63.57,
-    "day_low": 59.55,
+    "current": 60.48,
+    "previous_close": 62.94,
+    "change": -2.46,
+    "change_pct": -3.91,
+    "day_high": 62.09,
+    "day_low": 60.0701,
     "52w_high": 76.87,
     "52w_low": 5.125
   },
   "volume": {
-    "current": 42919092,
-    "average": 38868613,
-    "ratio": 1.1
+    "current": 2584242,
+    "average": 38947840,
+    "ratio": 0.07
   },
   "technicals": {
-    "rsi": 73.4,
-    "ma_5": 56.85,
-    "ma_20": 50.31,
-    "momentum_5d": 20.44,
+    "rsi": 67.8,
+    "ma_5": 58.49,
+    "ma_20": 51.42,
+    "momentum_5d": 6.73,
     "trend": "BULLISH",
-    "trend_strength": 100
+    "trend_strength": 88.1
   },
   "btc_correlation": {
-    "btc_price": 88112.11,
-    "correlation_30d": 0.236,
+    "btc_price": 87663.09,
+    "correlation_30d": -0.1,
     "coupling_status": "DECOUPLING"
   },
   "earnings": {
@@ -37,11 +37,10 @@
   "signal": {
     "action": "HOLD",
     "confidence": 50,
-    "score": 0,
+    "score": 20,
     "reasons": [
-      "RSI overbought (73.4)",
       "Bullish trend",
-      "Strong momentum (+20.4%)",
+      "Strong momentum (+6.7%)",
       "\u26a0\ufe0f Earnings within 7 days - reduce size"
     ]
   },

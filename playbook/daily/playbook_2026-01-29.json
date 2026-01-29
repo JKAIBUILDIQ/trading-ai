@@ -1,0 +1,187 @@
+{
+  "date": "2026-01-29",
+  "generated_at": "2026-01-29 18:32:46 EST",
+  "expires_at": "2026-01-29 16:00:00 EST",
+  "market_context": "Post-FOMC volatility. Gold recovering from lows. BTC miners gapping down but IREN decoupled. Risk-off sentiment but opportunities in oversold names.",
+  "approved": false,
+  "approved_at": null,
+  "symbols": {
+    "MGC": {
+      "symbol": "MGC",
+      "bias": "NEUTRAL_BULLISH",
+      "confidence": "MEDIUM",
+      "thesis": "Holding 56 contracts avg $5,465. Currently underwater but gold recovering. Wait for bounce to $5,400+ for partial TP. DCA only on significant dips.",
+      "current_position": 56,
+      "current_avg": 5465.4,
+      "primary_action": "HOLD_ADD_ON_DIP",
+      "entry_levels": [
+        {
+          "price": 5250,
+          "action": "BUY",
+          "quantity": 10,
+          "note": "Strong support DCA"
+        },
+        {
+          "price": 5200,
+          "action": "BUY",
+          "quantity": 10,
+          "note": "Major support DCA"
+        },
+        {
+          "price": 5150,
+          "action": "BUY",
+          "quantity": 15,
+          "note": "Capitulation DCA"
+        }
+      ],
+      "tp_levels": [
+        {
+          "price": 5400,
+          "action": "SELL",
+          "quantity": 15,
+          "note": "Partial TP - reduce risk"
+        },
+        {
+          "price": 5465,
+          "action": "SELL",
+          "quantity": 20,
+          "note": "Break-even TP"
+        },
+        {
+          "price": 5500,
+          "action": "SELL",
+          "quantity": 15,
+          "note": "Profit TP"
+        }
+      ],
+      "stop_price": 5100,
+      "stop_action": "ALERT_ONLY",
+      "catalysts": [
+        "FOMC",
+        "USD strength",
+        "Bond yields"
+      ],
+      "invalidation": "Close below $5,100 with volume invalidates bullish thesis"
+    },
+    "IREN": {
+      "symbol": "IREN",
+      "bias": "BULLISH",
+      "confidence": "HIGH",
+      "thesis": "Gap fill expected to $63. Stop hunt completed at $58.71 open. Decoupled from BTC (90-day correlation minimal). Microsoft $9.7B AI deal intact. Feb 5 earnings is key catalyst.",
+      "current_position": 122,
+      "current_avg": 8.18,
+      "primary_action": "HOLD_ADD_ON_DIP",
+      "entry_levels": [
+        {
+          "price": 58.0,
+          "action": "BUY_CALLS",
+          "quantity": 20,
+          "note": "Add on retest of today's low"
+        },
+        {
+          "price": 56.0,
+          "action": "BUY_CALLS",
+          "quantity": 30,
+          "note": "Key support - aggressive add"
+        }
+      ],
+      "tp_levels": [
+        {
+          "price": 62.0,
+          "action": "SELL_PARTIAL",
+          "quantity": 40,
+          "note": "Partial at gap fill start"
+        },
+        {
+          "price": 63.0,
+          "action": "SELL_PARTIAL",
+          "quantity": 40,
+          "note": "Full gap fill"
+        },
+        {
+          "price": 65.0,
+          "action": "SELL_REMAINING",
+          "quantity": "ALL",
+          "note": "Extension target"
+        }
+      ],
+      "stop_price": 54.0,
+      "stop_action": "ALERT_ONLY",
+      "catalysts": [
+        "Feb 5 Earnings",
+        "Microsoft AI updates",
+        "GPU deployment news"
+      ],
+      "invalidation": "Close below $54.95 (gap) with volume invalidates gap fill thesis"
+    },
+    "CLSK": {
+      "symbol": "CLSK",
+      "bias": "NEUTRAL",
+      "confidence": "LOW",
+      "thesis": "Underwater on calls. Hold and wait for sector recovery. Not adding until IREN shows strength first.",
+      "current_position": 80,
+      "current_avg": 1.45,
+      "primary_action": "HOLD",
+      "entry_levels": [],
+      "tp_levels": [
+        {
+          "price": 14.0,
+          "action": "SELL_PARTIAL",
+          "quantity": 40,
+          "note": "If rallies to $14"
+        },
+        {
+          "price": 15.0,
+          "action": "SELL_REMAINING",
+          "quantity": "ALL",
+          "note": "Full exit"
+        }
+      ],
+      "stop_price": null,
+      "stop_action": "HOLD",
+      "catalysts": [
+        "BTC price",
+        "IREN sympathy"
+      ],
+      "invalidation": "Calls expire Feb 13 - time decay risk"
+    },
+    "CIFR": {
+      "symbol": "CIFR",
+      "bias": "NEUTRAL",
+      "confidence": "LOW",
+      "thesis": "Underwater on calls. Hold and wait for sector recovery. Not adding until IREN shows strength first.",
+      "current_position": 80,
+      "current_avg": 2.1,
+      "primary_action": "HOLD",
+      "entry_levels": [],
+      "tp_levels": [
+        {
+          "price": 19.0,
+          "action": "SELL_PARTIAL",
+          "quantity": 40,
+          "note": "If rallies to $19"
+        },
+        {
+          "price": 20.0,
+          "action": "SELL_REMAINING",
+          "quantity": "ALL",
+          "note": "Full exit"
+        }
+      ],
+      "stop_price": null,
+      "stop_action": "HOLD",
+      "catalysts": [
+        "BTC price",
+        "IREN sympathy"
+      ],
+      "invalidation": "Calls expire Feb 13 - time decay risk"
+    }
+  },
+  "max_daily_trades": 10,
+  "cooldown_minutes": 30,
+  "trading_hours": {
+    "start": "09:30",
+    "end": "16:00",
+    "timezone": "US/Eastern"
+  }
+}

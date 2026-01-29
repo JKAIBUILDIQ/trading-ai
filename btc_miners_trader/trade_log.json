@@ -43,5 +43,41 @@
     "price": 61.95500183105469,
     "position_id": 1,
     "source": "TP_AUTO"
+  },
+  {
+    "timestamp": "2026-01-29T15:38:44.182278",
+    "symbol": "CLSK",
+    "action": "SELL",
+    "reason": "SL_HIT: Price $1.05 <= Stop $1.18 (-37.5%)",
+    "price": 1.05,
+    "position_id": 26,
+    "source": "SL_AUTO"
+  },
+  {
+    "timestamp": "2026-01-29T15:38:45.839411",
+    "symbol": "CIFR",
+    "action": "SELL",
+    "reason": "SL_HIT: Price $17.08 <= Stop $17.18 (-8.5%)",
+    "price": 17.075000762939453,
+    "position_id": 29,
+    "source": "SL_AUTO"
+  },
+  {
+    "timestamp": "2026-01-29T15:53:49.012151",
+    "symbol": "CIFR",
+    "action": "SELL",
+    "reason": "SL_HIT: Price $1.60 <= Stop $1.66 (-32.5%)",
+    "price": 1.6,
+    "position_id": 25,
+    "source": "SL_AUTO"
+  },
+  {
+    "timestamp": "2026-01-29T16:23:56.064373",
+    "symbol": "IREN",
+    "action": "SELL",
+    "reason": "SL_HIT: Price $5.50 <= Stop $5.77 (-33.3%)",
+    "price": 5.5,
+    "position_id": 27,
+    "source": "SL_AUTO"
   }
 ]

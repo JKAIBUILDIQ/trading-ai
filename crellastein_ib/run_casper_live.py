@@ -98,12 +98,12 @@ class CasperLive:
         self.connected = False
         self.contract = None
         
-        # Settings - HALF SIZE FOR TESTING (50% of MT5 equivalent)
-        # Full MT5: [5, 5, 10, 10, 20] = 50 contracts (0.5, 0.5, 1.0, 1.0, 2.0 lots)
+        # Settings - FULL SIZE (MT5 equivalent)
+        # 5 contracts = 0.5 lot equivalent in XAUUSD
         self.settings = {
-            # Drop-buy settings - HALF SIZE
+            # Drop-buy settings - FULL SIZE (multiples of 5)
             'trigger_drop': 10.0,           # $10 drop triggers buy
-            'lot_ladder': [2, 2, 5, 5, 10], # HALF SIZE! (full=[5,5,10,10,20])
+            'lot_ladder': [5, 5, 10, 10, 20], # 5=0.5lot, 10=1lot, 20=2lot equivalent
             'max_levels': 5,
             
             # TP settings (same as MT5)
@@ -111,8 +111,8 @@ class CasperLive:
             'trail_start': 10.0,            # Start trailing at +$10
             'trail_distance': 8.0,          # Trail $8 behind
             
-            # Safety - HALF SIZE LIMITS
-            'max_contracts': 24,            # Sum of ladder (2+2+5+5+10)
+            # Safety - FULL SIZE LIMITS
+            'max_contracts': 50,            # Sum of ladder (5+5+10+10+20)
             'entry_cooldown_seconds': 120,  # 2 min between entries
             
             # PARABOLIC MOVE SAFEGUARDS

@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-01-29T10:37:19.797958",
+  "signal_id": "NEO_7675_103719",
+  "action": "OPEN",
+  "status": {
+    "state": "ACTIVE",
+    "trade_ticket": null,
+    "outcome_pips": null,
+    "created_at": "2026-01-29T10:37:19.797958",
+    "executed_at": null,
+    "closed_at": null
+  },
+  "trade": {
+    "symbol": "EURUSD",
+    "direction": "BUY",
+    "position_value_usd": 4400.0,
+    "stop_loss_pips": 30,
+    "take_profit_pips": 60,
+    "entry_type": "MARKET",
+    "limit_offset_pips": 0,
+    "max_hold_minutes": 180
+  },
+  "metadata": {
+    "confidence": 90,
+    "reasoning": "The market is currently ranging with low ADX values, indicating a lack of strong trend. The RSI(2) Connors strategy suggests a potential mean reversion opportunity given the current conditions. This setup aligns well with the current market regime and provides a high win rate as per historical performance.",
+    "model_used": "qwen2.5:32b",
+    "source": "NEO"
+  },
+  "safety": {
+    "max_position_value": 4400.0,
+    "auto_close_on_loss": true,
+    "trail_after_profit_pips": 30
+  }
+}

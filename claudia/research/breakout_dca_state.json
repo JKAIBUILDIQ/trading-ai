@@ -47,10 +47,20 @@
       "symbol": "DOCN",
       "target_price": 70.0,
       "reference_price": 59.26,
-      "last_buy_price": null,
-      "dca_count": 0,
-      "total_contracts": 0,
-      "entries": [],
+      "last_buy_price": 56.11,
+      "dca_count": 1,
+      "total_contracts": 2,
+      "entries": [
+        {
+          "timestamp": "2026-01-29T16:00:05.737995",
+          "stock_price": 56.11,
+          "option_price": 5.2,
+          "strike": 60.0,
+          "expiry": "2026-03-20",
+          "contracts": 2,
+          "reason": "DCA triggered: 5.3% drop from $59.26"
+        }
+      ],
       "supertrend_status": "BULLISH",
       "buying_enabled": true
     },
@@ -203,5 +213,5 @@
     }
   },
   "signals_history": [],
-  "updated_at": "2026-01-28T20:30:04.588402"
+  "updated_at": "2026-01-29T20:00:04.668697"
 }

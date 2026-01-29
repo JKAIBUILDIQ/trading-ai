@@ -1,0 +1,97 @@
+{
+  "timestamp": "2026-01-29T09:29:25.912990",
+  "date": "2026-01-29",
+  "analyses": [
+    {
+      "symbol": "IREN",
+      "current_price": 62.94,
+      "prev_close": 59.99,
+      "change_pct": 4.92,
+      "high_5d": 63.59,
+      "low_5d": 50.11,
+      "dip_from_high_pct": -1.02,
+      "rsi": 73.4,
+      "volume_ratio": 1.07,
+      "meta_signal": "HOLD",
+      "meta_confidence": 70.2,
+      "outlook": "NEUTRAL",
+      "options_recommendation": "Wait / Iron Condor",
+      "strategy_details": {
+        "name": "Wait / Iron Condor",
+        "action": "WAIT for direction",
+        "strike": 65,
+        "expiration": "2026-02-13",
+        "premium": 0,
+        "max_risk": 0,
+        "target_profit": 0,
+        "reason": "Mixed signals - wait for clearer setup or sell iron condor"
+      },
+      "key_levels": {
+        "support": 50.11,
+        "resistance": 63.59,
+        "current": 62.94
+      }
+    },
+    {
+      "symbol": "CLSK",
+      "current_price": 13.45,
+      "prev_close": 13.27,
+      "change_pct": 1.36,
+      "high_5d": 14.44,
+      "low_5d": 12.19,
+      "dip_from_high_pct": -6.89,
+      "rsi": 60.5,
+      "volume_ratio": 1.0,
+      "meta_signal": "HOLD",
+      "meta_confidence": 65.6,
+      "outlook": "NEUTRAL",
+      "options_recommendation": "Wait / Iron Condor",
+      "strategy_details": {
+        "name": "Wait / Iron Condor",
+        "action": "WAIT for direction",
+        "strike": 15,
+        "expiration": "2026-02-13",
+        "premium": 0,
+        "max_risk": 0,
+        "target_profit": 0,
+        "reason": "Mixed signals - wait for clearer setup or sell iron condor"
+      },
+      "key_levels": {
+        "support": 12.19,
+        "resistance": 14.44,
+        "current": 13.45
+      }
+    },
+    {
+      "symbol": "CIFR",
+      "current_price": 18.97,
+      "prev_close": 18.75,
+      "change_pct": 1.17,
+      "high_5d": 19.31,
+      "low_5d": 16.21,
+      "dip_from_high_pct": -1.74,
+      "rsi": 65.5,
+      "volume_ratio": 1.14,
+      "meta_signal": "HOLD",
+      "meta_confidence": 68.9,
+      "outlook": "NEUTRAL",
+      "options_recommendation": "Wait / Iron Condor",
+      "strategy_details": {
+        "name": "Wait / Iron Condor",
+        "action": "WAIT for direction",
+        "strike": 20,
+        "expiration": "2026-02-13",
+        "premium": 0,
+        "max_risk": 0,
+        "target_profit": 0,
+        "reason": "Mixed signals - wait for clearer setup or sell iron condor"
+      },
+      "key_levels": {
+        "support": 16.21,
+        "resistance": 19.31,
+        "current": 18.97
+      }
+    }
+  ],
+  "telegram_sent": true
+}

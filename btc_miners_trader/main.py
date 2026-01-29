@@ -16,6 +16,7 @@ from fastapi import FastAPI, BackgroundTasks
 from pydantic import BaseModel
 import json
 import os
+import pytz  # For timezone-aware market hours check
 
 # Configuration
 PAPER_TRADING_API = os.getenv("PAPER_TRADING_API", "http://127.0.0.1:8500")
@@ -33,6 +34,29 @@ TP_MULTIPLIER_STOCKS = 1.15   # 15% profit for stocks (or use $150 target for IR
 SL_MULTIPLIER_OPTIONS = 0.70  # 30% loss for options
 SL_MULTIPLIER_STOCKS = 0.92   # 8% loss for stocks
 
+# Position Sizing - Paul's rules: trade in meaningful size
+# L1 = first entry, L2 = add on dip, L3 = aggressive add
+POSITION_SIZING = {
+    "IREN": {
+        "L1_contracts": 10,   # Initial entry
+        "L2_contracts": 30,   # Add on 5%+ dip
+        "L3_contracts": 70,   # Aggressive add on 10%+ dip
+        "max_position": 150,  # Never exceed
+    },
+    "CLSK": {
+        "L1_contracts": 10,
+        "L2_contracts": 30,
+        "L3_contracts": 50,
+        "max_position": 100,
+    },
+    "CIFR": {
+        "L1_contracts": 10,
+        "L2_contracts": 30,
+        "L3_contracts": 50,
+        "max_position": 100,
+    }
+}
+
 # Logging
 logging.basicConfig(
     level=logging.INFO,
@@ -49,8 +73,75 @@ trader_state = {
     "positions_monitored": 0,
     "trades_executed": 0,
     "last_error": None,
-    "trade_log": []
+    "trade_log": [],
+    "last_entry_alerts": {}  # Track last alert per symbol to avoid spam
 }
+
+
+def is_market_hours(include_premarket: bool = True) -> bool:
+    """
+    Check if we're in US market hours (or 1 hour before open if include_premarket).
+    
+    Market hours: 9:30 AM - 4:00 PM ET
+    With premarket: 8:30 AM - 4:00 PM ET
+    
+    Returns True if alerts should be sent, False if after-hours (quiet time).
+    """
+    from datetime import datetime
+    import pytz
+    
+    try:
+        et = pytz.timezone('US/Eastern')
+        now_et = datetime.now(et)
+        
+        # Check if weekend (Saturday=5, Sunday=6)
+        if now_et.weekday() >= 5:
+            return False
+        
+        current_time = now_et.hour * 60 + now_et.minute  # Minutes since midnight
+        
+        # Market hours in minutes
+        market_open = 9 * 60 + 30   # 9:30 AM = 570 minutes
+        market_close = 16 * 60      # 4:00 PM = 960 minutes
+        premarket_start = 8 * 60 + 30  # 8:30 AM = 510 minutes (1 hour before open)
+        
+        start_time = premarket_start if include_premarket else market_open
+        
+        return start_time <= current_time <= market_close
+        
+    except Exception as e:
+        logger.warning(f"Error checking market hours: {e}")
+        # Default to allowing alerts during typical market hours UTC
+        hour_utc = datetime.utcnow().hour
+        return 13 <= hour_utc <= 21  # Roughly 8 AM - 4 PM ET
+
+
+def should_send_entry_alert(symbol: str, signal_key: str, cooldown_hours: float = 4.0) -> bool:
+    """
+    Check if we should send an entry alert for this symbol.
+    Prevents sending the same alert repeatedly.
+    
+    Args:
+        symbol: Stock symbol (e.g., "CLSK")
+        signal_key: Unique key for the signal type (e.g., "BUY_DIP_6.9")
+        cooldown_hours: Hours to wait before sending same alert again
+    
+    Returns True if alert should be sent, False if duplicate/recent.
+    """
+    alert_key = f"{symbol}:{signal_key}"
+    last_alerts = trader_state.get("last_entry_alerts", {})
+    
+    if alert_key in last_alerts:
+        last_time = datetime.fromisoformat(last_alerts[alert_key])
+        elapsed = (datetime.utcnow() - last_time).total_seconds() / 3600
+        
+        if elapsed < cooldown_hours:
+            logger.debug(f"Skipping duplicate alert for {alert_key} (sent {elapsed:.1f}h ago)")
+            return False
+    
+    # Record this alert
+    trader_state["last_entry_alerts"][alert_key] = datetime.utcnow().isoformat()
+    return True
 
 
 class TradeAction(BaseModel):
@@ -321,8 +412,13 @@ async def execute_trade(action: TradeAction) -> bool:
 
 
 async def check_entry_opportunities():
-    """Check for buying opportunities on dips"""
+    """Check for buying opportunities on dips - ONLY during market hours"""
     import yfinance as yf
+    
+    # Only check during market hours (8:30 AM - 4:00 PM ET)
+    if not is_market_hours(include_premarket=True):
+        logger.debug("Outside market hours - skipping entry opportunity check")
+        return
     
     opportunities = []
     
@@ -347,17 +443,22 @@ async def check_entry_opportunities():
             # Calculate dip from recent high
             dip_pct = ((current_price - high_5d) / high_5d) * 100
             
-            # Entry signals
+            # Entry signals - with unique signal keys for deduplication
             entry_signal = None
+            signal_key = None
             
             if dip_pct <= -10:
                 entry_signal = f"🟢 STRONG BUY - {abs(dip_pct):.1f}% dip from 5D high!"
+                signal_key = f"STRONG_BUY_{int(abs(dip_pct))}"  # Round to avoid minor fluctuations
             elif dip_pct <= -5:
                 entry_signal = f"🟢 BUY DIP - {abs(dip_pct):.1f}% pullback"
+                signal_key = f"BUY_DIP_{int(abs(dip_pct))}"
             elif rsi < 35:
                 entry_signal = f"🟢 OVERSOLD - RSI {rsi:.0f}"
+                signal_key = f"OVERSOLD_{int(rsi)}"
             
-            if entry_signal:
+            # Check deduplication before adding to opportunities
+            if entry_signal and should_send_entry_alert(symbol, signal_key, cooldown_hours=4.0):
                 opportunities.append({
                     "symbol": symbol,
                     "signal": entry_signal,
@@ -365,10 +466,13 @@ async def check_entry_opportunities():
                     "rsi": rsi,
                     "dip_pct": dip_pct
                 })
+            elif entry_signal:
+                logger.debug(f"Skipping duplicate alert for {symbol}: {entry_signal}")
+                
         except Exception as e:
             logger.debug(f"Error checking {symbol}: {e}")
     
-    # Send alert if opportunities found
+    # Send alert if opportunities found (after deduplication)
     if opportunities:
         msg = "🎯 <b>ENTRY OPPORTUNITY ALERT</b>\n\n"
         for opp in opportunities:
@@ -380,6 +484,8 @@ async def check_entry_opportunities():
         msg += "<i>DCA: 1-1-2-2-4 (test the water first!)</i>"
         await send_telegram(msg)
         logger.info(f"📩 Sent entry opportunity alert for {len(opportunities)} stocks")
+    else:
+        logger.debug("No new entry opportunities to alert (after deduplication)")
 
 
 async def send_market_status_update():
@@ -587,6 +693,32 @@ async def get_trade_log():
     except Exception as e:
         logger.error(f"Error reading trade log: {e}")
     return {"trades": trader_state["trade_log"]}
+
+
+@app.get("/alert-status")
+async def get_alert_status():
+    """Get market hours and alert cooldown status"""
+    et = pytz.timezone('US/Eastern')
+    now_et = datetime.now(et)
+    
+    return {
+        "market_hours_active": is_market_hours(include_premarket=True),
+        "current_time_et": now_et.strftime("%Y-%m-%d %H:%M:%S %Z"),
+        "is_weekend": now_et.weekday() >= 5,
+        "day_of_week": now_et.strftime("%A"),
+        "last_entry_alerts": trader_state.get("last_entry_alerts", {}),
+        "alert_cooldown_hours": 4.0,
+        "note": "Alerts only sent 8:30 AM - 4:00 PM ET on weekdays, with 4-hour cooldown per signal"
+    }
+
+
+@app.post("/clear-alert-cooldowns")
+async def clear_alert_cooldowns():
+    """Clear all alert cooldowns (allows resending alerts)"""
+    cleared = len(trader_state.get("last_entry_alerts", {}))
+    trader_state["last_entry_alerts"] = {}
+    logger.info(f"Cleared {cleared} alert cooldowns")
+    return {"status": "cleared", "alerts_cleared": cleared}
 
 
 if __name__ == "__main__":

@@ -2,74 +2,22 @@
   "symbol": "MGC",
   "tp_points": 50.0,
   "realized_pnl": 0.0,
-  "total_quantity": 15,
-  "avg_price": 5576.0,
-  "updated": "2026-01-29T08:39:28.317884",
+  "total_quantity": 56,
+  "avg_price": 5465.3995,
+  "updated": "2026-01-29T17:09:36.799679",
   "entries": [
     {
       "level": 1,
-      "entry_price": 5590,
-      "entry_time": "2026-01-29T08:39:28.315153",
-      "quantity": 3,
-      "tp_price": 5640.0,
+      "entry_price": 5465.3995,
+      "entry_time": "2026-01-29T17:09:36.799689",
+      "quantity": 56,
+      "tp_price": 5515.3995,
       "status": "open",
       "close_price": null,
       "close_time": null,
       "pnl": null,
       "magic": "8880202",
-      "comment": "DROPBUY|L1|3"
-    },
-    {
-      "level": 2,
-      "entry_price": 5580,
-      "entry_time": "2026-01-29T08:39:28.315363",
-      "quantity": 3,
-      "tp_price": 5630.0,
-      "status": "open",
-      "close_price": null,
-      "close_time": null,
-      "pnl": null,
-      "magic": "8880202",
-      "comment": "DROPBUY|L2|3"
-    },
-    {
-      "level": 3,
-      "entry_price": 5575,
-      "entry_time": "2026-01-29T08:39:28.315539",
-      "quantity": 3,
-      "tp_price": 5625.0,
-      "status": "open",
-      "close_price": null,
-      "close_time": null,
-      "pnl": null,
-      "magic": "8880202",
-      "comment": "DROPBUY|L3|3"
-    },
-    {
-      "level": 4,
-      "entry_price": 5570,
-      "entry_time": "2026-01-29T08:39:28.317667",
-      "quantity": 3,
-      "tp_price": 5620.0,
-      "status": "open",
-      "close_price": null,
-      "close_time": null,
-      "pnl": null,
-      "magic": "8880202",
-      "comment": "DROPBUY|L4|3"
-    },
-    {
-      "level": 5,
-      "entry_price": 5565,
-      "entry_time": "2026-01-29T08:39:28.317876",
-      "quantity": 3,
-      "tp_price": 5615.0,
-      "status": "open",
-      "close_price": null,
-      "close_time": null,
-      "pnl": null,
-      "magic": "8880202",
-      "comment": "DROPBUY|L5|3"
+      "comment": "DROPBUY|L1|56"
     }
   ]
 }

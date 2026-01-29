@@ -3,19 +3,19 @@
     {
       "ticket": "IB706903676",
       "symbol": "mgc",
-      "time": "2026.01.29 08:45:27",
+      "time": "2026.01.29 20:25:24",
       "type": "BUY",
-      "volume": 15,
-      "entry_price": 5578.15,
-      "current_price": 5557.7,
+      "volume": 76,
+      "entry_price": 5434.21,
+      "current_price": 5321.6,
       "sl": null,
-      "tp": 5628.15,
-      "profit": -3068.05,
+      "tp": 5484.21,
+      "profit": -85585.12,
       "magic": "8880777",
-      "comment": "GRID|LONG|5578"
+      "comment": "GRID|LONG|5434"
     }
   ],
-  "current_price": 5557.7,
-  "updated": "2026-01-29T08:45:27.732700",
+  "current_price": 5321.6,
+  "updated": "2026-01-29T20:25:24.969826",
   "connection": "OK"
 }

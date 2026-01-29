@@ -86,5 +86,29 @@
     "price": 9.725000000000001,
     "reason": "Scalp TP hit: +58.1%",
     "timestamp": "2026-01-27T21:45:02.703146+00:00"
+  },
+  {
+    "action": "DCA_OPPORTUNITY",
+    "symbol": "IREN",
+    "position_id": 27,
+    "current_pnl": -11.818181818181813,
+    "reason": "DCA opportunity: -11.8% + NEO bullish",
+    "timestamp": "2026-01-29T15:15:05.166516+00:00"
+  },
+  {
+    "action": "DCA_OPPORTUNITY",
+    "symbol": "IREN",
+    "position_id": 27,
+    "current_pnl": -18.48484848484849,
+    "reason": "DCA opportunity: -18.5% + NEO bullish",
+    "timestamp": "2026-01-29T15:30:04.693635+00:00"
+  },
+  {
+    "action": "DCA_OPPORTUNITY",
+    "symbol": "IREN",
+    "position_id": 27,
+    "current_pnl": -24.54545454545455,
+    "reason": "DCA opportunity: -24.5% + NEO bullish",
+    "timestamp": "2026-01-29T15:45:05.023360+00:00"
   }
 ]
