@@ -1,0 +1,52 @@
+{
+  "orders": {
+    "6": {
+      "order_id": 6,
+      "status": "PreSubmitted",
+      "filled": 0.0,
+      "remaining": 7.0,
+      "avg_fill_price": 0.0,
+      "last_fill_price": 0.0,
+      "timestamp": "2026-01-28T23:27:56.870186"
+    },
+    "4": {
+      "order_id": 4,
+      "status": "PreSubmitted",
+      "filled": 0.0,
+      "remaining": 5.0,
+      "avg_fill_price": 0.0,
+      "last_fill_price": 0.0,
+      "timestamp": "2026-01-28T23:27:55.570668"
+    },
+    "8": {
+      "order_id": 8,
+      "status": "Filled",
+      "filled": 100000.0,
+      "remaining": 0.0,
+      "avg_fill_price": 153.208,
+      "last_fill_price": 153.208,
+      "timestamp": "2026-01-28T23:34:43.406228"
+    },
+    "10": {
+      "order_id": 10,
+      "status": "Submitted",
+      "filled": 0.0,
+      "remaining": 50.0,
+      "avg_fill_price": 0.0,
+      "last_fill_price": 0.0,
+      "timestamp": "2026-01-28T23:27:59.257934"
+    }
+  },
+  "executions": [
+    {
+      "order_id": 8,
+      "symbol": "USD",
+      "action": "SELL",
+      "quantity": 100000.0,
+      "price": 153.208,
+      "time": "2026-01-28T23:34:43+00:00",
+      "commission": 0.0
+    }
+  ],
+  "last_update": "2026-01-28T23:34:43.406232"
+}

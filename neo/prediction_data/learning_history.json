@@ -1,14 +1,14 @@
 {
   "feature_stats": {
     "ema_trend": {
-      "total_uses": 20,
-      "correct_predictions": 16,
-      "bullish_signals": 18,
+      "total_uses": 23,
+      "correct_predictions": 19,
+      "bullish_signals": 21,
       "bearish_signals": 2,
-      "bullish_correct": 14,
+      "bullish_correct": 17,
       "bearish_correct": 2,
-      "avg_contribution": 0.153,
-      "accuracy": 80.0,
+      "avg_contribution": 0.1468695652173913,
+      "accuracy": 82.6086956521739,
       "inverted": false
     },
     "rsi_overbought": {
@@ -23,43 +23,43 @@
       "inverted": true
     },
     "momentum_h4": {
-      "total_uses": 7,
-      "correct_predictions": 5,
-      "bullish_signals": 7,
-      "bearish_signals": 0,
-      "bullish_correct": 5,
+      "total_uses": 9,
+      "correct_predictions": 6,
+      "bullish_signals": 8,
+      "bearish_signals": 1,
+      "bullish_correct": 6,
       "bearish_correct": 0,
       "avg_contribution": 0.15,
-      "accuracy": 71.42857142857143,
+      "accuracy": 66.66666666666666,
       "inverted": false
     },
     "macd_signal": {
-      "total_uses": 10,
-      "correct_predictions": 4,
-      "bullish_signals": 6,
-      "bearish_signals": 4,
-      "bullish_correct": 4,
+      "total_uses": 13,
+      "correct_predictions": 5,
+      "bullish_signals": 7,
+      "bearish_signals": 6,
+      "bullish_correct": 5,
       "bearish_correct": 0,
       "avg_contribution": 0.1,
-      "accuracy": 40.0,
+      "accuracy": 38.46153846153847,
       "inverted": false
     },
     "session_london": {
-      "total_uses": 5,
-      "correct_predictions": 3,
-      "bullish_signals": 5,
+      "total_uses": 6,
+      "correct_predictions": 4,
+      "bullish_signals": 6,
       "bearish_signals": 0,
-      "bullish_correct": 3,
+      "bullish_correct": 4,
       "bearish_correct": 0,
       "avg_contribution": 0.06,
-      "accuracy": 60.0,
+      "accuracy": 66.66666666666666,
       "inverted": false
     },
     "near_resistance": {
-      "total_uses": 5,
+      "total_uses": 6,
       "correct_predictions": 0,
       "bullish_signals": 0,
-      "bearish_signals": 5,
+      "bearish_signals": 6,
       "bullish_correct": 0,
       "bearish_correct": 0,
       "avg_contribution": 0.04000000000000001,
@@ -78,14 +78,14 @@
       "inverted": false
     },
     "patterns": {
-      "total_uses": 8,
-      "correct_predictions": 7,
-      "bullish_signals": 8,
+      "total_uses": 11,
+      "correct_predictions": 10,
+      "bullish_signals": 11,
       "bearish_signals": 0,
-      "bullish_correct": 7,
+      "bullish_correct": 10,
       "bearish_correct": 0,
-      "avg_contribution": 0.1344594155844156,
-      "accuracy": 87.5,
+      "avg_contribution": 0.1336369724089879,
+      "accuracy": 90.9090909090909,
       "inverted": false
     }
   },
@@ -131,7 +131,42 @@
       },
       "total_features": 8,
       "adjusted_features": 2
+    },
+    {
+      "timestamp": "2026-01-28T20:29:46.013623",
+      "adjustments": {
+        "ema_trend": {
+          "old_weight": 0.11161176470588237,
+          "new_weight": 0.11871433155080216,
+          "accuracy": 81.81818181818183,
+          "samples": 22,
+          "reason": "HIGH accuracy (82%)"
+        },
+        "rsi_overbought": {
+          "old_weight": 0.04000000000000001,
+          "new_weight": 0.03200000000000001,
+          "accuracy": 20.0,
+          "samples": 10,
+          "reason": "Still weak after inversion (20%)"
+        },
+        "macd_signal": {
+          "old_weight": 0.1,
+          "new_weight": 0.09833333333333334,
+          "accuracy": 41.66666666666667,
+          "samples": 12,
+          "reason": "LOW accuracy (42%)"
+        },
+        "patterns": {
+          "old_weight": 0.1,
+          "new_weight": 0.10800000000000001,
+          "accuracy": 90.0,
+          "samples": 10,
+          "reason": "HIGH accuracy (90%)"
+        }
+      },
+      "total_features": 8,
+      "adjusted_features": 4
     }
   ],
-  "updated_at": "2026-01-28T12:29:44.348998"
+  "updated_at": "2026-01-29T00:29:46.202669"
 }

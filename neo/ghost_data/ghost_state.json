@@ -1,0 +1,16 @@
+{
+  "positions": [
+    {
+      "order_id": 6,
+      "contracts": 1,
+      "price": 5563.7,
+      "type": "DROPBUYL1",
+      "level": 1,
+      "time": "2026-01-28T23:47:39.544159"
+    }
+  ],
+  "runner_position": null,
+  "daily_pnl": 0,
+  "entry_price": 5563.7,
+  "last_update": "2026-01-28T23:56:50.504566"
+}

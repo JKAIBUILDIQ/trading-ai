@@ -37,6 +37,13 @@ try:
 except ImportError:
     PATTERNS_AVAILABLE = False
 
+# Gold trading rules (learned from live success 2026-01-28)
+try:
+    from learning.training_rules_gold import GoldTradingRules, get_gold_rules
+    GOLD_RULES_AVAILABLE = True
+except ImportError:
+    GOLD_RULES_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("GoldPredictor")
 
@@ -507,6 +514,39 @@ class GoldPredictor:
             direction = "DOWN"
         else:
             direction = "FLAT"
+        
+        # ═══ APPLY LEARNED GOLD TRADING RULES (from 2026-01-28 success) ═══
+        if GOLD_RULES_AVAILABLE:
+            try:
+                gold_rules = get_gold_rules()
+                
+                # Check if we're trying to go SHORT in an uptrend (BLOCKED!)
+                supertrend = "UP" if features["ema_trend"] == "BULLISH" else "DOWN"
+                trend_check = gold_rules.rule_1_never_short_uptrend(supertrend)
+                
+                if direction == "DOWN" and not trend_check["can_short"]:
+                    # BLOCK the bearish signal - change to HOLD
+                    logger.info(f"   ⚠️ RULE 1 OVERRIDE: {trend_check['reason']}")
+                    direction = "FLAT"
+                    reasoning_parts.append(f"⚠️ RULE: {trend_check['reason']}")
+                    net_score = 0  # Neutralize
+                
+                # Check exhaustion (don't buy at tops)
+                if direction == "UP":
+                    exhaustion = gold_rules.rule_2_exhaustion_detection(
+                        current_price, 
+                        features.get("ema20", current_price),
+                        features.get("rsi_h4", 50),
+                        features.get("recent_high", current_price)
+                    )
+                    if exhaustion["is_exhausted"]:
+                        logger.info(f"   ⚠️ RULE 2 OVERRIDE: Exhausted - {exhaustion['reasons']}")
+                        direction = "FLAT"  # Don't buy, but don't sell either
+                        reasoning_parts.append(f"⚠️ EXHAUSTED: {', '.join(exhaustion['reasons'][:2])}")
+                        net_score *= 0.3  # Reduce conviction
+                
+            except Exception as e:
+                logger.warning(f"Gold rules check failed: {e}")
         
         # Magnitude (based on ATR and score strength)
         atr = features["atr"]

@@ -34,5 +34,14 @@
     "price": 61.220001220703125,
     "position_id": 6,
     "source": "TP_AUTO"
+  },
+  {
+    "timestamp": "2026-01-28T15:44:59.016262",
+    "symbol": "IREN",
+    "action": "SELL",
+    "reason": "TP_HIT: Price $61.96 >= Target $61.58 (+15.7%)",
+    "price": 61.95500183105469,
+    "position_id": 1,
+    "source": "TP_AUTO"
   }
 ]

@@ -276,6 +276,28 @@ class PaperTradingEngine:
         if entry_price <= 0:
             raise ValueError(f"Invalid entry price: {entry_price}")
         
+        # For DCA schedule, we need the underlying stock price
+        # Options: Get underlying price for DCA levels
+        # Stocks: Use entry price for DCA levels
+        if is_option:
+            try:
+                underlying_data = self.get_real_price(signal['symbol'])
+                underlying_price = underlying_data['price']
+            except:
+                underlying_price = actual_strike  # Fallback to strike if can't get price
+        else:
+            underlying_price = entry_price
+        
+        # Create DCA schedule locked to entry/underlying price
+        # Uses weighted pips: 100 pips = 1.5% drop
+        dca_schedule = {
+            'reference_price': underlying_price,
+            'L2_trigger': round(underlying_price * 0.985, 2),  # -1.5% (100 pips)
+            'L3_trigger': round(underlying_price * 0.970, 2),  # -3.0% (200 pips)
+            'L4_trigger': round(underlying_price * 0.950, 2),  # -5.0% (333 pips)
+            'L5_trigger': round(underlying_price * 0.920, 2),  # -8.0% (533 pips)
+        }
+        
         position = {
             'id': len(self.positions) + len(self.closed_positions) + 1,
             'symbol': signal['symbol'],
@@ -296,7 +318,9 @@ class PaperTradingEngine:
             'expiry': actual_expiry,
             'option_type': signal.get('option_type'),
             'price_source': price_data.get('source', 'unknown'),
-            'notes': signal.get('notes', '')
+            'notes': signal.get('notes', ''),
+            'dca_schedule': dca_schedule,  # Locked DCA levels based on entry!
+            'dca_level': 'L1'  # Start at level 1
         }
         
         # Calculate position cost

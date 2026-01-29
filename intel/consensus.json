@@ -1,50 +1,57 @@
 {
-  "timestamp": "2026-01-28T14:49:13.820836",
+  "timestamp": "2026-01-29T01:04:12.548892",
   "source": "MQL5 Top Signals",
   "consensus_signals": [],
   "top_traders_positions": [],
   "top_signals": [
     {
       "name": "Gold Reaper Goldtrade Pro Daytrade Pro",
-      "growth_pct": 826.58,
+      "growth_pct": 819.84,
       "drawdown": 32.6,
       "subscribers": 0,
       "url": "https://www.mql5.com/en/signals/2204998"
     },
     {
-      "name": "Daily Gold Sniper",
-      "growth_pct": 790.88,
-      "drawdown": 34.3,
-      "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2284676"
-    },
-    {
       "name": "Scalp IC Markets MT5",
-      "growth_pct": 706.13,
+      "growth_pct": 712.33,
       "drawdown": 32.9,
       "subscribers": 0,
       "url": "https://www.mql5.com/en/signals/1560883"
     },
     {
-      "name": "Goldora",
-      "growth_pct": 650.21,
-      "drawdown": 40.4,
+      "name": "Aghost",
+      "growth_pct": 711.77,
+      "drawdown": 19.1,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2317345"
+      "url": "https://www.mql5.com/en/signals/2333819"
+    },
+    {
+      "name": "MSC Gold Invest Pro",
+      "growth_pct": 679.99,
+      "drawdown": 26.2,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/1988269"
     },
     {
       "name": "NAS100 XAUUSD XAGUSD",
-      "growth_pct": 547.43,
+      "growth_pct": 581.67,
       "drawdown": 47.2,
       "subscribers": 0,
       "url": "https://www.mql5.com/en/signals/2352377"
     },
     {
-      "name": "Falqonea pro _Robofxea Pro",
-      "growth_pct": 404.23,
-      "drawdown": 18.7,
+      "name": "Steady",
+      "growth_pct": 482.74,
+      "drawdown": 22.2,
       "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2329641"
+      "url": "https://www.mql5.com/en/signals/2303631"
+    },
+    {
+      "name": "X657 Stay true to the mission",
+      "growth_pct": 399.1,
+      "drawdown": 36.0,
+      "subscribers": 0,
+      "url": "https://www.mql5.com/en/signals/2021129"
     },
     {
       "name": "King222",
@@ -66,20 +73,13 @@
       "drawdown": 22.0,
       "subscribers": 0,
       "url": "https://www.mql5.com/en/signals/2332085"
-    },
-    {
-      "name": "Gold Trend X",
-      "growth_pct": 368.27,
-      "drawdown": 34.3,
-      "subscribers": 0,
-      "url": "https://www.mql5.com/en/signals/2248087"
     }
   ],
   "summary": {
-    "total_signals_tracked": 19,
+    "total_signals_tracked": 18,
     "total_positions_found": 0,
     "consensus_count": 0,
     "confidence_boost": 0,
-    "top_growth": 826.58
+    "top_growth": 819.84
   }
 }

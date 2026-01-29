@@ -77,6 +77,272 @@ app.add_middleware(
 # HELPER FUNCTIONS
 # ═══════════════════════════════════════════════════════════════════════════════
 
+def calculate_weighted_pips_dca(current_price: float, symbol: str) -> Dict:
+    """
+    Calculate DCA ladder using WEIGHTED PIPS for stocks.
+    
+    Formula: 100 weighted pips = 1.5% of stock price
+    This ensures "100 pip drop" means the same thing for all stocks!
+    
+    Works for: IREN ($62), CLSK ($12), CIFR ($17), or ANY stock price.
+    
+    For Gold (XAUUSD), we use standard forex pips, not weighted pips.
+    """
+    pip_100_value = current_price * 0.015  # 100 pips = 1.5%
+    pip_1_value = current_price * 0.00015  # 1 pip = 0.015%
+    
+    dca_ladder = {
+        "note": f"Weighted Pips: 100 pips = 1.5% = ${pip_100_value:.2f}. Scales to any stock!",
+        "symbol": symbol,
+        "reference_price": current_price,
+        "pip_value": round(pip_1_value, 4),
+        "pip_100_value": round(pip_100_value, 2),
+        "L1": {
+            "price": current_price,
+            "pips": 0,
+            "drop_pct": "0%",
+            "drop_usd": "$0.00",
+            "size": "1 contract",
+            "status": "ENTRY"
+        },
+        "L2": {
+            "price": round(current_price * 0.985, 2),
+            "pips": -100,
+            "drop_pct": "-1.5%",
+            "drop_usd": f"-${pip_100_value:.2f}",
+            "size": "1 contract",
+            "status": "WAITING"
+        },
+        "L3": {
+            "price": round(current_price * 0.970, 2),
+            "pips": -200,
+            "drop_pct": "-3.0%",
+            "drop_usd": f"-${pip_100_value * 2:.2f}",
+            "size": "2 contracts",
+            "status": "WAITING"
+        },
+        "L4": {
+            "price": round(current_price * 0.950, 2),
+            "pips": -333,
+            "drop_pct": "-5.0%",
+            "drop_usd": f"-${current_price * 0.05:.2f}",
+            "size": "2 contracts",
+            "status": "WAITING"
+        },
+        "L5": {
+            "price": round(current_price * 0.920, 2),
+            "pips": -533,
+            "drop_pct": "-8.0%",
+            "drop_usd": f"-${current_price * 0.08:.2f}",
+            "size": "3 contracts (MAX)",
+            "status": "WAITING"
+        },
+    }
+    
+    return dca_ladder
+
+
+def calculate_weighted_pips_tp(current_price: float, symbol: str) -> Dict:
+    """
+    Calculate Take Profit ladder using weighted pips.
+    
+    TP targets based on thesis strength:
+    - TP1: +10% (conservative)
+    - TP2: +25% (moderate)  
+    - TP3: +50%+ (moonshot - for LEAPs)
+    """
+    return {
+        "note": "Take profits scaled to thesis. Always keep runners for moonshot!",
+        "symbol": symbol,
+        "reference_price": current_price,
+        "TP1": {
+            "price": round(current_price * 1.10, 2),
+            "gain_pct": "+10%",
+            "gain_usd": f"+${current_price * 0.10:.2f}",
+            "action": "SELL_33%",
+            "pips": 667
+        },
+        "TP2": {
+            "price": round(current_price * 1.25, 2),
+            "gain_pct": "+25%",
+            "gain_usd": f"+${current_price * 0.25:.2f}",
+            "action": "SELL_33%",
+            "pips": 1667
+        },
+        "TP3": {
+            "price": round(current_price * 1.50, 2),
+            "gain_pct": "+50%",
+            "gain_usd": f"+${current_price * 0.50:.2f}",
+            "action": "SELL_REMAINING",
+            "pips": 3333
+        },
+        "MOONSHOT": {
+            "price": round(current_price * 2.50, 2),
+            "gain_pct": "+150%",
+            "note": "Keep LEAPs for this! Never sell all."
+        }
+    }
+
+
+# BTC Miner specific thesis
+BTC_MINER_THESIS = {
+    "IREN": {
+        "name": "Iris Energy",
+        "thesis": "AI hyperscaling + Microsoft contract + legacy energy rights",
+        "target": 150.00,
+        "invalidation": "Contract cancellation or AI demand collapse",
+        "moat": "3-5 year energy permit advantage in Texas"
+    },
+    "CLSK": {
+        "name": "CleanSpark",
+        "thesis": "Largest US miner by hashrate + AI pivot potential",
+        "target": 40.00,
+        "invalidation": "BTC below $60K sustained or AI pivot fails",
+        "moat": "Massive mining infrastructure convertible to AI"
+    },
+    "CIFR": {
+        "name": "Cipher Mining",
+        "thesis": "AI data center pivot + Texas energy assets",
+        "target": 50.00,
+        "invalidation": "No AI contracts by Q2 2026",
+        "moat": "Strategic land and power agreements"
+    }
+}
+
+
+def calculate_options_packet_cost(current_price: float, symbol: str) -> Dict:
+    """
+    Calculate OPTIONS-ONLY DCA with packet costs.
+    
+    1 Packet = ~$2,000 risk (equivalent to Gold 0.5 lot)
+    
+    Options cost estimate based on stock price:
+    - Premium ≈ 8-12% of strike for 30 DTE ATM calls
+    - 1 contract = 100 shares exposure
+    """
+    # Estimate ATM call premium (30 DTE)
+    # Rule of thumb: ATM 30 DTE call ≈ 8-12% of stock price for volatile stocks
+    premium_pct = 0.10  # 10% estimate for BTC miners (high IV)
+    atm_premium_per_share = current_price * premium_pct
+    atm_premium_per_contract = atm_premium_per_share * 100
+    
+    # 1 Packet = ~$2,000 risk (matches Gold 0.5 lot equivalent)
+    target_packet_cost = 2000
+    contracts_per_packet = max(1, int(target_packet_cost / atm_premium_per_contract))
+    actual_packet_cost = contracts_per_packet * atm_premium_per_contract
+    
+    # DCA Ladder - OPTIONS ONLY (no shares!)
+    # Using weighted pips: 100 pips = 1.5% drop
+    pip_100_value = current_price * 0.015
+    
+    return {
+        "mode": "OPTIONS_ONLY",
+        "symbol": symbol,
+        "current_price": current_price,
+        
+        # Packet Definition
+        "packet": {
+            "definition": "1 packet ≈ $2,000 risk (same as Gold 0.5 lot)",
+            "atm_premium_estimate": round(atm_premium_per_contract, 0),
+            "contracts_per_packet": contracts_per_packet,
+            "actual_cost": round(actual_packet_cost, 0),
+            "strike": int(current_price),  # ATM
+            "expiry": "30-45 DTE recommended",
+        },
+        
+        # Weighted Pips for DCA timing
+        "pip_system": {
+            "note": "100 weighted pips = 1.5% drop = time to add!",
+            "pip_100_value": round(pip_100_value, 2),
+        },
+        
+        # OPTIONS DCA Ladder
+        "dca_ladder": {
+            "L1": {
+                "trigger": "Entry",
+                "price": current_price,
+                "pips": 0,
+                "contracts": contracts_per_packet,
+                "cost": round(actual_packet_cost, 0),
+                "strike": int(current_price),
+                "note": "ATM call, 30-45 DTE"
+            },
+            "L2": {
+                "trigger": "-100 pips (-1.5%)",
+                "price": round(current_price * 0.985, 2),
+                "pips": -100,
+                "contracts": contracts_per_packet,
+                "cost": round(actual_packet_cost * 0.85, 0),  # Cheaper premium
+                "strike": int(current_price * 0.985),
+                "note": "Lower strike = cheaper premium"
+            },
+            "L3": {
+                "trigger": "-200 pips (-3%)",
+                "price": round(current_price * 0.970, 2),
+                "pips": -200,
+                "contracts": contracts_per_packet * 2,
+                "cost": round(actual_packet_cost * 0.70 * 2, 0),
+                "strike": int(current_price * 0.970),
+                "note": "Double up on deeper dip"
+            },
+            "L4": {
+                "trigger": "-333 pips (-5%)",
+                "price": round(current_price * 0.950, 2),
+                "pips": -333,
+                "contracts": contracts_per_packet * 2,
+                "cost": round(actual_packet_cost * 0.55 * 2, 0),
+                "strike": int(current_price * 0.950),
+                "note": "Aggressive add"
+            },
+            "L5": {
+                "trigger": "-533 pips (-8%)",
+                "price": round(current_price * 0.920, 2),
+                "pips": -533,
+                "contracts": contracts_per_packet * 3,
+                "cost": round(actual_packet_cost * 0.40 * 3, 0),
+                "strike": int(current_price * 0.920),
+                "note": "MAX POSITION - deep discount"
+            },
+        },
+        
+        # Total max exposure
+        "max_exposure": {
+            "total_contracts": contracts_per_packet * 9,  # 1+1+2+2+3
+            "total_cost": round(actual_packet_cost * (1 + 0.85 + 1.40 + 1.10 + 1.20), 0),
+            "max_risk": "Premium paid only - defined risk!"
+        },
+        
+        # Take Profit for options
+        "tp_ladder": {
+            "TP1": {
+                "stock_price": round(current_price * 1.10, 2),
+                "gain_pct": "+10%",
+                "option_gain": "~50-80% on contracts",
+                "action": "SELL_33%"
+            },
+            "TP2": {
+                "stock_price": round(current_price * 1.25, 2),
+                "gain_pct": "+25%",
+                "option_gain": "~150-200% on contracts",
+                "action": "SELL_33%"
+            },
+            "TP3": {
+                "stock_price": round(current_price * 1.50, 2),
+                "gain_pct": "+50%",
+                "option_gain": "~300-500% on contracts",
+                "action": "SELL_REMAINING"
+            },
+        },
+        
+        # Gold correlation
+        "gold_correlation": {
+            "theory": "Gold may LEAD miners by 1-2 days",
+            "strategy": "If Gold breaks out → Buy miner calls next day",
+            "correlation_estimate": "0.60-0.75 in risk-on regime"
+        }
+    }
+
+
 def get_today_prediction(symbol: str) -> Optional[Dict]:
     """Load today's prediction file"""
     date_str = datetime.utcnow().strftime("%Y%m%d")
@@ -377,25 +643,105 @@ async def get_iren_daily_plan():
         except:
             current_price = pred.get("pre_market_price", 0)
         
-        # Determine strategy
+        # Determine strategy - HYPERSCALING THESIS with EXHAUSTION CHECK
+        # Like Gold: We don't FOMO at tops, we wait for dips!
         overnight_change = pred.get("overnight_bias", "UNKNOWN")
         
-        if overnight_change == "BEARISH" or (current_price < pred.get("pre_market_price", 100) * 0.95):
+        # Calculate technicals for exhaustion check
+        try:
+            iren_df = yf.Ticker("IREN").history(period="30d", interval="1h")
+            close = iren_df['Close']
+            
+            # RSI
+            delta = close.diff()
+            gain = delta.where(delta > 0, 0)
+            loss = -delta.where(delta < 0, 0)
+            avg_gain = gain.rolling(14).mean()
+            avg_loss = loss.rolling(14).mean()
+            rs = avg_gain / avg_loss
+            rsi = float((100 - (100 / (1 + rs))).iloc[-1])
+            
+            # EMAs
+            ema20 = float(close.ewm(span=20).mean().iloc[-1])
+            ema50 = float(close.ewm(span=50).mean().iloc[-1])
+            dist_from_ema20 = ((current_price - ema20) / ema20) * 100
+            
+            # 52W High
+            hist_1y = yf.Ticker("IREN").history(period="1y")
+            high_52w = float(hist_1y['High'].max())
+            pct_from_high = ((high_52w - current_price) / high_52w) * 100
+        except:
+            rsi = 50
+            ema20 = current_price
+            dist_from_ema20 = 0
+            pct_from_high = 10
+        
+        # EXHAUSTION CHECK (Like Gold - don't buy at tops!)
+        exhaustion_score = 0
+        exhaustion_reasons = []
+        
+        if rsi > 70:
+            exhaustion_score += 30
+            exhaustion_reasons.append(f"RSI {rsi:.0f} > 70")
+        if dist_from_ema20 > 5:
+            exhaustion_score += 30
+            exhaustion_reasons.append(f"+{dist_from_ema20:.1f}% above EMA20")
+        if pct_from_high < 3:
+            exhaustion_score += 20
+            exhaustion_reasons.append(f"Only {pct_from_high:.1f}% from 52W high")
+        
+        is_exhausted = exhaustion_score >= 50
+        
+        # DCA Entry Zone (like Gold's entry detection)
+        entry_zone_high = ema20
+        entry_zone_low = ema20 * 0.92
+        in_entry_zone = entry_zone_low <= current_price <= entry_zone_high
+        is_dip = rsi < 40 or current_price < ema20 * 0.97
+        
+        # NEW DCA LOGIC: DCA is relative to ENTRY, not fixed price levels!
+        # 
+        # WRONG: Wait for $57 (EMA20) that may never come
+        # RIGHT: Enter small position, DCA on % drops from entry
+        #
+        # If exhausted (RSI>75), enter smaller position or wait for 3% pullback
+        # DCA levels are % drops from entry, NOT fixed prices
+        
+        # Check if we have existing positions
+        has_positions = False  # Would check paper trading positions
+        
+        if is_exhausted:
+            # EXHAUSTED but still want to participate
+            # Option 1: Wait for 3% pullback for L1
+            # Option 2: Enter small L1 position anyway (half size)
+            strategy = "CAUTIOUS_ENTRY"
+            direction = "BUY"  # Changed! Still BUY, but cautiously
+            pullback_entry = current_price * 0.97  # 3% pullback
+            entry_condition = f"⚠️ Exhausted (RSI {rsi:.0f}). Enter SMALL L1 or wait for 3% pullback to ${pullback_entry:.2f}"
+        # Good dip - aggressive entry
+        elif is_dip:
+            strategy = "BUY_THE_DIP"
+            direction = "BUY"
+            entry_condition = f"🎯 GOOD DIP! RSI {rsi:.0f}, Buy L1 at ${current_price:.2f}"
+        # Overnight gap down
+        elif overnight_change == "BEARISH" or (current_price < pred.get("pre_market_price", 100) * 0.95):
             strategy = "BUY_THE_DIP"
             direction = "BUY"
             entry_condition = "Gap down = accumulation opportunity"
+        # BTC momentum - can still enter
         elif btc_change > 3:
             strategy = "MOMENTUM_LONG"
             direction = "BUY"
-            entry_condition = f"BTC +{btc_change:.1f}% → IREN follows"
-        elif btc_change < -3:
+            entry_condition = f"BTC +{btc_change:.1f}% → IREN momentum play"
+        # BTC crash - wait for reversal
+        elif btc_change < -5:
             strategy = "WAIT_FOR_BOTTOM"
             direction = "WAIT"
-            entry_condition = f"BTC {btc_change:.1f}% → avoid longs"
+            entry_condition = f"BTC {btc_change:.1f}% → wait for reversal signal"
+        # DEFAULT: Participate! DCA protects us
         else:
-            strategy = "RANGE_SCALP"
-            direction = "NEUTRAL"
-            entry_condition = "Range-bound, scalp or wait"
+            strategy = "ACCUMULATE"
+            direction = "BUY"  # Changed from WAIT - we want to be IN the trade
+            entry_condition = f"Thesis intact. Enter L1 at ${current_price:.2f}, DCA on drops"
         
         plan = {
             "signal_id": f"NEO_IREN_{datetime.utcnow().strftime('%Y%m%d')}",
@@ -416,26 +762,55 @@ async def get_iren_daily_plan():
                 "iren_expected": "UP" if btc_change > 2 else "DOWN" if btc_change < -2 else "FLAT"
             },
             
-            # Share strategy
+            # Share strategy with DYNAMIC DCA
             "shares": {
                 "action": direction,
-                "entry_level": pred.get("entry_level", current_price),
-                "stop_loss": pred.get("stop_loss", current_price * 0.92),
-                "take_profit": pred.get("take_profit", current_price * 1.15),
-                "position_size": "Based on account size",
-                "dca_levels": [
-                    current_price * 0.95,  # -5%
-                    current_price * 0.90,  # -10%
-                ]
+                "entry_level": current_price if direction == "BUY" else pred.get("entry_level", current_price),
+                "stop_loss": None,  # NO SL - DCA protects us
+                "take_profit": current_price * 2.5,  # $150 target for hyperscaling
+                "position_size": "L1: 1 unit, scale on dips",
             },
             
-            # Options strategy
+            # WEIGHTED PIPS DCA - Scales to stock price!
+            # 100 pips = 1.5% of stock price (not fixed $1)
+            # IREN @ $62: 100 pips = $0.93 (1.5%)
+            # CLSK @ $12: 100 pips = $0.18 (1.5%)
+            # This way 100 pips MEANS THE SAME for all stocks!
+            "dca_ladder": {
+                "note": f"Weighted Pips: 100 pips = 1.5% = ${current_price * 0.015:.2f}. Scales to any stock!",
+                "reference_price": current_price,
+                "pip_value": round(current_price * 0.00015, 4),  # 1 pip = 0.015% of price
+                "pip_100_value": round(current_price * 0.015, 2),  # 100 pips = 1.5%
+                "L1": {"price": current_price, "pips": 0, "drop": "0%", "size": "1 contract", "status": "ENTRY"},
+                "L2": {"price": round(current_price * 0.985, 2), "pips": -100, "drop": "-1.5%", "size": "1 contract", "status": "WAITING"},
+                "L3": {"price": round(current_price * 0.970, 2), "pips": -200, "drop": "-3.0%", "size": "2 contracts", "status": "WAITING"},
+                "L4": {"price": round(current_price * 0.950, 2), "pips": -333, "drop": "-5.0%", "size": "2 contracts", "status": "WAITING"},
+                "L5": {"price": round(current_price * 0.920, 2), "pips": -533, "drop": "-8.0%", "size": "3 contracts (MAX)", "status": "WAITING"},
+            },
+            
+            # Take Profit Ladder
+            "tp_ladder": {
+                "TP1": {"price": round(current_price * 1.15, 2), "gain": "+15%", "action": "Sell 33%"},
+                "TP2": {"price": round(current_price * 1.30, 2), "gain": "+30%", "action": "Sell 33%"},
+                "TP3": {"price": 150.00, "gain": "Target", "action": "Sell remaining (runner)"},
+            },
+            
+            # OPTIONS DCA - Using WEIGHTED PIPS (100 pips = 1.5% of price)
             "options": {
-                "recommendation": "BUY_CALLS" if direction == "BUY" else "WAIT" if direction == "WAIT" else "SELL_CALLS",
+                "recommendation": "BUY_CALLS" if direction == "BUY" else "WAIT",
                 "strike": int(current_price) + 5,
-                "expiry": "2-3 weeks out",
-                "size": "2-5 contracts",
-                "max_risk": "$500",
+                "expiry": "3-4 weeks out (DTE 21-28)",
+                "pip_100_equals": f"1.5% = ${current_price * 0.015:.2f}",
+                "dca_schedule": {
+                    "L1": {"trigger": f"Entry @ ${current_price:.2f}", "contracts": 1, "pips": 0, "pct": "0%"},
+                    "L2": {"trigger": f"-100 pips @ ${current_price * 0.985:.2f}", "contracts": 1, "pips": -100, "pct": "-1.5%"},
+                    "L3": {"trigger": f"-200 pips @ ${current_price * 0.970:.2f}", "contracts": 2, "pips": -200, "pct": "-3.0%"},
+                    "L4": {"trigger": f"-333 pips @ ${current_price * 0.950:.2f}", "contracts": 2, "pips": -333, "pct": "-5.0%"},
+                    "L5": {"trigger": f"-533 pips @ ${current_price * 0.920:.2f}", "contracts": 3, "pips": -533, "pct": "-8.0%"},
+                },
+                "max_contracts": 9,
+                "max_risk_per_level": "$500",
+                "note": "WEIGHTED PIPS: 100 pips = 1.5% regardless of stock price! Same mental model for any stock.",
             },
             
             # Execution rules
@@ -453,11 +828,26 @@ async def get_iren_daily_plan():
                 "hunt_target": pred.get("hunt_target", 0),
             },
             
+            # Exhaustion info
+            "exhaustion": {
+                "is_exhausted": is_exhausted,
+                "score": exhaustion_score,
+                "reasons": exhaustion_reasons,
+                "rsi": rsi,
+                "dist_from_ema20": dist_from_ema20,
+            },
+            
+            # Clear action summary
+            "action_summary": entry_condition,
+            
             # Learning
             "learning": {
                 "prediction_id": f"IREN_{datetime.utcnow().strftime('%Y%m%d')}",
                 "report_result_to": "/api/neo/trade-result",
-            }
+            },
+            
+            # CRITICAL NOTE
+            "dca_philosophy": "DCA is a SAFETY NET for existing positions. Enter L1 first, add on drops. Levels MOVE with price. Don't wait on sidelines!"
         }
         
         logger.info(f"IREN daily plan: {strategy} @ ${current_price:.2f}")
@@ -466,6 +856,445 @@ async def get_iren_daily_plan():
     except Exception as e:
         logger.error(f"Error getting IREN plan: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CLSK DAILY PLAN (BTC Miner #2 - Weighted Pips)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@app.get("/api/neo/clsk/daily-plan")
+async def get_clsk_daily_plan():
+    """
+    Get today's CLSK trading plan with WEIGHTED PIPS.
+    Same logic as IREN but with CLSK-specific thesis.
+    """
+    try:
+        import yfinance as yf
+        
+        # Get current CLSK price
+        try:
+            ticker = yf.Ticker("CLSK")
+            hist = ticker.history(period="1d", interval="1m")
+            current_price = float(hist['Close'].iloc[-1]) if not hist.empty else 12.0
+        except:
+            current_price = 12.0
+        
+        # Get BTC price for correlation
+        try:
+            btc = yf.Ticker("BTC-USD").history(period="2d", interval="1h")
+            btc_price = float(btc['Close'].iloc[-1])
+            btc_prev = float(btc['Close'].iloc[-24]) if len(btc) >= 24 else btc_price
+            btc_change = ((btc_price - btc_prev) / btc_prev) * 100
+        except:
+            btc_price = 0
+            btc_change = 0
+        
+        # Calculate technicals
+        try:
+            df = yf.Ticker("CLSK").history(period="30d", interval="1h")
+            close = df['Close']
+            
+            delta = close.diff()
+            gain = delta.where(delta > 0, 0)
+            loss = -delta.where(delta < 0, 0)
+            avg_gain = gain.rolling(14).mean()
+            avg_loss = loss.rolling(14).mean()
+            rs = avg_gain / avg_loss
+            rsi = float((100 - (100 / (1 + rs))).iloc[-1])
+            
+            ema20 = float(close.ewm(span=20).mean().iloc[-1])
+            dist_from_ema20 = ((current_price - ema20) / ema20) * 100
+        except:
+            rsi = 50
+            ema20 = current_price
+            dist_from_ema20 = 0
+        
+        # EXHAUSTION CHECK
+        exhaustion_score = 0
+        exhaustion_reasons = []
+        
+        if rsi > 70:
+            exhaustion_score += 30
+            exhaustion_reasons.append(f"RSI {rsi:.0f} > 70")
+        if dist_from_ema20 > 5:
+            exhaustion_score += 30
+            exhaustion_reasons.append(f"+{dist_from_ema20:.1f}% above EMA20")
+        
+        is_exhausted = exhaustion_score >= 50
+        is_dip = rsi < 40 or current_price < ema20 * 0.97
+        
+        # Strategy determination
+        if is_exhausted:
+            strategy = "CAUTIOUS_ENTRY"
+            direction = "BUY"
+            entry_condition = f"⚠️ Exhausted (RSI {rsi:.0f}). Enter small L1 or wait for 3% pullback"
+        elif is_dip:
+            strategy = "BUY_THE_DIP"
+            direction = "BUY"
+            entry_condition = f"🎯 GOOD DIP! RSI {rsi:.0f}, Buy L1 at ${current_price:.2f}"
+        elif btc_change > 3:
+            strategy = "MOMENTUM_LONG"
+            direction = "BUY"
+            entry_condition = f"BTC momentum +{btc_change:.1f}%, ride the wave"
+        else:
+            strategy = "THESIS_HOLD"
+            direction = "BUY"
+            entry_condition = f"Thesis intact. Enter L1 at ${current_price:.2f}, DCA on drops"
+        
+        # Get weighted pips ladders
+        dca_ladder = calculate_weighted_pips_dca(current_price, "CLSK")
+        tp_ladder = calculate_weighted_pips_tp(current_price, "CLSK")
+        thesis = BTC_MINER_THESIS["CLSK"]
+        
+        plan = {
+            "signal_id": f"NEO_CLSK_{datetime.utcnow().strftime('%Y%m%d')}",
+            "timestamp": datetime.utcnow().isoformat(),
+            "symbol": "CLSK",
+            "current_price": current_price,
+            "thesis": thesis,
+            
+            # Strategy
+            "strategy": strategy,
+            "direction": direction,
+            "confidence": 70 if not is_exhausted else 55,
+            "action_summary": entry_condition,
+            
+            # BTC correlation
+            "btc_correlation": {
+                "btc_price": btc_price,
+                "btc_change_24h": btc_change,
+                "expected_move": "UP" if btc_change > 2 else "DOWN" if btc_change < -2 else "FLAT"
+            },
+            
+            # Weighted Pips DCA
+            "dca_ladder": dca_ladder,
+            "tp_ladder": tp_ladder,
+            
+            # Options
+            "options": {
+                "recommendation": "BUY_CALLS" if direction == "BUY" else "WAIT",
+                "strike": int(current_price) + 2,  # Lower strikes for cheaper stock
+                "expiry": "3-4 weeks out (DTE 21-28)",
+                "pip_100_equals": f"1.5% = ${current_price * 0.015:.2f}",
+                "max_contracts": 9,
+                "note": "WEIGHTED PIPS: 100 pips = 1.5% for any stock!"
+            },
+            
+            # Exhaustion info
+            "exhaustion": {
+                "is_exhausted": is_exhausted,
+                "score": exhaustion_score,
+                "reasons": exhaustion_reasons,
+                "rsi": rsi,
+            },
+            
+            "execution": {
+                "best_times": ["9:30-10:00 EST", "15:00-16:00 EST"],
+                "avoid_times": ["12:00-14:00 EST"],
+                "watch_btc": True,
+            },
+            
+            "learning": {
+                "prediction_id": f"CLSK_{datetime.utcnow().strftime('%Y%m%d')}",
+                "report_result_to": "/api/neo/trade-result",
+            },
+        }
+        
+        logger.info(f"CLSK daily plan: {strategy} @ ${current_price:.2f}")
+        return plan
+        
+    except Exception as e:
+        logger.error(f"Error getting CLSK plan: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CIFR DAILY PLAN (BTC Miner #3 - Weighted Pips)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@app.get("/api/neo/cifr/daily-plan")
+async def get_cifr_daily_plan():
+    """
+    Get today's CIFR trading plan with WEIGHTED PIPS.
+    Same logic as IREN/CLSK but with CIFR-specific thesis.
+    """
+    try:
+        import yfinance as yf
+        
+        # Get current CIFR price
+        try:
+            ticker = yf.Ticker("CIFR")
+            hist = ticker.history(period="1d", interval="1m")
+            current_price = float(hist['Close'].iloc[-1]) if not hist.empty else 17.0
+        except:
+            current_price = 17.0
+        
+        # Get BTC price for correlation
+        try:
+            btc = yf.Ticker("BTC-USD").history(period="2d", interval="1h")
+            btc_price = float(btc['Close'].iloc[-1])
+            btc_prev = float(btc['Close'].iloc[-24]) if len(btc) >= 24 else btc_price
+            btc_change = ((btc_price - btc_prev) / btc_prev) * 100
+        except:
+            btc_price = 0
+            btc_change = 0
+        
+        # Calculate technicals
+        try:
+            df = yf.Ticker("CIFR").history(period="30d", interval="1h")
+            close = df['Close']
+            
+            delta = close.diff()
+            gain = delta.where(delta > 0, 0)
+            loss = -delta.where(delta < 0, 0)
+            avg_gain = gain.rolling(14).mean()
+            avg_loss = loss.rolling(14).mean()
+            rs = avg_gain / avg_loss
+            rsi = float((100 - (100 / (1 + rs))).iloc[-1])
+            
+            ema20 = float(close.ewm(span=20).mean().iloc[-1])
+            dist_from_ema20 = ((current_price - ema20) / ema20) * 100
+        except:
+            rsi = 50
+            ema20 = current_price
+            dist_from_ema20 = 0
+        
+        # EXHAUSTION CHECK
+        exhaustion_score = 0
+        exhaustion_reasons = []
+        
+        if rsi > 70:
+            exhaustion_score += 30
+            exhaustion_reasons.append(f"RSI {rsi:.0f} > 70")
+        if dist_from_ema20 > 5:
+            exhaustion_score += 30
+            exhaustion_reasons.append(f"+{dist_from_ema20:.1f}% above EMA20")
+        
+        is_exhausted = exhaustion_score >= 50
+        is_dip = rsi < 40 or current_price < ema20 * 0.97
+        
+        # Strategy determination
+        if is_exhausted:
+            strategy = "CAUTIOUS_ENTRY"
+            direction = "BUY"
+            entry_condition = f"⚠️ Exhausted (RSI {rsi:.0f}). Enter small L1 or wait for 3% pullback"
+        elif is_dip:
+            strategy = "BUY_THE_DIP"
+            direction = "BUY"
+            entry_condition = f"🎯 GOOD DIP! RSI {rsi:.0f}, Buy L1 at ${current_price:.2f}"
+        elif btc_change > 3:
+            strategy = "MOMENTUM_LONG"
+            direction = "BUY"
+            entry_condition = f"BTC momentum +{btc_change:.1f}%, ride the wave"
+        else:
+            strategy = "THESIS_HOLD"
+            direction = "BUY"
+            entry_condition = f"Thesis intact. Enter L1 at ${current_price:.2f}, DCA on drops"
+        
+        # Get weighted pips ladders
+        dca_ladder = calculate_weighted_pips_dca(current_price, "CIFR")
+        tp_ladder = calculate_weighted_pips_tp(current_price, "CIFR")
+        thesis = BTC_MINER_THESIS["CIFR"]
+        
+        plan = {
+            "signal_id": f"NEO_CIFR_{datetime.utcnow().strftime('%Y%m%d')}",
+            "timestamp": datetime.utcnow().isoformat(),
+            "symbol": "CIFR",
+            "current_price": current_price,
+            "thesis": thesis,
+            
+            # Strategy
+            "strategy": strategy,
+            "direction": direction,
+            "confidence": 70 if not is_exhausted else 55,
+            "action_summary": entry_condition,
+            
+            # BTC correlation
+            "btc_correlation": {
+                "btc_price": btc_price,
+                "btc_change_24h": btc_change,
+                "expected_move": "UP" if btc_change > 2 else "DOWN" if btc_change < -2 else "FLAT"
+            },
+            
+            # Weighted Pips DCA
+            "dca_ladder": dca_ladder,
+            "tp_ladder": tp_ladder,
+            
+            # Options
+            "options": {
+                "recommendation": "BUY_CALLS" if direction == "BUY" else "WAIT",
+                "strike": int(current_price) + 3,
+                "expiry": "3-4 weeks out (DTE 21-28)",
+                "pip_100_equals": f"1.5% = ${current_price * 0.015:.2f}",
+                "max_contracts": 9,
+                "note": "WEIGHTED PIPS: 100 pips = 1.5% for any stock!"
+            },
+            
+            # Exhaustion info
+            "exhaustion": {
+                "is_exhausted": is_exhausted,
+                "score": exhaustion_score,
+                "reasons": exhaustion_reasons,
+                "rsi": rsi,
+            },
+            
+            "execution": {
+                "best_times": ["9:30-10:00 EST", "15:00-16:00 EST"],
+                "avoid_times": ["12:00-14:00 EST"],
+                "watch_btc": True,
+            },
+            
+            "learning": {
+                "prediction_id": f"CIFR_{datetime.utcnow().strftime('%Y%m%d')}",
+                "report_result_to": "/api/neo/trade-result",
+            },
+        }
+        
+        logger.info(f"CIFR daily plan: {strategy} @ ${current_price:.2f}")
+        return plan
+        
+    except Exception as e:
+        logger.error(f"Error getting CIFR plan: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# UNIFIED BTC MINERS ENDPOINT (All 3 at once)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@app.get("/api/neo/btc-miners/daily-plan")
+async def get_all_btc_miners_plan():
+    """
+    Get daily plans for ALL 3 BTC miners in one call.
+    OPTIONS-ONLY mode with packet costs!
+    Perfect for Paul's trading dashboard!
+    """
+    import yfinance as yf
+    
+    miners = ["IREN", "CLSK", "CIFR"]
+    plans = {}
+    
+    # Get BTC price once
+    try:
+        btc = yf.Ticker("BTC-USD").history(period="2d", interval="1h")
+        btc_price = float(btc['Close'].iloc[-1])
+        btc_prev = float(btc['Close'].iloc[-24]) if len(btc) >= 24 else btc_price
+        btc_change = ((btc_price - btc_prev) / btc_prev) * 100
+    except:
+        btc_price = 100000
+        btc_change = 0
+    
+    # Get Gold price for correlation
+    try:
+        gold = yf.Ticker("GC=F").history(period="2d", interval="1h")
+        gold_price = float(gold['Close'].iloc[-1])
+        gold_prev = float(gold['Close'].iloc[-24]) if len(gold) >= 24 else gold_price
+        gold_change = ((gold_price - gold_prev) / gold_prev) * 100
+    except:
+        gold_price = 2700
+        gold_change = 0
+    
+    total_packet_cost = 0
+    
+    for symbol in miners:
+        try:
+            ticker = yf.Ticker(symbol)
+            hist = ticker.history(period="1d", interval="1m")
+            current_price = float(hist['Close'].iloc[-1]) if not hist.empty else 0
+            
+            # Quick technicals
+            df = ticker.history(period="30d", interval="1h")
+            close = df['Close']
+            delta = close.diff()
+            gain = delta.where(delta > 0, 0)
+            loss = -delta.where(delta < 0, 0)
+            avg_gain = gain.rolling(14).mean()
+            avg_loss = loss.rolling(14).mean()
+            rs = avg_gain / avg_loss
+            rsi = float((100 - (100 / (1 + rs))).iloc[-1])
+            ema20 = float(close.ewm(span=20).mean().iloc[-1])
+            
+            is_exhausted = rsi > 70
+            is_dip = rsi < 40
+            
+            # Determine action
+            if is_exhausted:
+                action = "⚠️ CAUTION"
+                signal = "Wait for -100 pips pullback"
+            elif is_dip:
+                action = "🎯 BUY CALLS"
+                signal = f"DCA at ${current_price:.2f}"
+            else:
+                action = "✅ ADD CALLS"
+                signal = f"L1 entry OK"
+            
+            # Get OPTIONS packet costs
+            options = calculate_options_packet_cost(current_price, symbol)
+            packet = options["packet"]
+            thesis = BTC_MINER_THESIS.get(symbol, {})
+            
+            total_packet_cost += packet["actual_cost"]
+            
+            plans[symbol] = {
+                "price": current_price,
+                "rsi": round(rsi, 1),
+                "ema20": round(ema20, 2),
+                "action": action,
+                "signal": signal,
+                
+                # OPTIONS PACKET (key info!)
+                "packet_cost": int(packet["actual_cost"]),
+                "contracts_per_packet": packet["contracts_per_packet"],
+                "strike": packet["strike"],
+                "pip_100": round(current_price * 0.015, 2),
+                
+                # DCA Levels
+                "L2_trigger": options["dca_ladder"]["L2"]["price"],
+                "L3_trigger": options["dca_ladder"]["L3"]["price"],
+                
+                # TP Targets
+                "tp1": options["tp_ladder"]["TP1"]["stock_price"],
+                "tp2": options["tp_ladder"]["TP2"]["stock_price"],
+                
+                # Thesis
+                "target": thesis.get("target", 0),
+                "thesis": thesis.get("thesis", "")[:50] + "..."
+            }
+            
+        except Exception as e:
+            plans[symbol] = {"error": str(e)}
+    
+    return {
+        "timestamp": datetime.utcnow().isoformat(),
+        "mode": "OPTIONS_ONLY",
+        
+        # Market context
+        "btc": {
+            "price": btc_price,
+            "change_24h": round(btc_change, 2)
+        },
+        "gold": {
+            "price": gold_price,
+            "change_24h": round(gold_change, 2),
+            "leads_miners": "Gold may lead miners by 1-2 days!"
+        },
+        
+        # Packet info
+        "packet_definition": "1 packet ≈ $2,000 risk (same as Gold 0.5 lot)",
+        "weighted_pips": "100 pips = 1.5% for ALL stocks",
+        
+        # Miners
+        "miners": plans,
+        
+        # Summary
+        "summary": {
+            "buy_signals": sum(1 for p in plans.values() if "BUY" in p.get("action", "") or "ADD" in p.get("action", "")),
+            "caution_signals": sum(1 for p in plans.values() if "CAUTION" in p.get("action", "")),
+            "total_L1_cost": int(total_packet_cost),
+            "overall": "BULLISH" if btc_change > 0 else "CAUTIOUS",
+            "gold_signal": "🚀 GOLD UP - Miners may follow!" if gold_change > 0.5 else "⏳ Watch Gold for miner lead"
+        }
+    }
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -975,11 +1804,15 @@ def check_invalidation_iren(plan: Dict, current_price: float) -> Dict:
         result["reason"] = f"SL_BREACH: Price ${current_price:.2f} below SL ${stop_loss:.2f}"
         return result
     
-    # Rule 5: Missed entry (price ran away)
-    if direction == "BUY" and current_price > entry * 1.10:
-        result["valid"] = False
-        result["reason"] = f"MISSED_ENTRY: Price ${current_price:.2f} > 10% above entry ${entry:.2f}"
-        result["level"] = entry * 1.10
+    # Rule 5: Missed entry - BUT for hyperscaling thesis, breakouts are VALID entries
+    # IREN has hyperscaling thesis - buying breakouts is acceptable
+    # Only invalidate if price is EXTREMELY extended (>30% above 20-day EMA)
+    if direction == "BUY" and current_price > entry * 1.30:
+        # Even then, don't invalidate - just note it
+        result["reason"] = f"BREAKOUT_CHASE: Price ${current_price:.2f} extended - consider smaller position"
+        # STILL VALID - hyperscaling thesis allows breakout buying
+        # result["valid"] = False  # REMOVED - don't invalidate breakouts for IREN!
+        result["level"] = current_price * 0.92  # Adjust SL to current price
         return result
     
     # Rule 6: Market hours check (US market)

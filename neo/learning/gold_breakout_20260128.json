@@ -1,0 +1,181 @@
+{
+  "training_id": "GOLD_BREAKOUT_20260128",
+  "training_type": "LIVE_MARKET_SUCCESS",
+  "asset": "XAUUSD",
+  "date": "2026-01-28",
+  "grade": "A+",
+  "result": {
+    "total_pnl": 56398,
+    "win_rate": 90.2,
+    "profitable_trades": 37,
+    "losing_trades": 4,
+    "starting_balance": 100000,
+    "return_pct": 56.4
+  },
+  
+  "market_context": {
+    "move_start": "2026-01-27T19:00:00Z",
+    "move_end": "2026-01-28T20:00:00Z",
+    "start_price": 5058,
+    "end_price": 5321,
+    "total_move_usd": 263,
+    "total_move_pct": 5.2,
+    "trend": "STRONG_UPTREND",
+    "thesis": "GOLD_BULLISH_BRICS_INFLATION_DEDOLLARIZATION"
+  },
+  
+  "winning_strategy": {
+    "name": "DCA_LONGS_NO_SHORTS",
+    "description": "Buy dips in uptrend, never short against SuperTrend UP",
+    "key_tactics": [
+      "DCA on drops when RSI < 40",
+      "Hold positions when RSI > 70 (don't sell, don't buy)",
+      "Trail stops to lock gains",
+      "Keep runner position for extended moves",
+      "Partial take profits: 33% / 33% / 34%"
+    ]
+  },
+  
+  "losing_strategy": {
+    "name": "COUNTER_TREND_SHORTS",
+    "total_loss": -14652,
+    "why_failed": [
+      "Shorted in confirmed uptrend (SuperTrend UP)",
+      "Tried to 'fade the squeeze'",
+      "RSI overbought does NOT mean SELL in uptrend",
+      "Fought the thesis"
+    ]
+  },
+  
+  "key_patterns": {
+    "accumulation": {
+      "price_range": [5058, 5110],
+      "rsi_range": [35, 45],
+      "duration_hours": 6,
+      "action": "DCA_BUYS_ON_DIPS"
+    },
+    "breakout": {
+      "price_range": [5110, 5195],
+      "rsi_range": [50, 62],
+      "duration_hours": 7,
+      "action": "HOLD_TRAIL_STOPS"
+    },
+    "extension": {
+      "price_range": [5195, 5321],
+      "rsi_range": [65, 78],
+      "duration_hours": 12,
+      "action": "NO_NEW_BUYS_HOLD_EXISTING"
+    }
+  },
+  
+  "rules_learned": {
+    "rule_1_never_short_uptrend": {
+      "condition": "supertrend == UP",
+      "allowed_signals": ["BUY", "BUY_THE_DIP", "HOLD"],
+      "blocked_signals": ["SELL", "SHORT", "FADE_THE_SQUEEZE"],
+      "importance": "CRITICAL"
+    },
+    "rule_2_exhaustion_detection": {
+      "exhaustion_triggers": {
+        "rsi_above_70": 30,
+        "price_3pct_above_ema20": 25,
+        "near_recent_high": 25
+      },
+      "exhaustion_threshold": 50,
+      "action_when_exhausted": "NO_NEW_BUYS_BUT_HOLD_EXISTING"
+    },
+    "rule_3_dca_on_drops_only": {
+      "dca_triggers": {
+        "L2": {"drop_pct": 5, "action": "ADD"},
+        "L3": {"drop_pct": 10, "action": "ADD"},
+        "L4": {"drop_pct": 15, "action": "ADD"},
+        "L5": {"drop_pct": 20, "action": "MAX_ADD"}
+      },
+      "rule": "Calculate drops from ENTRY PRICE not current price"
+    },
+    "rule_4_let_winners_run": {
+      "tp_levels": [
+        {"pct": 0.5, "close_pct": 33, "label": "TP1"},
+        {"pct": 1.0, "close_pct": 33, "label": "TP2"},
+        {"pct": "runner", "close_pct": 34, "label": "TRAIL"}
+      ],
+      "trailing_stop_activation": 0.3,
+      "trailing_stop_distance": 0.5
+    },
+    "rule_5_only_short_on_trend_flip": {
+      "conditions_to_short": [
+        "SuperTrend flipped from UP to DOWN",
+        "Confidence >= 70%",
+        "Multiple signal confirmation"
+      ],
+      "default": "NO_SHORTS"
+    }
+  },
+  
+  "indicators_that_worked": {
+    "supertrend": {
+      "period": 10,
+      "multiplier": 3.0,
+      "signal": "UP",
+      "accuracy_pct": 100
+    },
+    "rsi": {
+      "period": 14,
+      "buy_below": 40,
+      "overbought_above": 70,
+      "accuracy_pct": 90
+    },
+    "ema20": {
+      "period": 20,
+      "use": "Support on dips",
+      "accuracy_pct": 85
+    },
+    "exhaustion_distance": {
+      "max_points_from_ema": 50,
+      "blocked_top_buys": true,
+      "accuracy_pct": 100
+    }
+  },
+  
+  "sample_winning_trades": [
+    {"entry": 5173.38, "exit": 5188.59, "lots": 0.5, "pnl": 760, "type": "DROPBUY"},
+    {"entry": 5178.67, "exit": 5203.26, "lots": 0.5, "pnl": 1229, "type": "DROPBUY"},
+    {"entry": 5295.63, "exit": 5345.62, "lots": 1.0, "pnl": 2897, "type": "DROPBUY"},
+    {"entry": 5242.75, "exit": 5309.95, "lots": 2.0, "pnl": 6076, "type": "DROPBUY_L5"}
+  ],
+  
+  "sample_losing_trades": [
+    {"entry": 5211.90, "exit": 5280.16, "lots": 1.0, "pnl": -6817, "type": "SELL_SCALP", "reason": "Shorted uptrend"},
+    {"entry": 5175.14, "exit": 5225.14, "lots": 1.0, "pnl": -5000, "type": "SELL_SCALP", "reason": "Counter-trend"},
+    {"entry": 5275.19, "exit": 5325.19, "lots": 1.0, "pnl": -2500, "type": "SELL_SCALP", "reason": "Fade squeeze failed"}
+  ],
+  
+  "prediction_calibration": {
+    "when_rsi_below_40_and_supertrend_up": "HIGH_CONFIDENCE_BUY",
+    "when_rsi_above_70_and_supertrend_up": "HOLD_NO_NEW_BUYS",
+    "when_supertrend_flips_down": "CONSIDER_SHORTS",
+    "when_price_3pct_above_ema20": "EXHAUSTED_WAIT_FOR_DIP"
+  },
+  
+  "next_expected_move": {
+    "short_term_4_8h": {
+      "likely": "Pullback to $5,260-5,290",
+      "rsi_cooling": true,
+      "action": "Prepare DCA bids at support"
+    },
+    "medium_term_24_48h": {
+      "bullish_case": "Hold $5,250 → Continue to $5,380-5,400",
+      "bearish_case": "Break $5,200 → Pullback to $5,150",
+      "action": "DCA on dips, hold runners"
+    },
+    "long_term_week": {
+      "supertrend": "UP",
+      "thesis": "BULLISH",
+      "target": 5500,
+      "action": "Accumulate on dips, never short"
+    }
+  },
+  
+  "training_timestamp": "2026-01-28T18:35:00Z",
+  "trained_by": "QUINN001"
+}
