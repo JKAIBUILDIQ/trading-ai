@@ -1,0 +1,38 @@
+{
+  "pending_orders": [
+    {
+      "id": "SHORT_FULL_9",
+      "created": "2026-01-29T09:00:00",
+      "action": "SELL",
+      "symbol": "MGC",
+      "target_position": 9,
+      "current_position": 4,
+      "contracts_to_add": 5,
+      "order_type": "MKT",
+      "stop_loss": 5630,
+      "take_profit": 5400,
+      "invalidation_price": 5610,
+      "status": "PENDING",
+      "note": "Full 9 SHORT position for FOMC fade - add 5 more contracts at market when TWS connects"
+    }
+  ],
+  "bracket_orders": [
+    {
+      "id": "SHORT_BRACKET",
+      "parent_order": "SHORT_FULL_9",
+      "position_size": 9,
+      "stop_loss": {
+        "price": 5630,
+        "type": "STP",
+        "action": "BUY"
+      },
+      "take_profit": {
+        "price": 5400,
+        "type": "LMT",
+        "action": "BUY"
+      },
+      "status": "PENDING"
+    }
+  ],
+  "last_update": "2026-01-29T09:00:00"
+}

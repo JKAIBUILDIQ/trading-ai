@@ -8,11 +8,20 @@
   "hedge_active": true,
   "pattern_override": "CORRECTION",
   "bear_flag_mode": false,
-  "bear_flag_invalidation_price": 5611,
+  "bear_flag_invalidation_price": 5610,
   "long_contracts": 0,
   "long_avg_entry": 0,
   "short_contracts": 4,
   "short_avg_entry": 5588.625,
+  "target_short_position": {
+    "contracts": 9,
+    "stop_loss": 5630,
+    "take_profit": 5400,
+    "invalidation": 5610,
+    "status": "PENDING",
+    "created": "2026-01-29T09:00:00",
+    "note": "Full 9 SHORT position - add 5 more contracts"
+  },
   "buy_levels": [
     {
       "price": 5551.0,
