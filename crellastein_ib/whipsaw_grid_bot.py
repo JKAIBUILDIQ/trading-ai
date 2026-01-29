@@ -78,8 +78,13 @@ class WhipsawState:
     center_price: float = 0
     
     # ═══════════════════════════════════════════════════════════════════
-    # BEAR FLAG MODE - Block new BUYs, only allow SHORTs
+    # GRID MODE CONTROL
     # ═══════════════════════════════════════════════════════════════════
+    grid_mode: str = 'BEARISH'  # BULLISH, BEARISH, CORRECTION
+    buy_enabled: bool = False   # Allow new BUY orders
+    short_enabled: bool = True  # Allow new SHORT orders
+    
+    # Bear flag specific
     bear_flag_mode: bool = True  # ENABLED - waiting for breakdown
     bear_flag_invalidation_price: float = 5611  # Price above which bear flag is debunked
     
@@ -281,6 +286,12 @@ class WhipsawGridBot:
     def check_buy_triggers(self, price: float) -> Optional[Dict]:
         """Check if any buy level triggered"""
         # ═══════════════════════════════════════════════════════════════════
+        # MODE CHECK - Are BUYs enabled?
+        # ═══════════════════════════════════════════════════════════════════
+        if not getattr(self.state, 'buy_enabled', True):
+            return None
+        
+        # ═══════════════════════════════════════════════════════════════════
         # BEAR FLAG MODE - Block all new BUY orders
         # ═══════════════════════════════════════════════════════════════════
         if self.state.bear_flag_mode:
@@ -288,6 +299,8 @@ class WhipsawGridBot:
             if price >= self.state.bear_flag_invalidation_price:
                 logger.info(f"🐻❌ BEAR FLAG INVALIDATED! Price ${price:.2f} >= ${self.state.bear_flag_invalidation_price}")
                 self.state.bear_flag_mode = False
+                self.state.buy_enabled = True
+                self.state.grid_mode = 'CORRECTION'
                 self._save_state()
             else:
                 # Bear flag still active - NO BUYS
@@ -308,6 +321,12 @@ class WhipsawGridBot:
     
     def check_short_triggers(self, price: float) -> Optional[Dict]:
         """Check if any short level triggered"""
+        # ═══════════════════════════════════════════════════════════════════
+        # MODE CHECK - Are SHORTs enabled?
+        # ═══════════════════════════════════════════════════════════════════
+        if not getattr(self.state, 'short_enabled', True):
+            return None
+        
         for level in self.state.short_levels:
             if level['status'] == 'PENDING':
                 if price >= level['price'] * 0.998:  # Within 0.2%
@@ -508,9 +527,10 @@ class WhipsawGridBot:
         
         net_pos = self.get_position()
         
-        # Log status with bear flag indicator
-        bear_flag = "🐻 BEAR FLAG" if self.state.bear_flag_mode else ""
-        logger.info(f"💰 Price: ${price:.2f} | Net: {net_pos} | L:{self.state.long_contracts} S:{self.state.short_contracts} {bear_flag}")
+        # Log status with mode indicator
+        mode = getattr(self.state, 'grid_mode', 'UNKNOWN')
+        mode_icon = {'BULLISH': '📈', 'BEARISH': '📉', 'CORRECTION': '🔄'}.get(mode, '')
+        logger.info(f"💰 ${price:.2f} | {mode_icon} {mode} | Net:{net_pos} | L:{self.state.long_contracts} S:{self.state.short_contracts}")
         
         # Check LONG take profits first
         long_tp = self.check_long_tp(price)
