@@ -1,19 +1,14 @@
 #!/usr/bin/env python3
 """
-Ghost Commander Live Runner v2.0
+Ghost Commander Live Runner v3.0 - FULL AUTONOMOUS TRADING
 Runs 24/7 on H100, manages MGC positions automatically
 
-FIXED: Race condition that caused accidental shorts (Jan 30, 2026)
-
-Features:
-- Auto-reconnect on disconnect
+NOW WITH ENTRY LOGIC:
+- SuperTrend signal for initial entry
+- DCA ladder on 30/60/90/120 pip drops
 - Tiered TPs (TP1/TP2/TP3)
-- Free Roll runner deployment
-- Webhook alerts
-- Survives reboots via systemd
-- LONG-ONLY MODE: Will NEVER go short in bullish supertrend
-- Order cooldown: Prevents rapid-fire TP executions
-- Fill confirmation: Waits for IB to confirm before proceeding
+- Free Roll runner after TP1 + $500 profit
+- LONG-ONLY MODE: Will NEVER go short
 
 Usage:
     python run_ghost_live.py
@@ -23,7 +18,8 @@ Or as service:
 
 Author: QUINN001
 Created: January 29, 2026
-Fixed: January 30, 2026 - Race condition fix
+v2.0: Race condition fix
+v3.0: Full entry logic (SuperTrend + DCA)
 """
 
 import os
@@ -34,6 +30,7 @@ import logging
 import requests
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Dict, List, Optional
 
 # Add parent directories to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -43,6 +40,7 @@ import nest_asyncio
 nest_asyncio.apply()
 
 from ib_insync import IB, Future, MarketOrder, LimitOrder
+from indicators import Indicators
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # CONFIGURATION
@@ -82,19 +80,19 @@ logger = logging.getLogger('GhostLive')
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# GHOST COMMANDER LIVE v2.0 - WITH RACE CONDITION FIX
+# GHOST COMMANDER LIVE v3.0 - FULL AUTONOMOUS TRADING
 # ═══════════════════════════════════════════════════════════════════════════════
 
 class GhostCommanderLive:
     """
-    Live trading version of Ghost Commander
-    Monitors MGC positions and executes tiered TPs
+    Ghost Commander for IB Gold Futures (MGC)
     
-    v2.0 FIXES:
-    - LONG-ONLY mode: Will NEVER sell more than owned
-    - Order cooldown: 10 seconds between TP executions
-    - Fill confirmation: Waits for IB to confirm fills
-    - Position sync before every sell
+    v3.0 FEATURES:
+    - SuperTrend-based initial entry (BULLISH only)
+    - DCA ladder on pip drops (30/60/90/120)
+    - Tiered take profits (TP1/TP2/TP3)
+    - Free Roll runner
+    - LONG-ONLY mode with safeguards
     """
     
     def __init__(self):
@@ -106,6 +104,8 @@ class GhostCommanderLive:
         self.positions = []
         self.dca_total_contracts = 0
         self.dca_average_entry = 0
+        self.dca_highest_entry = 0
+        self.dca_ladder_count = 0
         
         # TP tracking
         self.tp1_hit = False
@@ -115,28 +115,50 @@ class GhostCommanderLive:
         # Runner
         self.runner_position = None
         
-        # Settings (from config)
+        # Settings
         self.settings = {
-            'tp1_pips': 30,              # +$3
-            'tp2_pips': 60,              # +$6
-            'tp3_pips': 90,              # +$9
+            # Entry settings
+            'supertrend_period': 10,
+            'supertrend_multiplier': 3.0,
+            'initial_contracts': 1,
+            
+            # DCA settings
+            'dca_pip_spacing': 30,          # Pips between DCA levels
+            'dca_max_levels': 5,            # Max DCA positions
+            'dca_initial_lots': 0.5,        # Starting lots
+            'dca_lot_increment': 0.25,      # Add per level
+            'dca_min_entry_gap': 20,        # Min points between entries
+            
+            # TP settings
+            'tp1_pips': 30,                 # +$3
+            'tp2_pips': 60,                 # +$6
+            'tp3_pips': 90,                 # +$9
             'tp1_close_percent': 30,
             'tp2_close_percent': 30,
+            
+            # Runner settings
             'runner_enabled': True,
             'runner_profit_threshold': 500,
+            
+            # Safety settings
+            'max_total_contracts': 10,
+            'entry_cooldown_seconds': 300,  # 5 min between entries
+            'tp_cooldown_seconds': 10,
         }
         
         # Status tracking
         self.last_price = 0
         self.last_status_log = datetime.now()
         
-        # ═══════════════════════════════════════════════════════════════════════
-        # NEW v2.0: Order execution safeguards
-        # ═══════════════════════════════════════════════════════════════════════
-        self.pending_order = False           # True while order is being processed
-        self.order_in_flight = False         # True while waiting for fill
-        self.last_tp_time = None             # Timestamp of last TP execution
-        self.tp_cooldown_seconds = 10        # Wait 10 seconds between TP executions
+        # Order safeguards
+        self.pending_order = False
+        self.order_in_flight = False
+        self.last_tp_time = None
+        self.last_entry_time = None
+        
+        # Candle cache
+        self.candle_cache = []
+        self.candle_cache_time = None
         
         # Load saved state
         self._load_state()
@@ -162,13 +184,11 @@ class GhostCommanderLive:
                 accounts = self.ib.managedAccounts()
                 logger.info(f"✅ Connected to account: {accounts}")
                 
-                # Initialize contract
                 self._init_contract()
-                
-                # Sync positions
                 self.sync_positions()
                 
-                send_alert(f"Ghost Commander v2.0 connected! Managing {self.dca_total_contracts} MGC contracts (LONG-ONLY MODE)", "success")
+                mode = "FULL AUTO" if self.dca_total_contracts == 0 else "MANAGING"
+                send_alert(f"Ghost Commander v3.0 connected! {mode} mode, {self.dca_total_contracts} MGC contracts", "success")
             
             return self.connected
             
@@ -188,7 +208,6 @@ class GhostCommanderLive:
     def _init_contract(self):
         """Initialize MGC futures contract"""
         now = datetime.now()
-        # Get active contract month (at least 30 days out)
         for month in [2, 4, 6, 8, 10, 12]:
             year = now.year if month > now.month else now.year + 1
             if (datetime(year, month, 25) - now).days >= 30:
@@ -219,7 +238,7 @@ class GhostCommanderLive:
             return None
         
         try:
-            self.ib.reqMarketDataType(3)  # Delayed data for paper
+            self.ib.reqMarketDataType(3)
             ticker = self.ib.reqMktData(self.contract, '', False, False)
             self.ib.sleep(1)
             
@@ -229,17 +248,48 @@ class GhostCommanderLive:
             
             if last and last > 0:
                 self.last_price = last
-                return {
-                    'bid': bid or last,
-                    'ask': ask or last,
-                    'last': last
-                }
+                return {'bid': bid or last, 'ask': ask or last, 'last': last}
             
             return None
             
         except Exception as e:
             logger.error(f"Error getting price: {e}")
             return None
+    
+    def get_candles(self, duration: str = "5 D", bar_size: str = "1 hour") -> List[Dict]:
+        """Get historical candles with caching"""
+        # Check cache (5 min refresh)
+        if self.candle_cache and self.candle_cache_time:
+            age = (datetime.now() - self.candle_cache_time).total_seconds()
+            if age < 300:  # 5 minutes
+                return self.candle_cache
+        
+        if not self.connected or not self.contract:
+            return self.candle_cache or []
+        
+        try:
+            bars = self.ib.reqHistoricalData(
+                self.contract,
+                endDateTime='',
+                durationStr=duration,
+                barSizeSetting=bar_size,
+                whatToShow='TRADES',
+                useRTH=False,
+                formatDate=1
+            )
+            
+            self.candle_cache = [
+                {'open': b.open, 'high': b.high, 'low': b.low, 
+                 'close': b.close, 'volume': b.volume}
+                for b in bars
+            ]
+            self.candle_cache_time = datetime.now()
+            
+            return self.candle_cache
+            
+        except Exception as e:
+            logger.error(f"Error getting candles: {e}")
+            return self.candle_cache or []
     
     # =========================================================================
     # POSITION MANAGEMENT
@@ -252,8 +302,6 @@ class GhostCommanderLive:
         
         try:
             self.positions = []
-            
-            # Force refresh from IB
             self.ib.sleep(0.5)
             
             for pos in self.ib.positions():
@@ -261,97 +309,245 @@ class GhostCommanderLive:
                     self.positions.append({
                         'contracts': pos.position,
                         'avg_cost': pos.avgCost,
-                        'entry_price': pos.avgCost / 10,  # avgCost includes multiplier
+                        'entry_price': pos.avgCost / 10,
                     })
             
-            # Calculate totals
-            self.dca_total_contracts = sum(p['contracts'] for p in self.positions)
-            
-            if self.dca_total_contracts > 0:
-                total_value = sum(p['entry_price'] * p['contracts'] for p in self.positions)
-                self.dca_average_entry = total_value / self.dca_total_contracts
-            else:
-                self.dca_average_entry = 0
-            
-            logger.debug(f"Synced: {self.dca_total_contracts} contracts @ ${self.dca_average_entry:.2f}")
+            self._calculate_ladder_stats()
             
         except Exception as e:
             logger.error(f"Error syncing positions: {e}")
     
+    def _calculate_ladder_stats(self):
+        """Calculate DCA ladder statistics"""
+        self.dca_total_contracts = 0
+        self.dca_average_entry = 0
+        self.dca_highest_entry = 0
+        self.dca_ladder_count = 0
+        
+        if not self.positions:
+            return
+        
+        total_value = 0
+        for pos in self.positions:
+            contracts = pos['contracts']
+            price = pos['entry_price']
+            
+            if contracts > 0:
+                total_value += price * contracts
+                self.dca_total_contracts += contracts
+                self.dca_ladder_count += 1
+                
+                if price > self.dca_highest_entry:
+                    self.dca_highest_entry = price
+        
+        if self.dca_total_contracts > 0:
+            self.dca_average_entry = total_value / self.dca_total_contracts
+    
     def get_net_long_position(self) -> int:
-        """
-        Get net LONG position count.
-        Returns: Number of long contracts (0 if flat or short)
-        """
+        """Get net LONG position count"""
         self.sync_positions()
         net = sum(p['contracts'] for p in self.positions)
-        return max(0, int(net))  # Only return positive (long) positions
+        return max(0, int(net))
     
     # =========================================================================
-    # v2.0: ORDER SAFEGUARDS
+    # ENTRY SAFEGUARDS
     # =========================================================================
     
-    def can_execute_tp(self) -> bool:
-        """
-        Check if it's safe to execute a TP order.
-        
-        Blocks execution if:
-        - Order is already pending/in-flight
-        - We're in cooldown period after last TP
-        """
-        # Don't execute if we have a pending order
+    def can_execute_entry(self) -> bool:
+        """Check if safe to execute new entry"""
+        # Check pending order
         if self.pending_order or self.order_in_flight:
-            logger.debug("⏳ Skipping TP check - order still pending")
             return False
         
-        # Don't execute if we're in cooldown period
+        # Entry cooldown (5 minutes)
+        if self.last_entry_time:
+            elapsed = (datetime.now() - self.last_entry_time).total_seconds()
+            if elapsed < self.settings['entry_cooldown_seconds']:
+                return False
+        
+        # TP cooldown (1 minute after TP)
         if self.last_tp_time:
             elapsed = (datetime.now() - self.last_tp_time).total_seconds()
-            if elapsed < self.tp_cooldown_seconds:
-                logger.debug(f"⏳ TP cooldown: {self.tp_cooldown_seconds - elapsed:.1f}s remaining")
+            if elapsed < 60:
+                return False
+        
+        # Max contracts limit
+        if self.dca_total_contracts >= self.settings['max_total_contracts']:
+            return False
+        
+        return True
+    
+    def can_execute_tp(self) -> bool:
+        """Check if safe to execute TP"""
+        if self.pending_order or self.order_in_flight:
+            return False
+        
+        if self.last_tp_time:
+            elapsed = (datetime.now() - self.last_tp_time).total_seconds()
+            if elapsed < self.settings['tp_cooldown_seconds']:
                 return False
         
         return True
     
-    def validate_sell_quantity(self, requested_quantity: int) -> int:
-        """
-        CRITICAL: Validate sell quantity to ensure we NEVER go short.
-        
-        In bullish supertrend, we are LONG-ONLY. This method ensures:
-        - We never sell more than we own
-        - We never go net short
-        
-        Returns: Safe quantity to sell (may be reduced or 0)
-        """
-        # Get fresh position data
+    def validate_sell_quantity(self, requested: int) -> int:
+        """CRITICAL: Never go short"""
         current_long = self.get_net_long_position()
         
         if current_long <= 0:
-            logger.error("🚨 BLOCKED: No long positions to sell! Cannot go short in bullish supertrend.")
+            logger.error("🚨 BLOCKED: No long positions to sell!")
             return 0
         
-        if requested_quantity > current_long:
-            logger.warning(f"⚠️ REDUCED: Would go short! Selling {current_long} instead of {requested_quantity}")
+        if requested > current_long:
+            logger.warning(f"⚠️ REDUCED: Selling {current_long} instead of {requested}")
             return current_long
         
-        return requested_quantity
+        return requested
+    
+    # =========================================================================
+    # ENTRY LOGIC - SuperTrend + DCA
+    # =========================================================================
+    
+    def check_initial_entry(self, current_price: float) -> Optional[Dict]:
+        """
+        Check if should open initial position.
+        REQUIRES: SuperTrend = BULLISH (trend = 1)
+        """
+        # Already have positions
+        if self.dca_total_contracts > 0:
+            return None
+        
+        # Get candles for SuperTrend
+        candles = self.get_candles("5 D", "1 hour")
+        if len(candles) < 20:
+            logger.warning("Not enough candles for SuperTrend")
+            return None
+        
+        # Calculate SuperTrend
+        st = Indicators.supertrend(
+            candles,
+            period=self.settings['supertrend_period'],
+            multiplier=self.settings['supertrend_multiplier']
+        )
+        
+        # ONLY enter if BULLISH
+        if st['trend'] != 1:
+            logger.debug(f"SuperTrend BEARISH ({st['trend']}) - no entry")
+            return None
+        
+        logger.info(f"✅ SuperTrend BULLISH - initiating entry @ ${current_price:.2f}")
+        logger.info(f"   ST Value: ${st['value']:.2f}, Lower Band: ${st['lower_band']:.2f}")
+        
+        return {
+            'type': 'INITIAL',
+            'level': 1,
+            'contracts': self.settings['initial_contracts'],
+            'price': current_price,
+            'comment': 'GHOST|ENTRY|ST_BULL'
+        }
+    
+    def check_dca_ladder(self, current_price: float) -> Optional[Dict]:
+        """
+        Check if should add DCA position on dip.
+        REQUIRES: Price dropped 30/60/90/120 pips from highest entry
+        """
+        if self.dca_total_contracts == 0:
+            return None  # Use check_initial_entry first
+        
+        if self.dca_ladder_count >= self.settings['dca_max_levels']:
+            return None  # Max levels reached
+        
+        # Calculate drop from highest entry
+        drop_pips = (self.dca_highest_entry - current_price) * 10
+        
+        # Required drop for next level
+        required_drop = self.settings['dca_pip_spacing'] * self.dca_ladder_count
+        
+        if drop_pips < required_drop:
+            return None  # Not enough drop
+        
+        # Anti-stack check
+        for pos in self.positions:
+            distance = abs(current_price - pos['entry_price']) * 10
+            if distance < self.settings['dca_min_entry_gap']:
+                logger.debug("Anti-stack: Too close to existing position")
+                return None
+        
+        # Calculate contracts for this level
+        lots = self.settings['dca_initial_lots'] + (
+            self.settings['dca_lot_increment'] * self.dca_ladder_count
+        )
+        contracts = max(1, int(lots))
+        
+        logger.info(f"📉 DCA TRIGGER: Drop {drop_pips:.1f} pips >= {required_drop} required")
+        
+        return {
+            'type': 'DCA',
+            'level': self.dca_ladder_count + 1,
+            'contracts': contracts,
+            'price': current_price,
+            'drop_pips': drop_pips,
+            'comment': f'GHOST|DCA{self.dca_ladder_count + 1}|{drop_pips:.0f}p'
+        }
+    
+    def execute_entry(self, entry: Dict) -> bool:
+        """Execute BUY entry with safeguards"""
+        self.pending_order = True
+        self.order_in_flight = True
+        
+        try:
+            contracts = entry['contracts']
+            
+            order = MarketOrder('BUY', contracts)
+            order.orderRef = entry['comment']
+            
+            logger.info(f"📈 EXECUTING ENTRY: {entry['comment']}")
+            logger.info(f"   Contracts: {contracts}, Price: ~${entry['price']:.2f}")
+            
+            trade = self.ib.placeOrder(self.contract, order)
+            
+            # Wait for fill
+            timeout = 30
+            start = datetime.now()
+            while not trade.isDone():
+                self.ib.sleep(0.5)
+                if (datetime.now() - start).total_seconds() > timeout:
+                    logger.error("⏱️ Entry order timeout!")
+                    break
+            
+            if trade.orderStatus.status == 'Filled':
+                fill_price = trade.orderStatus.avgFillPrice
+                filled_qty = trade.orderStatus.filled
+                
+                logger.info(f"✅ FILLED: Bought {int(filled_qty)} @ ${fill_price:.2f}")
+                send_alert(f"🟢 BOUGHT {int(filled_qty)} MGC @ ${fill_price:.2f} - {entry['comment']}", "success")
+                
+                self.last_entry_time = datetime.now()
+                self._save_state()
+                return True
+            else:
+                logger.error(f"❌ Entry failed: {trade.orderStatus.status}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"Entry execution failed: {e}")
+            return False
+            
+        finally:
+            # Re-sync positions
+            self.ib.sleep(2)
+            self.sync_positions()
+            self.pending_order = False
+            self.order_in_flight = False
     
     # =========================================================================
     # TAKE PROFIT LOGIC
     # =========================================================================
     
-    def check_take_profits(self, current_price: float) -> dict:
-        """
-        Check tiered take profit levels
-        
-        TP1: +30 pips ($3) = close 30%
-        TP2: +60 pips ($6) = close 30%
-        TP3: +90 pips ($9) = close ALL
-        """
+    def check_take_profits(self, current_price: float) -> Optional[Dict]:
+        """Check tiered take profit levels"""
         if self.dca_total_contracts <= 0 or self.dca_average_entry == 0:
             return None
         
-        # Calculate profit in pips (1 pip = $0.10)
         profit_pips = (current_price - self.dca_average_entry) * 10
         
         # TP3: Full exit at +90 pips
@@ -366,130 +562,96 @@ class GhostCommanderLive:
         # TP2: Close 30% at +60 pips
         if not self.tp2_hit and profit_pips >= self.settings['tp2_pips']:
             close_pct = self.settings['tp2_close_percent'] / 100
-            contracts_to_close = max(1, int(self.dca_total_contracts * close_pct))
+            contracts = max(1, int(self.dca_total_contracts * close_pct))
             return {
                 'action': 'PARTIAL_CLOSE',
                 'level': 'TP2',
                 'profit_pips': profit_pips,
-                'contracts': contracts_to_close
+                'contracts': contracts
             }
         
         # TP1: Close 30% at +30 pips
         if not self.tp1_hit and profit_pips >= self.settings['tp1_pips']:
             close_pct = self.settings['tp1_close_percent'] / 100
-            contracts_to_close = max(1, int(self.dca_total_contracts * close_pct))
+            contracts = max(1, int(self.dca_total_contracts * close_pct))
             return {
                 'action': 'PARTIAL_CLOSE',
                 'level': 'TP1',
                 'profit_pips': profit_pips,
-                'contracts': contracts_to_close
+                'contracts': contracts
             }
         
         return None
     
     def execute_take_profit(self, tp_info: dict, current_price: float) -> bool:
-        """
-        Execute take profit order WITH SAFEGUARDS.
-        
-        v2.0 improvements:
-        - Sets pending flags BEFORE executing
-        - Validates quantity won't cause short
-        - Waits for fill confirmation
-        - Sets cooldown after execution
-        """
-        # Set pending flag BEFORE executing
+        """Execute take profit order"""
         self.order_in_flight = True
         self.pending_order = True
         
         try:
-            # Determine quantity to close
             if tp_info['action'] == 'CLOSE_ALL':
-                # Re-sync and get actual position
                 requested_qty = self.get_net_long_position()
             else:
                 requested_qty = int(tp_info['contracts'])
             
-            # CRITICAL: Validate we won't go short
             safe_qty = self.validate_sell_quantity(requested_qty)
-            
             if safe_qty <= 0:
-                logger.error(f"🚨 ABORT {tp_info['level']}: No valid quantity to sell!")
+                logger.error(f"🚨 ABORT {tp_info['level']}: No valid quantity!")
                 return False
             
-            if safe_qty != requested_qty:
-                logger.warning(f"⚠️ {tp_info['level']}: Adjusted from {requested_qty} to {safe_qty} contracts")
-            
-            # Create and submit order
             order = MarketOrder('SELL', safe_qty)
             order.orderRef = f"GHOST|{tp_info['level']}"
             
-            logger.info(f"📤 Executing {tp_info['level']}: SELL {safe_qty} @ MKT (LONG-ONLY validated)")
+            logger.info(f"📤 Executing {tp_info['level']}: SELL {safe_qty} @ MKT")
             
             trade = self.ib.placeOrder(self.contract, order)
             
-            # WAIT FOR FILL (up to 30 seconds)
             timeout = 30
             start = datetime.now()
             while not trade.isDone():
                 self.ib.sleep(0.5)
                 if (datetime.now() - start).total_seconds() > timeout:
-                    logger.error(f"⏱️ {tp_info['level']} order fill timeout!")
+                    logger.error(f"⏱️ {tp_info['level']} timeout!")
                     break
             
-            # Check fill status
             if trade.orderStatus.status == 'Filled':
                 fill_price = trade.orderStatus.avgFillPrice
                 filled_qty = trade.orderStatus.filled
                 
-                # Calculate realized profit
                 profit = (fill_price - self.dca_average_entry) * filled_qty * 10
                 self.daily_realized_pnl += profit
                 
-                # Update TP flags
                 if tp_info['level'] == 'TP1':
                     self.tp1_hit = True
                 elif tp_info['level'] == 'TP2':
                     self.tp2_hit = True
                 elif tp_info['level'] == 'TP3':
-                    # Full close - reset flags
                     self.tp1_hit = False
                     self.tp2_hit = False
                 
-                # Log and alert
-                msg = f"🎯 {tp_info['level']} HIT! Closed {int(filled_qty)} contracts @ ${fill_price:.2f} = +${profit:.2f}"
+                msg = f"🎯 {tp_info['level']} HIT! Closed {int(filled_qty)} @ ${fill_price:.2f} = +${profit:.2f}"
                 logger.info(msg)
                 send_alert(msg, "success")
                 
-                # Check for runner deployment after TP1
                 if tp_info['level'] == 'TP1' and self.check_runner_trigger():
                     self.deploy_runner(fill_price)
                 
                 self._save_state()
                 return True
-                
             else:
-                logger.error(f"❌ {tp_info['level']} order not filled: {trade.orderStatus.status}")
+                logger.error(f"❌ {tp_info['level']} failed: {trade.orderStatus.status}")
                 return False
-            
+                
         except Exception as e:
-            logger.error(f"TP execution failed: {e}")
+            logger.error(f"TP failed: {e}")
             return False
             
         finally:
-            # Set cooldown timestamp
             self.last_tp_time = datetime.now()
-            
-            # Wait for IB to fully sync
             self.ib.sleep(3)
-            
-            # Force position re-sync
             self.sync_positions()
-            
-            # Clear pending flags
             self.order_in_flight = False
             self.pending_order = False
-            
-            logger.info(f"✅ TP execution complete. Position now: {self.dca_total_contracts} contracts. Cooldown: {self.tp_cooldown_seconds}s")
     
     # =========================================================================
     # FREE ROLL RUNNER
@@ -499,13 +661,10 @@ class GhostCommanderLive:
         """Check if should deploy Free Roll runner"""
         if not self.settings['runner_enabled']:
             return False
-        
         if self.runner_position is not None:
             return False
-        
         if self.daily_realized_pnl < self.settings['runner_profit_threshold']:
             return False
-        
         return True
     
     def deploy_runner(self, current_price: float):
@@ -518,7 +677,6 @@ class GhostCommanderLive:
             
             trade = self.ib.placeOrder(self.contract, order)
             
-            # Wait for fill
             timeout = 30
             start = datetime.now()
             while not trade.isDone():
@@ -538,47 +696,52 @@ class GhostCommanderLive:
                 
                 self._save_state()
                 
-                msg = f"🚀 FREE ROLL RUNNER deployed! Entry: ${fill_price:.2f}, Funded by: ${self.daily_realized_pnl:.2f} profits"
+                msg = f"🚀 RUNNER deployed! Entry: ${fill_price:.2f}, Funded: ${self.daily_realized_pnl:.2f}"
                 logger.info(msg)
                 send_alert(msg, "success")
-            else:
-                logger.error(f"Runner deployment failed: {trade.orderStatus.status}")
-            
+                
         except Exception as e:
-            logger.error(f"Runner deployment failed: {e}")
+            logger.error(f"Runner failed: {e}")
     
     # =========================================================================
     # MAIN LOOP
     # =========================================================================
     
     def run_once(self):
-        """
-        Run one iteration of the bot.
-        
-        v2.0: Now checks can_execute_tp() before any TP logic.
-        """
+        """Run one iteration - FULL TRADING LOGIC"""
         if not self.connected:
             return
         
         try:
-            # Sync positions
             self.sync_positions()
             
-            # Get current price
             price_data = self.get_price()
             if not price_data:
                 return
             
             current_price = price_data['last']
             
-            # Check take profits - WITH SAFEGUARD
-            if self.can_execute_tp():
+            # === ENTRY LOGIC ===
+            if self.can_execute_entry():
+                if self.dca_total_contracts == 0:
+                    # No positions - check for initial entry
+                    entry = self.check_initial_entry(current_price)
+                    if entry:
+                        self.execute_entry(entry)
+                
+                elif self.dca_ladder_count < self.settings['dca_max_levels']:
+                    # Have positions - check for DCA
+                    dca = self.check_dca_ladder(current_price)
+                    if dca:
+                        self.execute_entry(dca)
+            
+            # === TP LOGIC ===
+            if self.can_execute_tp() and self.dca_total_contracts > 0:
                 tp_action = self.check_take_profits(current_price)
                 if tp_action:
                     self.execute_take_profit(tp_action, current_price)
-                    # Re-sync after TP (already done in execute_take_profit)
             
-            # Log status periodically (every 60 seconds)
+            # === STATUS LOG (every 60 seconds) ===
             if (datetime.now() - self.last_status_log).seconds >= 60:
                 self._log_status(current_price)
                 self.last_status_log = datetime.now()
@@ -588,6 +751,13 @@ class GhostCommanderLive:
     
     def _log_status(self, current_price: float):
         """Log current status"""
+        # Check SuperTrend for status
+        candles = self.get_candles("5 D", "1 hour")
+        st_trend = "?"
+        if candles and len(candles) >= 20:
+            st = Indicators.supertrend(candles, 10, 3.0)
+            st_trend = "BULL" if st['trend'] == 1 else "BEAR"
+        
         if self.dca_total_contracts > 0:
             unrealized = (current_price - self.dca_average_entry) * self.dca_total_contracts * 10
             tp1_price = self.dca_average_entry + 3
@@ -596,15 +766,15 @@ class GhostCommanderLive:
             
             logger.info(
                 f"📊 MGC: ${current_price:.2f} | "
-                f"{self.dca_total_contracts} contracts @ ${self.dca_average_entry:.2f} | "
+                f"L{self.dca_ladder_count} ({self.dca_total_contracts}x) @ ${self.dca_average_entry:.2f} | "
                 f"P&L: ${unrealized:.2f} | "
                 f"TPs: ${tp1_price:.2f}{'✓' if self.tp1_hit else ''} / "
                 f"${tp2_price:.2f}{'✓' if self.tp2_hit else ''} / "
                 f"${tp3_price:.2f} | "
-                f"MODE: LONG-ONLY"
+                f"ST: {st_trend}"
             )
         else:
-            logger.info(f"📊 MGC: ${current_price:.2f} | No positions | MODE: LONG-ONLY")
+            logger.info(f"📊 MGC: ${current_price:.2f} | No positions | ST: {st_trend} | Watching for entry...")
     
     # =========================================================================
     # STATE PERSISTENCE
@@ -618,6 +788,7 @@ class GhostCommanderLive:
             'daily_realized_pnl': self.daily_realized_pnl,
             'runner_position': self.runner_position,
             'last_tp_time': self.last_tp_time.isoformat() if self.last_tp_time else None,
+            'last_entry_time': self.last_entry_time.isoformat() if self.last_entry_time else None,
             'last_update': datetime.now().isoformat()
         }
         with open(STATE_FILE, 'w') as f:
@@ -634,19 +805,21 @@ class GhostCommanderLive:
                     self.daily_realized_pnl = state.get('daily_realized_pnl', 0)
                     self.runner_position = state.get('runner_position')
                     
-                    # Load last TP time if exists
                     if state.get('last_tp_time'):
                         self.last_tp_time = datetime.fromisoformat(state['last_tp_time'])
+                    if state.get('last_entry_time'):
+                        self.last_entry_time = datetime.fromisoformat(state['last_entry_time'])
                     
-                    logger.info(f"Loaded state: TP1={self.tp1_hit}, TP2={self.tp2_hit}, Realized=${self.daily_realized_pnl:.2f}")
+                    logger.info(f"Loaded state: TP1={self.tp1_hit}, TP2={self.tp2_hit}, PnL=${self.daily_realized_pnl:.2f}")
             except Exception as e:
                 logger.warning(f"Could not load state: {e}")
     
     def get_status(self) -> dict:
-        """Get current status for API/dashboard"""
+        """Get current status for API"""
         return {
             'connected': self.connected,
             'contracts': self.dca_total_contracts,
+            'dca_level': self.dca_ladder_count,
             'avg_entry': self.dca_average_entry,
             'current_price': self.last_price,
             'unrealized_pnl': (self.last_price - self.dca_average_entry) * self.dca_total_contracts * 10 if self.dca_total_contracts > 0 else 0,
@@ -654,9 +827,7 @@ class GhostCommanderLive:
             'tp2_hit': self.tp2_hit,
             'daily_realized': self.daily_realized_pnl,
             'runner_active': self.runner_position is not None,
-            'pending_order': self.pending_order,
-            'in_cooldown': self.last_tp_time and (datetime.now() - self.last_tp_time).total_seconds() < self.tp_cooldown_seconds,
-            'mode': 'LONG-ONLY',
+            'mode': 'FULL_AUTO',
             'last_update': datetime.now().isoformat()
         }
 
@@ -668,30 +839,25 @@ class GhostCommanderLive:
 def send_alert(message: str, level: str = 'info'):
     """Send alert via webhook"""
     emoji = {'info': 'ℹ️', 'success': '✅', 'warning': '⚠️', 'error': '❌'}.get(level, '📢')
-    
     logger.info(f"ALERT [{level.upper()}]: {message}")
     
     if WEBHOOK_URL:
         try:
             requests.post(WEBHOOK_URL, json={
-                'content': f"{emoji} **Ghost Commander v2.0** [{level.upper()}]\n{message}",
+                'content': f"{emoji} **Ghost Commander v3.0** [{level.upper()}]\n{message}",
                 'username': 'Ghost Commander'
             }, timeout=5)
-        except Exception as e:
-            logger.error(f"Webhook failed: {e}")
+        except:
+            pass
 
 
 def check_market_hours() -> bool:
     """Check if gold futures market is open"""
     now = datetime.utcnow()
-    weekday = now.weekday()
-    
-    # Closed Saturday and most of Sunday (until ~11pm UTC)
-    if weekday == 5:  # Saturday
+    if now.weekday() == 5:  # Saturday
         return False
-    if weekday == 6 and now.hour < 22:  # Sunday before ~6pm ET
+    if now.weekday() == 6 and now.hour < 22:  # Sunday before 6pm ET
         return False
-    
     return True
 
 
@@ -702,14 +868,15 @@ def check_market_hours() -> bool:
 def main():
     """Main entry point"""
     logger.info("=" * 70)
-    logger.info("🚀 GHOST COMMANDER LIVE v2.0 - Starting (LONG-ONLY MODE)")
+    logger.info("🚀 GHOST COMMANDER v3.0 - FULL AUTONOMOUS TRADING")
     logger.info(f"   IB: {IB_HOST}:{IB_PORT}")
-    logger.info(f"   Client ID: {CLIENT_ID}")
-    logger.info(f"   TP Cooldown: 10 seconds")
-    logger.info(f"   SAFEGUARD: Will NEVER go short!")
+    logger.info(f"   Entry: SuperTrend BULLISH required")
+    logger.info(f"   DCA: 30/60/90/120 pip drops, max 5 levels")
+    logger.info(f"   TPs: +$3 / +$6 / +$9 (30%/30%/ALL)")
+    logger.info(f"   Mode: LONG-ONLY")
     logger.info("=" * 70)
     
-    send_alert("Ghost Commander v2.0 starting on H100 (LONG-ONLY MODE)", "info")
+    send_alert("Ghost Commander v3.0 starting - FULL AUTO mode", "info")
     
     ghost = GhostCommanderLive()
     reconnect_delay = 30
@@ -717,48 +884,40 @@ def main():
     
     while True:
         try:
-            # Check market hours
             if not check_market_hours():
                 logger.info("Market closed. Sleeping 1 hour...")
                 time.sleep(3600)
                 continue
             
-            # Connect if needed
             if not ghost.connected:
                 if ghost.connect():
                     reconnect_delay = 30
                 else:
                     raise Exception("Connection failed")
             
-            # Run one iteration
             ghost.run_once()
-            
-            # Sleep between checks (2 seconds for safety)
             time.sleep(2)
             
         except KeyboardInterrupt:
             logger.info("Shutdown requested...")
-            send_alert("Ghost Commander v2.0 shutting down", "warning")
+            send_alert("Ghost Commander shutting down", "warning")
             break
             
         except Exception as e:
             logger.error(f"Error: {e}")
             
-            # Disconnect and prepare for reconnect
             try:
                 ghost.disconnect()
             except:
                 pass
             ghost.connected = False
             
-            # Exponential backoff
             logger.info(f"Reconnecting in {reconnect_delay}s...")
             time.sleep(reconnect_delay)
             reconnect_delay = min(reconnect_delay * 2, max_reconnect_delay)
     
-    # Cleanup
     ghost.disconnect()
-    logger.info("Ghost Commander v2.0 stopped.")
+    logger.info("Ghost Commander stopped.")
 
 
 if __name__ == '__main__':

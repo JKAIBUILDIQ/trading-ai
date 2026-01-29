@@ -3,5 +3,7 @@
   "tp2_hit": false,
   "daily_realized_pnl": 1613.680000000113,
   "runner_position": null,
-  "last_update": "2026-01-29T01:50:42.332965"
+  "last_tp_time": null,
+  "last_entry_time": "2026-01-29T03:15:59.820867",
+  "last_update": "2026-01-29T03:15:59.820880"
 }
