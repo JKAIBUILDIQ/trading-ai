@@ -180,34 +180,39 @@ class GhostCommanderLive:
         
         # ═══ CORRECTION MODE (activated by Claudia's analysis) ═══
         # FOMC Jan 29, 2026 - Wave 5 completion warning
+        # NOW IN SHORT POSITION to catch the correction!
         self.correction_mode = True
+        self.short_mode = True  # We are SHORT, not LONG!
         self.correction_settings = {
-            'mode': 'DEFENSIVE',
-            'reason': 'FOMC + Elliott Wave 5 completion (100%)',
-            'new_entries_allowed': False,      # No NEW initial entries
-            'dca_allowed': False,              # No DCA during FOMC
-            'tp_aggressive': True,             # Take profits quickly
-            'tp1_dollars': 5.0,                # Quick TP1 at +$5
-            'tp2_dollars': 10.0,               # TP2 at +$10
-            'stop_loss_enabled': True,
-            'stop_loss_price': 5430.0,         # Below support
-            'correction_targets': [
-                5527,   # FOMC impact target
-                5231,   # Fib 23.6%
-                5000,   # Psychological / Wave 4 normal
-                4850,   # Wyckoff support
-                4700,   # Deep support
-            ],
-            're_entry_levels': [5000, 4850, 4700, 4500, 4200],
+            'mode': 'SHORT_CORRECTION',
+            'reason': 'FOMC + Elliott Wave 5 completion - CATCHING THE DROP',
+            'position': 'SHORT',
+            'short_entry': 5564.28,           # Our short entry price
+            'short_contracts': 9,              # Short 9 MGC
+            
+            # SHORT position management
+            'stop_loss_price': 5630.0,         # Exit if breaks above high
+            'tp1_price': 5500.0,               # First target (+$64)
+            'tp2_price': 5231.0,               # Fib 23.6% (+$333)
+            'tp3_price': 5000.0,               # Psychological (+$564)
+            
+            # Take profit sizing
+            'tp1_close_percent': 30,           # Close 30% at TP1
+            'tp2_close_percent': 40,           # Close 40% at TP2
+            'tp3_close_percent': 100,          # Close all at TP3
+            
+            # After FOMC - resume long
+            'resume_long_after_tp': True,
+            'long_re_entry_levels': [5000, 4850, 4700],
         }
         
         if self.correction_mode:
-            logger.warning("⚠️ CORRECTION MODE ACTIVE ⚠️")
-            logger.warning(f"   Reason: {self.correction_settings['reason']}")
-            logger.warning(f"   New entries: {self.correction_settings['new_entries_allowed']}")
-            logger.warning(f"   DCA allowed: {self.correction_settings['dca_allowed']}")
-            logger.warning(f"   TP Aggressive: tp1=${self.correction_settings['tp1_dollars']}")
-            logger.warning(f"   Targets: {self.correction_settings['correction_targets'][:3]}")
+            logger.warning("🔻 SHORT CORRECTION MODE ACTIVE 🔻")
+            logger.warning(f"   Position: SHORT 9 MGC @ ${self.correction_settings['short_entry']:.2f}")
+            logger.warning(f"   Stop Loss: ${self.correction_settings['stop_loss_price']:.2f}")
+            logger.warning(f"   Target 1: ${self.correction_settings['tp1_price']:.2f}")
+            logger.warning(f"   Target 2: ${self.correction_settings['tp2_price']:.2f}")
+            logger.warning(f"   Target 3: ${self.correction_settings['tp3_price']:.2f}")
         
         # Candle cache
         self.candle_cache = []
@@ -838,6 +843,107 @@ class GhostCommanderLive:
     # MAIN LOOP
     # =========================================================================
     
+    def check_short_position(self, current_price: float) -> Optional[Dict]:
+        """Check SHORT position for stop loss or take profit"""
+        if not self.short_mode or not self.correction_settings:
+            return None
+        
+        cs = self.correction_settings
+        entry = cs.get('short_entry', 5564.28)
+        
+        # STOP LOSS - price above stop
+        if current_price >= cs.get('stop_loss_price', 5630):
+            logger.warning(f"🛑 SHORT STOP LOSS HIT @ ${current_price:.2f}!")
+            return {
+                'action': 'CLOSE_SHORT',
+                'reason': 'STOP_LOSS',
+                'price': current_price,
+                'loss_per_contract': (current_price - entry) * 10
+            }
+        
+        # TP3 - full close at $5000
+        if current_price <= cs.get('tp3_price', 5000):
+            logger.info(f"🎯 SHORT TP3 HIT @ ${current_price:.2f}!")
+            return {
+                'action': 'CLOSE_SHORT',
+                'reason': 'TP3_HIT',
+                'price': current_price,
+                'profit_per_contract': (entry - current_price) * 10
+            }
+        
+        # TP2 - partial at $5231
+        if current_price <= cs.get('tp2_price', 5231):
+            logger.info(f"🎯 SHORT TP2 @ ${current_price:.2f}!")
+            return {
+                'action': 'PARTIAL_CLOSE_SHORT',
+                'reason': 'TP2_HIT',
+                'close_percent': cs.get('tp2_close_percent', 40),
+                'price': current_price,
+                'profit_per_contract': (entry - current_price) * 10
+            }
+        
+        # TP1 - partial at $5500
+        if current_price <= cs.get('tp1_price', 5500):
+            logger.info(f"🎯 SHORT TP1 @ ${current_price:.2f}!")
+            return {
+                'action': 'PARTIAL_CLOSE_SHORT',
+                'reason': 'TP1_HIT',
+                'close_percent': cs.get('tp1_close_percent', 30),
+                'price': current_price,
+                'profit_per_contract': (entry - current_price) * 10
+            }
+        
+        return None
+    
+    def execute_short_action(self, action: Dict) -> bool:
+        """Execute SHORT position action (stop loss or take profit)"""
+        if action['action'] in ['CLOSE_SHORT', 'PARTIAL_CLOSE_SHORT']:
+            # Get current short position
+            net_position = self.get_net_long_position()
+            if net_position >= 0:
+                logger.warning("Not in short position, skipping")
+                return False
+            
+            short_qty = abs(net_position)
+            
+            if action['action'] == 'PARTIAL_CLOSE_SHORT':
+                close_pct = action.get('close_percent', 30) / 100
+                buy_qty = max(1, int(short_qty * close_pct))
+            else:
+                buy_qty = short_qty  # Close all
+            
+            logger.info(f"📤 BUY {buy_qty} to close SHORT ({action['reason']})")
+            
+            order = MarketOrder('BUY', buy_qty)
+            trade = self.ib.placeOrder(self.contract, order)
+            
+            # Wait for fill
+            for _ in range(30):
+                self.ib.sleep(1)
+                if trade.isDone():
+                    break
+            
+            if trade.orderStatus.status == 'Filled':
+                fill_price = trade.orderStatus.avgFillPrice
+                profit = action.get('profit_per_contract', 0) * buy_qty
+                logger.info(f"✅ SHORT {action['reason']}: Bought {buy_qty} @ ${fill_price:.2f}")
+                logger.info(f"   P&L: ${profit:+,.2f}")
+                self.send_alert(f"SHORT {action['reason']}: Bought {buy_qty} @ ${fill_price:.2f}, P&L: ${profit:+,.0f}", "INFO")
+                
+                # Check if we're flat now
+                self.sync_positions()
+                if self.get_net_long_position() == 0:
+                    logger.info("🏁 SHORT POSITION CLOSED - Now FLAT")
+                    self.short_mode = False
+                    # Ready to resume long entries after FOMC
+                
+                return True
+            else:
+                logger.error(f"Short action failed: {trade.orderStatus}")
+                return False
+        
+        return False
+    
     def run_once(self):
         """Run one iteration - FULL TRADING LOGIC with SAFEGUARDS"""
         if not self.connected:
@@ -855,6 +961,21 @@ class GhostCommanderLive:
                 return
             
             current_price = price_data['last']
+            
+            # === SHORT POSITION MONITORING (if in short mode) ===
+            if self.short_mode:
+                short_action = self.check_short_position(current_price)
+                if short_action:
+                    self.execute_short_action(short_action)
+                    return  # Don't process long logic when managing short
+                
+                # Log short status periodically
+                if (datetime.now() - self.last_status_log).seconds >= 60:
+                    entry = self.correction_settings.get('short_entry', 5564.28)
+                    pnl = (entry - current_price) * 10 * abs(self.get_net_long_position())
+                    logger.info(f"🔻 SHORT: Price ${current_price:.2f} | P&L ${pnl:+,.0f}")
+                    self.last_status_log = datetime.now()
+                return  # Skip long logic while short
             
             # === SAFEGUARD CHECKS (FIRST!) ===
             if self.run_safeguard_checks(current_price):
