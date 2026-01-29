@@ -1,10 +1,10 @@
 {
   "active": true,
-  "center_price": 5571,
+  "center_price": 5571.0,
   "long_contracts": 0,
   "long_avg_entry": 0,
-  "short_contracts": 0,
-  "short_avg_entry": 0,
+  "short_contracts": 2,
+  "short_avg_entry": 5583.15,
   "buy_levels": [
     {
       "price": 5551,
@@ -112,9 +112,10 @@
       "offset": 20,
       "size": 2,
       "desc": "SHORT L1 HALF",
-      "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5571.0
+      "status": "FILLED",
+      "fill_price": 5583.15,
+      "tp_price": 5563.15,
+      "fill_time": "2026-01-29T04:43:49.975801"
     },
     {
       "price": 5611,
@@ -182,7 +183,7 @@
   ],
   "long_tp_profit": 0,
   "short_tp_profit": 0,
-  "total_trades": 0,
+  "total_trades": 1,
   "winning_trades": 0,
-  "last_update": "2026-01-29T04:41:45.370715"
+  "last_update": "2026-01-29T04:43:49.975820"
 }

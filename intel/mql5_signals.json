@@ -1,24 +1,8 @@
 {
-  "scraped_at": "2026-01-29T04:33:57.357949",
+  "scraped_at": "2026-01-29T04:48:53.631817",
   "source": "MQL5.com",
   "source_url": "https://www.mql5.com/en/signals/mt5",
   "signals": [
-    {
-      "signal_id": "2204998",
-      "name": "Gold Reaper Goldtrade Pro Daytrade Pro",
-      "url": "https://www.mql5.com/en/signals/2204998",
-      "growth_pct": 819.84,
-      "profit": 5.7,
-      "drawdown": 32.6,
-      "subscribers": 0,
-      "weeks": 0,
-      "win_rate": 0,
-      "trades": 64,
-      "balance": 8.0,
-      "equity": 8.0,
-      "scraped_at": "2026-01-29T04:31:18.412279",
-      "source_url": "https://www.mql5.com/en/signals/2204998"
-    },
     {
       "signal_id": "2284676",
       "name": "Daily Gold Sniper",
@@ -32,24 +16,8 @@
       "trades": 95,
       "balance": 529.59,
       "equity": 529.59,
-      "scraped_at": "2026-01-29T04:30:18.968113",
+      "scraped_at": "2026-01-29T04:47:04.894435",
       "source_url": "https://www.mql5.com/en/signals/2284676"
-    },
-    {
-      "signal_id": "1560883",
-      "name": "Scalp IC Markets MT5",
-      "url": "https://www.mql5.com/en/signals/1560883",
-      "growth_pct": 712.33,
-      "profit": 0.0,
-      "drawdown": 32.9,
-      "subscribers": 0,
-      "weeks": 3,
-      "win_rate": 0,
-      "trades": 74,
-      "balance": 471.6,
-      "equity": 471.6,
-      "scraped_at": "2026-01-29T04:31:12.756332",
-      "source_url": "https://www.mql5.com/en/signals/1560883"
     },
     {
       "signal_id": "2333819",
@@ -64,7 +32,7 @@
       "trades": 64,
       "balance": 967.0,
       "equity": 1.0,
-      "scraped_at": "2026-01-29T04:31:02.869508",
+      "scraped_at": "2026-01-29T04:45:20.807529",
       "source_url": "https://www.mql5.com/en/signals/2333819"
     },
     {
@@ -80,15 +48,31 @@
       "trades": 78,
       "balance": 1.0,
       "equity": 1.0,
-      "scraped_at": "2026-01-29T04:31:57.408071",
+      "scraped_at": "2026-01-29T04:47:00.147246",
       "source_url": "https://www.mql5.com/en/signals/1988269"
+    },
+    {
+      "signal_id": "2317345",
+      "name": "Goldora",
+      "url": "https://www.mql5.com/en/signals/2317345",
+      "growth_pct": 654.7,
+      "profit": 0.0,
+      "drawdown": 40.4,
+      "subscribers": 0,
+      "weeks": 4,
+      "win_rate": 0,
+      "trades": 54,
+      "balance": 3.0,
+      "equity": 3.0,
+      "scraped_at": "2026-01-29T04:46:30.106664",
+      "source_url": "https://www.mql5.com/en/signals/2317345"
     },
     {
       "signal_id": "2352377",
       "name": "NAS100 XAUUSD XAGUSD",
       "url": "https://www.mql5.com/en/signals/2352377",
       "growth_pct": 583.28,
-      "profit": 60.92,
+      "profit": 117.17,
       "drawdown": 47.2,
       "subscribers": 0,
       "weeks": 0,
@@ -96,47 +80,47 @@
       "trades": 51,
       "balance": 17.0,
       "equity": 17.0,
-      "scraped_at": "2026-01-29T04:31:07.552128",
+      "scraped_at": "2026-01-29T04:48:03.153113",
       "source_url": "https://www.mql5.com/en/signals/2352377"
-    },
-    {
-      "signal_id": "2303631",
-      "name": "Steady",
-      "url": "https://www.mql5.com/en/signals/2303631",
-      "growth_pct": 482.74,
-      "profit": 607.78,
-      "drawdown": 22.2,
-      "subscribers": 0,
-      "weeks": 0,
-      "win_rate": 0,
-      "trades": 35,
-      "balance": 3.0,
-      "equity": 4.0,
-      "scraped_at": "2026-01-29T04:31:52.220557",
-      "source_url": "https://www.mql5.com/en/signals/2303631"
     },
     {
       "signal_id": "2298866",
       "name": "JAME EA GOLD",
       "url": "https://www.mql5.com/en/signals/2298866",
       "growth_pct": 409.64,
-      "profit": 1.0,
+      "profit": 2.8,
       "drawdown": 49.6,
       "subscribers": 0,
       "weeks": 0,
       "win_rate": 0,
       "trades": 62,
       "balance": 921.84,
-      "equity": 916.35,
-      "scraped_at": "2026-01-29T04:31:37.459526",
+      "equity": 924.64,
+      "scraped_at": "2026-01-29T04:47:33.831474",
       "source_url": "https://www.mql5.com/en/signals/2298866"
+    },
+    {
+      "signal_id": "2329641",
+      "name": "Falqonea pro _Robofxea Pro",
+      "url": "https://www.mql5.com/en/signals/2329641",
+      "growth_pct": 408.42,
+      "profit": 0.0,
+      "drawdown": 18.7,
+      "subscribers": 0,
+      "weeks": 1,
+      "win_rate": 0,
+      "trades": 78,
+      "balance": 183.3,
+      "equity": 183.3,
+      "scraped_at": "2026-01-29T04:46:10.615596",
+      "source_url": "https://www.mql5.com/en/signals/2329641"
     },
     {
       "signal_id": "2021129",
       "name": "X657 Stay true to the mission",
       "url": "https://www.mql5.com/en/signals/2021129",
       "growth_pct": 399.1,
-      "profit": 15.0,
+      "profit": 6.43,
       "drawdown": 36.0,
       "subscribers": 0,
       "weeks": 0,
@@ -144,8 +128,24 @@
       "trades": 62,
       "balance": 10.0,
       "equity": 10.0,
-      "scraped_at": "2026-01-29T04:32:47.056561",
+      "scraped_at": "2026-01-29T04:45:25.930513",
       "source_url": "https://www.mql5.com/en/signals/2021129"
+    },
+    {
+      "signal_id": "2339082",
+      "name": "GoldWave signal",
+      "url": "https://www.mql5.com/en/signals/2339082",
+      "growth_pct": 387.9,
+      "profit": 0.0,
+      "drawdown": 15.0,
+      "subscribers": 0,
+      "weeks": 29,
+      "win_rate": 0,
+      "trades": 97,
+      "balance": 243.95,
+      "equity": 243.95,
+      "scraped_at": "2026-01-29T04:47:38.539280",
+      "source_url": "https://www.mql5.com/en/signals/2339082"
     },
     {
       "signal_id": "2332085",
@@ -160,7 +160,7 @@
       "trades": 65,
       "balance": 551.6,
       "equity": 551.6,
-      "scraped_at": "2026-01-29T04:30:58.043010",
+      "scraped_at": "2026-01-29T04:47:53.526963",
       "source_url": "https://www.mql5.com/en/signals/2332085"
     },
     {
@@ -176,7 +176,7 @@
       "trades": 47,
       "balance": 11.0,
       "equity": 11.0,
-      "scraped_at": "2026-01-29T04:31:32.644811",
+      "scraped_at": "2026-01-29T04:46:20.604043",
       "source_url": "https://www.mql5.com/en/signals/2248087"
     },
     {
@@ -192,7 +192,7 @@
       "trades": 60,
       "balance": 92.0,
       "equity": 92.0,
-      "scraped_at": "2026-01-29T04:33:01.799556",
+      "scraped_at": "2026-01-29T04:46:35.230326",
       "source_url": "https://www.mql5.com/en/signals/2336814"
     },
     {
@@ -208,7 +208,7 @@
       "trades": 85,
       "balance": 3.0,
       "equity": 3.0,
-      "scraped_at": "2026-01-29T04:32:17.539222",
+      "scraped_at": "2026-01-29T04:47:58.351774",
       "source_url": "https://www.mql5.com/en/signals/2350934"
     },
     {
@@ -224,7 +224,7 @@
       "trades": 48,
       "balance": 4.0,
       "equity": 4.0,
-      "scraped_at": "2026-01-29T04:32:32.548338",
+      "scraped_at": "2026-01-29T04:45:35.775082",
       "source_url": "https://www.mql5.com/en/signals/2245675"
     },
     {
@@ -240,7 +240,7 @@
       "trades": 57,
       "balance": 2.0,
       "equity": 2.0,
-      "scraped_at": "2026-01-29T04:30:43.307873",
+      "scraped_at": "2026-01-29T04:45:30.795264",
       "source_url": "https://www.mql5.com/en/signals/2351061"
     },
     {
@@ -256,24 +256,24 @@
       "trades": 73,
       "balance": 667.77,
       "equity": 667.77,
-      "scraped_at": "2026-01-29T04:31:27.844273",
+      "scraped_at": "2026-01-29T04:47:29.042348",
       "source_url": "https://www.mql5.com/en/signals/2337459"
     },
     {
-      "signal_id": "2307342",
-      "name": "Techno Long term",
-      "url": "https://www.mql5.com/en/signals/2307342",
-      "growth_pct": 304.65,
+      "signal_id": "2049326",
+      "name": "SFE Impulse",
+      "url": "https://www.mql5.com/en/signals/2049326",
+      "growth_pct": 287.46,
       "profit": 0.0,
-      "drawdown": 38.6,
+      "drawdown": 19.8,
       "subscribers": 0,
-      "weeks": 0,
+      "weeks": 2,
       "win_rate": 0,
-      "trades": 67,
+      "trades": 59,
       "balance": 1.0,
       "equity": 1.0,
-      "scraped_at": "2026-01-29T04:33:11.682257",
-      "source_url": "https://www.mql5.com/en/signals/2307342"
+      "scraped_at": "2026-01-29T04:48:08.165738",
+      "source_url": "https://www.mql5.com/en/signals/2049326"
     },
     {
       "signal_id": "2326895",
@@ -288,7 +288,7 @@
       "trades": 61,
       "balance": 1.0,
       "equity": 1.0,
-      "scraped_at": "2026-01-29T04:30:23.826492",
+      "scraped_at": "2026-01-29T04:46:45.099382",
       "source_url": "https://www.mql5.com/en/signals/2326895"
     },
     {
@@ -304,7 +304,7 @@
       "trades": 76,
       "balance": 9.0,
       "equity": 9.0,
-      "scraped_at": "2026-01-29T04:30:33.832535",
+      "scraped_at": "2026-01-29T04:47:19.333416",
       "source_url": "https://www.mql5.com/en/signals/2350535"
     },
     {
@@ -320,7 +320,7 @@
       "trades": 58,
       "balance": 1.0,
       "equity": 1.0,
-      "scraped_at": "2026-01-29T04:32:37.515818",
+      "scraped_at": "2026-01-29T04:45:50.796014",
       "source_url": "https://www.mql5.com/en/signals/2270168"
     }
   ],
