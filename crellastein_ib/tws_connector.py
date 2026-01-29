@@ -174,6 +174,55 @@ class TWSConnector:
         self.disconnect()
 
 
+def queue_backup_command(action: str, quantity: int, note: str = ''):
+    """
+    Queue a command for desktop backup execution when H100 can't connect
+    """
+    backup_file = Path(__file__).parent / 'desktop_backup' / 'pending_commands.json'
+    
+    if backup_file.exists():
+        with open(backup_file, 'r') as f:
+            data = json.load(f)
+    else:
+        data = {'commands': []}
+    
+    data['commands'].append({
+        'action': action.upper(),
+        'quantity': quantity,
+        'note': note,
+        'status': 'PENDING',
+        'created': time.strftime('%Y-%m-%dT%H:%M:%S'),
+    })
+    data['last_update'] = time.strftime('%Y-%m-%dT%H:%M:%S')
+    
+    with open(backup_file, 'w') as f:
+        json.dump(data, f, indent=2)
+    
+    logger.info(f"📋 Queued backup command: {action} {quantity} MGC")
+    
+    # Generate prompt for Crella
+    prompt = f"""
+═══════════════════════════════════════════════════════════════════════════════
+⚠️  H100 CAN'T CONNECT TO TWS - SEND THIS TO DESKTOP CRELLA:
+═══════════════════════════════════════════════════════════════════════════════
+
+Execute this trade on desktop TWS:
+
+  ACTION: {action.upper()} {quantity} MGC contracts
+  NOTE: {note}
+
+Quick command for Crella:
+  python execute_local.py {action.lower()} {quantity}
+
+Or tell Crella:
+  "Sell {quantity} MGC contracts at market"
+
+═══════════════════════════════════════════════════════════════════════════════
+"""
+    print(prompt)
+    return prompt
+
+
 def health_check():
     """Run a health check on TWS connection"""
     connector = TWSConnector(client_id=998)
