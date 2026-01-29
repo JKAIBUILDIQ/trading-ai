@@ -1,148 +1,108 @@
 {
   "active": true,
-  "center_price": 5590.0,
-  "trading_mode": 2,
-  "grid_mode": "CORRECTION",
+  "center_price": 5580.0,
+  "trading_mode": 1,
+  "grid_mode": "BULLISH",
   "buy_enabled": true,
-  "short_enabled": true,
-  "hedge_active": true,
-  "pattern_override": "CORRECTION",
+  "short_enabled": false,
+  "hedge_active": false,
+  "pattern_override": null,
   "bear_flag_mode": false,
-  "bear_flag_invalidation_price": 5630,
-  "long_contracts": 0,
-  "long_avg_entry": 0,
-  "short_contracts": 10,
-  "short_avg_entry": 5590.82,
-  "net_position": -10,
-  "position_type": "NET_SHORT",
-  "correction_mode_rules": {
-    "required_hedge": "1 SELL position (like MT5 CORRECTION|HEDGE)",
-    "dca_buys": "DROPBUY on dips, grid both ways",
-    "sizing": "HALF (0.5) for DCA, FULL (1.0) for hedge"
+  
+  "long_contracts": 3,
+  "long_avg_entry": 5589.86,
+  "short_contracts": 0,
+  "short_avg_entry": 0,
+  "net_position": 3,
+  "position_type": "FREEROLL_LONG",
+  
+  "strategy": {
+    "name": "BULLISH_DCA",
+    "description": "Buy on drops, DCA into strength, let winners run",
+    "lesson": "Most profits from DROPBUY, losses from trying to short tops"
   },
-  "buy_levels": [
+  
+  "dropbuy_levels": [
     {
-      "price": 5570.0,
+      "price": 5560.0,
       "size": 1,
-      "desc": "DROPBUY L1 HALF",
+      "desc": "DROPBUY L1",
       "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5590.0
+      "tp_price": 5580.0
     },
     {
-      "price": 5550.0,
+      "price": 5540.0,
       "size": 1,
-      "desc": "DROPBUY L2 HALF",
+      "desc": "DROPBUY L2",
       "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5570.0
+      "tp_price": 5560.0
     },
     {
-      "price": 5530.0,
+      "price": 5520.0,
       "size": 2,
-      "desc": "DROPBUY L3 FULL",
+      "desc": "DROPBUY L3",
       "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5550.0
+      "tp_price": 5540.0
     },
     {
-      "price": 5510.0,
+      "price": 5500.0,
       "size": 2,
-      "desc": "DROPBUY L4 FULL",
+      "desc": "DROPBUY L4",
       "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5530.0
+      "tp_price": 5520.0
     },
     {
-      "price": 5490.0,
+      "price": 5480.0,
       "size": 2,
-      "desc": "DROPBUY L5 FULL",
+      "desc": "DROPBUY L5",
       "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5510.0
+      "tp_price": 5500.0
     },
     {
       "price": 5450.0,
-      "size": 4,
-      "desc": "DROPBUY L6 DOUBLE",
+      "size": 3,
+      "desc": "DROPBUY L6",
       "status": "PENDING",
-      "fill_price": 0,
       "tp_price": 5470.0
     },
     {
       "price": 5400.0,
       "size": 4,
-      "desc": "DROPBUY L7 DOUBLE - TP ZONE",
+      "desc": "DROPBUY L7",
       "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5420.0
+      "tp_price": 5430.0
+    },
+    {
+      "price": 5300.0,
+      "size": 5,
+      "desc": "DROPBUY L8",
+      "status": "PENDING",
+      "tp_price": 5350.0
     },
     {
       "price": 5000.0,
       "size": 6,
-      "desc": "BUY $5000 TRIPLE",
+      "desc": "DROPBUY $5000",
       "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5050.0
+      "tp_price": 5100.0
     },
     {
       "price": 4650.0,
       "size": 8,
-      "desc": "BUY GAP QUAD",
+      "desc": "DROPBUY GAP",
       "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 4700.0
+      "tp_price": 4750.0
     }
   ],
-  "hedge_position": {
-    "required": true,
-    "type": "SELL",
-    "size": 1,
-    "target_entry": 5600,
-    "stop_loss": 5650,
-    "take_profit": 5400,
-    "status": "NEEDS_ENTRY",
-    "comment": "CORRECTION|HEDGE like MT5"
+  
+  "rules": {
+    "no_shorts": "Don't try to guess tops - that's where losses come from",
+    "always_long": "Always have at least 1 FREEROLL long - never miss the move",
+    "dca_on_drops": "Add on every $20-50 drop",
+    "let_winners_run": "Don't close winners too early"
   },
-  "short_levels": [
-    {
-      "price": 5610.0,
-      "size": 1,
-      "desc": "HEDGE SELL - CORRECTION",
-      "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5400.0,
-      "sl_price": 5650.0
-    },
-    {
-      "price": 5630.0,
-      "size": 1,
-      "desc": "GRID SHORT L1",
-      "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5610.0
-    },
-    {
-      "price": 5650.0,
-      "size": 2,
-      "desc": "GRID SHORT L2",
-      "status": "PENDING",
-      "fill_price": 0,
-      "tp_price": 5630.0
-    }
-  ],
-  "long_tp_profit": 0,
-  "short_tp_profit": 2190.26,
-  "total_trades": 11,
-  "winning_trades": 8,
-  "last_update": "2026-01-29T07:30:00",
-  "realized_pnl": 2190.26,
-  "note": "Recalibrated to match MT5 CORRECTION mode: 1 HEDGE SELL + DCA BUY ladder",
-  "target_short_position": {
-    "contracts": 10,
-    "entry": 5590.82,
-    "stop_loss": 5630,
-    "take_profit": 5400,
-    "status": "ACTIVE"
-  }
+  
+  "realized_pnl_from_shorts": 2190.26,
+  "note": "Switched to BULLISH DCA - your winning strategy from MT5",
+  "last_update": "2026-01-29T07:40:00"
 }
