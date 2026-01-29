@@ -78,6 +78,19 @@ logging.basicConfig(
 )
 logger = logging.getLogger('GhostLive')
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# NEO INTEGRATION - Ghost uses NEO's intelligence for decisions!
+# ═══════════════════════════════════════════════════════════════════════════════
+
+try:
+    from neo_integration import get_neo_advisor, neo_should_enter, neo_should_dca, get_neo_signal
+    NEO_AVAILABLE = True
+    logger.info("🧠 NEO integration loaded - Ghost will consult NEO!")
+except ImportError as e:
+    NEO_AVAILABLE = False
+    logger.warning(f"⚠️ NEO integration not available: {e}")
+    logger.warning("Ghost will trade on SuperTrend only (no NEO guidance)")
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # GHOST COMMANDER LIVE v3.0 - FULL AUTONOMOUS TRADING
@@ -425,7 +438,9 @@ class GhostCommanderLive:
     def check_initial_entry(self, current_price: float) -> Optional[Dict]:
         """
         Check if should open initial position.
-        REQUIRES: SuperTrend = BULLISH (trend = 1)
+        REQUIRES: 
+        1. SuperTrend = BULLISH (trend = 1)
+        2. NEO approval (if available)
         """
         # Already have positions
         if self.dca_total_contracts > 0:
@@ -445,19 +460,41 @@ class GhostCommanderLive:
         )
         
         # ONLY enter if BULLISH
-        if st['trend'] != 1:
+        supertrend_bullish = st['trend'] == 1
+        if not supertrend_bullish:
             logger.debug(f"SuperTrend BEARISH ({st['trend']}) - no entry")
             return None
         
-        logger.info(f"✅ SuperTrend BULLISH - initiating entry @ ${current_price:.2f}")
+        # ═══ CONSULT NEO ═══
+        size_multiplier = 1.0
+        neo_comment = ""
+        
+        if NEO_AVAILABLE:
+            should_enter, neo_reason, size_mult = neo_should_enter(supertrend_bullish)
+            logger.info(f"🧠 NEO says: {neo_reason}")
+            
+            if not should_enter:
+                logger.info(f"❌ NEO blocked entry - waiting")
+                return None
+            
+            size_multiplier = size_mult
+            neo_comment = "|NEO_OK"
+        else:
+            logger.info("⚠️ NEO not available - using SuperTrend only")
+        
+        logger.info(f"✅ SuperTrend BULLISH + NEO APPROVED - initiating entry @ ${current_price:.2f}")
         logger.info(f"   ST Value: ${st['value']:.2f}, Lower Band: ${st['lower_band']:.2f}")
+        
+        # Apply size multiplier from NEO
+        contracts = int(self.settings['initial_contracts'] * size_multiplier)
+        contracts = max(1, contracts)
         
         return {
             'type': 'INITIAL',
             'level': 1,
-            'contracts': self.settings['initial_contracts'],
+            'contracts': contracts,
             'price': current_price,
-            'comment': 'GHOST|ENTRY|ST_BULL'
+            'comment': f'GHOST|ENTRY|ST_BULL{neo_comment}'
         }
     
     def check_dca_ladder(self, current_price: float) -> Optional[Dict]:
@@ -509,13 +546,25 @@ class GhostCommanderLive:
         
         logger.info(f"📉 DCA TRIGGER: ${drop_dollars:.2f} drop >= ${required_drop:.2f} required")
         
+        # ═══ CONSULT NEO FOR DCA ═══
+        neo_comment = ""
+        if NEO_AVAILABLE:
+            should_dca, neo_reason = neo_should_dca(drop_dollars, self.dca_ladder_count)
+            logger.info(f"🧠 NEO DCA check: {neo_reason}")
+            
+            if not should_dca:
+                logger.info(f"❌ NEO blocked DCA - waiting")
+                return None
+            
+            neo_comment = "|NEO_OK"
+        
         return {
             'type': 'DCA',
             'level': self.dca_ladder_count + 1,
             'contracts': contracts,
             'price': current_price,
             'drop_dollars': drop_dollars,
-            'comment': f'GHOST|DCA{self.dca_ladder_count + 1}|${drop_dollars:.0f}'
+            'comment': f'GHOST|DCA{self.dca_ladder_count + 1}|${drop_dollars:.0f}{neo_comment}'
         }
     
     def execute_entry(self, entry: Dict) -> bool:
