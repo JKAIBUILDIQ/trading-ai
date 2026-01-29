@@ -1,108 +1,196 @@
 {
   "active": true,
-  "center_price": 5580.0,
-  "trading_mode": 1,
+  "center_price": 5571.0,
+  "trading_mode": "1",
   "grid_mode": "BULLISH",
   "buy_enabled": true,
   "short_enabled": false,
   "hedge_active": false,
-  "pattern_override": null,
+  "pattern_override": "",
   "bear_flag_mode": false,
-  
-  "long_contracts": 3,
-  "long_avg_entry": 5589.86,
+  "bear_flag_invalidation_price": 5611,
+  "long_contracts": 0,
+  "long_avg_entry": 0,
   "short_contracts": 0,
   "short_avg_entry": 0,
-  "net_position": 3,
-  "position_type": "FREEROLL_LONG",
-  
-  "strategy": {
-    "name": "BULLISH_DCA",
-    "description": "Buy on drops, DCA into strength, let winners run",
-    "lesson": "Most profits from DROPBUY, losses from trying to short tops"
-  },
-  
-  "dropbuy_levels": [
+  "buy_levels": [
     {
-      "price": 5560.0,
-      "size": 1,
-      "desc": "DROPBUY L1",
-      "status": "PENDING",
-      "tp_price": 5580.0
-    },
-    {
-      "price": 5540.0,
-      "size": 1,
-      "desc": "DROPBUY L2",
-      "status": "PENDING",
-      "tp_price": 5560.0
-    },
-    {
-      "price": 5520.0,
+      "price": 5551.0,
+      "offset": -20,
       "size": 2,
-      "desc": "DROPBUY L3",
+      "desc": "BUY L1 HALF",
       "status": "PENDING",
-      "tp_price": 5540.0
+      "fill_price": 0,
+      "tp_price": 5571.0
     },
     {
-      "price": 5500.0,
+      "price": 5531.0,
+      "offset": -40,
       "size": 2,
-      "desc": "DROPBUY L4",
+      "desc": "BUY L2 HALF",
       "status": "PENDING",
-      "tp_price": 5520.0
+      "fill_price": 0,
+      "tp_price": 5551.0
     },
     {
-      "price": 5480.0,
-      "size": 2,
-      "desc": "DROPBUY L5",
-      "status": "PENDING",
-      "tp_price": 5500.0
-    },
-    {
-      "price": 5450.0,
-      "size": 3,
-      "desc": "DROPBUY L6",
-      "status": "PENDING",
-      "tp_price": 5470.0
-    },
-    {
-      "price": 5400.0,
+      "price": 5511.0,
+      "offset": -60,
       "size": 4,
-      "desc": "DROPBUY L7",
+      "desc": "BUY L3 FULL",
       "status": "PENDING",
-      "tp_price": 5430.0
+      "fill_price": 0,
+      "tp_price": 5531.0
     },
     {
-      "price": 5300.0,
-      "size": 5,
-      "desc": "DROPBUY L8",
+      "price": 5491.0,
+      "offset": -80,
+      "size": 4,
+      "desc": "BUY L4 FULL",
       "status": "PENDING",
-      "tp_price": 5350.0
+      "fill_price": 0,
+      "tp_price": 5511.0
+    },
+    {
+      "price": 5471.0,
+      "offset": -100,
+      "size": 4,
+      "desc": "BUY L5 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5491.0
+    },
+    {
+      "price": 5451.0,
+      "offset": -120,
+      "size": 4,
+      "desc": "BUY L6 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5471.0
+    },
+    {
+      "price": 5431.0,
+      "offset": -140,
+      "size": 4,
+      "desc": "BUY L7 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5451.0
+    },
+    {
+      "price": 5411.0,
+      "offset": -160,
+      "size": 4,
+      "desc": "BUY L8 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5431.0
+    },
+    {
+      "price": 5231.0,
+      "offset": -340,
+      "size": 8,
+      "desc": "BUY Fib DOUBLE",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5251.0
     },
     {
       "price": 5000.0,
-      "size": 6,
-      "desc": "DROPBUY $5000",
+      "offset": -571,
+      "size": 8,
+      "desc": "BUY $5000 DOUBLE",
       "status": "PENDING",
-      "tp_price": 5100.0
+      "fill_price": 0,
+      "tp_price": 5020.0
     },
     {
       "price": 4650.0,
-      "size": 8,
-      "desc": "DROPBUY GAP",
+      "offset": -921,
+      "size": 12,
+      "desc": "BUY GAP TRIPLE",
       "status": "PENDING",
-      "tp_price": 4750.0
+      "fill_price": 0,
+      "tp_price": 4670.0
     }
   ],
-  
-  "rules": {
-    "no_shorts": "Don't try to guess tops - that's where losses come from",
-    "always_long": "Always have at least 1 FREEROLL long - never miss the move",
-    "dca_on_drops": "Add on every $20-50 drop",
-    "let_winners_run": "Don't close winners too early"
-  },
-  
-  "realized_pnl_from_shorts": 2190.26,
-  "note": "Switched to BULLISH DCA - your winning strategy from MT5",
-  "last_update": "2026-01-29T07:40:00"
+  "short_levels": [
+    {
+      "price": 5591.0,
+      "offset": 20,
+      "size": 2,
+      "desc": "SHORT L1 HALF",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5571.0
+    },
+    {
+      "price": 5611.0,
+      "offset": 40,
+      "size": 2,
+      "desc": "SHORT L2 HALF",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5591.0
+    },
+    {
+      "price": 5631.0,
+      "offset": 60,
+      "size": 4,
+      "desc": "SHORT L3 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5611.0
+    },
+    {
+      "price": 5651.0,
+      "offset": 80,
+      "size": 4,
+      "desc": "SHORT L4 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5631.0
+    },
+    {
+      "price": 5671.0,
+      "offset": 100,
+      "size": 4,
+      "desc": "SHORT L5 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5651.0
+    },
+    {
+      "price": 5691.0,
+      "offset": 120,
+      "size": 4,
+      "desc": "SHORT L6 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5671.0
+    },
+    {
+      "price": 5711.0,
+      "offset": 140,
+      "size": 4,
+      "desc": "SHORT L7 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5691.0
+    },
+    {
+      "price": 5731.0,
+      "offset": 160,
+      "size": 4,
+      "desc": "SHORT L8 FULL",
+      "status": "PENDING",
+      "fill_price": 0,
+      "tp_price": 5711.0
+    }
+  ],
+  "long_tp_profit": 0,
+  "short_tp_profit": 0,
+  "total_trades": 0,
+  "winning_trades": 0,
+  "last_update": "2026-01-29T07:56:28.537228"
 }
