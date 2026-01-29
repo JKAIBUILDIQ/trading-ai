@@ -1,519 +1,470 @@
+#!/usr/bin/env python3
 """
-Casper IB - Ported from Crellastein_Casper.mq5
+Casper IB - Virtual Position Tracking for DCA on Interactive Brokers
 
-Features:
-- Meta Bot signals (10 weighted indicators)
-- Drop-Buy Martingale DCA ($10 price drops)
-- Fixed lot ladder: 0.5, 0.5, 1.0, 1.0, 2.0
-- Trailing TP: +$10 start, $8 trail
-- More conservative than Ghost ("prove it first")
+IB aggregates all buys into one position with average cost.
+This module tracks "virtual positions" so we can apply Casper's
+per-entry TP logic even on IB's aggregated system.
 
-Magic Number: 8880202
-
-Author: QUINN001
-Ported: January 29, 2026
+Author: Quinn (NEO Training)
 """
 
+import json
+import asyncio
+from dataclasses import dataclass, asdict
+from typing import List, Optional
+from datetime import datetime
+from pathlib import Path
+from ib_insync import IB, Future, MarketOrder
 import nest_asyncio
+
 nest_asyncio.apply()
 
-from ib_insync import IB, Future, MarketOrder
-from datetime import datetime
-from typing import Dict, List, Optional
-import time
-import json
-import logging
-from pathlib import Path
+# ═══════════════════════════════════════════════════════════════════════════════
+# DATA STRUCTURES
+# ═══════════════════════════════════════════════════════════════════════════════
 
-from .indicators import Indicators
-from .config import CASPER_SETTINGS, IB_SETTINGS
+@dataclass
+class VirtualEntry:
+    """Represents one DCA ladder entry (virtual position)"""
+    level: int                          # L1, L2, L3, etc.
+    entry_price: float                  # Actual fill price
+    entry_time: str                     # ISO format timestamp
+    quantity: int                       # Contracts (usually 1)
+    tp_price: float                     # Target price to close this entry
+    status: str                         # 'open', 'tp_pending', 'closed'
+    close_price: Optional[float] = None
+    close_time: Optional[str] = None
+    pnl: Optional[float] = None
+    magic: str = "8880202"              # DROPBUY magic number
+    comment: str = ""
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("Casper")
 
+class DCALadder:
+    """
+    Manages virtual position tracking for IB DCA.
+    
+    Each DCA buy creates a VirtualEntry with its own TP.
+    When price hits a virtual TP, we sell 1 contract on IB.
+    IB doesn't know which "virtual position" we're closing - we track it.
+    """
+    
+    def __init__(self, symbol: str, tp_points: float = 50.0, state_file: str = None):
+        self.symbol = symbol
+        self.tp_points = tp_points  # $50 per entry
+        self.entries: List[VirtualEntry] = []
+        self.total_quantity = 0
+        self.avg_price = 0.0
+        self.realized_pnl = 0.0
+        
+        # Persistence
+        self.state_file = Path(state_file) if state_file else Path(__file__).parent / 'casper_dca_state.json'
+        self._load_state()
+    
+    def _load_state(self):
+        """Load state from disk on startup"""
+        if self.state_file.exists():
+            try:
+                data = json.loads(self.state_file.read_text())
+                self.realized_pnl = data.get('realized_pnl', 0.0)
+                for entry_data in data.get('entries', []):
+                    entry = VirtualEntry(**entry_data)
+                    self.entries.append(entry)
+                self._recalc_average()
+                print(f"📂 Loaded {len(self.entries)} virtual entries from {self.state_file}")
+            except Exception as e:
+                print(f"⚠️ Error loading state: {e}")
+    
+    def _save_state(self):
+        """Save state to disk after changes"""
+        data = {
+            'symbol': self.symbol,
+            'tp_points': self.tp_points,
+            'realized_pnl': self.realized_pnl,
+            'total_quantity': self.total_quantity,
+            'avg_price': self.avg_price,
+            'updated': datetime.now().isoformat(),
+            'entries': [asdict(e) for e in self.entries]
+        }
+        self.state_file.write_text(json.dumps(data, indent=2))
+    
+    def _recalc_average(self):
+        """Recalculate average price (mirrors IB's view)"""
+        open_entries = [e for e in self.entries if e.status == 'open']
+        if not open_entries:
+            self.total_quantity = 0
+            self.avg_price = 0.0
+            return
+        
+        total_cost = sum(e.entry_price * e.quantity for e in open_entries)
+        self.total_quantity = sum(e.quantity for e in open_entries)
+        self.avg_price = total_cost / self.total_quantity if self.total_quantity > 0 else 0
+    
+    def add_entry(self, price: float, quantity: int = 1) -> VirtualEntry:
+        """Record a new DCA buy"""
+        level = len(self.entries) + 1
+        entry = VirtualEntry(
+            level=level,
+            entry_price=price,
+            entry_time=datetime.now().isoformat(),
+            quantity=quantity,
+            tp_price=price + self.tp_points,  # Each entry has its own TP
+            status='open',
+            comment=f"DROPBUY|L{level}|{quantity}"
+        )
+        self.entries.append(entry)
+        self._recalc_average()
+        self._save_state()
+        print(f"📈 Added L{level} @ ${price:.2f} | TP: ${entry.tp_price:.2f} | Total: {self.total_quantity} contracts")
+        return entry
+    
+    def check_tps(self, current_price: float) -> List[VirtualEntry]:
+        """Check which entries have hit their TP"""
+        ready_to_close = []
+        for entry in self.entries:
+            if entry.status == 'open' and current_price >= entry.tp_price:
+                entry.status = 'tp_pending'
+                ready_to_close.append(entry)
+                print(f"🎯 L{entry.level} TP HIT! Price ${current_price:.2f} >= TP ${entry.tp_price:.2f}")
+        
+        if ready_to_close:
+            self._save_state()
+        return ready_to_close
+    
+    def close_entry(self, entry: VirtualEntry, close_price: float):
+        """Mark an entry as closed after IB fill"""
+        entry.status = 'closed'
+        entry.close_price = close_price
+        entry.close_time = datetime.now().isoformat()
+        entry.pnl = (close_price - entry.entry_price) * entry.quantity * 10  # MGC = $10/point
+        self.realized_pnl += entry.pnl
+        self._recalc_average()
+        self._save_state()
+        print(f"✅ Closed L{entry.level} @ ${close_price:.2f} | P&L: ${entry.pnl:.2f} | Total Realized: ${self.realized_pnl:.2f}")
+    
+    def get_open_entries(self) -> List[VirtualEntry]:
+        return [e for e in self.entries if e.status == 'open']
+    
+    def get_closed_entries(self) -> List[VirtualEntry]:
+        return [e for e in self.entries if e.status == 'closed']
+    
+    def get_lowest_open(self) -> Optional[VirtualEntry]:
+        """Get the lowest priced open entry"""
+        open_entries = self.get_open_entries()
+        return min(open_entries, key=lambda e: e.entry_price) if open_entries else None
+    
+    def get_highest_open(self) -> Optional[VirtualEntry]:
+        """Get the highest priced open entry"""
+        open_entries = self.get_open_entries()
+        return max(open_entries, key=lambda e: e.entry_price) if open_entries else None
+    
+    def get_stats(self) -> dict:
+        """Summary stats for display"""
+        open_entries = self.get_open_entries()
+        closed_entries = self.get_closed_entries()
+        
+        # Calculate unrealized P&L (would need current price)
+        return {
+            'open_count': len(open_entries),
+            'closed_count': len(closed_entries),
+            'total_quantity': self.total_quantity,
+            'avg_price': self.avg_price,
+            'realized_pnl': self.realized_pnl,
+            'freeroll': self.realized_pnl > 0,
+            'levels': [
+                {
+                    'level': e.level,
+                    'entry': e.entry_price,
+                    'tp': e.tp_price,
+                    'status': e.status,
+                    'pnl': e.pnl
+                }
+                for e in self.entries
+            ]
+        }
+    
+    def reset(self):
+        """Reset the ladder (use with caution)"""
+        self.entries = []
+        self.total_quantity = 0
+        self.avg_price = 0.0
+        # Note: Don't reset realized_pnl - that's banked profit
+        self._save_state()
+        print("🔄 Ladder reset (realized P&L preserved)")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CASPER IB BOT
+# ═══════════════════════════════════════════════════════════════════════════════
 
 class CasperIB:
     """
-    Casper IB - Conservative Drop-Buy Martingale
-    Ported from MT5 Crellastein_Casper.mq5
+    Casper-style DCA trading for Interactive Brokers.
+    
+    Uses virtual position tracking to achieve MT5-like behavior
+    where each entry has its own TP, even though IB aggregates positions.
     """
     
-    def __init__(self, paper_trading: bool = True):
+    def __init__(
+        self,
+        host: str = '100.119.161.65',
+        port: int = 7497,
+        client_id: int = 450,
+        symbol: str = 'MGC',
+        tp_points: float = 50.0,
+        dca_spacing: float = 20.0,
+        max_levels: int = 10,
+    ):
+        self.host = host
+        self.port = port
+        self.client_id = client_id
+        self.symbol = symbol
+        self.dca_spacing = dca_spacing
+        self.max_levels = max_levels
+        
         self.ib = IB()
-        self.paper_trading = paper_trading
-        self.connected = False
-        
-        # Settings
-        self.settings = CASPER_SETTINGS.copy()
-        self.name = "CASPER"
-        self.magic = self.settings['strategy_id']
-        
-        # Lot ladder: 0.5, 0.5, 1.0, 1.0, 2.0 = 5 lots max
-        self.lot_ladder = self.settings['dropbuy_lot_ladder']
-        
-        # State
-        self.positions = []
-        self.session_high = 0
-        self.current_level = 0
-        self.trailing_sl = 0
-        
-        # Tracking
-        self.dca_average_entry = 0
-        self.dca_total_contracts = 0
-        
-        # Contract
         self.contract = None
-        self.last_price = 0
+        self.ladder = DCALadder(symbol, tp_points=tp_points)
         
-        # State persistence
-        self.state_dir = Path(__file__).parent / "casper_data"
-        self.state_dir.mkdir(exist_ok=True)
-        self.state_file = self.state_dir / "casper_state.json"
-        self._load_state()
+        self.running = False
+        self.last_price = 0.0
     
-    # =========================================================================
-    # CONNECTION (Same as Ghost)
-    # =========================================================================
-    
-    def connect(self, host: str = None, port: int = None, 
-                client_id: int = None) -> bool:
-        """Connect to TWS"""
+    def connect(self) -> bool:
+        """Connect to IB TWS"""
         try:
-            if self.ib.isConnected():
-                return True
+            self.ib.connect(self.host, self.port, clientId=self.client_id, timeout=15)
             
-            host = host or IB_SETTINGS['host']
-            port = port or (IB_SETTINGS['paper_port'] if self.paper_trading 
-                           else IB_SETTINGS['live_port'])
-            client_id = client_id or IB_SETTINGS['client_id_casper']
+            # Get MGC contract
+            self.contract = Future(conId=706903676, symbol='MGC', exchange='COMEX')
+            self.ib.qualifyContracts(self.contract)
             
-            logger.info(f"Connecting to IB...")
-            self.ib.connect(host, port, clientId=client_id, timeout=30)
-            self.ib.sleep(2)
-            self.connected = True
-            
-            self._init_contract()
-            logger.info(f"👻 {self.name} connected!")
+            print(f"✅ Connected to IB (clientId={self.client_id})")
             return True
-            
         except Exception as e:
-            logger.error(f"Connection failed: {e}")
+            print(f"❌ Connection failed: {e}")
             return False
     
     def disconnect(self):
-        """Disconnect and save state"""
-        self._save_state()
+        """Disconnect from IB"""
         if self.ib.isConnected():
             self.ib.disconnect()
-        self.connected = False
-    
-    def _init_contract(self):
-        """Initialize MGC contract"""
-        now = datetime.now()
-        months = [2, 4, 6, 8, 10, 12]
-        for month in months:
-            year = now.year if month > now.month else now.year + 1
-            if (datetime(year, month, 25) - now).days >= 30:
-                expiry = f"{year}{month:02d}"
-                break
-        else:
-            expiry = f"{now.year + 1}04"
-        
-        self.contract = Future(
-            symbol='MGC',
-            lastTradeDateOrContractMonth=expiry,
-            exchange='COMEX',
-            currency='USD'
-        )
-        self.ib.qualifyContracts(self.contract)
+            print("📴 Disconnected from IB")
     
     def get_price(self) -> float:
-        """Get current price"""
-        if not self.connected:
-            return self.last_price
-        
+        """Get current MGC price"""
+        self.ib.reqMarketDataType(3)  # Delayed data
+        ticker = self.ib.reqMktData(self.contract)
+        self.ib.sleep(1)
+        price = ticker.last or ticker.close or 0
+        self.ib.cancelMktData(self.contract)
+        return price
+    
+    def get_ib_position(self) -> int:
+        """Get actual IB position quantity"""
+        positions = self.ib.positions()
+        for pos in positions:
+            if pos.contract.symbol == 'MGC':
+                return int(pos.position)
+        return 0
+    
+    def execute_buy(self, quantity: int = 1) -> Optional[float]:
+        """Execute a buy order on IB"""
         try:
-            self.ib.reqMarketDataType(3)
-            ticker = self.ib.reqMktData(self.contract, '', False, False)
-            self.ib.sleep(1)
-            price = ticker.last or ticker.close or self.last_price
-            if price and price > 0:
-                self.last_price = price
-            return self.last_price
-        except:
-            return self.last_price
-    
-    # =========================================================================
-    # DROP-BUY DCA (Martingale on $10 drops)
-    # =========================================================================
-    
-    def check_drop_buy_dca(self, current_price: float) -> Optional[Dict]:
-        """
-        Drop-Buy Martingale: Buy on every $10 drop from session high
-        Port of MT5 CheckDropBuyDCA()
-        """
-        # Track session high
-        if current_price > self.session_high:
-            self.session_high = current_price
-            return None
-        
-        # Already at max level?
-        if self.current_level >= len(self.lot_ladder):
-            return None
-        
-        # Calculate drop from session high
-        drop = self.session_high - current_price
-        
-        # Trigger price for next level
-        # Level 1 at $10 drop, Level 2 at $20, etc.
-        trigger_drop = self.settings['dropbuy_trigger_pips'] * (self.current_level + 1)
-        
-        if drop >= trigger_drop:
-            # Get lot size from ladder
-            lots = self.lot_ladder[self.current_level]
-            level = self.current_level + 1
-            
-            return {
-                'level': level,
-                'lots': lots,
-                'contracts': max(1, int(lots)),  # 1 lot = 1 contract for simplicity
-                'drop': drop,
-                'comment': f'CASPER|DROP{level}|${drop:.0f}'
-            }
-        
-        return None
-    
-    def execute_drop_buy(self, dca_info: Dict, price: float) -> bool:
-        """Execute Drop-Buy entry"""
-        try:
-            contracts = dca_info['contracts']
-            
-            order = MarketOrder('BUY', contracts)
-            order.orderRef = dca_info['comment']
-            
+            order = MarketOrder('BUY', quantity)
             trade = self.ib.placeOrder(self.contract, order)
-            self.ib.sleep(2)
             
-            # Track position
-            self.positions.append({
-                'order_id': trade.order.orderId,
-                'contracts': contracts,
-                'entry_price': price,
-                'level': dca_info['level'],
-                'lots': dca_info['lots'],
-                'time': datetime.now().isoformat()
-            })
+            # Wait for fill
+            timeout = 30
+            while not trade.isDone() and timeout > 0:
+                self.ib.sleep(0.5)
+                timeout -= 0.5
             
-            self.current_level = dca_info['level']
-            self._calculate_averages()
-            self._save_state()
-            
-            logger.info(f"📈 DROP{dca_info['level']}: +{contracts}x @ ${price:.2f} (drop: ${dca_info['drop']:.0f})")
-            return True
-            
+            if trade.orderStatus.status == 'Filled':
+                fill_price = trade.orderStatus.avgFillPrice
+                print(f"🟢 BUY {quantity} @ ${fill_price:.2f}")
+                return fill_price
+            else:
+                print(f"⚠️ Buy order not filled: {trade.orderStatus.status}")
+                return None
         except Exception as e:
-            logger.error(f"Drop-buy failed: {e}")
-            return False
+            print(f"❌ Buy error: {e}")
+            return None
     
-    def _calculate_averages(self):
-        """Calculate average entry and total contracts"""
-        if not self.positions:
-            self.dca_average_entry = 0
-            self.dca_total_contracts = 0
+    def execute_sell(self, quantity: int = 1) -> Optional[float]:
+        """Execute a sell order on IB"""
+        try:
+            order = MarketOrder('SELL', quantity)
+            trade = self.ib.placeOrder(self.contract, order)
+            
+            # Wait for fill
+            timeout = 30
+            while not trade.isDone() and timeout > 0:
+                self.ib.sleep(0.5)
+                timeout -= 0.5
+            
+            if trade.orderStatus.status == 'Filled':
+                fill_price = trade.orderStatus.avgFillPrice
+                print(f"🔴 SELL {quantity} @ ${fill_price:.2f}")
+                return fill_price
+            else:
+                print(f"⚠️ Sell order not filled: {trade.orderStatus.status}")
+                return None
+        except Exception as e:
+            print(f"❌ Sell error: {e}")
+            return None
+    
+    def check_and_execute_tps(self, current_price: float):
+        """Check for TP hits and execute sells"""
+        ready = self.ladder.check_tps(current_price)
+        
+        for entry in ready:
+            fill_price = self.execute_sell(entry.quantity)
+            if fill_price:
+                self.ladder.close_entry(entry, fill_price)
+            else:
+                # Reset to open if sell failed
+                entry.status = 'open'
+    
+    def check_new_dca(self, current_price: float):
+        """Check if we should add a new DCA level"""
+        open_entries = self.ladder.get_open_entries()
+        
+        # Already at max depth
+        if len(open_entries) >= self.max_levels:
             return
         
-        total_value = sum(p['entry_price'] * p['contracts'] for p in self.positions)
-        self.dca_total_contracts = sum(p['contracts'] for p in self.positions)
-        self.dca_average_entry = total_value / self.dca_total_contracts if self.dca_total_contracts > 0 else 0
+        # No positions - need external trigger for first entry
+        if not open_entries:
+            return
+        
+        # Check if price dropped enough from lowest entry
+        lowest = self.ladder.get_lowest_open()
+        if lowest and (lowest.entry_price - current_price) >= self.dca_spacing:
+            fill_price = self.execute_buy(1)
+            if fill_price:
+                self.ladder.add_entry(fill_price, 1)
     
-    # =========================================================================
-    # TRAILING TAKE PROFIT
-    # =========================================================================
-    
-    def manage_trailing_tp(self, current_price: float) -> Optional[Dict]:
+    def sync_with_ib(self):
         """
-        Trailing TP: Start at +$10, trail $8 behind
-        Port of MT5 ManageMetaTrailingTP()
+        Sync virtual ladder with actual IB position.
+        Call this on startup to reconcile state.
         """
-        if not self.positions or self.dca_average_entry == 0:
-            return None
+        ib_qty = self.get_ib_position()
+        virtual_qty = self.ladder.total_quantity
         
-        # Calculate profit from average entry
-        profit_per_contract = (current_price - self.dca_average_entry) * 10  # $10 per point
-        total_profit = profit_per_contract * self.dca_total_contracts
-        
-        # Fixed TP at +$20 from average
-        tp_price = self.dca_average_entry + self.settings['dropbuy_tp_pips']
-        if current_price >= tp_price:
-            return {
-                'action': 'CLOSE_ALL',
-                'reason': 'TP_HIT',
-                'profit': total_profit
-            }
-        
-        # Start trailing at +$10 profit
-        if total_profit >= self.settings['trail_start']:
-            new_sl = current_price - self.settings['trail_distance']
-            
-            if new_sl > self.trailing_sl:
-                self.trailing_sl = new_sl
-                logger.debug(f"   Trailing SL updated: ${new_sl:.2f}")
-        
-        # Check if trailing SL hit
-        if self.trailing_sl > 0 and current_price <= self.trailing_sl:
-            return {
-                'action': 'CLOSE_ALL',
-                'reason': 'TRAILING_SL',
-                'profit': total_profit
-            }
-        
-        return None
+        if ib_qty != virtual_qty:
+            print(f"⚠️ Position mismatch: IB has {ib_qty}, virtual has {virtual_qty}")
+            # TODO: Implement reconciliation logic
+            # For now, just warn
+        else:
+            print(f"✅ Positions in sync: {ib_qty} contracts")
     
-    def execute_close_all(self, close_info: Dict, current_price: float) -> bool:
-        """Close all positions"""
+    def run(self, interval: int = 5):
+        """Main run loop"""
+        if not self.ib.isConnected():
+            if not self.connect():
+                return
+        
+        self.sync_with_ib()
+        self.running = True
+        
+        print(f"\n{'═'*60}")
+        print(f"  CASPER IB - Virtual DCA Tracking")
+        print(f"  Symbol: {self.symbol} | TP: +${self.ladder.tp_points} | Spacing: ${self.dca_spacing}")
+        print(f"  Max Levels: {self.max_levels} | Interval: {interval}s")
+        print(f"{'═'*60}\n")
+        
         try:
-            order = MarketOrder('SELL', self.dca_total_contracts)
-            order.orderRef = f"CASPER|{close_info['reason']}"
-            
-            self.ib.placeOrder(self.contract, order)
-            self.ib.sleep(2)
-            
-            logger.info(f"💰 {close_info['reason']}: ${close_info['profit']:.2f}")
-            
-            # Reset state
-            self.positions.clear()
-            self.current_level = 0
-            self.trailing_sl = 0
-            self.session_high = current_price  # Reset session high
-            self._calculate_averages()
-            self._save_state()
-            
-            return True
-            
-        except Exception as e:
-            logger.error(f"Close failed: {e}")
-            return False
-    
-    # =========================================================================
-    # META BOT SCORE (10 Weighted Indicators)
-    # =========================================================================
-    
-    def calculate_meta_score(self, candles: List[Dict]) -> float:
-        """
-        Calculate Meta Bot composite score (0-100)
-        Based on 10 weighted indicators
-        """
-        if len(candles) < 50:
-            return 50  # Neutral
-        
-        closes = [c['close'] for c in candles]
-        current_price = closes[-1]
-        
-        scores = []
-        
-        # 1. RSI (weight: 15%)
-        rsi = Indicators.rsi_single(closes, 14)
-        if rsi < 30:
-            scores.append(('RSI', 80, 0.15))  # Oversold = bullish
-        elif rsi > 70:
-            scores.append(('RSI', 20, 0.15))  # Overbought = bearish
-        else:
-            scores.append(('RSI', 50, 0.15))
-        
-        # 2. EMA Trend (weight: 15%)
-        ema20 = Indicators.ema_single(closes, 20)
-        ema50 = Indicators.ema_single(closes, 50)
-        if current_price > ema20 > ema50:
-            scores.append(('EMA_TREND', 80, 0.15))
-        elif current_price < ema20 < ema50:
-            scores.append(('EMA_TREND', 20, 0.15))
-        else:
-            scores.append(('EMA_TREND', 50, 0.15))
-        
-        # 3. MACD (weight: 10%)
-        macd = Indicators.macd(closes)
-        if macd['histogram'] and macd['histogram'][-1] > 0:
-            scores.append(('MACD', 70, 0.10))
-        else:
-            scores.append(('MACD', 30, 0.10))
-        
-        # 4. ADX Strength (weight: 10%)
-        adx = Indicators.adx_single(candles, 14)
-        if adx > 25:
-            scores.append(('ADX', 70, 0.10))  # Strong trend
-        else:
-            scores.append(('ADX', 40, 0.10))  # Weak trend
-        
-        # 5. Price vs EMA20 (weight: 10%)
-        if current_price > ema20:
-            scores.append(('PRICE_EMA20', 70, 0.10))
-        else:
-            scores.append(('PRICE_EMA20', 30, 0.10))
-        
-        # 6. SuperTrend (weight: 15%)
-        st = Indicators.supertrend(candles, 10, 3)
-        if st['trend'] == 1:
-            scores.append(('SUPERTREND', 80, 0.15))
-        else:
-            scores.append(('SUPERTREND', 20, 0.15))
-        
-        # 7. ATR Volatility (weight: 5%)
-        atr = Indicators.atr_single(candles, 14)
-        atr_pct = (atr / current_price) * 100 if current_price > 0 else 0
-        if atr_pct > 1:
-            scores.append(('ATR', 60, 0.05))
-        else:
-            scores.append(('ATR', 40, 0.05))
-        
-        # 8. Price momentum (weight: 5%)
-        if len(closes) >= 5:
-            momentum = (closes[-1] - closes[-5]) / closes[-5] * 100
-            if momentum > 0.5:
-                scores.append(('MOMENTUM', 70, 0.05))
-            elif momentum < -0.5:
-                scores.append(('MOMENTUM', 30, 0.05))
-            else:
-                scores.append(('MOMENTUM', 50, 0.05))
-        else:
-            scores.append(('MOMENTUM', 50, 0.05))
-        
-        # 9. Higher highs (weight: 5%)
-        if len(candles) >= 3:
-            if candles[-1]['high'] > candles[-2]['high'] > candles[-3]['high']:
-                scores.append(('HH', 75, 0.05))
-            elif candles[-1]['low'] < candles[-2]['low'] < candles[-3]['low']:
-                scores.append(('HH', 25, 0.05))
-            else:
-                scores.append(('HH', 50, 0.05))
-        else:
-            scores.append(('HH', 50, 0.05))
-        
-        # 10. Volume trend (weight: 10%) - simplified
-        scores.append(('VOLUME', 50, 0.10))  # Neutral without real volume
-        
-        # Calculate weighted score
-        total_score = sum(score * weight for _, score, weight in scores)
-        
-        return total_score
-    
-    def should_enter_meta(self, candles: List[Dict]) -> bool:
-        """Check if Meta Bot score is above threshold"""
-        score = self.calculate_meta_score(candles)
-        return score >= self.settings['meta_min_score']
-    
-    # =========================================================================
-    # MAIN LOOP
-    # =========================================================================
-    
-    def run_once(self) -> Dict:
-        """Run one iteration"""
-        if not self.connected:
-            return {'error': 'Not connected'}
-        
-        current_price = self.get_price()
-        if current_price == 0:
-            return {'status': 'waiting_for_price'}
-        
-        # Check Drop-Buy DCA
-        dca = self.check_drop_buy_dca(current_price)
-        if dca:
-            self.execute_drop_buy(dca, current_price)
-        
-        # Check trailing TP
-        tp = self.manage_trailing_tp(current_price)
-        if tp:
-            self.execute_close_all(tp, current_price)
-        
-        # Calculate status
-        self._calculate_averages()
-        unrealized = (current_price - self.dca_average_entry) * self.dca_total_contracts * 10 if self.dca_total_contracts > 0 else 0
-        
-        return {
-            'price': current_price,
-            'session_high': self.session_high,
-            'drop_level': self.current_level,
-            'contracts': self.dca_total_contracts,
-            'avg_entry': self.dca_average_entry,
-            'unrealized_pnl': unrealized,
-            'trailing_sl': self.trailing_sl
-        }
-    
-    def run(self, interval: int = 30):
-        """Main trading loop"""
-        print("=" * 70)
-        print(f"👻 {self.name} IB - Conservative Drop-Buy Martingale")
-        print("=" * 70)
-        print(f"Drop Trigger: ${self.settings['dropbuy_trigger_pips']} per level")
-        print(f"Lot Ladder: {self.lot_ladder}")
-        print(f"TP: +${self.settings['dropbuy_tp_pips']} from avg")
-        print(f"Trail: +${self.settings['trail_start']} start, ${self.settings['trail_distance']} distance")
-        print("=" * 70)
-        
-        while True:
-            try:
-                status = self.run_once()
+            while self.running:
+                price = self.get_price()
+                if price <= 0:
+                    self.ib.sleep(interval)
+                    continue
                 
-                if 'price' in status:
-                    trail = f"Trail:${status['trailing_sl']:.0f}" if status['trailing_sl'] > 0 else ""
-                    
-                    print(f"[{datetime.now().strftime('%H:%M:%S')}] "
-                          f"${status['price']:.2f} | "
-                          f"High:${status['session_high']:.2f} | "
-                          f"L{status['drop_level']} ({status['contracts']}x) | "
-                          f"Avg: ${status['avg_entry']:.2f} | "
-                          f"P&L: ${status['unrealized_pnl']:.2f} {trail}")
+                self.last_price = price
                 
-                time.sleep(interval)
+                # Check TPs first (priority)
+                self.check_and_execute_tps(price)
                 
-            except KeyboardInterrupt:
-                print(f"\n👻 {self.name} shutting down...")
-                break
-            except Exception as e:
-                logger.error(f"Error: {e}")
-                time.sleep(10)
+                # Check for new DCA entries
+                self.check_new_dca(price)
+                
+                # Status display
+                stats = self.ladder.get_stats()
+                ib_pos = self.get_ib_position()
+                
+                print(f"💰 ${price:.2f} | IB: {ib_pos} | Virtual: {stats['open_count']} open, {stats['closed_count']} closed | Realized: ${stats['realized_pnl']:.2f}")
+                
+                self.ib.sleep(interval)
+                
+        except KeyboardInterrupt:
+            print("\n🛑 Stopping Casper IB...")
+        finally:
+            self.running = False
+            self.disconnect()
     
-    # =========================================================================
-    # STATE PERSISTENCE
-    # =========================================================================
+    def add_manual_entry(self, price: float, quantity: int = 1):
+        """Manually add an entry (for existing positions)"""
+        entry = self.ladder.add_entry(price, quantity)
+        return entry
     
-    def _save_state(self):
-        """Save state"""
-        state = {
-            'positions': self.positions,
-            'session_high': self.session_high,
-            'current_level': self.current_level,
-            'trailing_sl': self.trailing_sl,
-            'last_update': datetime.now().isoformat()
-        }
-        with open(self.state_file, 'w') as f:
-            json.dump(state, f, indent=2)
-    
-    def _load_state(self):
-        """Load state"""
-        if self.state_file.exists():
-            try:
-                with open(self.state_file, 'r') as f:
-                    state = json.load(f)
-                    self.positions = state.get('positions', [])
-                    self.session_high = state.get('session_high', 0)
-                    self.current_level = state.get('current_level', 0)
-                    self.trailing_sl = state.get('trailing_sl', 0)
-                    self._calculate_averages()
-            except:
-                pass
+    def status(self):
+        """Print current status"""
+        stats = self.ladder.get_stats()
+        print(f"\n{'═'*60}")
+        print(f"  CASPER IB STATUS")
+        print(f"{'═'*60}")
+        print(f"  Open Entries:    {stats['open_count']}")
+        print(f"  Closed Entries:  {stats['closed_count']}")
+        print(f"  Total Contracts: {stats['total_quantity']}")
+        print(f"  Avg Price:       ${stats['avg_price']:.2f}")
+        print(f"  Realized P&L:    ${stats['realized_pnl']:.2f}")
+        print(f"  Freeroll:        {'✅ YES' if stats['freeroll'] else '⏳ Building...'}")
+        print(f"\n  Levels:")
+        for lvl in stats['levels']:
+            status_icon = '✅' if lvl['status'] == 'closed' else '🔵' if lvl['status'] == 'open' else '⏳'
+            pnl_str = f"P&L: ${lvl['pnl']:.2f}" if lvl['pnl'] else f"TP: ${lvl['tp']:.2f}"
+            print(f"    {status_icon} L{lvl['level']}: ${lvl['entry']:.2f} → {pnl_str} [{lvl['status']}]")
+        print(f"{'═'*60}\n")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# ENTRY POINT
+# CLI
 # ═══════════════════════════════════════════════════════════════════════════════
 
 if __name__ == '__main__':
-    casper = CasperIB(paper_trading=True)
+    import sys
     
-    if casper.connect():
-        try:
-            casper.run(interval=30)
-        finally:
+    casper = CasperIB()
+    
+    if len(sys.argv) > 1:
+        cmd = sys.argv[1]
+        
+        if cmd == 'status':
+            casper.connect()
+            casper.status()
             casper.disconnect()
+            
+        elif cmd == 'add' and len(sys.argv) >= 3:
+            # Add manual entry: python casper_ib.py add 5560 1
+            price = float(sys.argv[2])
+            qty = int(sys.argv[3]) if len(sys.argv) > 3 else 1
+            casper.ladder.add_entry(price, qty)
+            casper.status()
+            
+        elif cmd == 'reset':
+            casper.ladder.reset()
+            print("Ladder reset")
+            
+        elif cmd == 'run':
+            casper.run()
+            
+        else:
+            print("Usage:")
+            print("  python casper_ib.py status     - Show current status")
+            print("  python casper_ib.py add <price> [qty]  - Add manual entry")
+            print("  python casper_ib.py reset      - Reset ladder")
+            print("  python casper_ib.py run        - Run bot")
     else:
-        print("❌ Failed to connect")
+        # Default: show status
+        casper.status()
