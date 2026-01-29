@@ -1,0 +1,21 @@
+{
+  "positions": [
+    {
+      "ticket": "IB706903676",
+      "symbol": "mgc",
+      "time": "2026.01.29 08:31:37",
+      "type": "BUY",
+      "volume": 15,
+      "entry_price": 5578.15,
+      "current_price": 5568.8,
+      "sl": null,
+      "tp": 5628.15,
+      "profit": -1403.05,
+      "magic": "8880777",
+      "comment": "GRID|LONG|5578"
+    }
+  ],
+  "current_price": 5568.8,
+  "updated": "2026-01-29T08:31:37.404999",
+  "connection": "OK"
+}
