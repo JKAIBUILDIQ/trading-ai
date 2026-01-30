@@ -1218,6 +1218,63 @@
         "patterns": 0.1306753246753247
       },
       "reasoning": "EMA trend BULLISH (+11%) | Momentum +0.84% (+15%) | MACD bearish (-10%) | \u26a0\ufe0f High volatility - reduce size! | Patterns: BUY (1 detected, 87%)",
+      "status": "EVALUATED",
+      "actual_price": 5479.5,
+      "actual_change_pips": 142.2998046875,
+      "actual_direction": "UP",
+      "direction_correct": true,
+      "magnitude_accuracy": 0.5180147358155079,
+      "score": 1.0,
+      "evaluated_at": "2026-01-30T00:29:50.092433"
+    },
+    {
+      "prediction_id": "PRED_20260130_002950_7836",
+      "timestamp": "2026-01-30T00:29:50.584816+00:00",
+      "target_time": "2026-01-30T04:29:50.584816+00:00",
+      "current_price": 5479.5,
+      "predicted_direction": "UP",
+      "predicted_change_pips": 100,
+      "predicted_price": 5579.5,
+      "confidence": 50.92812467532468,
+      "features": {
+        "current_price": 5479.5,
+        "ema20": 5436.970705405544,
+        "ema50": 5374.8567126691005,
+        "rsi_h1": 45.874933374131395,
+        "rsi_h4": 67.79854899477573,
+        "macd_value": 1.3835798318068555,
+        "macd_signal": 8.919777114746449,
+        "macd_state": "BEARISH",
+        "momentum_4h": 2.7258562771935466,
+        "atr": 90.30712890625,
+        "rsi_oversold": false,
+        "rsi_overbought": false,
+        "rsi_extreme_oversold": false,
+        "rsi_extreme_overbought": false,
+        "ema_trend": "BULLISH",
+        "ema_strength": 1.1556399743649843,
+        "atr_spike": "True",
+        "session": "ASIA",
+        "session_london": false,
+        "session_ny": false,
+        "session_asia": true,
+        "day_name": "FRIDAY",
+        "day_bias": 0.45,
+        "support": 5126.0,
+        "resistance": 5625.89990234375,
+        "near_support": "False",
+        "near_resistance": "False",
+        "extracted_at": "2026-01-30T00:29:50.447985"
+      },
+      "feature_contributions": {
+        "ema_trend": 0.10600000000000001,
+        "momentum_h4": 0.15,
+        "macd_signal": -0.1,
+        "session_asia": 0,
+        "atr_spike": 0,
+        "patterns": 0.1306753246753247
+      },
+      "reasoning": "EMA trend BULLISH (+11%) | Momentum +2.73% (+15%) | MACD bearish (-10%) | Asia session (low conviction) | \u26a0\ufe0f High volatility - reduce size! | Patterns: BUY (1 detected, 87%)",
       "status": "PENDING",
       "actual_price": 0.0,
       "actual_change_pips": 0.0,
@@ -1229,42 +1286,42 @@
     }
   ],
   "stats": {
-    "total_predictions": 22,
-    "evaluated_predictions": 18,
-    "correct_direction": 13,
-    "accuracy": 72.22222222222221,
-    "avg_confidence_when_correct": 72.2290492633449,
+    "total_predictions": 23,
+    "evaluated_predictions": 19,
+    "correct_direction": 14,
+    "accuracy": 73.68421052631578,
+    "avg_confidence_when_correct": 72.33651049407074,
     "avg_confidence_when_wrong": 76.31797146733864,
-    "current_streak": -1,
+    "current_streak": 0,
     "best_streak": 9,
     "worst_streak": -9,
     "feature_performance": {
       "ema_trend": {
-        "total_uses": 18,
-        "correct_predictions": 13,
-        "bullish_signals": 18,
+        "total_uses": 19,
+        "correct_predictions": 14,
+        "bullish_signals": 19,
         "bearish_signals": 0,
-        "bullish_correct": 13,
+        "bullish_correct": 14,
         "bearish_correct": 0,
-        "accuracy": 72.22222222222221
+        "accuracy": 73.68421052631578
       },
       "momentum_h4": {
-        "total_uses": 14,
-        "correct_predictions": 9,
-        "bullish_signals": 11,
+        "total_uses": 15,
+        "correct_predictions": 10,
+        "bullish_signals": 12,
         "bearish_signals": 3,
-        "bullish_correct": 7,
+        "bullish_correct": 8,
         "bearish_correct": 0,
-        "accuracy": 64.28571428571429
+        "accuracy": 66.66666666666666
       },
       "macd_signal": {
-        "total_uses": 18,
-        "correct_predictions": 13,
+        "total_uses": 19,
+        "correct_predictions": 14,
         "bullish_signals": 10,
-        "bearish_signals": 8,
+        "bearish_signals": 9,
         "bullish_correct": 7,
         "bearish_correct": 0,
-        "accuracy": 72.22222222222221
+        "accuracy": 73.68421052631578
       },
       "session_london": {
         "total_uses": 8,
@@ -1294,25 +1351,25 @@
         "accuracy": 80.0
       },
       "patterns": {
-        "total_uses": 16,
-        "correct_predictions": 12,
-        "bullish_signals": 16,
+        "total_uses": 17,
+        "correct_predictions": 13,
+        "bullish_signals": 17,
         "bearish_signals": 0,
-        "bullish_correct": 12,
+        "bullish_correct": 13,
         "bearish_correct": 0,
-        "accuracy": 75.0
+        "accuracy": 76.47058823529412
       },
       "atr_spike": {
-        "total_uses": 2,
-        "correct_predictions": 1,
+        "total_uses": 3,
+        "correct_predictions": 2,
         "bullish_signals": 0,
-        "bearish_signals": 2,
+        "bearish_signals": 3,
         "bullish_correct": 0,
         "bearish_correct": 0,
-        "accuracy": 50.0
+        "accuracy": 66.66666666666666
       }
     },
-    "last_updated": "2026-01-29T20:29:49.851657"
+    "last_updated": "2026-01-30T00:29:50.585120"
   },
   "meta": {
     "created_at": "2026-01-26T08:28:16.412113",

@@ -1,0 +1,485 @@
+{
+  "generated_at": "2026-01-30T01:35:04.415655",
+  "data_range_days": 90,
+  "candles_analyzed": 1340,
+  "two_red_patterns": {
+    "count": 125,
+    "statistics": {
+      "total_occurrences": 125,
+      "outcome_5_candles": {
+        "DOWN": {
+          "count": 45,
+          "pct": 36.0
+        },
+        "UP": {
+          "count": 74,
+          "pct": 59.2
+        },
+        "SIDEWAYS": {
+          "count": 6,
+          "pct": 4.8
+        }
+      },
+      "outcome_24h": {
+        "DOWN": {
+          "count": 52,
+          "pct": 41.6
+        },
+        "UP": {
+          "count": 71,
+          "pct": 56.8
+        }
+      },
+      "avg_move_when_down": -205.0,
+      "avg_move_when_up": 248.8,
+      "by_context": {
+        "at_ath": {
+          "total": 19,
+          "down_pct": 26.3
+        },
+        "in_uptrend": {
+          "total": 33,
+          "down_pct": 30.3
+        },
+        "volume_spike_30pct": {
+          "total": 82,
+          "down_pct": 36.6
+        }
+      }
+    },
+    "samples": [
+      {
+        "date": "2025-11-03",
+        "time": "04:00:00",
+        "candle1_body_pips": 63.0,
+        "candle1_volume": 8533,
+        "candle2_body_pips": 186.0,
+        "candle2_volume": 11749,
+        "volume_increase_pct": 37.7,
+        "price_at_pattern": 4011.6,
+        "price_location": "BELOW_EMA",
+        "trend_before": "RANGE",
+        "outcome_5_candles": "UP",
+        "move_5_candles_pips": 225.0,
+        "outcome_24h": "DOWN",
+        "move_24h_pips": -76.0,
+        "max_drawdown_pips": 366.0,
+        "max_rally_pips": 315.0
+      },
+      {
+        "date": "2025-11-04",
+        "time": "00:00:00",
+        "candle1_body_pips": 85.0,
+        "candle1_volume": 4904,
+        "candle2_body_pips": 122.0,
+        "candle2_volume": 7594,
+        "volume_increase_pct": 54.9,
+        "price_at_pattern": 3982.4,
+        "price_location": "BELOW_EMA",
+        "trend_before": "DOWN",
+        "outcome_5_candles": "UP",
+        "move_5_candles_pips": 216.0,
+        "outcome_24h": "DOWN",
+        "move_24h_pips": -74.0,
+        "max_drawdown_pips": 467.0,
+        "max_rally_pips": 292.0
+      },
+      {
+        "date": "2025-11-04",
+        "time": "08:00:00",
+        "candle1_body_pips": 111.0,
+        "candle1_volume": 7888,
+        "candle2_body_pips": 88.0,
+        "candle2_volume": 14459,
+        "volume_increase_pct": 83.3,
+        "price_at_pattern": 3985.7,
+        "price_location": "BELOW_EMA",
+        "trend_before": "DOWN",
+        "outcome_5_candles": "DOWN",
+        "move_5_candles_pips": -386.0,
+        "outcome_24h": "DOWN",
+        "move_24h_pips": -27.0,
+        "max_drawdown_pips": 500.0,
+        "max_rally_pips": 113.0
+      },
+      {
+        "date": "2025-11-04",
+        "time": "09:00:00",
+        "candle1_body_pips": 88.0,
+        "candle1_volume": 14459,
+        "candle2_body_pips": 190.0,
+        "candle2_volume": 45787,
+        "volume_increase_pct": 216.7,
+        "price_at_pattern": 3966.5,
+        "price_location": "BELOW_EMA",
+        "trend_before": "DOWN",
+        "outcome_5_candles": "DOWN",
+        "move_5_candles_pips": -193.0,
+        "outcome_24h": "UP",
+        "move_24h_pips": 214.0,
+        "max_drawdown_pips": 308.0,
+        "max_rally_pips": 305.0
+      },
+      {
+        "date": "2025-11-04",
+        "time": "13:00:00",
+        "candle1_body_pips": 141.0,
+        "candle1_volume": 11138,
+        "candle2_body_pips": 180.0,
+        "candle2_volume": 17265,
+        "volume_increase_pct": 55.0,
+        "price_at_pattern": 3947.1,
+        "price_location": "BELOW_EMA",
+        "trend_before": "DOWN",
+        "outcome_5_candles": "SIDEWAYS",
+        "move_5_candles_pips": 9.0,
+        "outcome_24h": "UP",
+        "move_24h_pips": 508.0,
+        "max_drawdown_pips": 114.0,
+        "max_rally_pips": 536.0
+      },
+      {
+        "date": "2025-11-06",
+        "time": "05:00:00",
+        "candle1_body_pips": 38.0,
+        "candle1_volume": 5561,
+        "candle2_body_pips": 27.0,
+        "candle2_volume": 7060,
+        "volume_increase_pct": 27.0,
+        "price_at_pattern": 4017.7,
+        "price_location": "ABOVE_EMA",
+        "trend_before": "UP",
+        "outcome_5_candles": "DOWN",
+        "move_5_candles_pips": -294.0,
+        "outcome_24h": "DOWN",
+        "move_24h_pips": -67.0,
+        "max_drawdown_pips": 445.0,
+        "max_rally_pips": 110.0
+      },
+      {
+        "date": "2025-11-06",
+        "time": "10:00:00",
+        "candle1_body_pips": 192.0,
+        "candle1_volume": 22121,
+        "candle2_body_pips": 132.0,
+        "candle2_volume": 24560,
+        "volume_increase_pct": 11.0,
+        "price_at_pattern": 3988.3,
+        "price_location": "BELOW_EMA",
+        "trend_before": "RANGE",
+        "outcome_5_candles": "SIDEWAYS",
+        "move_5_candles_pips": 5.0,
+        "outcome_24h": "UP",
+        "move_24h_pips": 275.0,
+        "max_drawdown_pips": 151.0,
+        "max_rally_pips": 475.0
+      },
+      {
+        "date": "2025-11-07",
+        "time": "07:00:00",
+        "candle1_body_pips": 46.0,
+        "candle1_volume": 7523,
+        "candle2_body_pips": 76.0,
+        "candle2_volume": 8158,
+        "volume_increase_pct": 8.4,
+        "price_at_pattern": 4003.3,
+        "price_location": "MID",
+        "trend_before": "RANGE",
+        "outcome_5_candles": "UP",
+        "move_5_candles_pips": 93.0,
+        "outcome_24h": "UP",
+        "move_24h_pips": 966.0,
+        "max_drawdown_pips": 123.0,
+        "max_rally_pips": 1117.0
+      },
+      {
+        "date": "2025-11-07",
+        "time": "13:00:00",
+        "candle1_body_pips": 33.0,
+        "candle1_volume": 21196,
+        "candle2_body_pips": 1.0,
+        "candle2_volume": 24243,
+        "volume_increase_pct": 14.4,
+        "price_at_pattern": 4012.5,
+        "price_location": "ABOVE_EMA",
+        "trend_before": "UP",
+        "outcome_5_candles": "UP",
+        "move_5_candles_pips": 158.0,
+        "outcome_24h": "UP",
+        "move_24h_pips": 1084.0,
+        "max_drawdown_pips": 101.0,
+        "max_rally_pips": 1114.0
+      },
+      {
+        "date": "2025-11-10",
+        "time": "09:00:00",
+        "candle1_body_pips": 60.0,
+        "candle1_volume": 16579,
+        "candle2_body_pips": 85.0,
+        "candle2_volume": 21939,
+        "volume_increase_pct": 32.3,
+        "price_at_pattern": 4091.4,
+        "price_location": "ABOVE_EMA",
+        "trend_before": "UP",
+        "outcome_5_candles": "UP",
+        "move_5_candles_pips": 295.0,
+        "outcome_24h": "UP",
+        "move_24h_pips": 212.0,
+        "max_drawdown_pips": 68.0,
+        "max_rally_pips": 636.0
+      }
+    ]
+  },
+  "corrections": {
+    "count": 92,
+    "statistics": {
+      "total_corrections": 92,
+      "by_size": {
+        "50-100_pips": 1,
+        "100-200_pips": 31,
+        "200+_pips": 60
+      },
+      "average_drop_pips": 377.8,
+      "max_drop_pips": 4553.0,
+      "pre_correction_patterns": {
+        "2red_rising_volume": {
+          "count": 26,
+          "pct": 28.3
+        },
+        "long_upper_wick": {
+          "count": 92,
+          "pct": 100.0
+        },
+        "at_ath": {
+          "count": 32,
+          "pct": 34.8
+        }
+      }
+    },
+    "samples": [
+      {
+        "date": "2025-11-03",
+        "high_price": 4043.1,
+        "high_time": "10:00:00",
+        "low_price": 4006.0,
+        "low_time": "11:00:00",
+        "drop_pips": 371.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": false,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 0.0,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Monday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      },
+      {
+        "date": "2025-11-04",
+        "high_price": 4011.6,
+        "high_time": "03:00:00",
+        "low_price": 4000.1,
+        "low_time": "04:00:00",
+        "drop_pips": 115.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": true,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 54.9,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Tuesday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      },
+      {
+        "date": "2025-11-05",
+        "high_price": 3997.0,
+        "high_time": "03:00:00",
+        "low_price": 3973.5,
+        "low_time": "04:00:00",
+        "drop_pips": 235.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": false,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 0.0,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Wednesday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      },
+      {
+        "date": "2025-11-05",
+        "high_price": 4000.7,
+        "high_time": "11:00:00",
+        "low_price": 3988.1,
+        "low_time": "12:00:00",
+        "drop_pips": 126.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": false,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 0.0,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Wednesday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      },
+      {
+        "date": "2025-11-06",
+        "high_price": 4028.7,
+        "high_time": "07:00:00",
+        "low_price": 4012.8,
+        "low_time": "08:00:00",
+        "drop_pips": 159.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": true,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 27.0,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Thursday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      },
+      {
+        "date": "2025-11-07",
+        "high_price": 4022.6,
+        "high_time": "04:00:00",
+        "low_price": 4010.5,
+        "low_time": "05:00:00",
+        "drop_pips": 121.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": false,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 0.0,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Friday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      },
+      {
+        "date": "2025-11-07",
+        "high_price": 4035.8,
+        "high_time": "11:00:00",
+        "low_price": 3999.6,
+        "low_time": "12:00:00",
+        "drop_pips": 362.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": true,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 8.4,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Friday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      },
+      {
+        "date": "2025-11-10",
+        "high_price": 4115.0,
+        "high_time": "08:00:00",
+        "low_price": 4082.4,
+        "low_time": "09:00:00",
+        "drop_pips": 326.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": false,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 0.0,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Monday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      },
+      {
+        "date": "2025-11-10",
+        "high_price": 4155.0,
+        "high_time": "23:00:00",
+        "low_price": 4131.4,
+        "low_time": "00:00:00",
+        "drop_pips": 236.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": false,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 0.0,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Monday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      },
+      {
+        "date": "2025-11-11",
+        "high_price": 4153.4,
+        "high_time": "08:00:00",
+        "low_price": 4126.0,
+        "low_time": "09:00:00",
+        "drop_pips": 274.0,
+        "duration_hours": 1,
+        "had_2red_rising_vol": false,
+        "had_long_upper_wick": true,
+        "had_failed_breakout": false,
+        "was_at_ath": false,
+        "volume_spike_pct": 0.0,
+        "event_driven": false,
+        "event_name": "",
+        "day_of_week": "Tuesday",
+        "recovered_50pct": false,
+        "recovered_100pct": false,
+        "recovery_hours": 0.0
+      }
+    ]
+  },
+  "neo_rules": {
+    "two_red_rising_volume": {
+      "description": "2 consecutive red candles with rising volume",
+      "base_confidence": 50,
+      "confidence_modifiers": {
+        "at_ath": 20,
+        "volume_increase_30pct": 15,
+        "volume_increase_50pct": 10,
+        "in_uptrend": 5
+      },
+      "defcon_thresholds": {
+        "confidence_80+": 3,
+        "confidence_65+": 4,
+        "default": 5
+      },
+      "backtest_accuracy": 36.0
+    },
+    "correction_probability": {
+      "2red_rising_vol_pct": 28.3,
+      "long_upper_wick_pct": 100.0,
+      "at_ath_pct": 34.8
+    }
+  }
+}
