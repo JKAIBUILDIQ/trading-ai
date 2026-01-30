@@ -1,0 +1,26 @@
+{
+  "level": 4,
+  "color": "BLUE",
+  "triggers": [
+    "Scaled out to 11 contracts",
+    "Post-correction recovery",
+    "Elevated awareness maintained"
+  ],
+  "set_at": "2026-01-30T00:05:53.379951",
+  "valid_until": "2026-01-30T04:05:53.379962",
+  "ghost_instructions": {
+    "lot_multiplier": 0.8,
+    "max_positions": 4,
+    "min_confidence": 70,
+    "entry_gap_multiplier": 1.2,
+    "pause_entries": false
+  },
+  "casper_instructions": {
+    "lot_multiplier": 0.8,
+    "max_positions": 3,
+    "min_confidence": 65,
+    "hedge_mode": false,
+    "hedge_percent": 0
+  },
+  "notes": ""
+}

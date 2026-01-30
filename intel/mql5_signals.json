@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-01-29T23:34:12.944102",
+  "scraped_at": "2026-01-30T00:04:15.749348",
   "source": "MQL5.com",
   "source_url": "https://www.mql5.com/en/signals/mt5",
   "signals": [
@@ -7,8 +7,8 @@
       "signal_id": "2204998",
       "name": "Gold Reaper Goldtrade Pro Daytrade Pro",
       "url": "https://www.mql5.com/en/signals/2204998",
-      "growth_pct": 830.02,
-      "profit": 6.0,
+      "growth_pct": 831.47,
+      "profit": 0.0,
       "drawdown": 32.6,
       "subscribers": 0,
       "weeks": 0,
@@ -16,7 +16,7 @@
       "trades": 64,
       "balance": 8.0,
       "equity": 8.0,
-      "scraped_at": "2026-01-29T23:31:28.112157",
+      "scraped_at": "2026-01-30T00:01:17.510771",
       "source_url": "https://www.mql5.com/en/signals/2204998"
     },
     {
@@ -32,24 +32,8 @@
       "trades": 95,
       "balance": 529.59,
       "equity": 529.59,
-      "scraped_at": "2026-01-29T23:31:12.262505",
+      "scraped_at": "2026-01-30T00:02:16.776238",
       "source_url": "https://www.mql5.com/en/signals/2284676"
-    },
-    {
-      "signal_id": "2333819",
-      "name": "Aghost",
-      "url": "https://www.mql5.com/en/signals/2333819",
-      "growth_pct": 719.44,
-      "profit": 16.0,
-      "drawdown": 19.1,
-      "subscribers": 0,
-      "weeks": 1,
-      "win_rate": 0,
-      "trades": 64,
-      "balance": 975.0,
-      "equity": 991.0,
-      "scraped_at": "2026-01-29T23:31:42.730987",
-      "source_url": "https://www.mql5.com/en/signals/2333819"
     },
     {
       "signal_id": "1988269",
@@ -64,7 +48,7 @@
       "trades": 78,
       "balance": 1.0,
       "equity": 1.0,
-      "scraped_at": "2026-01-29T23:33:26.729477",
+      "scraped_at": "2026-01-30T00:03:30.354192",
       "source_url": "https://www.mql5.com/en/signals/1988269"
     },
     {
@@ -80,24 +64,8 @@
       "trades": 54,
       "balance": 3.0,
       "equity": 3.0,
-      "scraped_at": "2026-01-29T23:32:17.507645",
+      "scraped_at": "2026-01-30T00:02:21.637384",
       "source_url": "https://www.mql5.com/en/signals/2317345"
-    },
-    {
-      "signal_id": "2303631",
-      "name": "Steady",
-      "url": "https://www.mql5.com/en/signals/2303631",
-      "growth_pct": 515.22,
-      "profit": 3.0,
-      "drawdown": 22.2,
-      "subscribers": 0,
-      "weeks": 0,
-      "win_rate": 0,
-      "trades": 36,
-      "balance": 3.0,
-      "equity": 3.0,
-      "scraped_at": "2026-01-29T23:31:32.968686",
-      "source_url": "https://www.mql5.com/en/signals/2303631"
     },
     {
       "signal_id": "2332556",
@@ -112,7 +80,7 @@
       "trades": 92,
       "balance": 2.0,
       "equity": 2.0,
-      "scraped_at": "2026-01-29T23:30:28.531801",
+      "scraped_at": "2026-01-30T00:01:12.084250",
       "source_url": "https://www.mql5.com/en/signals/2332556"
     },
     {
@@ -128,8 +96,24 @@
       "trades": 78,
       "balance": 184.17,
       "equity": 184.17,
-      "scraped_at": "2026-01-29T23:33:16.802417",
+      "scraped_at": "2026-01-30T00:01:27.063048",
       "source_url": "https://www.mql5.com/en/signals/2329641"
+    },
+    {
+      "signal_id": "2339082",
+      "name": "GoldWave signal",
+      "url": "https://www.mql5.com/en/signals/2339082",
+      "growth_pct": 387.9,
+      "profit": 0.0,
+      "drawdown": 15.0,
+      "subscribers": 0,
+      "weeks": 29,
+      "win_rate": 0,
+      "trades": 97,
+      "balance": 243.95,
+      "equity": 243.95,
+      "scraped_at": "2026-01-30T00:02:36.229071",
+      "source_url": "https://www.mql5.com/en/signals/2339082"
     },
     {
       "signal_id": "2332085",
@@ -144,8 +128,24 @@
       "trades": 65,
       "balance": 551.6,
       "equity": 551.6,
-      "scraped_at": "2026-01-29T23:30:33.368278",
+      "scraped_at": "2026-01-30T00:03:15.117564",
       "source_url": "https://www.mql5.com/en/signals/2332085"
+    },
+    {
+      "signal_id": "2248087",
+      "name": "Gold Trend X",
+      "url": "https://www.mql5.com/en/signals/2248087",
+      "growth_pct": 368.27,
+      "profit": 0.0,
+      "drawdown": 34.3,
+      "subscribers": 0,
+      "weeks": 2,
+      "win_rate": 0,
+      "trades": 47,
+      "balance": 11.0,
+      "equity": 11.0,
+      "scraped_at": "2026-01-30T00:00:52.394796",
+      "source_url": "https://www.mql5.com/en/signals/2248087"
     },
     {
       "signal_id": "2336814",
@@ -160,7 +160,7 @@
       "trades": 60,
       "balance": 91.0,
       "equity": 91.0,
-      "scraped_at": "2026-01-29T23:31:52.704107",
+      "scraped_at": "2026-01-30T00:02:55.317862",
       "source_url": "https://www.mql5.com/en/signals/2336814"
     },
     {
@@ -176,8 +176,24 @@
       "trades": 85,
       "balance": 3.0,
       "equity": 3.0,
-      "scraped_at": "2026-01-29T23:31:17.336579",
+      "scraped_at": "2026-01-30T00:02:31.343689",
       "source_url": "https://www.mql5.com/en/signals/2350934"
+    },
+    {
+      "signal_id": "2355365",
+      "name": "Ride The Compound",
+      "url": "https://www.mql5.com/en/signals/2355365",
+      "growth_pct": 333.97,
+      "profit": 27.0,
+      "drawdown": 32.0,
+      "subscribers": 0,
+      "weeks": 1,
+      "win_rate": 0,
+      "trades": 72,
+      "balance": 42.0,
+      "equity": 41.0,
+      "scraped_at": "2026-01-30T00:00:32.284120",
+      "source_url": "https://www.mql5.com/en/signals/2355365"
     },
     {
       "signal_id": "2245675",
@@ -192,7 +208,7 @@
       "trades": 48,
       "balance": 4.0,
       "equity": 4.0,
-      "scraped_at": "2026-01-29T23:33:07.180932",
+      "scraped_at": "2026-01-30T00:01:57.147560",
       "source_url": "https://www.mql5.com/en/signals/2245675"
     },
     {
@@ -208,7 +224,7 @@
       "trades": 57,
       "balance": 2.0,
       "equity": 2.0,
-      "scraped_at": "2026-01-29T23:31:22.282917",
+      "scraped_at": "2026-01-30T00:00:27.030877",
       "source_url": "https://www.mql5.com/en/signals/2351061"
     },
     {
@@ -224,8 +240,24 @@
       "trades": 73,
       "balance": 667.77,
       "equity": 667.77,
-      "scraped_at": "2026-01-29T23:33:21.591768",
+      "scraped_at": "2026-01-30T00:03:25.226777",
       "source_url": "https://www.mql5.com/en/signals/2337459"
+    },
+    {
+      "signal_id": "2307342",
+      "name": "Techno Long term",
+      "url": "https://www.mql5.com/en/signals/2307342",
+      "growth_pct": 305.44,
+      "profit": 0.0,
+      "drawdown": 38.6,
+      "subscribers": 0,
+      "weeks": 0,
+      "win_rate": 0,
+      "trades": 67,
+      "balance": 1.0,
+      "equity": 1.0,
+      "scraped_at": "2026-01-30T00:00:42.702507",
+      "source_url": "https://www.mql5.com/en/signals/2307342"
     },
     {
       "signal_id": "2049326",
@@ -240,40 +272,8 @@
       "trades": 59,
       "balance": 1.0,
       "equity": 1.0,
-      "scraped_at": "2026-01-29T23:32:22.412751",
+      "scraped_at": "2026-01-30T00:03:00.147853",
       "source_url": "https://www.mql5.com/en/signals/2049326"
-    },
-    {
-      "signal_id": "2326895",
-      "name": "VolumeHedger EA BTC RiskMid Lydians",
-      "url": "https://www.mql5.com/en/signals/2326895",
-      "growth_pct": 234.53,
-      "profit": 20.0,
-      "drawdown": 13.5,
-      "subscribers": 0,
-      "weeks": 3,
-      "win_rate": 0,
-      "trades": 61,
-      "balance": 1.0,
-      "equity": 1.0,
-      "scraped_at": "2026-01-29T23:32:47.564742",
-      "source_url": "https://www.mql5.com/en/signals/2326895"
-    },
-    {
-      "signal_id": "2270168",
-      "name": "BreakThrustPro V2",
-      "url": "https://www.mql5.com/en/signals/2270168",
-      "growth_pct": 210.68,
-      "profit": 0.0,
-      "drawdown": 8.0,
-      "subscribers": 0,
-      "weeks": 21,
-      "win_rate": 0,
-      "trades": 57,
-      "balance": 1.0,
-      "equity": 1.0,
-      "scraped_at": "2026-01-29T23:31:02.474106",
-      "source_url": "https://www.mql5.com/en/signals/2270168"
     },
     {
       "signal_id": "2295974",
@@ -288,7 +288,7 @@
       "trades": 66,
       "balance": 11.0,
       "equity": 11.0,
-      "scraped_at": "2026-01-29T23:30:38.250844",
+      "scraped_at": "2026-01-30T00:02:26.549266",
       "source_url": "https://www.mql5.com/en/signals/2295974"
     }
   ],

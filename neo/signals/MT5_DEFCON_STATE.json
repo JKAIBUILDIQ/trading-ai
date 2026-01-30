@@ -1,0 +1,26 @@
+{
+  "defcon": 4,
+  "color": "BLUE",
+  "name": "ELEVATED",
+  "ghost": {
+    "lot_multiplier": 0.8,
+    "max_positions": 4,
+    "min_confidence": 70,
+    "entry_gap_multiplier": 1.2,
+    "pause_entries": false
+  },
+  "casper": {
+    "lot_multiplier": 0.8,
+    "max_positions": 3,
+    "min_confidence": 65,
+    "hedge_mode": false,
+    "hedge_percent": 0
+  },
+  "set_at": "2026-01-30T00:05:53.379951",
+  "valid_until": "2026-01-30T04:05:53.379962",
+  "triggers": [
+    "Scaled out to 11 contracts",
+    "Post-correction recovery",
+    "Elevated awareness maintained"
+  ]
+}
