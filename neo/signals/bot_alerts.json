@@ -1,0 +1,20 @@
+{
+  "has_alert": true,
+  "alert_id": "697d7a52c6f731c03dfe2462",
+  "pattern": "BULLISH_DIVERGENCE",
+  "severity": "MEDIUM",
+  "direction": "BULLISH",
+  "defcon_recommended": 4,
+  "price_at_alert": 5067.5,
+  "timestamp": "2026-01-31T03:43:14.492000",
+  "message": "Bullish RSI divergence detected - momentum building",
+  "ghost_orders": {
+    "action": "WATCH",
+    "close_percent": 0,
+    "tighten_stops": false,
+    "new_entries": true,
+    "lot_multiplier": 1.0,
+    "message": "BULLISH: BULLISH_DIVERGENCE - Watch for confirmation",
+    "priority": "LOW"
+  }
+}

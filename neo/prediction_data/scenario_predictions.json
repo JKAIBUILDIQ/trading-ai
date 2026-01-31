@@ -1,0 +1,1327 @@
+[
+  {
+    "symbol": "IREN",
+    "market_data": {
+      "symbol": "IREN",
+      "current_price": 53.74,
+      "support": 51.17,
+      "resistance": 57.45,
+      "swing_low": 38.07,
+      "swing_high": 63.59,
+      "rsi": 58.0,
+      "change_1d": -10.19,
+      "change_5d": -5.19,
+      "volume_ratio": 1.09
+    },
+    "agents": {
+      "quant": {
+        "agent": "quant",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "Price is currently at a key level of support ($51.17) and resistance ($57.45), indicating indecision.",
+        "scenarios": [
+          {
+            "name": "Support Test",
+            "probability": 40,
+            "direction": "BEARISH",
+            "reasoning": "The price has tested the swing high ($63.59) and is now consolidating near support, increasing the likelihood of a bearish move.",
+            "entry_zone": [
+              51.17,
+              53.74
+            ],
+            "stop_loss": 54.28,
+            "target": 49.02,
+            "confirmation": "Price closes below $53.74 with increased volume",
+            "invalidation": "Price rebounds above $55.23"
+          },
+          {
+            "name": "Bullish Breakout",
+            "probability": 30,
+            "direction": "BULLISH",
+            "reasoning": "The RSI(14) is at 58.0, indicating an oversold condition which may lead to a bullish breakout.",
+            "entry_zone": [
+              53.74,
+              55.23
+            ],
+            "stop_loss": 49.02,
+            "target": 60.45,
+            "confirmation": "Price closes above $57.45 with increased volume",
+            "invalidation": "Price fails to break above $56.43"
+          },
+          {
+            "name": "Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "The 1D and 5D changes are negative, but the price is currently within a range between support and resistance.",
+            "entry_zone": [
+              53.2,
+              54.28
+            ],
+            "stop_loss": 51.17,
+            "target": 55.23,
+            "confirmation": "Price consolidates within the established range",
+            "invalidation": "Price breaks above $57.45 or below $51.17"
+          }
+        ],
+        "generated_at": "2026-01-31T05:13:41.710884",
+        "knowledge_sources": [
+          "market_data_only"
+        ]
+      },
+      "neo": {
+        "agent": "neo",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "BULLISH",
+        "reasoning": "Price is close to resistance ($57.45) and has been showing a bullish RSI divergence, indicating potential for a breakout.",
+        "scenarios": [
+          {
+            "name": "Bullish Breakout",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Given the proximity to resistance and recent bullish divergence signals, smart money may attempt to break through this level.",
+            "entry_zone": [
+              54.2,
+              55.28
+            ],
+            "stop_loss": 52.85,
+            "target": 58.95,
+            "confirmation": "Sustained trading above $57.45 with increasing volume",
+            "invalidation": "Rejection at resistance or failure to hold above S/R"
+          },
+          {
+            "name": "Support Test",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "Given the current price and support level ($51.17), smart money may attempt to drive prices back down to test this level.",
+            "entry_zone": [
+              52.4,
+              53.28
+            ],
+            "stop_loss": 54.25,
+            "target": 49.95,
+            "confirmation": "Sustained trading below $51.17 with increasing volume",
+            "invalidation": "Price holds above support or shows signs of reversal"
+          },
+          {
+            "name": "Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "Given the recent price action and RSI(14) at 58.0, prices may consolidate around current levels before making a significant move.",
+            "entry_zone": [
+              52.5,
+              54.28
+            ],
+            "stop_loss": 51.97,
+            "target": 55.45,
+            "confirmation": "Price action ranges within tight bands with low volume",
+            "invalidation": "Sustained breakouts above or below current price range"
+          }
+        ],
+        "generated_at": "2026-01-31T05:13:44.842352",
+        "knowledge_sources": [
+          "proven_strategies",
+          "recent_patterns",
+          "institutional_rules"
+        ]
+      },
+      "claudia": {
+        "agent": "claudia",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "IREN's recent correction is due to profit-taking rather than a decline in fundamentals.",
+        "scenarios": [
+          {
+            "name": "Support Test",
+            "probability": 40,
+            "direction": "BEARISH",
+            "reasoning": "The stock is likely to test its support zone as investors reassess the AI cloud pivot and Microsoft partnership.",
+            "entry_zone": [
+              52.5,
+              53.2
+            ],
+            "stop_loss": 54.28,
+            "target": 49.87,
+            "confirmation": "IREN holds above $52.5 with increasing volume",
+            "invalidation": "IREN breaks below $51.32, indicating a stronger bearish trend"
+          },
+          {
+            "name": "Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "The stock is likely to consolidate as investors digest the recent news and reassess their positions.",
+            "entry_zone": [
+              52.13,
+              54.28
+            ],
+            "stop_loss": 51.32,
+            "target": 55.97,
+            "confirmation": "IREN holds within a tight range ($52.5-$54.28) with decreasing volume",
+            "invalidation": "IREN breaks above $56.43 or below $49.87, indicating a stronger trend"
+          },
+          {
+            "name": "Bullish Breakout",
+            "probability": 30,
+            "direction": "BULLISH",
+            "reasoning": "The stock is likely to break out if IREN can hold above its recent highs and demonstrate increasing volume.",
+            "entry_zone": [
+              54.28,
+              56.43
+            ],
+            "stop_loss": 53.2,
+            "target": 62.15,
+            "confirmation": "IREN breaks above $56.43 with increasing volume",
+            "invalidation": "IREN fails to hold above $55.97 or breaks below $52.13"
+          }
+        ],
+        "generated_at": "2026-01-31T05:13:47.992196",
+        "knowledge_sources": [
+          "research_summary",
+          "key_catalysts",
+          "price_targets",
+          "fundamental_thesis",
+          "portfolio_context"
+        ]
+      }
+    },
+    "generated_at": "2026-01-31T05:13:38.714954",
+    "consensus": "BULLISH",
+    "consensus_strength": "1/3 agents",
+    "logged_at": "2026-01-31T05:13:47.992361",
+    "verified": false
+  },
+  {
+    "symbol": "XAUUSD",
+    "market_data": {
+      "symbol": "XAUUSD",
+      "current_price": 4713.9,
+      "support": 4462.43,
+      "resistance": 5202.93,
+      "swing_low": 4314.4,
+      "swing_high": 5586.2,
+      "rsi": 57.3,
+      "change_1d": -11.37,
+      "change_5d": -5.27,
+      "volume_ratio": 2.72
+    },
+    "agents": {
+      "quant": {
+        "agent": "quant",
+        "symbol": "XAUUSD",
+        "current_price": 4713.9,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "Price is currently above support but below resistance, indicating a neutral bias.",
+        "scenarios": [
+          {
+            "name": "Bullish Breakout",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "If price breaks above R1 at $5202.93, it may indicate a new uptrend and confirmation of the swing high at $5586.2.",
+            "entry_zone": [
+              5193.8,
+              5215.1
+            ],
+            "stop_loss": 5137.23,
+            "target": 5599.6,
+            "confirmation": "Candle close above R1 with increased volume",
+            "invalidation": "Price closes below $5202.93 and retests S1"
+          },
+          {
+            "name": "Support Test",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "If price falls back to S1 at $4462.43, it may indicate a continuation of the downtrend from the swing low at $4314.4.",
+            "entry_zone": [
+              4457.8,
+              4471.0
+            ],
+            "stop_loss": 4503.33,
+            "target": 4239.6,
+            "confirmation": "Candle close below S1 with increased volume",
+            "invalidation": "Price bounces off S1 and moves above $4462.43"
+          },
+          {
+            "name": "Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "If price consolidates within the current range ($4462.43 to $5202.93), it may indicate a period of indecision and neutrality.",
+            "entry_zone": [
+              4666.76,
+              4761.04
+            ],
+            "stop_loss": 4572.48,
+            "target": 4949.6,
+            "confirmation": "Price fluctuates within the range with decreasing volume",
+            "invalidation": "Price breaks above R1 or below S1"
+          }
+        ],
+        "generated_at": "2026-01-31T05:24:04.968680",
+        "knowledge_sources": [
+          "market_data_only"
+        ]
+      },
+      "neo": {
+        "agent": "neo",
+        "symbol": "XAUUSD",
+        "current_price": 4713.9,
+        "conviction": "HIGH",
+        "primary_bias": "BULLISH",
+        "reasoning": "Recent bullish divergence suggests momentum building; RSI indicates oversold conditions ripe for a bounce.",
+        "scenarios": [
+          {
+            "name": "Bullish Breakout",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Smart money often exploits retail stops clustered at significant S/R levels; the support at $4462.43 is a prime target.",
+            "entry_zone": [
+              4500,
+              4750
+            ],
+            "stop_loss": 4400,
+            "target": 4900,
+            "confirmation": "Volume spikes through resistance at $5202.93 confirms breakout strength",
+            "invalidation": "Failed attempt to close above $5202.93 suggests bearish reversal"
+          },
+          {
+            "name": "Support Test",
+            "probability": 30,
+            "direction": "BULLISH",
+            "reasoning": "Following a bullish divergence, price often retests lower S/R levels for confirmation of the trend.",
+            "entry_zone": [
+              4460,
+              4505
+            ],
+            "stop_loss": 4352.43,
+            "target": 4650,
+            "confirmation": "Price closes above $4462.43 with increased volume",
+            "invalidation": "Support fails to hold, and price breaks below $4462.43"
+          },
+          {
+            "name": "Stop Hunt Setup",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "First move after a news event is often wrong, setting up a potential stop hunt opportunity at the resistance level.",
+            "entry_zone": [
+              4900,
+              5202
+            ],
+            "stop_loss": 5000,
+            "target": 4600,
+            "confirmation": "Price spikes through $5202.93 with high volume and fails to sustain above it",
+            "invalidation": "Price closes above $5202.93, invalidating the bearish scenario"
+          }
+        ],
+        "generated_at": "2026-01-31T05:24:08.044360",
+        "knowledge_sources": [
+          "proven_strategies",
+          "recent_patterns",
+          "institutional_rules"
+        ]
+      },
+      "claudia": {
+        "agent": "claudia",
+        "symbol": "XAUUSD",
+        "current_price": 4713.9,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "The market is currently reacting to general macro trends and lacks specific catalysts, making it challenging to predict a clear direction.",
+        "scenarios": [
+          {
+            "name": "Rebound from Oversold Conditions",
+            "probability": 30,
+            "direction": "BULLISH",
+            "reasoning": "Given the recent decline in price (-11.37% in 1D and -5.27% in 5D), a rebound seems likely as prices approach oversold levels.",
+            "entry_zone": [
+              4650,
+              4750
+            ],
+            "stop_loss": 4550,
+            "target": 4850,
+            "confirmation": "The price starts to form higher lows on the daily chart or shows signs of increasing volume",
+            "invalidation": "The price continues to decline below $4500 without showing any signs of bottoming"
+          },
+          {
+            "name": "Support Test and Potential Breakout",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Given the current price of $4713.9, a potential support level around $4650-$4700 might hold, allowing for a bullish breakout if prices can close above this area.",
+            "entry_zone": [
+              4666.76,
+              4761.04
+            ],
+            "stop_loss": 4572.48,
+            "target": 4949.6,
+            "confirmation": "The price closes above the identified support level and shows increasing volume",
+            "invalidation": "The price fails to hold above the support level and drops below $4600"
+          },
+          {
+            "name": "Consolidation before Next Move",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "Considering the lack of specific catalysts, a period of consolidation seems possible before the next significant price move.",
+            "entry_zone": [
+              4700,
+              4725
+            ],
+            "stop_loss": 4680,
+            "target": 4735,
+            "confirmation": "The price forms a stable trading range with moderate volume",
+            "invalidation": "The price breaks out of the identified trading range and moves decisively in either direction"
+          }
+        ],
+        "generated_at": "2026-01-31T05:24:11.303290",
+        "knowledge_sources": [
+          "research_summary",
+          "key_catalysts",
+          "price_targets",
+          "fundamental_thesis"
+        ]
+      }
+    },
+    "generated_at": "2026-01-31T05:24:01.794888",
+    "consensus": "BULLISH",
+    "consensus_strength": "1/3 agents",
+    "logged_at": "2026-01-31T05:24:11.303533",
+    "verified": false
+  },
+  {
+    "symbol": "XAUUSD",
+    "market_data": {
+      "symbol": "XAUUSD",
+      "current_price": 4713.9,
+      "support": 4462.43,
+      "resistance": 5202.93,
+      "swing_low": 4314.4,
+      "swing_high": 5586.2,
+      "rsi": 57.3,
+      "change_1d": -11.37,
+      "change_5d": -5.27,
+      "volume_ratio": 2.72
+    },
+    "agents": {
+      "quant": {
+        "agent": "quant",
+        "symbol": "XAUUSD",
+        "current_price": 4713.9,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "The price is currently in the middle of a broad range, between significant support and resistance levels, indicating indecision. The RSI(14) at 57.3 suggests a neutral market condition.",
+        "generated_at": "2026-01-31T05:27:29.370389",
+        "knowledge_sources": [
+          "market_data_only"
+        ]
+      },
+      "neo": {
+        "agent": "neo",
+        "symbol": "XAUUSD",
+        "current_price": 4713.9,
+        "conviction": "HIGH",
+        "primary_bias": "BULLISH",
+        "reasoning": "Current price is near the support level, which often attracts stop hunts.",
+        "scenarios": [
+          {
+            "name": "Support Test Reversal",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Smart money will exploit retail stops clustered at the support level by triggering a reversal higher. The recent bullish divergences suggest building momentum.",
+            "entry_zone": [
+              4666.76,
+              4761.04
+            ],
+            "stop_loss": 4572.48,
+            "target": 4949.6,
+            "confirmation": "Price breaks above the support level with increasing volume, indicating a strong reversal.",
+            "invalidation": "Price fails to break above the support level and instead re-tests it lower."
+          },
+          {
+            "name": "RSI2 Oversold Bounce",
+            "probability": 30,
+            "direction": "BULLISH",
+            "reasoning": "The RSI(2) under 10 signals an oversold condition, indicating a high probability of a bounce. This setup has historically shown a strong win rate.",
+            "entry_zone": [
+              4644.19,
+              4781.61
+            ],
+            "stop_loss": 4572.48,
+            "target": 4949.6,
+            "confirmation": "The price quickly bounces back above the entry zone with increasing momentum.",
+            "invalidation": "The price fails to bounce and instead continues lower."
+          },
+          {
+            "name": "Fakeout at Resistance",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "Smart money often exploits retail stops clustered at the resistance level by triggering a fakeout. The recent volume ratio suggests weak buying interest.",
+            "entry_zone": [
+              4941.59,
+              5052.27
+            ],
+            "stop_loss": 5218.39,
+            "target": 4462.43,
+            "confirmation": "The price quickly breaks below the entry zone with decreasing momentum.",
+            "invalidation": "The price holds above the resistance level and instead continues higher."
+          }
+        ],
+        "generated_at": "2026-01-31T05:27:32.664935",
+        "knowledge_sources": [
+          "proven_strategies",
+          "recent_patterns",
+          "institutional_rules"
+        ]
+      },
+      "claudia": {
+        "agent": "claudia",
+        "symbol": "XAUUSD",
+        "current_price": 4713.9,
+        "conviction": "MEDIUM",
+        "primary_bias": "BULLISH",
+        "reasoning": "Expecting a bounce due to oversold conditions and potential bottoming out.",
+        "scenarios": [
+          {
+            "name": "Bullish Bounce",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Given the recent sell-off, we might see a short-term rebound as investors reassess their positions and fundamentals remain supportive.",
+            "entry_zone": [
+              4666.76,
+              4761.04
+            ],
+            "stop_loss": 4572.48,
+            "target": 4949.6,
+            "confirmation": "Price breaks above the recent high of $4785, followed by sustained volume increase",
+            "invalidation": "Price fails to break above $4710 and remains in a downtrend"
+          },
+          {
+            "name": "Bearish Consolidation",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "Given the strong bearish momentum over the past days, we might see further consolidation before a potential move lower.",
+            "entry_zone": [
+              4614.44,
+              4666.76
+            ],
+            "stop_loss": 4761.04,
+            "target": 4459.96,
+            "confirmation": "Price holds above $4600 and shows signs of increased selling pressure",
+            "invalidation": "Price breaks above the 50-day moving average"
+          },
+          {
+            "name": "Neutral Range Bound",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "With no specific catalysts and given the current price action, we might see a range-bound market in the short term.",
+            "entry_zone": [
+              4666.76,
+              4761.04
+            ],
+            "stop_loss": 4614.44,
+            "target": 4820.12,
+            "confirmation": "Price holds within the established trading range of $4650-$4800",
+            "invalidation": "Price breaks above $4800 and shows sustained upside momentum"
+          }
+        ],
+        "generated_at": "2026-01-31T05:27:35.697578",
+        "knowledge_sources": [
+          "research_summary",
+          "key_catalysts",
+          "price_targets",
+          "fundamental_thesis"
+        ]
+      }
+    },
+    "generated_at": "2026-01-31T05:27:28.555444",
+    "consensus": "BULLISH",
+    "consensus_strength": "2/3 agents",
+    "logged_at": "2026-01-31T05:27:35.697861",
+    "verified": false
+  },
+  {
+    "symbol": "IREN",
+    "market_data": {
+      "symbol": "IREN",
+      "current_price": 53.74,
+      "support": 51.17,
+      "resistance": 57.45,
+      "swing_low": 38.07,
+      "swing_high": 63.59,
+      "rsi": 58.0,
+      "change_1d": -10.19,
+      "change_5d": -5.19,
+      "volume_ratio": 1.09
+    },
+    "agents": {
+      "quant": {
+        "agent": "quant",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "The current price is near the midpoint between support and resistance, indicating a potential range-bound period.",
+        "scenarios": [
+          {
+            "name": "Consolidation Test",
+            "probability": 40,
+            "direction": "NEUTRAL",
+            "reasoning": "Given the RSI(14) of 58.0 is near neutral levels and the price action is hovering around support, a consolidation phase might be in play.",
+            "entry_zone": [
+              52.5,
+              54.2
+            ],
+            "stop_loss": 50.9,
+            "target": 55.3,
+            "confirmation": "A close above resistance (R1) would confirm this scenario and indicate a potential breakout.",
+            "invalidation": "A close below support (S1) would invalidate this scenario and suggest further price decline."
+          },
+          {
+            "name": "Support Test",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "The price is approaching the swing low of $38.07, which could serve as a support level if revisited. This scenario is less probable but still possible.",
+            "entry_zone": [
+              51.5,
+              52.9
+            ],
+            "stop_loss": 49.2,
+            "target": 46.8,
+            "confirmation": "A close below $38.07 would confirm this scenario and suggest further price decline.",
+            "invalidation": "A bounce above $53.74 without breaking support (S1) would invalidate this scenario."
+          },
+          {
+            "name": "Resistance Test",
+            "probability": 30,
+            "direction": "BULLISH",
+            "reasoning": "The price is approaching the swing high of $63.59, which could serve as a resistance level if revisited. This scenario is less probable but still possible.",
+            "entry_zone": [
+              54.8,
+              56.3
+            ],
+            "stop_loss": 55.5,
+            "target": 62.9,
+            "confirmation": "A close above $63.59 would confirm this scenario and suggest further price increase.",
+            "invalidation": "A decline below $53.74 without breaking resistance (R1) would invalidate this scenario."
+          }
+        ],
+        "generated_at": "2026-01-31T05:28:40.266151",
+        "knowledge_sources": [
+          "market_data_only"
+        ]
+      },
+      "neo": {
+        "agent": "neo",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "BULLISH",
+        "reasoning": "I expect a bullish breakout due to the RSI(14) value of 58.0, indicating overbought conditions and potential for continuation.",
+        "scenarios": [
+          {
+            "name": "Bullish Breakout",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Smart money will likely attempt to break through the resistance at $57.45, taking advantage of retail stop clusters around support at $51.17.",
+            "entry_zone": [
+              54.5,
+              56.43
+            ],
+            "stop_loss": 52.13,
+            "target": 58.25,
+            "confirmation": "A strong volume surge above $56.00 would confirm this scenario.",
+            "invalidation": " Failure to break through resistance at $57.45 within the next trading session."
+          },
+          {
+            "name": "Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "Given the recent pattern alerts for bullish divergence, institutional flow might be cautious and test support levels before making a significant move.",
+            "entry_zone": [
+              52.5,
+              54.28
+            ],
+            "stop_loss": 51.17,
+            "target": 53.98,
+            "confirmation": "A lack of volume or no significant price movement within the next trading session would confirm this scenario.",
+            "invalidation": "Strong buying pressure above $54.00 or selling pressure below $52.00."
+          },
+          {
+            "name": "Stop Hunt",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "Smart money might trigger a stop hunt by taking out the resistance at $57.45, which could attract retail stops and lead to a price decline.",
+            "entry_zone": [
+              56.43,
+              58.25
+            ],
+            "stop_loss": 54.5,
+            "target": 52.13,
+            "confirmation": "A sudden spike in selling pressure or an immediate move below $55.00 would confirm this scenario.",
+            "invalidation": " Failure to break through resistance at $57.45 and instead showing signs of continuation above."
+          }
+        ],
+        "generated_at": "2026-01-31T05:28:43.663124",
+        "knowledge_sources": [
+          "proven_strategies",
+          "recent_patterns",
+          "institutional_rules"
+        ]
+      },
+      "claudia": {
+        "agent": "claudia",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "The recent $9.7 billion Microsoft AI Cloud contract and 140,000 GPU deployment target provide strong fundamental support, but the short-term correction suggests profit-taking.",
+        "scenarios": [
+          {
+            "name": "Bullish Rebound",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Price may rebound as investors re-evaluate the Microsoft deal and its growth prospects, potentially driven by institutional support.",
+            "entry_zone": [
+              53.2,
+              54.28
+            ],
+            "stop_loss": 52.13,
+            "target": 56.43,
+            "confirmation": "Break above $55-$56 resistance zone to confirm",
+            "invalidation": "Failure to hold above $52.50 support zone"
+          },
+          {
+            "name": "Consolidation Test",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "The stock may test the lower end of its recent range as it consolidates after the correction, potentially finding support around $52-$53.",
+            "entry_zone": [
+              52.5,
+              53.5
+            ],
+            "stop_loss": 51.7,
+            "target": 54.2,
+            "confirmation": "Hold above $53 resistance zone to confirm",
+            "invalidation": "Break below $52 support zone"
+          },
+          {
+            "name": "Bearish Downtrend",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "The stock may continue its downtrend as investors reassess the company's fundamentals and growth prospects, potentially driven by profit-taking and value realization.",
+            "entry_zone": [
+              52.13,
+              51.7
+            ],
+            "stop_loss": 49.5,
+            "target": 47.9,
+            "confirmation": "Break below $50 support zone to confirm",
+            "invalidation": "Hold above $51.5 resistance zone"
+          }
+        ],
+        "generated_at": "2026-01-31T05:28:46.807628",
+        "knowledge_sources": [
+          "research_summary",
+          "key_catalysts",
+          "price_targets",
+          "fundamental_thesis",
+          "portfolio_context"
+        ]
+      }
+    },
+    "generated_at": "2026-01-31T05:28:36.917541",
+    "consensus": "BULLISH",
+    "consensus_strength": "1/3 agents",
+    "logged_at": "2026-01-31T05:28:46.807945",
+    "verified": false
+  },
+  {
+    "symbol": "IREN",
+    "market_data": {
+      "symbol": "IREN",
+      "current_price": 53.74,
+      "support": 51.17,
+      "resistance": 57.45,
+      "swing_low": 38.07,
+      "swing_high": 63.59,
+      "rsi": 58.0,
+      "change_1d": -10.19,
+      "change_5d": -5.19,
+      "volume_ratio": 1.09
+    },
+    "agents": {
+      "quant": {
+        "agent": "quant",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "Price is currently trading near the midpoint between S1 and R1, suggesting a neutral bias.",
+        "scenarios": [
+          {
+            "name": "Support Rejection",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "If price action fails to break above R1 ($57.45) and instead heads towards S1 ($51.17), this could be a sign of selling pressure.",
+            "entry_zone": [
+              53.2,
+              54.28
+            ],
+            "stop_loss": 55.41,
+            "target": 49.85,
+            "confirmation": "Price closes below R1 on the next candle",
+            "invalidation": "Price breaks above R1 and reaches $58.17"
+          },
+          {
+            "name": "Bullish Breakout",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "If price action manages to break above R1 ($57.45), this could lead to a continuation of the bullish trend.",
+            "entry_zone": [
+              54.28,
+              55.41
+            ],
+            "stop_loss": 53.2,
+            "target": 63.59,
+            "confirmation": "Price closes above R1 on the next candle",
+            "invalidation": "Price fails to break above R1 and heads towards S1"
+          },
+          {
+            "name": "Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "If price action consolidates near current levels ($53.74), this could indicate a lack of clear direction.",
+            "entry_zone": [
+              52.13,
+              54.95
+            ],
+            "stop_loss": 51.17,
+            "target": 55.41,
+            "confirmation": "Price forms a higher high and lower low within the next day",
+            "invalidation": "Price breaks above R1 or below S1"
+          }
+        ],
+        "generated_at": "2026-01-31T05:29:31.530110",
+        "knowledge_sources": [
+          "market_data_only"
+        ]
+      },
+      "neo": {
+        "agent": "neo",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "Support and resistance levels suggest price action will be contained within a narrow range.",
+        "scenarios": [
+          {
+            "name": "Support Rejection",
+            "probability": 40,
+            "direction": "BEARISH",
+            "reasoning": "Smart money may target the lower support level ($51.17) to sell into weakness and capture stops.",
+            "entry_zone": [
+              52.6,
+              53.4
+            ],
+            "stop_loss": 54.28,
+            "target": 50.47,
+            "confirmation": "Volume surge on the bearish move",
+            "invalidation": "Price fails to break below $51.17 and reverses"
+          },
+          {
+            "name": "Resistance Breakout",
+            "probability": 30,
+            "direction": "BULLISH",
+            "reasoning": "Smart money may target the resistance level ($57.45) to buy into strength and capture stops.",
+            "entry_zone": [
+              54.5,
+              55.4
+            ],
+            "stop_loss": 52.13,
+            "target": 60.65,
+            "confirmation": "Volume surge on the bullish move",
+            "invalidation": "Price fails to break above $57.45 and reverses"
+          },
+          {
+            "name": "Range Bound Action",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "Given the proximity to support and resistance levels, price action may remain range-bound.",
+            "entry_zone": [
+              53.2,
+              54.28
+            ],
+            "stop_loss": 52.13,
+            "target": 56.43,
+            "confirmation": "Price consolidates within a narrow range",
+            "invalidation": "Breakout above $57.45 or below $51.17"
+          }
+        ],
+        "generated_at": "2026-01-31T05:29:34.416245",
+        "knowledge_sources": [
+          "proven_strategies",
+          "recent_patterns",
+          "institutional_rules"
+        ]
+      },
+      "claudia": {
+        "agent": "claudia",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "Price reaction to recent news is normalizing, but IREN's fundamentals remain strong due to the Microsoft AI Cloud contract.",
+        "scenarios": [
+          {
+            "name": "Support Test",
+            "probability": 40,
+            "direction": "BEARISH",
+            "reasoning": "Following yesterday's correction and today's profit-taking, IREN may test lower support levels as investors reassess their positions.",
+            "entry_zone": [
+              52.5,
+              53.2
+            ],
+            "stop_loss": 51.65,
+            "target": 50.23,
+            "confirmation": "Further decline to the next significant support level around $48-$49 would confirm this scenario.",
+            "invalidation": "Price stabilization above $54 or a positive reaction to new catalysts would invalidate this bearish view."
+          },
+          {
+            "name": "Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "IREN's price may consolidate around current levels as investors await further developments on the company's AI initiatives and potential future contracts.",
+            "entry_zone": [
+              53.2,
+              54.28
+            ],
+            "stop_loss": 52.13,
+            "target": 55.23,
+            "confirmation": "Price stabilization above $55 or a significant increase in trading volume could confirm this consolidation scenario.",
+            "invalidation": "A sharp decline below the current price or a major announcement driving the stock higher would invalidate this neutral view."
+          },
+          {
+            "name": "Bullish Breakout",
+            "probability": 30,
+            "direction": "BULLISH",
+            "reasoning": "Given IREN's strong fundamentals and recent news, a bullish breakout above $54 could be triggered by new catalysts or a positive reaction to the company's growth prospects.",
+            "entry_zone": [
+              53.9,
+              54.68
+            ],
+            "stop_loss": 52.65,
+            "target": 57.45,
+            "confirmation": "A price increase above $57 or significant trading volume increases could confirm this bullish scenario.",
+            "invalidation": "A decline below the current price or negative news impacting IREN's growth prospects would invalidate this bullish view."
+          }
+        ],
+        "generated_at": "2026-01-31T05:29:37.885302",
+        "knowledge_sources": [
+          "research_summary",
+          "key_catalysts",
+          "price_targets",
+          "fundamental_thesis",
+          "portfolio_context"
+        ]
+      }
+    },
+    "generated_at": "2026-01-31T05:29:28.505952",
+    "consensus": "MIXED",
+    "consensus_strength": "No clear agreement",
+    "logged_at": "2026-01-31T05:29:37.885660",
+    "verified": false
+  },
+  {
+    "symbol": "XAUUSD",
+    "market_data": {
+      "symbol": "XAUUSD",
+      "current_price": 4713.9,
+      "support": 4462.43,
+      "resistance": 5202.93,
+      "swing_low": 4314.4,
+      "swing_high": 5586.2,
+      "rsi": 57.3,
+      "change_1d": -11.37,
+      "change_5d": -5.27,
+      "volume_ratio": 2.72
+    },
+    "agents": {
+      "quant": {
+        "agent": "quant",
+        "symbol": "XAUUSD",
+        "current_price": 4713.9,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "Price action is stuck between strong support and resistance levels, indicating indecision in the market.",
+        "scenarios": [
+          {
+            "name": "Bullish Breakout",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Price has been stuck below R1 for a while; if it breaks through with enough volume, it might indicate a new trend.",
+            "entry_zone": [
+              5136.93,
+              5202.93
+            ],
+            "stop_loss": 5067.52,
+            "target": 5586.2,
+            "confirmation": "Price closes above R1 and maintains above the level for at least one trading session",
+            "invalidation": "Price fails to break through R1 or falls back below S1"
+          },
+          {
+            "name": "Consolidation Extension",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "The recent price action is in line with the 5D and 1D changes, indicating a consolidation phase might continue.",
+            "entry_zone": [
+              4462.43,
+              4713.9
+            ],
+            "stop_loss": 4314.4,
+            "target": 4900.6,
+            "confirmation": "Price continues to fluctuate within the established support and resistance levels for at least two trading sessions",
+            "invalidation": "Price breaks through either S1 or R1"
+          },
+          {
+            "name": "Bearish Reversal",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "Given the recent declines and the current RSI reading, a bearish reversal is possible.",
+            "entry_zone": [
+              4572.48,
+              4666.76
+            ],
+            "stop_loss": 4761.04,
+            "target": 4314.4,
+            "confirmation": "Price closes below S1 and maintains below it for at least one trading session",
+            "invalidation": "Price recovers above S1"
+          }
+        ],
+        "generated_at": "2026-01-31T05:30:07.445955",
+        "knowledge_sources": [
+          "market_data_only"
+        ]
+      },
+      "neo": {
+        "agent": "neo",
+        "symbol": "XAUUSD",
+        "current_price": 4713.9,
+        "conviction": "HIGH",
+        "primary_bias": "BULLISH",
+        "reasoning": "Momentum is building with multiple bullish divergences detected, indicating a potential breakout.",
+        "scenarios": [
+          {
+            "name": "Breakout Above Resistance",
+            "probability": 45,
+            "direction": "BULLISH",
+            "reasoning": "Resistance at $5202.93 has been tested previously; smart money may attempt to break out above it, especially with increasing momentum.",
+            "entry_zone": [
+              5170,
+              5220
+            ],
+            "stop_loss": 5100,
+            "target": 5400,
+            "confirmation": "Sustained price action above resistance, increasing volume on the move",
+            "invalidation": "Failure to break through $5202.93, followed by a reversal"
+          },
+          {
+            "name": "Support Test and Reversal",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "Stop clusters are likely accumulating at support ($4462.43), making it a prime target for smart money to sell into, especially with the recent bullish divergences suggesting overbought conditions.",
+            "entry_zone": [
+              4460,
+              4485
+            ],
+            "stop_loss": 4520,
+            "target": 4240,
+            "confirmation": "A strong bearish candle closes below support, with increased volume",
+            "invalidation": "Bullish reversal confirmation above $4500"
+          },
+          {
+            "name": "Consolidation and Fakeout",
+            "probability": 25,
+            "direction": "NEUTRAL",
+            "reasoning": "The recent price action has been consolidating, with the RSI(14) at 57.3 indicating a possible equilibrium. Smart money might exploit retail's stop hunt behavior by creating a fakeout at support or resistance.",
+            "entry_zone": [
+              4600,
+              4800
+            ],
+            "stop_loss": 4550,
+            "target": 4850,
+            "confirmation": "A significant volume increase on a small price movement in either direction",
+            "invalidation": "A clear breakout above $5202.93 or below $4462.43"
+          }
+        ],
+        "generated_at": "2026-01-31T05:30:10.767995",
+        "knowledge_sources": [
+          "proven_strategies",
+          "recent_patterns",
+          "institutional_rules"
+        ]
+      },
+      "claudia": {
+        "agent": "claudia",
+        "symbol": "XAUUSD",
+        "current_price": 4713.9,
+        "conviction": "MEDIUM",
+        "primary_bias": "BEARISH",
+        "reasoning": "Short-term price action suggests a bearish trend, but fundamentals may eventually drive price upwards.",
+        "scenarios": [
+          {
+            "name": "Bearish Continuation",
+            "probability": 40,
+            "direction": "BEARISH",
+            "reasoning": "Recent 5D change of -5.27% and current 1D change of -11.37% indicate selling pressure.",
+            "entry_zone": [
+              4666.76,
+              4761.04
+            ],
+            "stop_loss": 4572.48,
+            "target": 4460.8,
+            "confirmation": "Further price drops below the entry zone or significant bearish news.",
+            "invalidation": "Unexpected bullish catalysts or a sudden reversal in market sentiment."
+          },
+          {
+            "name": "Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "The price has made significant moves recently, and it's possible that the market is consolidating.",
+            "entry_zone": [
+              4650.8,
+              4776.98
+            ],
+            "stop_loss": 4512.4,
+            "target": 4895.4,
+            "confirmation": "Price range-bound within the entry zone for a few sessions or lack of significant news.",
+            "invalidation": "A clear break above or below the consolidation range, indicating a new trend."
+          },
+          {
+            "name": "Bullish Reversal",
+            "probability": 30,
+            "direction": "BULLISH",
+            "reasoning": "Fundamentals may eventually drive price upwards, despite current bearish sentiment.",
+            "entry_zone": [
+              4761.04,
+              4866.18
+            ],
+            "stop_loss": 4630.36,
+            "target": 5149.8,
+            "confirmation": "Unexpected bullish catalysts or a sudden reversal in market sentiment.",
+            "invalidation": "Further price drops below the entry zone or significant bearish news."
+          }
+        ],
+        "generated_at": "2026-01-31T05:30:13.750039",
+        "knowledge_sources": [
+          "research_summary",
+          "key_catalysts",
+          "price_targets",
+          "fundamental_thesis"
+        ]
+      }
+    },
+    "generated_at": "2026-01-31T05:30:00.833672",
+    "consensus": "MIXED",
+    "consensus_strength": "No clear agreement",
+    "logged_at": "2026-01-31T05:30:13.751331",
+    "verified": false
+  },
+  {
+    "symbol": "IREN",
+    "market_data": {
+      "symbol": "IREN",
+      "current_price": 53.74,
+      "support": 51.17,
+      "resistance": 57.45,
+      "swing_low": 38.07,
+      "swing_high": 63.59,
+      "rsi": 58.0,
+      "change_1d": -10.19,
+      "change_5d": -5.19,
+      "volume_ratio": 1.09
+    },
+    "agents": {
+      "quant": {
+        "agent": "quant",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "MEDIUM",
+        "primary_bias": "NEUTRAL",
+        "reasoning": "IREN's price has been trading within a range, indicating consolidation.",
+        "scenarios": [
+          {
+            "name": "Range Expansion",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Given the RSI(14) at 58.0 and 1D Change of -10.19%, there's a moderate chance price will break out of the range.",
+            "entry_zone": [
+              53.2,
+              54.28
+            ],
+            "stop_loss": 52.13,
+            "target": 56.43,
+            "confirmation": "A close above R1 at $57.45 would confirm this scenario.",
+            "invalidation": "A close below S1 at $51.17 would invalidate this scenario."
+          },
+          {
+            "name": "Support Test",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "The 5D Change of -5.19% and Volume Ratio above average suggest a potential pullback.",
+            "entry_zone": [
+              52.13,
+              53.2
+            ],
+            "stop_loss": 54.28,
+            "target": 49.83,
+            "confirmation": "A close below S1 at $51.17 would confirm this scenario.",
+            "invalidation": "A close above R1 at $57.45 would invalidate this scenario."
+          },
+          {
+            "name": "Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "The current price action suggests a continuation of the consolidation trend.",
+            "entry_zone": [
+              53.2,
+              54.28
+            ],
+            "stop_loss": 52.13,
+            "target": 54.95,
+            "confirmation": "A close within the range [$51.17, $57.45] would confirm this scenario.",
+            "invalidation": "Either a close below S1 at $51.17 or above R1 at $57.45 would invalidate this scenario."
+          }
+        ],
+        "generated_at": "2026-01-31T05:31:03.966864",
+        "knowledge_sources": [
+          "market_data_only"
+        ]
+      },
+      "neo": {
+        "agent": "neo",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "HIGH",
+        "primary_bias": "BULLISH",
+        "reasoning": "The price is trading above the support level of $51.17 and has a volume ratio of 1.09x, indicating increasing buying pressure.",
+        "scenarios": [
+          {
+            "name": "Bullish Breakout",
+            "probability": 40,
+            "direction": "BULLISH",
+            "reasoning": "Smart money may exploit the clustered stops around $50 and push the price towards resistance at $57.45.",
+            "entry_zone": [
+              53.2,
+              54.28
+            ],
+            "stop_loss": 52.13,
+            "target": 56.43,
+            "confirmation": "A strong breakout above $57.45 would confirm this scenario.",
+            "invalidation": "If the price fails to close above $53.74 and falls back below $52.13, it could indicate a false breakout."
+          },
+          {
+            "name": "Support Test",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "The price may be due for a support test around the $51.17 level, which would attract stop clusters and potentially lead to a bullish reversal.",
+            "entry_zone": [
+              51.5,
+              52.13
+            ],
+            "stop_loss": 50.83,
+            "target": 54.28,
+            "confirmation": "A bounce off support at $51.17 with increasing volume would confirm this scenario.",
+            "invalidation": "If the price fails to hold above $50 and falls below $49.25, it could indicate a bearish continuation."
+          },
+          {
+            "name": "Stop Hunt",
+            "probability": 30,
+            "direction": "BEARISH",
+            "reasoning": "Smart money may set up a stop hunt around the resistance level of $57.45 to attract short sellers and create a false break, followed by a bearish reversal.",
+            "entry_zone": [
+              56.9,
+              57.45
+            ],
+            "stop_loss": 58.25,
+            "target": 54.28,
+            "confirmation": "A sudden spike above $57.45 followed by a quick reversal would confirm this scenario.",
+            "invalidation": "If the price holds above $57.45 and continues to rise, it could indicate a bullish continuation."
+          }
+        ],
+        "generated_at": "2026-01-31T05:31:07.506162",
+        "knowledge_sources": [
+          "proven_strategies",
+          "recent_patterns",
+          "institutional_rules"
+        ]
+      },
+      "claudia": {
+        "agent": "claudia",
+        "symbol": "IREN",
+        "current_price": 53.74,
+        "conviction": "HIGH",
+        "primary_bias": "BULLISH",
+        "reasoning": "IREN has secured a $9.7 billion Microsoft AI Cloud contract, transforming it from a pure BTC miner to an AI infrastructure company with significant recurring revenue.",
+        "scenarios": [
+          {
+            "name": "Microsoft Deal Catalyst Rally",
+            "probability": 45,
+            "direction": "BULLISH",
+            "reasoning": "The recent deal announcement has already shown market strength, and further catalysts may emerge as the partnership unfolds. The stock's ability to decouple from Bitcoin correlation also supports a bullish outlook.",
+            "entry_zone": [
+              53.2,
+              54.28
+            ],
+            "stop_loss": 52.13,
+            "target": 57.43,
+            "confirmation": "IREN announces additional major deals or partnerships under the Microsoft contract, further validating its AI compute pivot.",
+            "invalidation": "The company's legacy BTC mining revenue declines significantly faster than expected, casting doubt on its ability to transition into a high-growth AI infrastructure business."
+          },
+          {
+            "name": "Profit-Taking Consolidation",
+            "probability": 30,
+            "direction": "NEUTRAL",
+            "reasoning": "The stock's -8.3% correction today due to profit-taking could continue in the short term, but fundamentals remain strong enough to support a retest of the recent highs.",
+            "entry_zone": [
+              52.83,
+              53.5
+            ],
+            "stop_loss": 51.68,
+            "target": 54.23,
+            "confirmation": "IREN's AI Cloud ARR targets and GPU deployment milestones are met or exceeded, reinforcing investor confidence in its growth trajectory.",
+            "invalidation": "A significant decline in the company's power sales revenue due to decreased demand, which could negatively impact overall profitability."
+          },
+          {
+            "name": "Market Volatility Reversal",
+            "probability": 25,
+            "direction": "BEARISH",
+            "reasoning": "While IREN has strong fundamental drivers, market volatility could lead to a short-term reversal in the stock's price action. This scenario is less likely given the company's transformation and growth prospects.",
+            "entry_zone": [
+              52.38,
+              53.12
+            ],
+            "stop_loss": 51.23,
+            "target": 50.83,
+            "confirmation": "A major market correction or a significant downturn in the overall tech sector leads to a sharp decline in IREN's price.",
+            "invalidation": "IREN releases strong earnings reports and updates that further validate its AI compute pivot, demonstrating robust growth and profitability."
+          }
+        ],
+        "generated_at": "2026-01-31T05:31:11.346674",
+        "knowledge_sources": [
+          "research_summary",
+          "key_catalysts",
+          "price_targets",
+          "fundamental_thesis",
+          "portfolio_context"
+        ]
+      }
+    },
+    "generated_at": "2026-01-31T05:31:00.875243",
+    "consensus": "BULLISH",
+    "consensus_strength": "2/3 agents",
+    "logged_at": "2026-01-31T05:31:11.347096",
+    "verified": false
+  }
+]

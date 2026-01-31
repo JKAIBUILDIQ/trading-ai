@@ -1,0 +1,49 @@
+{
+  "alerts": [
+    {
+      "pattern": "BULLISH_DIVERGENCE",
+      "symbol": "XAUUSD",
+      "severity": "MEDIUM",
+      "direction": "BULLISH",
+      "defcon_impact": 1,
+      "message": "Bullish RSI divergence detected - momentum building",
+      "action": "Watch for reversal confirmation",
+      "price": 5067.5,
+      "timestamp": "2026-01-31T04:43:16.843711"
+    },
+    {
+      "pattern": "BULLISH_DIVERGENCE",
+      "symbol": "XAUUSD",
+      "severity": "MEDIUM",
+      "direction": "BULLISH",
+      "defcon_impact": 1,
+      "message": "Bullish RSI divergence detected - momentum building",
+      "action": "Watch for reversal confirmation",
+      "price": 5067.5,
+      "timestamp": "2026-01-31T03:43:14.492160"
+    },
+    {
+      "pattern": "BULLISH_DIVERGENCE",
+      "symbol": "XAUUSD",
+      "severity": "MEDIUM",
+      "direction": "BULLISH",
+      "defcon_impact": 1,
+      "message": "Bullish RSI divergence detected - momentum building",
+      "action": "Watch for reversal confirmation",
+      "price": 5067.5,
+      "timestamp": "2026-01-31T02:43:12.148524"
+    }
+  ],
+  "last_updated": "2026-01-31T04:43:16.844480",
+  "latest_alert": {
+    "pattern": "BULLISH_DIVERGENCE",
+    "symbol": "XAUUSD",
+    "severity": "MEDIUM",
+    "direction": "BULLISH",
+    "defcon_impact": 1,
+    "message": "Bullish RSI divergence detected - momentum building",
+    "action": "Watch for reversal confirmation",
+    "price": 5067.5,
+    "timestamp": "2026-01-31T04:43:16.843711"
+  }
+}

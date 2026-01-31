@@ -1,0 +1,187 @@
+{
+  "scan_time": "2026-01-30T23:04:03.808665",
+  "scan_date": "2026-01-30",
+  "stocks_scanned": 20,
+  "bounce_candidates": 17,
+  "fade_candidates": 3,
+  "top_bounces": [
+    {
+      "symbol": "SLV",
+      "price": 75.44000244140625,
+      "change_1d": -28.540302491726877,
+      "change_3d": -25.740717431969284,
+      "rsi": 52.0867465907834,
+      "volume_ratio": 3.057894760905971,
+      "technical_score": 75,
+      "fundamental_score": 88,
+      "combined_score": 80.2,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock SLV has shown significant price decrease in the last 5 days (-18.8%), indicating a potential for mean reversion. The RSI(14) is at 52.1, slightly above the oversold level of 30 but still suggesting some bearish sentiment. The high volume ratio (3.1x vs 20d avg) indicates increased trading activity which can be a sign of exhaustion or capitulation. The stock is also currently at -31.3% from its 52W High, another indicator of potential mean reversion. However, it's worth noting that the stock is still 183.9% above its 52W Low, suggesting some underlying bullish sentiment. The gap today (-15.4%) could also potentially lead to a gap fill.",
+      "fundamental_reason": "SLV is a silver ETF tracking physical commodity prices. Recent drop likely due to macroeconomic factors (e.g., dollar strength, inflation fears) rather than company-specific issues. No fundamental problems with the ETF structure. Sector rotation in commodities suggests mean reversion potential.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        73.93,
+        76.19
+      ],
+      "target": 82.98,
+      "stop": 71.67
+    },
+    {
+      "symbol": "ROKU",
+      "price": 95.19999694824219,
+      "change_1d": -5.235916966122556,
+      "change_3d": -8.969214685964122,
+      "rsi": 19.83377316920479,
+      "volume_ratio": 1.4487810931945824,
+      "technical_score": 75,
+      "fundamental_score": 85,
+      "combined_score": 79.0,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock is significantly oversold with an RSI of 19.8 (below 30), it has experienced a large drop in the past five days (-10.4%), and it is also at the lower end of its 52-week range (-18.4% from high). Additionally, there was a small gap today which might indicate potential for a gap fill.",
+      "fundamental_reason": "Roku's drop aligns with sector rotation in Communication Services, not company-specific issues. No recent earnings miss or guidance cut reported. Strong user growth and ad revenue fundamentals suggest temporary oversold condition.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        93.3,
+        96.15
+      ],
+      "target": 104.72,
+      "stop": 90.44
+    },
+    {
+      "symbol": "SHOP",
+      "price": 131.22999572753906,
+      "change_1d": -8.639657278502966,
+      "change_3d": -4.560003107244315,
+      "rsi": 20.45495960639009,
+      "volume_ratio": 1.6206526452618377,
+      "technical_score": 75,
+      "fundamental_score": 80,
+      "combined_score": 77.0,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock is currently oversold with an RSI of 20.5 (below the 30 threshold), indicating a potential rebound. Additionally, it's at the lower end of its 52-week range (-28.0% from high) and has shown high volume on the recent move (-4.6% in 3 days which is 1.6x the 20-day average). There was also a small gap today (-2.2%), suggesting potential for gap fill.",
+      "fundamental_reason": "The selloff appears driven by sector rotation and high P/E valuation concerns rather than company-specific issues. Shopify remains a quality business with strong fundamentals, suggesting potential for mean reversion if the sell-off is overdone.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        128.61,
+        132.54
+      ],
+      "target": 144.35,
+      "stop": 124.67
+    },
+    {
+      "symbol": "PLTR",
+      "price": 146.58999633789062,
+      "change_1d": -3.470304393046153,
+      "change_3d": -11.532891347198237,
+      "rsi": 14.302219116562938,
+      "volume_ratio": 1.1804939543860353,
+      "technical_score": 85,
+      "fundamental_score": 65,
+      "combined_score": 77.0,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock PLTR is currently oversold with an RSI(14) of 14.3, indicating a potential for mean reversion. Additionally, it's trading at -29.4% from its 52-week high and has shown significant volatility in the past few days, suggesting possible exhaustion. The volume ratio is also slightly above average, which could indicate capitulation. However, the gap today is relatively small, so there might be a slight delay in the potential bounce.",
+      "fundamental_reason": "PLTR's high P/E (340.9) suggests overvaluation, making the selloff partly justified. The drop aligns with sector rotation out of high-growth tech stocks rather than company-specific issues. While fundamentals show improving revenue, structural valuation concerns limit mean reversion potential.",
+      "fundamental_quality": "MEDIUM",
+      "entry_zone": [
+        143.66,
+        148.06
+      ],
+      "target": 161.25,
+      "stop": 139.26
+    },
+    {
+      "symbol": "MRNA",
+      "price": 44.06999969482422,
+      "change_1d": -5.953907125880454,
+      "change_3d": -3.036305929483074,
+      "rsi": 65.33751923966682,
+      "volume_ratio": 0.7120882116084019,
+      "technical_score": 75,
+      "fundamental_score": 75,
+      "combined_score": 75.0,
+      "direction": "BOUNCE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock is currently not oversold (RSI 65.3) but it has been experiencing a significant drop in the past 5 days (-9.5%). It's also close to its 52-week high (-20.2%) which indicates potential for mean reversion. However, the volume ratio is slightly below average and there was no gap today, which slightly reduces the score.",
+      "fundamental_reason": "Moderna is a quality healthcare company with no immediate fundamental issues. The selloff likely reflects sector rotation and investor caution amid broader market volatility, not company-specific problems. Mean reversion potential is strong if the decline is overcorrecting.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        43.19,
+        44.51
+      ],
+      "target": 48.48,
+      "stop": 41.87
+    }
+  ],
+  "top_fades": [
+    {
+      "symbol": "IREN",
+      "price": 53.7400016784668,
+      "change_1d": -10.193847691454739,
+      "change_3d": -10.418402775680224,
+      "rsi": 58.01955724596812,
+      "volume_ratio": 1.080600932841806,
+      "technical_score": 85,
+      "fundamental_score": 75,
+      "combined_score": 81.0,
+      "direction": "FADE",
+      "confidence": "HIGH",
+      "technical_reason": "The stock is currently at a high of its 52-week range (948.6%), indicating potential for a reversal. The RSI value of 58.0 is not extremely oversold or overbought but still suggests some level of overbought conditions. Additionally, the high volume on move indicates possible exhaustion. However, the recent negative price changes (-10.2%, -10.4%, and -5.2% in the last 1-3 days) suggest a potential continuation of the downward trend. Therefore, it is recommended to 'FADE' or sell the stock.",
+      "fundamental_reason": "Likely sector rotation in Financial Services without company-specific fundamental issues. Oversold but not a blue chip. P/E suggests moderate valuation.",
+      "fundamental_quality": "MEDIUM",
+      "entry_zone": [
+        53.2,
+        54.81
+      ],
+      "target": 48.37,
+      "stop": 56.43
+    },
+    {
+      "symbol": "GLD",
+      "price": 444.95001220703125,
+      "change_1d": -10.274245274560045,
+      "change_3d": -6.5427417553344025,
+      "rsi": 60.66629915134718,
+      "volume_ratio": 3.134994511046533,
+      "technical_score": 65,
+      "fundamental_score": 85,
+      "combined_score": 73.0,
+      "direction": "FADE",
+      "confidence": "MEDIUM",
+      "technical_reason": "The RSI is not extremely oversold (60.7) and the stock has been moving downwards for the past few days, which suggests a continued downtrend rather than a bounce. However, the stock is near its 52-week high, indicating potential for a correction. The high volume ratio also indicates increased trading activity, but it's not clear if this is capitulation or further selling pressure.",
+      "fundamental_reason": "GLD tracks gold prices, which recently fell due to temporary factors like dollar strength and rate expectations. No company-specific issues; mean reversion potential high if gold fundamentals remain stable.",
+      "fundamental_quality": "HIGH",
+      "entry_zone": [
+        440.5,
+        453.85
+      ],
+      "target": 400.46,
+      "stop": 467.2
+    },
+    {
+      "symbol": "INTC",
+      "price": 46.470001220703125,
+      "change_1d": -4.500613714706891,
+      "change_3d": 5.781927834924416,
+      "rsi": 51.28851843220401,
+      "volume_ratio": 0.7640756093050226,
+      "technical_score": 65,
+      "fundamental_score": 75,
+      "combined_score": 69.0,
+      "direction": "FADE",
+      "confidence": "MEDIUM",
+      "technical_reason": "Although the stock is not extremely overbought (RSI 51.3), it has moved away from its 52-week low significantly (163.0%). However, the volume ratio and today's gap are not indicative of strong capitulation or exhaustion. Therefore, a potential mean reversion could occur but with a moderate score.",
+      "fundamental_reason": "Recent move likely driven by sector rotation and potential oversold conditions in tech. Intel faces structural challenges in manufacturing and market share but remains a blue-chip with long-term potential. No immediate fundamental issues reported.",
+      "fundamental_quality": "MEDIUM",
+      "entry_zone": [
+        46.01,
+        47.4
+      ],
+      "target": 41.82,
+      "stop": 48.79
+    }
+  ]
+}

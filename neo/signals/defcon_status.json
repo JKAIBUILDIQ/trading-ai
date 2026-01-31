@@ -1,0 +1,15 @@
+{
+  "defcon": 3,
+  "rules": {
+    "name": "ALERT",
+    "position_size_mult": 0.5,
+    "allow_new_entries": true,
+    "hedge_required": false
+  },
+  "pause_state": {
+    "ghost": false,
+    "casper": false,
+    "all": false
+  },
+  "updated_at": "2026-01-30T23:57:48.671420"
+}
